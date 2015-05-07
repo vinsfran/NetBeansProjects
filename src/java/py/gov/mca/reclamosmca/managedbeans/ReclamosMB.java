@@ -191,6 +191,7 @@ public class ReclamosMB implements Serializable {
             message.setSummary("Campo requerido");
             message.setDetail("Debe completar el campo Descripción Atencion.");
         } else {
+            //Se completa el reclamo
             reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
             reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
             reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
