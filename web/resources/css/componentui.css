@@ -1,0 +1,241 @@
+/* 
+    Document   : componentui
+    Created on : 29-ene-2013, 17:59:07
+    Author     : zdiaz
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.purchaseSuccess{
+    border:solid red 2px;
+    width: 800px;
+    margin: auto;
+    padding: 10px;
+    border-radius:5px;
+    border-color: #8bfa7f;
+    background-color: #dcf9a4;
+    font-family: Calibri;
+}
+/*
+.formMenu{
+    margin: 10px auto 0px auto;
+    line-height: 40px;
+    color:green;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 12px;
+    padding: 30px;
+}
+
+.formMenu .submit{
+    margin-top: 20px;
+    height: 30px;
+    width: 120px;
+    border-radius:15px;
+    moz-border-radius:5px;
+    border:solid blue 3px;
+    color:white;
+    background:  -moz-linear-gradient(90deg,blue,royalblue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(blue), to(royalblue));
+    font-weight: bolder;
+    font-size: 14px;
+    box-shadow: #111 2px 5px 10px;
+    moz-box-shadow: #111 2px 5px 10px;
+}
+
+.formMenu .submit:hover{
+    background:  -moz-linear-gradient(90deg,royalblue,blue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(royalblue), to(blue));
+}
+
+.formMenu hr{
+    border-top:solid #ccc 1px;
+    padding: 0;
+    margin: 0;
+}
+
+.formMenu span{
+    color:graytext;
+    font-size: 14px;
+    font-weight: bolder;
+}*/
+.form{
+    margin: 10px auto 0px auto;
+    line-height: 25px;
+    color:green;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 14px;
+    padding: 30px;
+}
+.form h3{
+    color:gray;
+    /*    font-family: Monotype Corsiva,Tahoma,Arial,Helvetica;*/
+    font-weight: bolder;
+    font-size: 26px;
+}
+
+.form h2{
+    color:green;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 16px;
+}
+.form h{
+    color:graytext;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.form text{
+    color:gray;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 16px;
+}
+.form mision{
+    color:gray;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 16px;
+}
+.form vision{
+    color:gray;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 16px;
+}
+.form fecha{
+    color:gray;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 16px;
+}
+
+.form label{
+    display:inline-block;
+    text-align: left;
+    width: 150px;
+    margin-right: 20px;
+    font-family: Tahoma, Arial, Helvetica;
+    font-size: 14px;
+    font-weight: bold;
+    color:#000;
+}
+
+.form input{
+    height: 20px;
+    font-size: 14px;
+}
+.form output{
+    height: 20px;
+    color: black;
+}
+.form textArea{
+    height: 20px;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 14px;
+}
+.form .submit{
+    margin-top: 20px;
+    height: 30px;
+    width: 120px;
+    border-radius:15px;
+    moz-border-radius:5px;
+    border:solid blue 3px;
+    color:white;
+    background:  -moz-linear-gradient(90deg,blue,royalblue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(blue), to(royalblue));
+    font-weight: bolder;
+    font-size: 14px;
+    box-shadow: #111 2px 5px 10px;
+    moz-box-shadow: #111 2px 5px 10px;
+}
+
+.form .submit:hover{
+    background:  -moz-linear-gradient(90deg,royalblue,blue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(royalblue), to(blue));
+}
+
+.form hr{
+    border-top:solid #ccc 1px;
+    padding: 0;
+    margin: 0;
+}
+
+.form span{
+    color:graytext;
+    font-size: 14px;
+    font-weight: bolder;
+}
+
+#formMessage{
+    width: 600px;
+    margin: auto;
+}
+#formMessage2{
+    width: 600px;
+    margin: auto;
+    background-image: url('../images/acceso_denegado.jpg');
+}
+
+#group{
+    /*    border: solid lime 2px;*/
+    padding: 10px;
+    overflow: auto;
+    width: 945px;
+    margin: auto;
+}
+
+#group div{
+    float: left;
+    /*    border: solid orangered 2px;*/
+    width: 250px;
+    margin: 0px 30px;    
+}
+
+/*-------------------------------Growl Mesage---------------------------------*/
+.ui-growl {
+    right: 210px;
+    top: 160px;
+}
+.ui-growl-item-container{
+    /*    background-color: #ffff99;*/
+    border-radius:5px;
+    moz-border-radius:5px;
+}
+.ui-growl-title{
+    font-size: 14px;
+    text-shadow:none;
+}
+.ui-growl-message p{
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+#userSide{
+    color:navy;
+    font-size:12px;
+    /*    border:solid red 1px;*/
+    margin-top: 10px;
+}
+
+#userSide label{
+    display: block;
+    width: 80px;
+    float: left;
+}
+
+#userSide input{
+    width: 300px;
+    height: 20px;
+    margin: 0 0 10px 0;
+}

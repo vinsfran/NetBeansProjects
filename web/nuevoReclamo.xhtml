@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+            <body>
+                <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+            <h:form  id="form" styleClass="form" style="width: 600px" >
+                <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="false" life="5000"/>
+                <div id="detalle" align="center">
+                    <h:outputText id="text" value="#{usuario.empresa}" style="width: 250px;" />
+                    <hr/>
+                    <h3>Seleccione su reclamo</h3>
+                    <div id="combo" align="left">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel style="width: 250px;" value="Seleccione un tipo de reclamo:" for="tiposReclamos"/>
+                            <p:selectOneMenu id="tiposReclamos" 
+                                             style="width: 300px; "  
+                                             value="#{reclamosWebMB.reclamos.fkCodTipoReclamo.codTipoReclamo}"
+                                             >
+
+                                <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
+                                              noSelectionOption="false"
+                                              itemDisabled="true"
+                                              />
+                                <f:selectItems value="#{tiposReclamosMB.listarTiposReclamos2}" 
+                                               var="tiposReclamos" 
+                                               itemValue="#{tiposReclamos.codTipoReclamo}" 
+                                               itemLabel="#{tiposReclamos.nombreTipoReclamo}"
+                                               />
+                                <p:ajax event="change" listener="#{reclamosWebMB.seleccionarReclamo()}" update="gmap"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </div>
+
+                </div>
+                <div id="historias" align="left">
+                    <h4>Ubicación del Reclamo</h4>
+                    <h>Haga click sobre el mapa para marcar la ubicación del reclamo.</h>
+                    <div id="for">
+
+                        <p:gmap id="gmap"
+                                center="#{reclamosWebMB.reclamos.latitud}, #{reclamosWebMB.reclamos.longitud}" 
+                                zoom="#{reclamosWebMB.zoom}" type="HYBRID"  
+                                style="width:600px;height:400px"
+                                model="#{reclamosWebMB.emptyModel}">
+
+                            <p:ajax event="stateChange" listener="#{reclamosWebMB.onStateChange}"/>
+                            <p:ajax event="pointSelect" listener="#{reclamosWebMB.puntoSelecionado}" update="gmap" />
+                        </p:gmap>
+
+                    </div>
+                    <div>
+                        <br/>
+                        <h:outputLabel style="width: 200px;" value="Descripción del reclamo:" for="descri"/>
+                        <br/>
+                        <h:inputTextarea  required="false" 
+                                          cols="50" 
+                                          rows="5" 
+                                          id="descri" 
+                                          value="#{reclamosWebMB.reclamos.descripcionReclamoContribuyente}"
+                                          title="Descripción del reclamo"
+                                          style="width:600px;height:50px">
+                            <f:validateLength maximum="500"/>
+                        </h:inputTextarea>
+
+                        <hr/>
+                    </div>
+                    <h:commandButton action="#{reclamosWebMB.enviarReclamo()}" 
+                                     value="Enviar" 
+                                     styleClass="submit" 
+                                     style="margin-left: 200px"/>                                  
+                </div>
+
+            </h:form>
+
+            </body>
+        </ui:define>
+    </ui:composition>
+</html>
+

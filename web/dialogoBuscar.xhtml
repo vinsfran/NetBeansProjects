@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition>
+        <div id="header_top_container" class="presentation">
+            <div id="header_top">
+
+                <h:form id="logued" rendered="#{loginUsuarioMB.sessionIniciada}">
+                    <h:outputText value="BIENVENIDO, "/>
+                    <h:outputText value="&nbsp;&nbsp;|&nbsp;&nbsp;"/>
+                    <h:graphicImage url="resources/images/user.png" width="20" height="20"/>
+                    <h:outputText styleClass="loginuser" value="#{loginUsuarioMB.usuarioWeb.nombreWeb}"/>
+                </h:form>
+            </div>
+        </div>
+
+        <div id="header_menu_container">
+            <div id="container">
+                <div id="left">
+                    <label>M.C.A.</label>
+                    <br/>
+                    <span>Reclamos Online</span>
+                </div>
+                <div id="right">
+
+                    <ul id="menu">
+                        
+                            <ui:fragment rendered="#{!loginUsuarioMB.sessionIniciada}"><li><h:form><h:commandLink action="index?faces-redirect=true" value="Inicio"><br/><h:graphicImage url="resources/images/home.png"/></h:commandLink></h:form></li></ui:fragment>
+                            <ui:fragment rendered="#{!loginUsuarioMB.sessionIniciada}"><li><h:form><h:commandLink action="registroUsuario?faces-redirect=true" value="Registrate!" actionListener="#{registroUsuarioMB.limpiarCampos()}"><br/><h:graphicImage url="resources/images/registro.png"/></h:commandLink></h:form></li></ui:fragment>
+                            <ui:fragment rendered="#{!loginUsuarioMB.sessionIniciada}"><li><h:form><h:commandLink action="loginUsuario?faces-redirect=true" value="Iniciar Sesión"><br/><h:graphicImage url="resources/images/login.png"/></h:commandLink></h:form></li></ui:fragment>
+                            <ui:fragment rendered="#{loginUsuarioMB.sessionIniciada}"><li><h:form><h:commandLink action="menuUsuario" value="Mis Reclamos"><br/><h:graphicImage url="resources/images/misreclamos.png"/></h:commandLink></h:form></li></ui:fragment>
+                            <ui:fragment rendered="#{loginUsuarioMB.sessionIniciada}"><li><h:form><h:commandLink action="#{loginUsuarioMB.btnAjustes()}" value="Ajustes"><br/><h:graphicImage url="resources/images/ajustes.png"/></h:commandLink></h:form></li></ui:fragment>
+                            <ui:fragment rendered="#{loginUsuarioMB.sessionIniciada}"><li><h:form><h:commandLink action="#{loginUsuarioMB.btnSalir()}" value="Cerrar Sesión"><br/><h:graphicImage url="resources/images/exit.png"/></h:commandLink></h:form></li></ui:fragment>
+                        
+                    </ul>
+
+                </div>                
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

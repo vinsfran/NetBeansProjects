@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
+            <h:form styleClass="form" >
+                <h3 align="center">Ha olvidado su contraseña</h3>
+                <div id="registerMsj" align="center">
+                    <p:panel style="width:500px; border: 0">
+
+                        <div align="justify">
+                            <p>Por favor, introduzca el Correo Electrónico que utilizó para registrarse y le enviaremos su nueva contraseña.</p>
+                        </div>
+
+                    </p:panel>
+                </div>
+
+
+                <span style="margin-left: 230px">(<span style="color: red;">*</span>) Campo Obligatorio</span>
+                <div id="registerMsj" align="center">
+                    <p:panel id="registroUsuario" header="Escriba su Correo Electrónico" style="width:500px; border: 0">
+                        <h:panelGrid columns="2" cellpadding="3">
+                            <p:inputText id="correo" label="Correo Electrónico" value="#{usuariosWebMB.loginUsuario}" style="width: 350px;" required="false">
+                                <f:validator validatorId="emailValidator"/>
+                            </p:inputText>
+                            <span style="color: red;">*</span>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="3" cellspacing="10" border="0">
+                            <h:commandButton id="btnRecuperar" action="#{usuariosWebMB.btnRecuperar()}" value="Recuperar" styleClass="submit"/>
+                            <h:commandButton id="btnCancelar" action="index" value="Cancelar" styleClass="submit" immediate="true"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </div> 
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

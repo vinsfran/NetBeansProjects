@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Buscar Reclamos</title>
+        <style type="text/css">
+            .ui-widget{
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
+        <h:form styleClass="form" >
+            <h3 align="center">Ha olvidado su contraseña</h3>
+            <div id="registerMsj" align="center">
+                <p:panel id="registroUsuario" header="Escriba su Correo Electrónico" style="width:500px; border: 0">
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <p:inputText id="correo" label="Palabra Clave" value="#{reclamosMB.palabraBuscada}" style="width: 350px;"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="3" cellspacing="10" border="0">
+                        <h:commandButton id="btnRecuperar" action="#{reclamosMB.cerrarDialogoBuscar()}" value="Buscar" styleClass="submit"/>
+                        <h:commandButton id="btnCancelar" action="index" value="Cancelar" styleClass="submit" immediate="true"/>
+                    </h:panelGrid>
+                </p:panel>
+            </div> 
+
+        </h:form>
+    </h:body>
+</html>
+

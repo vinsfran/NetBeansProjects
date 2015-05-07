@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+            <!--            <p:messages showDetail="true" autoUpdate="true" id="formMessage" />-->
+            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
+            <h:form id="registro" styleClass="form">
+                <h3 align="center">Ajustes</h3>
+                <span style="margin-left: 230px">(<span style="color: red;">*</span>) Campos Obligatorios</span>
+                <div id="registerTier" align="center">
+                    <p:panel id="registroUsuario" header="Datos Personales:" style="width:500px; border: 0">
+                        <h:panelGrid columns="3" cellpadding="3">
+                            <h:outputLabel style="width: 150px;" value="Cedula:" for="nombre"/>
+                            <p:inputText id="cedula" value="#{usuariosWebMB.usuario.fkCodPersona.cedulaPersona}" style="width: 250px;"/>
+                            <br/>
+                            <h:outputLabel style="width: 150px;" value="Nombre(s):" for="nombre"/>
+                            <p:inputText id="nombre" value="#{usuariosWebMB.usuario.fkCodPersona.nombrePersona}" style="width: 250px;"/>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel style="width: 150px;" value="Apellido(s):" for="apellido"/>
+                            <p:inputText id="apellido" value="#{usuariosWebMB.usuario.fkCodPersona.apellidoPersona}" style="width: 250px;"/>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel style="width: 150px;" value="Dirección:" for="direccion"/>
+                            <p:inputText id="direccion" value="#{usuariosWebMB.usuario.fkCodPersona.direccionPersona}" style="width: 250px;"/>
+                            <br/>
+                            <h:outputLabel style="width: 150px;" value="Cta. Cte. Ctral.:" for="direccion"/>
+                            <p:inputText id="cuentaCorriente" value="#{usuariosWebMB.usuario.fkCodPersona.ctaCtePersona}" style="width: 250px;"/>
+                            <br/>
+                            <h:outputLabel style="width: 150px;" value="Tel&eacute;fono:" for="telefono"/>
+                            <p:inputText id="telefono" value="#{usuariosWebMB.usuario.fkCodPersona.telefonoPersona}" style="width: 250px;"/>
+                            <br/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" cellpadding="3" cellspacing="10" border="0">
+                            <h:commandButton id="btnActualizar" action="#{usuariosWebMB.btnActualizar()}" value="Actualizar" styleClass="submit"/>
+                            <h:commandButton id="btnCancelar" action="listarreclamosusarios" value="Cancelar" styleClass="submit" immediate="true"/>
+                        </h:panelGrid>
+                    </p:panel> 
+                    <br/>
+                    <p:panel header="Información de Acceso" style="width:500px; border: 0">
+                        <h:panelGrid columns="3" cellpadding="3">
+                            <h:commandLink action="cambioContrasena" value="Cambiar contraseña" style="color: blue"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

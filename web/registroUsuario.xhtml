@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+<!--            <p:messages showDetail="true" autoUpdate="true" id="formMessage" />-->
+            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
+            <h:form id="registro" styleClass="form">
+                <h3 align="center">Registro de Usuario</h3>
+                <span style="margin-left: 230px">(<span style="color: red;">*</span>) Campos Obligatorios</span>
+                <div id="registerTier" align="center">
+                    <p:panel id="registroUsuario" header="Complete sus Datos Personales:" style="width:500px; border: 0">
+                        <h:panelGrid columns="3" cellpadding="3">
+                            <h:outputLabel style="width: 150px;" value="Cedula:" for="nombre"/>
+                            <p:inputText id="cedula" value="#{registroUsuarioMB.cedula}" style="width: 250px;"/>
+                            <br/>
+                            <h:outputLabel style="width: 150px;" value="Nombre(s):" for="nombre"/>
+                            <p:inputText id="nombre" value="#{registroUsuarioMB.nombre}" style="width: 250px;"/>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel style="width: 150px;" value="Apellido(s):" for="apellido"/>
+                            <p:inputText id="apellido" value="#{registroUsuarioMB.apellido}" style="width: 250px;"/>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel style="width: 150px;" value="Dirección:" for="direccion"/>
+                            <p:inputText id="direccion" value="#{registroUsuarioMB.direccion}" style="width: 250px;"/>
+                            <br/>
+                            <h:outputLabel style="width: 150px;" value="Cta. Cte. Ctral.:" for="direccion"/>
+                            <p:inputText id="cuentaCorriente" value="#{registroUsuarioMB.cuentaCorriente}" style="width: 250px;"/>
+                            <br/>
+                            <h:outputLabel style="width: 150px;" value="Tel&eacute;fono:" for="telefono"/>
+                            <p:inputText id="telefono" value="#{registroUsuarioMB.telefono}" style="width: 250px;"/>
+                            <br/>
+                        </h:panelGrid>
+                    </p:panel> 
+                    <br/>
+                    <p:panel header="Información de Acceso" style="width:500px; border: 0">
+                        <h:panelGrid columns="3" cellpadding="3">
+                            <h:outputLabel style="width: 150px;" value="Correo Electrónico:" for="correo"/>
+                            <p:inputText id="correo" value="#{registroUsuarioMB.correo}" style="width: 250px;" required="false">
+                                <f:validator validatorId="emailValidator"/>
+                            </p:inputText>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel style="width: 150px;" value="Contraseña:" for="contrasena1"/>
+                            <p:password  id="contrasena1" value="#{registroUsuarioMB.contrasena1}" style="width: 250px;" required="false"/>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel style="width: 150px;" value="Repetir Contraseña:" for="contrasena2"/>
+                            <p:password  id="contrasena2" value="#{registroUsuarioMB.contrasena2}" style="width: 250px;" required="false"/>
+                            <span style="color: red;">*</span>
+                        </h:panelGrid>
+                        <br/>
+                        <h:commandButton id="btnConfirmar" action="#{registroUsuarioMB.btnConfirmar()}" value="Confirmar" styleClass="submit" />
+                        <h:commandButton id="btnCancelar" action="index" value="Cancelar" styleClass="submit" style="margin-left: 50px" immediate="true"/>
+                    </p:panel>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

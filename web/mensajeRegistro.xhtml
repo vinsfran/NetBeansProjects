@@ -1,0 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+            <div id="home_body" align="justify">
+                <div class="presentation">
+                    <h3>Gracias por registrarte al Sistema de Reclamos Online</h3>
+                    <p>Como manera de validar que tus datos sean correctos te enviamos un correo electrónico a #{registroUsuarioMB.correo} </p>
+                    <p>Tienes 48 hrs. para verificar tu correo y terminar tu registro, 
+                        de lo contrario tus datos seran borrados de nuestro sistema. Luego ya podras <h:link outcome="loginUsuario" value="iniciar tu sesión"/>.</p>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+

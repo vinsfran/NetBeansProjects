@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+            <!--            <p:messages showDetail="true" autoUpdate="true" id="formMessage" />-->
+            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
+            <h:form styleClass="form" >
+                <h3 align="center">Conéctate con tu cuenta</h3>
+                <span style="margin-left: 230px">(<span style="color: red;">*</span>) Campos Obligatorios</span>
+                <div id="registerMsj" align="center">
+                    <p:panel id="registroUsuario" header="Información de Acceso" style="width:500px; border: 0">
+                        <h:panelGrid columns="3" cellpadding="3">
+                            <h:outputLabel value="Correo Electrónico"/>
+                            <p:inputText id="correo" label="Correo Electrónico" value="#{usuariosWebMB.loginUsuario}" style="width: 250px;" required="false">
+                                <f:validator validatorId="emailValidator"/>
+                            </p:inputText>
+                            <span style="color: red;">*</span>
+                            <h:outputLabel value="Contraseña:" style="vertical-align: top;"/>
+                            <p:password id="contrasena" label="Contraseña" value="#{usuariosWebMB.claveUsuario}" style="width: 250px;" required="false"/>
+                            <span style="color: red;">*</span>
+
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="3" cellspacing="10" border="0">
+                            <h:commandButton id="btnIngresar" action="#{usuariosWebMB.btnIngresar()}" value="Ingresar" styleClass="submit"/>
+                            <h:commandButton id="btnCancelar" action="index" value="Cancelar" styleClass="submit" immediate="true"/>
+
+                        </h:panelGrid>
+                        <h:outputLink value="resetContrasena.xhtml" style="color: blue">¿Olvidaste tu contraseña?</h:outputLink>
+                    </p:panel>
+                </div> 
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

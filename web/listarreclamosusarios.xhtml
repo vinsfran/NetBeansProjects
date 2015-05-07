@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="plantilla.xhtml">
+        <ui:define name="body">
+
+            <h:form>
+                <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="false" life="5000"/>
+                <hr/>
+                <h3 align="center">Mis de Reclamos</h3>
+
+                <p:tabMenu activeIndex="#{reclamosWebMB.currentTab}">
+                    <p:menuitem value="Pendientes" icon="ui-icon-document" action="#{reclamosWebMB.changeActiveIndex(0)}"/>
+                    <p:menuitem value="En proceso" icon="ui-icon-document" action="#{reclamosWebMB.changeActiveIndex(1)}"/>
+                    <p:menuitem value="Finalizados" icon="ui-icon-document" action="#{reclamosWebMB.changeActiveIndex(2)}"/>
+                    <p:menuitem value="Buscar" icon="ui-icon-search" action="#{reclamosWebMB.changeActiveIndex(3)}"/>
+                </p:tabMenu>
+
+
+            </h:form>
+            <p:dataTable id="for" 
+                         value="#{reclamosWebMB.listarReclamos}" 
+                         var="reclamo" 
+                         selectionMode="single" 
+                         resizableColumns="true"
+                         paginator="true" 
+                         lazy="true"
+                         rows="15" 
+                         rowKey="#{reclamo.codReclamo}"
+                         sortBy="#{reclamo.codReclamo}"
+                         paginatorAlwaysVisible="false"
+                         paginatorPosition="top"
+                         paginatorTemplate="{FirstPageLink} {PageLinks} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,15,20">
+                <f:facet name="header"> 
+                    <h:outputLabel value="RECLAMOS #{reclamosWebMB.estadoReclamos}" style="font-size: medium"/>
+                </f:facet>
+                <p:column>
+                    <p:panelGrid>
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="4">
+                                    <h:outputLabel value="#{reclamo.fkCodTipoReclamo.nombreTipoReclamo}"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Número:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column colspan="3">
+                                <h:outputText value="#{reclamo.codReclamo}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Fecha de ingreso:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reclamosWebMB.formatearFecha(reclamo.fechaReclamo)}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputLabel value="Dias transcurridos:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column headerText="Tiempo transcurrido en Dias" style="text-align: center">
+                                <h:outputText value="#{reclamosWebMB.cantidadDias(reclamo.fechaReclamo)}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Ubicación:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column colspan="3">
+                                <h:outputText value="#{reclamo.direccionReclamo}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="A cardo de:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column colspan="3">
+                                <h:outputText value="#{reclamo.fkCodTipoReclamo.fkCodDependencia.nombreDependencia}" />  
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="4">
+                                <h:outputLabel value="Descripción del reclamo" style="font-weight: bold;"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">
+                                <h:outputText value="#{reclamo.descripcionReclamoContribuyente}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row rendered="#{reclamosWebMB.enProceso}">
+                            <p:column>
+                                <h:outputLabel value="Fecha de recepción:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reclamosWebMB.formatearFecha(reclamo.fechaAtencionReclamo)}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputLabel value="Dias transcurridos:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reclamosWebMB.cantidadDias(reclamo.fechaAtencionReclamo)}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{reclamosWebMB.enProceso}">
+                            <p:column>
+                                <h:outputLabel value="Recepcionado por:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column colspan="3">
+                                <h:outputText value="#{reclamo.fkCodUsuarioAtencion.fkCodPersona.nombrePersona}, #{reclamo.fkCodUsuarioAtencion.fkCodPersona.apellidoPersona}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{reclamosWebMB.enProceso}">
+                            <p:column colspan="4">
+                                <h:outputLabel value="Descripción del estado del reclamos" style="font-weight: bold; text-align: center;"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{reclamosWebMB.enProceso}">
+                            <p:column colspan="4">
+                                <h:outputText value="#{reclamo.descripcionAtencionReclamo}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row rendered="#{reclamosWebMB.finalizados}">
+                            <p:column>
+                                <h:outputLabel value="Fecha de finalización:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reclamosWebMB.formatearFecha(reclamo.fechaCulminacionReclamo)}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputLabel value="Dias transcurridos:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reclamo.cantidadDiasProceso}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{reclamosWebMB.finalizados}">
+                            <p:column>
+                                <h:outputLabel value="Finalizado por:" style="font-weight: bold;"/> 
+                            </p:column>
+                            <p:column colspan="3">
+                                <h:outputText value="#{reclamo.fkCodUsuarioAtencion.fkCodPersona.nombrePersona}, #{reclamo.fkCodUsuarioAtencion.fkCodPersona.apellidoPersona}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{reclamosWebMB.finalizados}">
+                            <p:column colspan="4">
+                                <h:outputLabel value="Descripción de finalización del reclamos" style="font-weight: bold; text-align: center;"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{reclamosWebMB.finalizados}">
+                            <p:column colspan="4">
+                                <h:outputText value="#{reclamo.descripcionCulminacionReclamo}"/>
+                            </p:column>
+                        </p:row>
+
+
+                    </p:panelGrid>
+                </p:column>
+            </p:dataTable>
+        </ui:define>
+    </ui:composition>
+</html>

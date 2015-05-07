@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mapas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d684e1b8-dede-47cf-b771-ac6ac92bff30">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="157"/>
+	<field name="codReclamo" class="java.lang.Integer"/>
+	<field name="latitud" class="java.lang.Double"/>
+	<field name="longitud" class="java.lang.Double"/>
+	<field name="fkCodUsuario" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="127" y="2" width="100" height="20" uuid="fb61d8f4-9c0e-4c54-afbe-77125d0d988a"/>
+				<text><![CDATA[codReclamo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="2" width="100" height="20" uuid="308dde9d-e7df-42ab-a2e9-5fa5dc9d5e0f"/>
+				<text><![CDATA[fkCodUsuario]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="315" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="71" width="555" height="230" uuid="a7c34389-505e-441d-9f09-20973418bbfd"/>
+				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<mp:latitudeExpression><![CDATA[$F{latitud}.floatValue()]]></mp:latitudeExpression>
+					<mp:longitudeExpression><![CDATA[$F{longitud}.floatValue()]]></mp:longitudeExpression>
+					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+				</mp:map>
+			</componentElement>
+			<staticText>
+				<reportElement x="20" y="21" width="75" height="14" uuid="e12afd37-0814-4c02-9060-3e9abc7c5b9f"/>
+				<text><![CDATA[Nro. reclamo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="95" y="15" width="100" height="20" uuid="2fcc6789-4bc5-4830-bf43-fece321df271"/>
+				<textFieldExpression><![CDATA[$F{codReclamo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="30" width="100" height="20" uuid="562c623f-d69a-48e5-a12f-fc408af64bc3"/>
+				<textFieldExpression><![CDATA[$F{fkCodUsuario}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <p:tabMenu activeIndex="#{reclamosMB.currentTab}">
+            <p:menuitem value="Pendientes" icon="ui-icon-document" action="#{reclamosMB.changeActiveIndex(0)}"/>
+            <p:menuitem value="En Proceso" icon="ui-icon-document" action="#{reclamosMB.changeActiveIndex(1)}"/>
+            <p:menuitem value="Finalizados" icon="ui-icon-document" action="#{reclamosMB.changeActiveIndex(2)}"/>
+            <p:menuitem value="Nuevo Reclamo"  icon="ui-icon-star" action="#{reclamosMB.changeActiveIndex(3)}"/>
+            <p:menuitem value="Buscar" icon="ui-icon-search" url="#" onclick="PF('win').show();" action="#{reclamosMB.changeActiveIndex(4)}"/>
+        </p:tabMenu>
+
+        <p:dialog widgetVar="win" 
+                  width="450" 
+                  height="150" 
+                  header="Buscar reclamos" 
+                  resizable="false" 
+                  showEffect="fade" 
+                  hideEffect="fade"
+                  modal="true"
+                  closable="true"
+                  styleClass="form">
+            <h:form >
+                <h3 align="center"></h3>
+                <div id="registerMsj" align="center">
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <p:outputLabel value="Ingrese algún dato: " for="busqueda"/>
+                        <p:inputText id="busqueda" label="Palabra Clave" value="#{reclamosMB.palabraBuscada}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" cellpadding="3" cellspacing="10" border="0">
+                        <h:commandButton id="btnRecuperar" action="#{reclamosMB.buscarReclamos()}" value="Buscar" styleClass="submit" />
+                    </h:panelGrid>
+
+                </div> 
+
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+

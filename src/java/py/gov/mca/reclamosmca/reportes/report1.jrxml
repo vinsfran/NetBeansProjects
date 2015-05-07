@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bad83288-fda7-4fd4-81b8-8875ae50467d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString>
+		<![CDATA[Select * From Reclamos]]>
+	</queryString>
+	<field name="cod_reclamo" class="java.lang.Integer"/>
+	<field name="descripcion_reclamo_contribuyente" class="java.lang.String"/>
+	<field name="direccion_reclamo" class="java.lang.String"/>
+	<field name="origen_reclamo" class="java.lang.String"/>
+	<field name="fecha_reclamo" class="java.sql.Date"/>
+	<field name="descripcion_atencion_reclamo" class="java.lang.String"/>
+	<field name="fecha_atencion_reclamo" class="java.sql.Date"/>
+	<field name="descripcion_culminacion_reclamo" class="java.lang.String"/>
+	<field name="fecha_culminacion_reclamo" class="java.sql.Date"/>
+	<field name="cantidad_dias_proceso" class="java.lang.Integer"/>
+	<field name="fk_cod_tipo_reclamo" class="java.lang.Integer"/>
+	<field name="fk_cod_estado_reclamo" class="java.lang.Integer"/>
+	<field name="cta_cte_contribuyente" class="java.lang.String"/>
+	<field name="latitud" class="java.lang.Double"/>
+	<field name="longitud" class="java.lang.Double"/>
+	<field name="fk_cod_usuario_atencion" class="java.lang.Integer"/>
+	<field name="fk_cod_usuario_culminacion" class="java.lang.Integer"/>
+	<field name="fk_cod_usuario" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="275" y="0" width="300" height="64" uuid="790022f2-75d4-4c1e-9ae2-df0bec0be9a0"/>
+				<imageExpression><![CDATA["leaf_banner_red.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33" uuid="110117e0-80b0-4ea5-a387-5e1248dcdb8f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[Prueba Mapas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="117" y="46" width="157" height="22" uuid="85607bcc-942f-4ab1-8d93-931a52b51cb4"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[Leaf Red SubTitle]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="fb6aca80-122f-469d-8cf2-c09200b27f27"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="309" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="c70a0f6d-4c83-4112-9154-dc71791f11a8"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="100" y="15" width="100" height="20" uuid="9a59bc83-931f-42f0-a3a7-2b4cdd29e089"/>
+				<textFieldExpression><![CDATA[$F{cod_reclamo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="15" width="100" height="20" uuid="ba83a862-1518-4814-85bc-7825ec7201c4"/>
+				<text><![CDATA[Nro. de Reclamo:]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="35" width="540" height="264" uuid="ea6a8292-29e9-4c16-9be3-71b975af174e"/>
+				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<mp:latitudeExpression><![CDATA[$F{latitud}.floatValue()]]></mp:latitudeExpression>
+					<mp:longitudeExpression><![CDATA[$F{longitud}.floatValue()]]></mp:longitudeExpression>
+					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+				</mp:map>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="f11d8218-eb46-4549-b8cf-5561b9e581f2"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="32dc6e9a-fc7d-4312-bf30-52361ff43f56"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="955ace30-c0c1-4a83-bfb6-206ec16e6876"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="092efede-294d-4b1a-a545-2aaebf3742f7"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

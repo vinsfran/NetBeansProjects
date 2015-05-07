@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+
+        <div id="home_body" align="justify">
+            <div class="presentation">
+                <p:galleria value="#{imagenesMB.imagenesPortada}" 
+                            var="imagen" 
+                            panelWidth="199" 
+                            panelHeight="249" 
+                            showCaption="false"
+                            showFilmstrip="false"
+                            effect="drop"
+                            autoPlay="true"
+                            effectSpeed="1000"
+                            transitionInterval="4000">
+                    <p:graphicImage library="images" name="#{imagen}" alt="Image Description for #{imagen}" title="#{imagen}"/>
+                </p:galleria>
+            </div>
+            <div class="presentation">
+                <h3>Bienvenido al Sistema de Reclamos Online</h3>
+
+                <p>La Municipalidad de la Ciudad de Asunción incorpora a sus servicios, 
+                    la opción de realizar y consultar sus reclamos en línea, permitiendo 
+                    a los ciudadanos interactuar con el municipio de una manera mas 
+                    directa y eficiente, ahorrando el tiempo que le tomaría efectuar 
+                    los mismos de manera presencial en nuestras oficinas. </p>
+                <p>El sistema esta preparado para informarle por medio de un correo 
+                    electrónico la situación en que se encuentran los reclamos que Ud. 
+                    realice, así como la finalización de los mismos. Con esta funcionalidad 
+                    se mantendrá al tanto de todo lo referente a sus reclamos en el momento
+                    que son gestionados dentro de nuestro municipio.</p>
+                <p>Deberá registrarse como usuario para realizar su reclamo</p>
+            </div>
+        </div>
+
+
+    </ui:composition>
+</html>
+

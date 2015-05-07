@@ -1,0 +1,275 @@
+/* 
+    Document   : menubar
+    Created on : 29-ene-2013, 19:19:47
+    Author     : zdiaz
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+.wrapper{
+    width: 1000px;
+    margin: 0pt auto;
+    padding-top: 10px;
+}
+/******* /GENERAL *******/
+
+/******* MENU *******/
+#container1{
+    margin:4em auto;
+    width:1000px;
+}
+#container1 ul{
+    list-style:none;
+    list-style-position:outside;
+}
+#container1 ul.menu li{
+    float:left;
+    margin-right:8px;
+    margin-bottom:-1px;
+}
+#container1 ul.menu li{
+    font-weight:700;
+    display:block;
+    padding:10px 15px;
+    background:RoyalBlue space;
+    margin-bottom:-1px;
+    border:1px gray solid;
+    border-width:1px 1px 1px 1px;
+    position:relative;
+    color:#000;
+    cursor:pointer;
+    border-radius:3px 3px 0 0;
+    -moz-border-radius:3px 3px 0 0;
+    -webkit-border-radius:3px 3px 0 0;
+}
+#container1 ul.menu li:hover{
+    color:#fff;
+}
+#container1 ul.menu li.active{
+    background:#FFF;
+    top:1px;
+    border-bottom:0;
+    color:#000;
+}
+/******* /MENU *******/
+
+/******* CONTENT *******/
+.content1{
+    margin:0pt auto;
+    background:#efefef;
+    background:#FFF;
+    border:1px solid #FFF;
+    text-align:left;
+    padding:1.3em;
+    padding-bottom:20px;
+    font-size:14px;
+    line-height:2em;
+    color:#8C8C8C;
+    border-radius:0 5px 5px 5px;
+    -moz-border-radius:0 5px 5px 5px;
+    -webkit-border-radius:0 5px 5px 5px;
+}
+
+.content1 h3{
+    line-height:1em;
+    vertical-align:middle;
+    height:48px;
+    padding:10px 10px 10px 52px;
+    font-size:28px;
+    color:grey
+}
+.content1 h2{
+    line-height:1em;
+    vertical-align:middle;
+    height:48px;
+    padding:10px 10px 10px 52px;
+    font-size:18px;
+    color:grey
+}
+/******* /CONTENT *******/
+
+/******* MIFODA *******/
+.content1.miFoda h3{
+    background:transparent no-repeat scroll left top;
+    color:gray;
+    font-family: Monotype Corsiva,Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 26px;
+}
+.content1.miFoda form{
+    margin: 10px auto 0px auto;
+    line-height: 40px;
+    color:green;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 14px;
+    padding: 30px;
+}
+.content1.miFoda{
+    display:block;
+}
+.content1.miFoda fodaMessage{
+    width: 600px;
+    margin: auto;
+}
+.content1.listado h3{
+}
+
+.content1.listado{
+    display:none;
+   
+}
+
+/******* /OTROS *******/
+.content1.votacion h3{
+    background:transparent no-repeat scroll left top;
+    color:gray;
+    font-family: Monotype Corsiva,Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 26px;
+}
+.content1.votacion form{
+    margin: 10px auto 0px auto;
+    line-height: 40px;
+    color:green;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 14px;
+    padding: 30px;
+}
+.content1.votacion submit{
+    margin-top: 20px;
+    height: 30px;
+    width: 120px;
+    border-radius:15px;
+    moz-border-radius:5px;
+    border:solid blue 3px;
+    color:white;
+    background:  -moz-linear-gradient(90deg,blue,royalblue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(blue), to(royalblue));
+    font-weight: bolder;
+    font-size: 14px;
+    box-shadow: #111 2px 5px 10px;
+    moz-box-shadow: #111 2px 5px 10px;
+}
+
+.content1.votacion submit:hover{
+    background:  -moz-linear-gradient(90deg,royalblue,blue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(royalblue), to(blue));
+}
+.content1.votacion{
+    display:block;
+}
+/******* /OTROS *******/
+.content1.estrategias h3{
+    background:transparent no-repeat scroll left top;
+}
+.content1.estrategias h2{
+    color:graytext;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 22px;
+}
+.content1.estrategias h{
+    color:graytext;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 16px;
+    font-style: italic;
+    position: relative;
+}
+.content1.estrategias panel{
+width: 150px;
+height: 150px;
+border: 0;
+ margin-right: 1000px
+}
+.content1.estrategias label{
+    font-family: Tahoma, Arial, Helvetica;
+    font-size: 12px;
+    font-weight: bolder;
+    float: left;
+}
+.content1.estrategias estMessage{
+    width: 600px;
+    margin: auto;
+}
+.content1.estrategias{
+    display:block;
+}
+
+.content1.submit{
+    margin-top: 20px;
+    height: 30px;
+    width: 120px;
+    border-radius:15px;
+    moz-border-radius:5px;
+    border:solid blue 3px;
+    color:white;
+    background:  -moz-linear-gradient(90deg,blue,royalblue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(blue), to(royalblue));
+    font-weight: bolder;
+    font-size: 14px;
+    box-shadow: #111 2px 5px 10px;
+    moz-box-shadow: #111 2px 5px 10px;
+}
+
+.content1.submit:hover{
+    background:  -moz-linear-gradient(90deg,royalblue,blue);
+    background:  -webkit-gradient(linear, left bottom, left top, from(royalblue), to(blue));
+}
+/******* /OTROS *******/
+.content1.estrategiasSel h3{
+    background:transparent no-repeat scroll left top;
+}
+.content1.estrategiasSel h2{
+    color:graytext;
+    font-family: Tahoma,Arial,Helvetica;
+    font-weight: bolder;
+    font-size: 22px;
+}
+.content1.estrategiasSel h{
+    color:graytext;
+    font-family: Tahoma,Arial,Helvetica;
+    font-size: 16px;
+    font-style: italic;
+    position: relative;
+}
+.content1.estrategiasSel panel{
+width: 150px;
+height: 150px;
+border: 0;
+ margin-right: 1000px
+}
+.content1.estrategiasSel{
+   display:none;
+}
+/******* /OTROS *******/
+.content1.estadisticas h3{
+    line-height:1em;
+    vertical-align:middle;
+    height:48px;
+    padding:10px 10px 10px 52px;
+    font-size:42px;
+    color:grey
+}
+.content1.estadisticas{
+    display:none;
+}
+.content1.conclusiones h3{
+   background:transparent no-repeat scroll left top;
+}
+.content1.conclusiones{
+    display:none;
+}
+.content1.conclusiones a{
+    color:#498BBF;
+}
+
+.demoHeaders {
+    margin-top: 2em;
+    background:gainsboro;
+    border: 1px;
+}
+

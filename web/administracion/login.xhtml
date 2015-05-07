@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="plantillaAdmin.xhtml">
+        <ui:define name="body">
+
+            <h:form styleClass="form" >
+
+                <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true"/>
+                <div align="center"> <p:graphicImage library="images" name="escudo.gif" width="80"/></div>
+
+                <div id="registerMsj" align="center">
+                    <p:panel id="registroUsuario" header="Acceso al sistema" style="width:500px; border: 0">
+                        <h:panelGrid columns="3" cellpadding="3">
+                            <h:outputLabel value="Usuario:"/>
+                            <p:inputText id="correo" label="Usuario" value="#{usuariosMB.loginUsuario}" style="width: 250px;" required="false"/>
+
+                            <span style="color: red;">*</span>
+                            <h:outputLabel value="Contraseña:" style="vertical-align: top;"/>
+                            <p:password id="contrasena" label="Contraseña" value="#{usuariosMB.claveUsuario}" style="width: 250px;" required="false"/>
+                            <span style="color: red;">*</span>
+
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="3" cellspacing="10" border="0">
+                            <h:commandButton id="btnIngresar" action="#{usuariosMB.btnIngresarGestion()}" value="Ingresar" styleClass="submit"/>
+                            <h:commandButton id="btnCancelar" action="login" value="Cancelar" styleClass="submit" immediate="true"/>
+
+                        </h:panelGrid>
+                        <span style="margin-left: 230px">(<span style="color: red;">*</span>) Campos Obligatorios</span>
+                    </p:panel>
+                </div> 
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
