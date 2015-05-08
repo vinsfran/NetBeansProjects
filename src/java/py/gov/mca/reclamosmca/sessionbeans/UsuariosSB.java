@@ -1,6 +1,7 @@
 package py.gov.mca.reclamosmca.sessionbeans;
 
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,8 @@ import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
  */
 @Stateless
 public class UsuariosSB {
+    @EJB
+    private EnviarCorreos enviarCorreos;
 
     @PersistenceContext(unitName = "reclamosmcaPU")
     private EntityManager em;
@@ -94,8 +97,7 @@ public class UsuariosSB {
                             + "</html>";
 
                     System.out.println("SALE EN ENVIO " + mensaje);
-                    EnviarCorreos co = new EnviarCorreos();
-                    co.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
+                    enviarCorreos.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
                 }
                 System.out.println("SALE EN ENVIO 222");
                 mensajes = "OK";
@@ -164,8 +166,8 @@ public class UsuariosSB {
                         + "        </div>"
                         + "     </body>"
                         + "</html>";
-                EnviarCorreos co = new EnviarCorreos();
-                co.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
+                
+                enviarCorreos.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
             }
             mensajes = "OK";
         } catch (Exception ex) {

@@ -3,6 +3,7 @@ package py.gov.mca.reclamosmca.sessionbeans;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +18,10 @@ import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
 @Stateless
 @SuppressWarnings("unchecked")
 public class ReclamosSB {
+    @EJB
+    private EnviarCorreos enviarCorreos1;
+    @EJB
+    private EnviarCorreos enviarCorreos;
 
     @PersistenceContext(unitName = "reclamosmcaPU")
     private EntityManager em;
@@ -60,8 +65,7 @@ public class ReclamosSB {
                         + "     </body>"
                         + "</html>";
 
-                EnviarCorreos co = new EnviarCorreos();
-                co.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
+                enviarCorreos.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
             }
             mensajes = "OK";
         } catch (Exception ex) {
@@ -178,8 +182,7 @@ public class ReclamosSB {
                         + "     </div>"
                         + "     </body>"
                         + "</html>";
-                EnviarCorreos co = new EnviarCorreos();
-                co.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
+                enviarCorreos.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
             }
         }
 
