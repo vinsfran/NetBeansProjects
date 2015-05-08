@@ -44,10 +44,10 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
                 String error = throwable.getMessage() + "(" + throwable.getClass().getName() + ")";
 
                 if (throwable.getClass() == javax.faces.application.ViewExpiredException.class) {
-                    error = "Your session have been expired. Please, reload and keep working. Thanks.";
+                    error = "Su sesión a caducado, por favor vuelva a iniciar su sesión.";
                 }
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "We are sorry :(", error);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Disculpe ", error);
                 RequestContext.getCurrentInstance().showMessageInDialog(message);
             } finally {
                 iterator.remove();
