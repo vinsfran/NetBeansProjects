@@ -35,7 +35,7 @@ public class EnviarCorreos {
 
     public String enviarMail(String destino, String asunto, String htmlMensaje) {
         
-        setConfiguraciones(configuracionesSB.consultarPorCodCodConfiguraciones(1));
+        setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(1));
         Properties props = new Properties();
         // props.setProperty("mail.smtp.ssl.trust", confCorreo.getMailSmtpSslTrust());
         props.setProperty("mail.debug", getConfiguraciones().getMailDebug());

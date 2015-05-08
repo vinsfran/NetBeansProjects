@@ -52,9 +52,9 @@ public class ConfiguracionesSB {
     }
 
     @SuppressWarnings("unchecked")
-    public Configuraciones consultarPorCodCodConfiguraciones(Integer codConfiguracion) {
+    public Configuraciones consultarPorCodConfiguracion(Integer codConfiguracion) {
         Query q = em.createNamedQuery("Configuraciones.findByCodConfiguracion");
-        q.setParameter("codConfCorreo", codConfiguracion);
+        q.setParameter("codConfiguracion", codConfiguracion);
         return (Configuraciones) q.getResultList().get(0);
     }
 
