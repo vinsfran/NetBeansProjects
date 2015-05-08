@@ -5,20 +5,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import py.gov.mca.reclamosmca.entitys.ConfCorreo;
+import py.gov.mca.reclamosmca.entitys.Configuraciones;
 
 /**
  *
  * @author vinsfran
  */
 @Stateless
-public class ConfCorreoSB {
+public class ConfiguracionesSB {
 
     @PersistenceContext(unitName = "reclamosmcaPU")
     private EntityManager em;
     private String mensajes = "";
 
-    public String crearConfCorreo(ConfCorreo objeto) {
+    public String crearConfiguraciones(Configuraciones objeto) {
         mensajes = "";
         try {
             em.persist(objeto);
@@ -29,7 +29,7 @@ public class ConfCorreoSB {
         return mensajes;
     }
 
-    public String actualizarConfCorreo(ConfCorreo objeto) {
+    public String actualizarConfiguraciones(Configuraciones objeto) {
         mensajes = "";
         try {
             em.merge(objeto);
@@ -40,7 +40,7 @@ public class ConfCorreoSB {
         return mensajes;
     }
 
-    public String eliminarConfCorreo(ConfCorreo objeto) {
+    public String eliminarConfiguraciones(Configuraciones objeto) {
         mensajes = "";
         try {
             em.remove(objeto);
@@ -52,16 +52,15 @@ public class ConfCorreoSB {
     }
 
     @SuppressWarnings("unchecked")
-    public ConfCorreo consultarPorCodCodConfCorreo(Integer codConfCorreo) {
-        Query q = em.createNamedQuery("ConfCorreo.findByCodConfCorreo");
-        q.setParameter("codConfCorreo", codConfCorreo);
-        System.out.println("ENTRO A SBCORREO");
-        return (ConfCorreo) q.getResultList().get(0);
+    public Configuraciones consultarPorCodCodConfiguraciones(Integer codConfiguracion) {
+        Query q = em.createNamedQuery("Configuraciones.findByCodConfiguracion");
+        q.setParameter("codConfCorreo", codConfiguracion);
+        return (Configuraciones) q.getResultList().get(0);
     }
 
     @SuppressWarnings("unchecked")
-    public List<ConfCorreo> listarConfCorreo() {
-        Query q = em.createNamedQuery("ConfCorreo.findAll");
+    public List<Configuraciones> listarConfiguraciones() {
+        Query q = em.createNamedQuery("Configuraciones.findAll");
         return q.getResultList();
     }
 }

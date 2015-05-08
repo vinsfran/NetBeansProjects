@@ -13,8 +13,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import py.gov.mca.reclamosmca.entitys.ConfCorreo;
-import py.gov.mca.reclamosmca.sessionbeans.ConfCorreoSB;
+import py.gov.mca.reclamosmca.entitys.Configuraciones;
+import py.gov.mca.reclamosmca.sessionbeans.ConfiguracionesSB;
 
 /**
  *
@@ -24,25 +24,25 @@ import py.gov.mca.reclamosmca.sessionbeans.ConfCorreoSB;
 @SessionScoped
 public class EnviarCorreos {
     
-    private ConfCorreo confCorreo;
+    private Configuraciones configuraciones;
 
     @EJB
-    private ConfCorreoSB confCorreoSB;
+    private ConfiguracionesSB configuracionesSB;
 
     public EnviarCorreos() {
-        this.confCorreo = new ConfCorreo();
+        this.configuraciones = new Configuraciones();
     }
 
     public String enviarMail(String destino, String asunto, String htmlMensaje) {
         
-        setConfCorreo(confCorreoSB.consultarPorCodCodConfCorreo(1));
+        setConfiguraciones(configuracionesSB.consultarPorCodCodConfiguraciones(1));
         Properties props = new Properties();
         // props.setProperty("mail.smtp.ssl.trust", confCorreo.getMailSmtpSslTrust());
-        props.setProperty("mail.debug", getConfCorreo().getMailDebug());
-        props.setProperty("mail.smtp.auth", getConfCorreo().getMailSmtpAuth());
-        props.setProperty("mail.smtp.host", getConfCorreo().getMailSmtpHost());
-        props.setProperty("mail.smtp.port", getConfCorreo().getMailSmtpPort());
-        props.setProperty("mail.smtp.starttls.enable", getConfCorreo().getMailSmtpStarttlsEnable());
+        props.setProperty("mail.debug", getConfiguraciones().getMailDebug());
+        props.setProperty("mail.smtp.auth", getConfiguraciones().getMailSmtpAuth());
+        props.setProperty("mail.smtp.host", getConfiguraciones().getMailSmtpHost());
+        props.setProperty("mail.smtp.port", getConfiguraciones().getMailSmtpPort());
+        props.setProperty("mail.smtp.starttls.enable", getConfiguraciones().getMailSmtpStarttlsEnable());
 
         Session mailSession = Session.getDefaultInstance(props, null);
 
@@ -50,14 +50,14 @@ public class EnviarCorreos {
             MimeMessage message = new MimeMessage(mailSession);
             message.setSubject(asunto);
             try {
-                message.setFrom(new InternetAddress(getConfCorreo().getInternetAddress(), "Sistema de Reclamos Online M.C.A."));
+                message.setFrom(new InternetAddress(getConfiguraciones().getInternetAddress(), "Sistema de Reclamos Online M.C.A."));
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(EnviarCorreos.class.getName()).log(Level.SEVERE, null, ex);
             }
             message.setContent(htmlMensaje, "text/html; charset=UTF-8");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destino));
             Transport transport = mailSession.getTransport("smtp");
-            transport.connect(getConfCorreo().getMailSmtpHost(), getConfCorreo().getUsuario(), getConfCorreo().getPassword());
+            transport.connect(getConfiguraciones().getMailSmtpHost(), getConfiguraciones().getUsuario(), getConfiguraciones().getPassword());
 
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
@@ -68,17 +68,19 @@ public class EnviarCorreos {
     }
 
     /**
-     * @return the confCorreo
+     * @return the configuraciones
      */
-    public ConfCorreo getConfCorreo() {
-        return confCorreo;
+    public Configuraciones getConfiguraciones() {
+        return configuraciones;
     }
 
     /**
-     * @param confCorreo the confCorreo to set
+     * @param configuraciones the configuraciones to set
      */
-    public void setConfCorreo(ConfCorreo confCorreo) {
-        this.confCorreo = confCorreo;
+    public void setConfiguraciones(Configuraciones configuraciones) {
+        this.configuraciones = configuraciones;
     }
+
+    
 
 }
