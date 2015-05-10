@@ -269,6 +269,19 @@ public class ReclamosSB {
         q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
         return q.getResultList();
     }
+    
+    public List<Reclamos> listarPorTiposReclamos(Integer codTipoReclamo) {
+        StringBuilder jpql = new StringBuilder();
+
+        jpql.append("SELECT e ");
+        jpql.append("FROM Reclamos e ");
+        jpql.append("WHERE e.fkCodTipoReclamo.codTipoReclamo = :paramCodTipoReclamo ");
+
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodTipoReclamo", codTipoReclamo);
+        return q.getResultList();
+    }
 
     public List<Reclamos> burcarPorDependencia(Integer codDependencia, String expresion) {
         StringBuilder jpql = new StringBuilder();

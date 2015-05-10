@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -69,6 +70,8 @@ public class ReclamosMB implements Serializable {
     private Reclamos reclamos;
     private Reclamos reclamoSeleccionado;
     private DataModel listarReclamos;
+    private DataModel listarReclamosPorZona;
+    private int cantidadDeReclamosPorZona;
     private int currentTab;
     private String redireccion;
     private LatLng latituteLongitude;
@@ -119,6 +122,7 @@ public class ReclamosMB implements Serializable {
     }
 
     public void onRowSelect(SelectEvent event) {
+
         String destino;
         if (currentTab == 0) {
             setMostrarBotonProcesar(true);
@@ -157,6 +161,12 @@ public class ReclamosMB implements Serializable {
         marca.setTitle(reclamoSeleccionado.getFkCodTipoReclamo().getNombreTipoReclamo());
         //marca.setIcon("../resources/images/exit.png");
         //marca.setCursor("CURSOR");
+
+        //Buscar reclamos por tipo, que cumpla condicion de distancia maxima de 10 metros y que no tengan estado Finalizado
+        if (!reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
+            listarReclamosPorZona(reclamoSeleccionado, reclamoSeleccionado.getFkCodTipoReclamo().getCodTipoReclamo());
+        }
+
         if (reclamoSeleccionado.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {
             procedenciaReclamo = "(RECLAMO EXTERNO)";
         } else {
@@ -226,7 +236,7 @@ public class ReclamosMB implements Serializable {
         FacesMessage message = new FacesMessage();
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getFlash().setKeepMessages(true);
-        
+
         if (reclamoSeleccionado.getFkReclamoTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
             message.setSeverity(FacesMessage.SEVERITY_WARN);
             message.setSummary("Campo requerido");
@@ -260,7 +270,7 @@ public class ReclamosMB implements Serializable {
                 message.setDetail("Reclamo no actualizado. " + mensaje);
             }
         }
-        
+
         context.addMessage(null, message);
         return pagina;
     }
@@ -474,9 +484,9 @@ public class ReclamosMB implements Serializable {
         emptyModel.addOverlay(marca);
         reclamos.setLatitud(latituteLongitude.getLat());
         reclamos.setLongitud(latituteLongitude.getLng());
-        Geocoding ObjGeocod = new Geocoding();
-        if (ObjGeocod.getAddress(latituteLongitude.getLat(), latituteLongitude.getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
-            dirReclamo = ObjGeocod.getAddress(latituteLongitude.getLat(), latituteLongitude.getLng()).get(0);
+        Geocoding objGeocod = new Geocoding();
+        if (objGeocod.getAddress(latituteLongitude.getLat(), latituteLongitude.getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
+            dirReclamo = objGeocod.getAddress(latituteLongitude.getLat(), latituteLongitude.getLng()).get(0);
 
         } else {
             dirReclamo = "DIR_FALSE";
@@ -607,6 +617,29 @@ public class ReclamosMB implements Serializable {
         return "listarreclamos?faces-redirect=true";
     }
 
+    public void listarReclamosPorZona(Reclamos reclamos, Integer codTipoReclamo) {
+        List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(codTipoReclamo);
+        List<Reclamos> lista2 = new ArrayList<>();
+        for (Reclamos reclamo : lista1) {
+            if (!reclamo.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamos.getCodReclamo().equals(reclamo.getCodReclamo())) {
+                double distancia = distanciaEntrePuntos(reclamos.getLatitud(), reclamos.getLongitud(), reclamo.getLatitud(), reclamo.getLongitud());
+                if (distancia < 11) {
+                    lista2.add(reclamo);
+                    System.out.println("CodReclamo: " + reclamo.getCodReclamo());
+                    System.out.println("Tipo Reclamo: " + reclamo.getFkCodTipoReclamo().getNombreTipoReclamo());
+                    System.out.println("Estado Reclamo: " + reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo());
+
+                }
+
+            }
+        }
+        setCantidadDeReclamosPorZona(lista2.size());
+        listarReclamosPorZona = new ListDataModel(lista2);
+
+        System.out.println("Cantidad de reclamos: " + lista2.size());
+
+    }
+
     public void abrirDialogoBuscar() {
         mostrarDialogoBuscar = true;
         RequestContext.getCurrentInstance().openDialog("dialogoBuscar");
@@ -710,6 +743,26 @@ public class ReclamosMB implements Serializable {
         } else if (dias >= reclamo.getFkCodTipoReclamo().getDiasMaximoFinalizados()) {
             setImagenSemaforo("rojo20.gif");
         }
+    }
+
+    private double distanciaEntrePuntos(double lat1, double lon1, double lat2, double lon2) {
+        // Formula de Haversine para obtener la distancia entre dos puntos geográficos (longitud y latitud)
+        // Radio de la Tierra: 6378 km.
+        // R = earth’s radius (mean radius = 6,378km)
+        // Δlat = lat2− lat1
+        // Δlong = long2− long1
+        // a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
+        // c = 2.atan2(√a, √(1−a))
+        // d = R.c
+        double R = 6371; // km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c * 1000;
+        System.out.println("La distancia es: " + d + " metros");
+        return d;
     }
 
     /**
@@ -1117,6 +1170,34 @@ public class ReclamosMB implements Serializable {
      */
     public void setBusqueda(Boolean busqueda) {
         this.busqueda = busqueda;
+    }
+
+    /**
+     * @return the listarReclamosPorZona
+     */
+    public DataModel getListarReclamosPorZona() {
+        return listarReclamosPorZona;
+    }
+
+    /**
+     * @param listarReclamosPorZona the listarReclamosPorZona to set
+     */
+    public void setListarReclamosPorZona(DataModel listarReclamosPorZona) {
+        this.listarReclamosPorZona = listarReclamosPorZona;
+    }
+
+    /**
+     * @return the cantidadDeReclamosPorZona
+     */
+    public int getCantidadDeReclamosPorZona() {
+        return cantidadDeReclamosPorZona;
+    }
+
+    /**
+     * @param cantidadDeReclamosPorZona the cantidadDeReclamosPorZona to set
+     */
+    public void setCantidadDeReclamosPorZona(int cantidadDeReclamosPorZona) {
+        this.cantidadDeReclamosPorZona = cantidadDeReclamosPorZona;
     }
 
 }
