@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="plantillaAdmin.xhtml">
+        <ui:define name="body">
+
+            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="false" life="5000"/>
+
+            <h:form>
+                <hr/>
+                <h3 align="center">Menu de Reclamos</h3>
+                <ui:include src="./tabReclamosAdmin.xhtml"></ui:include>
+            </h:form>
+            <br/>
+
+
+            <h:form id="form" >
+                <p:dataTable id="for" 
+                             value="#{reclamosMB.listarReclamosPorZona}" 
+                             var="reclamozona" 
+                             selectionMode="single"
+                             resizableColumns="true"
+                             paginator="true" 
+                             lazy="true"
+                             rows="15" 
+                             rowKey="#{reclamozona.codReclamo}"
+                             sortBy="#{reclamozona.codReclamo}"
+                             paginatorAlwaysVisible="false"
+                             paginatorPosition="top"
+                             currentPageReportTemplate="Pag. {currentPage} de {totalPages}"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"  
+                             rowsPerPageTemplate="15,25,50"
+                             emptyMessage="No se encontraron resultados">
+                    <f:facet name="header"> 
+                        <h:outputLabel value="#{reclamosMB.estadoReclamos}" style="font-size: medium"/>
+                    </f:facet>
+
+                    <p:ajax event="rowSelect" listener="#{reclamosMB.onRowSelect}" update=":form"/>
+
+                    <p:column headerText="Número" style="text-align: center">
+                        <h:outputText value="#{reclamozona.codReclamo}"/>
+                    </p:column>
+                    <p:column headerText="Tipo de reclamo">
+                        <h:outputText value="#{reclamozona.fkCodTipoReclamo.nombreTipoReclamo}"/>
+                    </p:column>
+                    <p:column headerText="Fecha de ingreso" style="text-align: center" rendered="#{reclamosMB.pendientes}">
+                        <h:outputText value="#{reclamosMB.formatearFecha(reclamozona.fechaReclamo)}"/>
+                    </p:column>
+                    <p:column headerText="Dias transcurridos" style="text-align: center" rendered="#{reclamosMB.pendientes}">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="#{reclamosMB.cantidadDiasPendientes(reclamozona)}"/>
+                            <h:graphicImage library="images" name="#{reclamosMB.imagenSemaforo}"/>
+                        </p:panelGrid>
+
+                    </p:column>
+                    <p:column headerText="Fecha de Atención" style="text-align: center" rendered="#{reclamosMB.enProceso}">
+                        <h:outputText value="#{reclamosMB.formatearFecha(reclamozona.fechaAtencionReclamo)}"/>
+                    </p:column>
+                    <p:column headerText="Dias transcurridos" style="text-align: center" rendered="#{reclamosMB.enProceso}">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="#{reclamosMB.cantidadDiasProceso(reclamozona)}"/>
+                            <h:graphicImage library="images" name="#{reclamosMB.imagenSemaforo}"/>
+                        </p:panelGrid>
+
+                    </p:column>
+                    
+                    <p:column headerText="Estado" rendered="#{reclamosMB.busqueda}">
+                        <h:outputText value="#{reclamo.fkCodEstadoReclamo.nombreEstadoReclamo }"/>
+                    </p:column>
+                    
+                    <p:column headerText="Persona reclamante" rendered="#{reclamosMB.busqueda}">
+                        <h:outputText value="#{reclamo.fkCodUsuario.fkCodPersona.nombrePersona } #{reclamo.fkCodUsuario.fkCodPersona.apellidoPersona}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </h:form>
+
+
+
+        </ui:define>
+    </ui:composition>
+</html>

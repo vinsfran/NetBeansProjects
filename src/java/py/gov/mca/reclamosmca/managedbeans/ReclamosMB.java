@@ -164,7 +164,7 @@ public class ReclamosMB implements Serializable {
 
         //Buscar reclamos por tipo, que cumpla condicion de distancia maxima de 10 metros y que no tengan estado Finalizado
         if (!reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
-            listarReclamosPorZona(reclamoSeleccionado, reclamoSeleccionado.getFkCodTipoReclamo().getCodTipoReclamo());
+            buscarReclamosPorZona(reclamoSeleccionado, reclamoSeleccionado.getFkCodTipoReclamo().getCodTipoReclamo());
         }
 
         if (reclamoSeleccionado.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {
@@ -617,7 +617,7 @@ public class ReclamosMB implements Serializable {
         return "listarreclamos?faces-redirect=true";
     }
 
-    public void listarReclamosPorZona(Reclamos reclamos, Integer codTipoReclamo) {
+    public void buscarReclamosPorZona(Reclamos reclamos, Integer codTipoReclamo) {
         List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(codTipoReclamo);
         List<Reclamos> lista2 = new ArrayList<>();
         for (Reclamos reclamo : lista1) {
@@ -625,19 +625,18 @@ public class ReclamosMB implements Serializable {
                 double distancia = distanciaEntrePuntos(reclamos.getLatitud(), reclamos.getLongitud(), reclamo.getLatitud(), reclamo.getLongitud());
                 if (distancia < 11) {
                     lista2.add(reclamo);
-                    System.out.println("CodReclamo: " + reclamo.getCodReclamo());
-                    System.out.println("Tipo Reclamo: " + reclamo.getFkCodTipoReclamo().getNombreTipoReclamo());
-                    System.out.println("Estado Reclamo: " + reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo());
-
                 }
 
             }
         }
         setCantidadDeReclamosPorZona(lista2.size());
         listarReclamosPorZona = new ListDataModel(lista2);
-
         System.out.println("Cantidad de reclamos: " + lista2.size());
-
+    }
+    
+    public String verReclamosPorZona(){
+        setEstadoReclamos("RECLAMOS POR ZONA");
+        return "listarreclamosPorZona?faces-redirect=true";
     }
 
     public void abrirDialogoBuscar() {
