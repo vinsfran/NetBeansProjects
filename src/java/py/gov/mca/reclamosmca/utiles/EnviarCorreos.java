@@ -23,7 +23,7 @@ import py.gov.mca.reclamosmca.sessionbeans.ConfiguracionesSB;
 @Stateless
 @SessionScoped
 public class EnviarCorreos {
-    
+    //Prueba
     private Configuraciones configuraciones;
 
     @EJB

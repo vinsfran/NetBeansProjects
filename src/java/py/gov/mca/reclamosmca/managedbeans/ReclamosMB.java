@@ -631,7 +631,6 @@ public class ReclamosMB implements Serializable {
         }
         setCantidadDeReclamosPorZona(lista2.size());
         listarReclamosPorZona = new ListDataModel(lista2);
-        System.out.println("Cantidad de reclamos: " + lista2.size());
     }
     
     public String verReclamosPorZona(){
@@ -753,14 +752,12 @@ public class ReclamosMB implements Serializable {
         // a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
         // c = 2.atan2(√a, √(1−a))
         // d = R.c
-        double R = 6371; // km
+        double R = 6378; // km
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
-
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = R * c * 1000;
-        System.out.println("La distancia es: " + d + " metros");
         return d;
     }
 
