@@ -34,15 +34,27 @@ public class EnviarCorreos {
     }
 
     public String enviarMail(String destino, String asunto, String htmlMensaje) {
+    //Envio de Correo desde appWeb: 
+    //par01=internet_address, 
+    //par02=mail_debug, 
+    //par03=mail_smtp_auth, 
+    //par04=mail_smtp_host, 
+    //par05=mail_smtp_port, 
+    //par06=mail_smtp_ssl_trust, 
+    //par07=mail_smtp_starttls_enable, 
+    //par08=nombre_proveedor, 
+    //par09=password, 
+    //par10=usuario
         
         setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(1));
         Properties props = new Properties();
-        // props.setProperty("mail.smtp.ssl.trust", confCorreo.getMailSmtpSslTrust());
-        props.setProperty("mail.debug", getConfiguraciones().getMailDebug());
-        props.setProperty("mail.smtp.auth", getConfiguraciones().getMailSmtpAuth());
-        props.setProperty("mail.smtp.host", getConfiguraciones().getMailSmtpHost());
-        props.setProperty("mail.smtp.port", getConfiguraciones().getMailSmtpPort());
-        props.setProperty("mail.smtp.starttls.enable", getConfiguraciones().getMailSmtpStarttlsEnable());
+        
+        props.setProperty("mail.debug", getConfiguraciones().getPar02());
+        props.setProperty("mail.smtp.auth", getConfiguraciones().getPar03());
+        props.setProperty("mail.smtp.host", getConfiguraciones().getPar04());
+        props.setProperty("mail.smtp.port", getConfiguraciones().getPar05());
+        // props.setProperty("mail.smtp.ssl.trust", confCorreo.getPar06());
+        props.setProperty("mail.smtp.starttls.enable", getConfiguraciones().getPar07());
 
         Session mailSession = Session.getDefaultInstance(props, null);
 
@@ -50,14 +62,14 @@ public class EnviarCorreos {
             MimeMessage message = new MimeMessage(mailSession);
             message.setSubject(asunto);
             try {
-                message.setFrom(new InternetAddress(getConfiguraciones().getInternetAddress(), "Sistema de Reclamos Online M.C.A."));
+                message.setFrom(new InternetAddress(getConfiguraciones().getPar01(), "Sistema de Reclamos Online M.C.A."));
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(EnviarCorreos.class.getName()).log(Level.SEVERE, null, ex);
             }
             message.setContent(htmlMensaje, "text/html; charset=UTF-8");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destino));
             Transport transport = mailSession.getTransport("smtp");
-            transport.connect(getConfiguraciones().getMailSmtpHost(), getConfiguraciones().getUsuario(), getConfiguraciones().getPassword());
+            transport.connect(getConfiguraciones().getPar04(), getConfiguraciones().getPar10(), getConfiguraciones().getPar09());
 
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
