@@ -22,9 +22,9 @@ public class ConfiguracionesSB {
         mensajes = "";
         try {
             em.persist(objeto);
-            mensajes = objeto.getNombreProveedor() + " se creo con exito!";
+            mensajes = objeto.getDetalleDeConfiguracion()+ " se creo con exito!";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreProveedor() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = objeto.getDetalleDeConfiguracion() + " no se pudo crear. (" + ex.getMessage() + ")";
         }
         return mensajes;
     }
@@ -33,9 +33,9 @@ public class ConfiguracionesSB {
         mensajes = "";
         try {
             em.merge(objeto);
-            mensajes = objeto.getNombreProveedor() + " se actualizó con exito!";
+            mensajes = objeto.getDetalleDeConfiguracion() + " se actualizó con exito!";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreProveedor() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = objeto.getDetalleDeConfiguracion() + " no se pudo actualizar. (" + ex.getMessage() + ")";
         }
         return mensajes;
     }
@@ -44,9 +44,9 @@ public class ConfiguracionesSB {
         mensajes = "";
         try {
             em.remove(objeto);
-            mensajes = objeto.getNombreProveedor() + " se elimino con exito!";
+            mensajes = objeto.getDetalleDeConfiguracion() + " se elimino con exito!";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreProveedor() + " no se pudo eliminar. (" + ex.getMessage() + ")";
+            mensajes = objeto.getDetalleDeConfiguracion() + " no se pudo eliminar. (" + ex.getMessage() + ")";
         }
         return mensajes;
     }
