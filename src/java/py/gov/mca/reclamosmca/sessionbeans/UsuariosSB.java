@@ -75,7 +75,7 @@ public class UsuariosSB {
                             + "                Estimado/a: <i>" + objeto.getFkCodPersona().getNombrePersona() + " " + objeto.getFkCodPersona().getApellidoPersona() + "</i>"
                             + "             </p> "
                             + "             <p>"
-                            + "                Le informamos que poder acceder al sistema por primera vez debera hacerlo con las siguiente credenciales:"
+                            + "                Le informamos que para poder acceder al sistema por primera vez, deberá hacerlo con las siguiente credenciales:"
                             + "             </p>   "
                             + "             <p>"
                             + "                 <table border='0'> "
