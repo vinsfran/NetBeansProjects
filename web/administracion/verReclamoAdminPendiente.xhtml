@@ -21,7 +21,7 @@
                     <h4>#{reclamosMB.reclamoSeleccionado.fkCodTipoReclamo.nombreTipoReclamo} #{reclamosMB.procedenciaReclamo}</h4>
                     <h:panelGrid columns="1" cellpadding="0" cellspacing="0" border="0" rendered="#{reclamosMB.mostrarBotonImprimir}">
                         <h:commandButton actionListener="#{reclamosMB.exportarPDF()}"
-                                         value="Descargar" 
+                                         value="Descargar PDF" 
                                          styleClass="submit"
                                          rendered="#{reclamosMB.mostrarBotonExportarPDF}"/>
                     </h:panelGrid>
@@ -60,7 +60,7 @@
                                 <p:outputLabel value="Total de reclamos iguales en la zona:" style="width: 100%;" for="cant"/>
                                 <p:outputLabel id="cant" value="#{reclamosMB.cantidadDeReclamosPorZona}" style="width: 100%;"/>
                                 <h:commandButton action="#{reclamosMB.verReclamosPorZona()}"
-                                         value="Ver Reclamos" 
+                                         value="Ver Reclamos Por Zona" 
                                          styleClass="submit"/>
                             </h:panelGrid>
                         </h:panelGrid>
