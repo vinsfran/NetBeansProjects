@@ -1,0 +1,34 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:body rendered="#{usuarioBean.mostrarPag()}">
+        <p:panel>
+            <f:facet name="header">
+                <h:outputLabel value="RECLAMO SOBRE #{reclamosController.reclamos.tiposReclamos.nombreTipoReclamo}" style="font-size: medium"/>
+                <p:separator/>
+                <div align="right">
+                    <p:commandButton id="procesar"
+                                     value="Procesar"
+                                     icon="ui-icon-check"
+                                     actionListener="#{actualizarCentroBean.navegador('./reclamos/listarreclamospendientespordependencia.xhtml')}"
+                                     action="#{reclamosController.alterarReclamoPendiente('guardar', usuarioBean.usuario.personas)}"
+                                     update=":centro"/>
+                    <p:commandButton id="inicio"
+                                     value="Cancelar"
+                                     icon="ui-icon-cancel"
+                                     actionListener="#{actualizarCentroBean.navegador('./reclamos/listarreclamospendientespordependencia.xhtml')}"
+                                     update=":centro"/>
+                </div>
+            </f:facet>
+            <p:media value="#{reclamosController.reporteReclamo}"
+                     player="pdf"
+                     width="100%" 
+                     height="400px">
+            </p:media>
+        </p:panel>
+    </h:body>
+</ui:composition>

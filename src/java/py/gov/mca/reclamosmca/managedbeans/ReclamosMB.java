@@ -91,6 +91,8 @@ public class ReclamosMB implements Serializable {
     private String palabraBuscada;
     private String nuevoMotivoFin;
     private String mensajeAjax;
+    private Date fechaInicio;
+    private Date fechaFin;
 
     private MapModel emptyModel;
     private int zoom;
@@ -273,6 +275,57 @@ public class ReclamosMB implements Serializable {
 
         context.addMessage(null, message);
         return pagina;
+    }
+
+    public void consultarPorRangoDeFecha() throws JRException, IOException {
+        JasperReport jasper;
+        Usuarios usu = recuperarUsuarioSession();
+        List<Reclamos> lista = reclamosSB.listarPorRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
+        String depen = usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia();
+        int cantidadReclamos = lista.size();
+        int cantidadSinAtender = 0;
+        int cantidadAtendidos = 0;
+        int cantidadFinalizados = 0;
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getFkCodEstadoReclamo().getCodEstadoReclamo() == 1) {
+                cantidadSinAtender = cantidadSinAtender + 1;
+            } else if (lista.get(i).getFkCodEstadoReclamo().getCodEstadoReclamo() == 2) {
+                cantidadAtendidos = cantidadAtendidos + 1;
+            } else if (lista.get(i).getFkCodEstadoReclamo().getCodEstadoReclamo() == 3) {
+                cantidadFinalizados = cantidadFinalizados + 1;
+            }
+        }
+
+        Map parametros = new HashMap();
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
+        parametros.put("urlImagen", urlImagen);
+        parametros.put("dependencia", depen);
+        parametros.put("fechaDesde", getFechaInicio());
+        parametros.put("fechaHasta", getFechaFin());
+        parametros.put("totalReclamos", cantidadReclamos);
+        parametros.put("totalReclamosSinAtender", cantidadSinAtender);
+        parametros.put("totalReclamosAtendidos", cantidadAtendidos);
+        parametros.put("totalReclamosFinalizados", cantidadFinalizados);
+
+        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPorRangoDeFecha.jasper"));
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JREmptyDataSource());
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("application/pdf");
+        response.addHeader("Content-disposition", "attachment; filename=RECLAMOS_" + usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia() + ".pdf");
+        //response.
+        //Response.Write("<script>window.print();</script>"); 
+
+        ServletOutputStream stream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+        stream.flush();
+        stream.close();
+        FacesContext.getCurrentInstance().responseComplete();
     }
 
     public void exportarPDF() throws JRException, IOException {
@@ -632,8 +685,8 @@ public class ReclamosMB implements Serializable {
         setCantidadDeReclamosPorZona(lista2.size());
         listarReclamosPorZona = new ListDataModel(lista2);
     }
-    
-    public String verReclamosPorZona(){
+
+    public String verReclamosPorZona() {
         setEstadoReclamos("RECLAMOS POR ZONA");
         return "listarreclamosPorZona?faces-redirect=true";
     }
@@ -1194,6 +1247,34 @@ public class ReclamosMB implements Serializable {
      */
     public void setCantidadDeReclamosPorZona(int cantidadDeReclamosPorZona) {
         this.cantidadDeReclamosPorZona = cantidadDeReclamosPorZona;
+    }
+
+    /**
+     * @return the fechaInicio
+     */
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    /**
+     * @param fechaInicio the fechaInicio to set
+     */
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    /**
+     * @return the fechaFin
+     */
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    /**
+     * @param fechaFin the fechaFin to set
+     */
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
 }

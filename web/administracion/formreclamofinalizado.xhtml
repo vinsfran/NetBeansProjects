@@ -1,0 +1,35 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:body id="formreclamofinalizado" rendered="#{usuarioBean.mostrarPag()}">
+
+        <h:form>
+            <p:panelGrid columns="2">
+                <f:facet name="header">  
+                    <h:outputLabel value="BUSCAR RECALMOS FINALIZADOS" style="font-size: medium"/>
+                </f:facet>
+                <h:outputLabel value="Nro. de reclamo:"/>
+                <p:inputText id="nroreclamo" value="#{reclamosController.reclamos.codReclamo}" required="true"/>
+                <f:facet name="footer">
+                    <div align="center">
+                        <p:commandButton id="generarReporte"
+                                         value="Buscar"
+                                         icon="ui-icon-search"
+                                         actionListener="#{actualizarCentroBean.navegador('./reclamos/reportereclamofinalizado.xhtml')}"
+                                         action="#{reclamosController.imprimirReclamoPorCodigo(usuarioBean.usuario.personas.dependencias.codDependencia)}"
+                                         update=":centro"/>
+                        <p:commandButton id="inicio"
+                                         value="Cancelar"
+                                         icon="ui-icon-cancel"
+                                         actionListener="#{actualizarCentroBean.navegador('./bienvenida.xhtml')}"
+                                         update=":centro"/>
+                    </div>
+                </f:facet>
+            </p:panelGrid>                    
+        </h:form>
+    </h:body>   
+</ui:composition>

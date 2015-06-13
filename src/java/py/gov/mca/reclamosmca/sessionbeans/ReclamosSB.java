@@ -270,6 +270,23 @@ public class ReclamosSB {
         return q.getResultList();
     }
     
+    public List<Reclamos> listarPorRangoDeFecha(Integer codDependencia, Date fechaInicio, Date fechaFin) {
+        StringBuilder jpql = new StringBuilder();
+
+        jpql.append("SELECT e ");
+        jpql.append("FROM Reclamos e ");
+        jpql.append("WHERE e.fkCodTipoReclamo.fkCodDependencia.codDependencia = :paramCodDependencia ");
+        jpql.append("AND e.fechaReclamo BETWEEN :paramFechaInicio AND :paramFechaFin ");        
+        
+
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodDependencia", codDependencia);
+        q.setParameter("paramFechaInicio", fechaInicio);
+        q.setParameter("paramFechaFin", fechaFin);
+        return q.getResultList();
+    }
+    
     public List<Reclamos> listarPorTiposReclamos(Integer codTipoReclamo) {
         StringBuilder jpql = new StringBuilder();
 

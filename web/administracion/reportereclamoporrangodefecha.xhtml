@@ -1,0 +1,28 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:body rendered="#{usuarioBean.mostrarPag()}">
+        <p:panel>
+            <f:facet name="header">
+                <h:outputLabel value="DETALLES DE LA CONSULTA" style="font-size: medium"/>
+                <p:separator/>
+                <div align="right">
+                    <p:commandButton id="inicio"
+                                     value="Cancelar"
+                                     icon="ui-icon-cancel"
+                                     actionListener="#{actualizarCentroBean.navegador('./reclamos/formreclamosrangofecha.xhtml')}"
+                                     update=":centro"/>
+                </div>
+            </f:facet>
+            <p:media value="#{reclamosController.reporteReclamo}"
+                     player="pdf"
+                     width="100%" 
+                     height="400px">
+            </p:media>
+        </p:panel>
+    </h:body>
+</ui:composition>

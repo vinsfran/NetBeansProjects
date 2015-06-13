@@ -37,8 +37,8 @@
                 <div id="right">
 
                     <ul id="menu">
-                        <ui:fragment rendered="#{usuariosMB.sessionIniciada}"><li><h:form><h:commandLink action="#{reclamosMB.nuevoReclamo()}" value="Reportes"><br/><h:graphicImage library="images" name="nuevoreclamo.png"/></h:commandLink></h:form></li></ui:fragment>                            
-                        <ui:fragment rendered="#{usuariosMB.sessionIniciada}"><li><h:form><h:commandLink action="#{reclamosMB.changeActiveIndex(0)}" value="Gestionar Reclamos"><br/><h:graphicImage library="images" name="misreclamos.png"/></h:commandLink></h:form></li></ui:fragment>
+                        <ui:fragment rendered="#{usuariosMB.sessionIniciada}"><li><h:form><h:commandLink action="menuReportes" value="Reportes"><br/><h:graphicImage library="images" name="nuevoreclamo.png"/></h:commandLink></h:form></li></ui:fragment>                            
+                        <ui:fragment rendered="#{usuariosMB.sessionIniciada}"><li><h:form><h:commandLink action="#{reclamosMB.changeActiveIndex(0)}" value="Reclamos"><br/><h:graphicImage library="images" name="misreclamos.png"/></h:commandLink></h:form></li></ui:fragment>
                     </ul>
 
                 </div>                
