@@ -30,46 +30,46 @@
 	<title>
 		<band height="106" splitType="Stretch">
 			<image>
-				<reportElement uuid="1b28c69e-61f5-4411-8706-bf05d8c1769b" x="51" y="4" width="132" height="57"/>
+				<reportElement x="51" y="4" width="132" height="57" uuid="1b28c69e-61f5-4411-8706-bf05d8c1769b"/>
 				<imageExpression><![CDATA[$P{urlImagen}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="93992970-279a-4480-be27-842fb8b10aa1" x="0" y="4" width="465" height="19"/>
+				<reportElement x="0" y="4" width="465" height="19" uuid="93992970-279a-4480-be27-842fb8b10aa1"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[	MUNICIPALIDAD DE ASUNCION]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="586932da-3fbd-4c41-953d-f6578b8d162f" x="100" y="22" width="319" height="20"/>
+				<reportElement x="100" y="22" width="319" height="20" uuid="586932da-3fbd-4c41-953d-f6578b8d162f"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dependencia}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="78f13dac-06eb-44ee-8dd6-084b70f99b15" x="0" y="77" width="135" height="20"/>
+				<reportElement x="0" y="77" width="135" height="20" uuid="78f13dac-06eb-44ee-8dd6-084b70f99b15"/>
 				<textElement textAlignment="Left">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Reclamos desde]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="1e9c8055-4a21-44f5-a6ab-bd2129b770c5" x="110" y="77" width="135" height="20"/>
+				<reportElement x="110" y="77" width="135" height="20" uuid="1e9c8055-4a21-44f5-a6ab-bd2129b770c5"/>
 				<textElement>
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7b7a4da1-e2e1-4d84-8847-1099e3558db9" x="186" y="77" width="46" height="20"/>
+				<reportElement x="186" y="77" width="46" height="20" uuid="7b7a4da1-e2e1-4d84-8847-1099e3558db9"/>
 				<textElement textAlignment="Left">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[hasta]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="586c3843-4f4c-47dd-a7ac-78a4bb536cc3" x="228" y="77" width="135" height="20"/>
+				<reportElement x="228" y="77" width="135" height="20" uuid="586c3843-4f4c-47dd-a7ac-78a4bb536cc3"/>
 				<textElement>
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
@@ -81,7 +81,7 @@
 		<band height="583" splitType="Stretch">
 			<pie3DChart>
 				<chart>
-					<reportElement uuid="ad2af985-2b8e-412a-8164-d88bd1e9ab88" x="1" y="20" width="464" height="270"/>
+					<reportElement x="1" y="20" width="464" height="270" uuid="ad2af985-2b8e-412a-8164-d88bd1e9ab88"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -90,17 +90,17 @@
 					<pieSeries>
 						<keyExpression><![CDATA["Reclamos Pendientes: "+$P{totalReclamosSinAtender}]]></keyExpression>
 						<valueExpression><![CDATA[$P{totalReclamosSinAtender}]]></valueExpression>
-						<labelExpression><![CDATA[new java.text.DecimalFormat("0.00").format(($P{totalReclamosSinAtender}.doubleValue()*100)/($P{totalReclamos}))+"%"]]></labelExpression>
+						<labelExpression><![CDATA["Reclamos Pendientes "+new java.text.DecimalFormat("0.00").format(($P{totalReclamosSinAtender}.doubleValue()*100)/($P{totalReclamos}))+"%"]]></labelExpression>
 					</pieSeries>
 					<pieSeries>
 						<keyExpression><![CDATA["Reclamos en Proceso: "+$P{totalReclamosAtendidos}]]></keyExpression>
 						<valueExpression><![CDATA[$P{totalReclamosAtendidos}]]></valueExpression>
-						<labelExpression><![CDATA[new java.text.DecimalFormat("0.00").format(($P{totalReclamosAtendidos}.doubleValue()*100)/($P{totalReclamos}))+"%"]]></labelExpression>
+						<labelExpression><![CDATA["Reclamos en Proceso "+new java.text.DecimalFormat("0.00").format(($P{totalReclamosAtendidos}.doubleValue()*100)/($P{totalReclamos}))+"%"]]></labelExpression>
 					</pieSeries>
 					<pieSeries>
 						<keyExpression><![CDATA["Reclamos Finalizados: "+$P{totalReclamosFinalizados}]]></keyExpression>
 						<valueExpression><![CDATA[$P{totalReclamosFinalizados}]]></valueExpression>
-						<labelExpression><![CDATA[new java.text.DecimalFormat("0.00").format(($P{totalReclamosFinalizados}.doubleValue()*100)/($P{totalReclamos}))+"%"]]></labelExpression>
+						<labelExpression><![CDATA["Reclamos Finalizados "+new java.text.DecimalFormat("0.00").format(($P{totalReclamosFinalizados}.doubleValue()*100)/($P{totalReclamos}))+"%"]]></labelExpression>
 					</pieSeries>
 				</pieDataset>
 				<pie3DPlot>
@@ -109,7 +109,7 @@
 				</pie3DPlot>
 			</pie3DChart>
 			<textField>
-				<reportElement uuid="08de5275-6675-4a9a-881f-823e9f820449" x="1" y="0" width="464" height="20"/>
+				<reportElement x="1" y="0" width="464" height="20" uuid="08de5275-6675-4a9a-881f-823e9f820449"/>
 				<textElement>
 					<font isBold="true" isItalic="true"/>
 				</textElement>
