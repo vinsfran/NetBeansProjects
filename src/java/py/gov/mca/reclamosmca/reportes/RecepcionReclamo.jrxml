@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecepcionReclamo" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="406"/>
+	<property name="ireport.y" value="0"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
 		<box>
@@ -83,6 +83,12 @@
 	</title>
 	<detail>
 		<band height="583" splitType="Stretch">
+			<rectangle radius="4">
+				<reportElement positionType="Float" mode="Transparent" x="0" y="-90" width="515" height="673" uuid="24990d90-6ef7-4858-a318-9248e2f41773"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
 			<staticText>
 				<reportElement x="0" y="0" width="515" height="20" uuid="4563b118-d191-47f7-a184-44bd1604c50f"/>
 				<textElement textAlignment="Center">
@@ -299,12 +305,6 @@
 				<reportElement x="12" y="409" width="503" height="42" uuid="2f37ec80-f4b8-4eac-b9fc-6c2147384a6f"/>
 				<textFieldExpression><![CDATA["Detalle de recepción: " + $P{descripcionAtencionReclamo}]]></textFieldExpression>
 			</textField>
-			<rectangle radius="4">
-				<reportElement positionType="Float" mode="Transparent" x="0" y="-90" width="515" height="673" uuid="24990d90-6ef7-4858-a318-9248e2f41773"/>
-				<graphicElement>
-					<pen lineWidth="1.0"/>
-				</graphicElement>
-			</rectangle>
 		</band>
 	</detail>
 </jasperReport>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecepcionReclamo" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<pen lineStyle="Double" lineColor="#040202"/>
+		<box>
+			<pen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<topPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<leftPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<bottomPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<rightPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#0088FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F8FCFF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="ReclamosTiposDependencias" uuid="092efac0-8d0c-4b9a-b8ee-6265d9fcd000">
+		<queryString>
+			<![CDATA[SELECT
+     tipos_reclamos."nombre_tipo_reclamo" AS tipos_reclamos_nombre_tipo_reclamo,
+     dependencias."nombre_dependencia" AS dependencias_nombre_dependencia
+FROM
+     "public"."dependencias" dependencias INNER JOIN "public"."tipos_reclamos" tipos_reclamos ON dependencias."cod_dependencia" = tipos_reclamos."fk_cod_dependencia"
+ORDER BY
+     dependencias."cod_dependencia" ASC]]>
+		</queryString>
+		<field name="tipos_reclamos_nombre_tipo_reclamo" class="java.lang.String"/>
+		<field name="dependencias_nombre_dependencia" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="ReclamosEstados" uuid="8d00ee3a-5160-47a8-b187-a9addfc932e2">
+		<queryString language="SQL">
+			<![CDATA[SELECT
+     estados_reclamos."nombre_estado_reclamo" AS estados_reclamos_nombre_estado_reclamo
+FROM
+     "public"."estados_reclamos" estados_reclamos]]>
+		</queryString>
+		<field name="estados_reclamos_nombre_estado_reclamo" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="urlImagen" class="java.lang.String"/>
+	<parameter name="nombreDependencia" class="java.lang.String"/>
+	<parameter name="nombreTipoReclamo" class="java.lang.String"/>
+	<parameter name="cedulaPersona" class="java.lang.String"/>
+	<parameter name="nombrePersona" class="java.lang.String"/>
+	<parameter name="apellidoPersona" class="java.lang.String"/>
+	<parameter name="direccionPersona" class="java.lang.String"/>
+	<parameter name="telefonoPersona" class="java.lang.String"/>
+	<parameter name="codReclamo" class="java.lang.Integer"/>
+	<parameter name="fechaReclamo" class="java.util.Date"/>
+	<parameter name="latitud" class="java.lang.Double"/>
+	<parameter name="longitud" class="java.lang.Double"/>
+	<parameter name="direccionReclamo" class="java.lang.String"/>
+	<parameter name="descripcionReclamoContribuyente" class="java.lang.String"/>
+	<parameter name="fechaAtencionReclamo" class="java.util.Date"/>
+	<parameter name="usuarioAtencion" class="java.lang.String"/>
+	<parameter name="descripcionAtencionReclamo" class="java.lang.String"/>
+	<parameter name="fechaCulminacionReclamo" class="java.util.Date"/>
+	<parameter name="usuarioFin" class="java.lang.String"/>
+	<parameter name="descripcionCulminacionReclamo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM reclamos]]>
+	</queryString>
+	<field name="cod_reclamo" class="java.lang.Integer"/>
+	<field name="descripcion_reclamo_contribuyente" class="java.lang.String"/>
+	<field name="direccion_reclamo" class="java.lang.String"/>
+	<field name="origen_reclamo" class="java.lang.String"/>
+	<field name="fecha_reclamo" class="java.sql.Date"/>
+	<field name="descripcion_atencion_reclamo" class="java.lang.String"/>
+	<field name="fecha_atencion_reclamo" class="java.sql.Date"/>
+	<field name="descripcion_culminacion_reclamo" class="java.lang.String"/>
+	<field name="fecha_culminacion_reclamo" class="java.sql.Date"/>
+	<field name="cantidad_dias_proceso" class="java.lang.Integer"/>
+	<field name="fk_cod_tipo_reclamo" class="java.lang.Integer"/>
+	<field name="fk_cod_estado_reclamo" class="java.lang.Integer"/>
+	<field name="cta_cte_contribuyente" class="java.lang.String"/>
+	<field name="latitud" class="java.lang.Double"/>
+	<field name="longitud" class="java.lang.Double"/>
+	<field name="fk_cod_usuario_atencion" class="java.lang.Integer"/>
+	<field name="fk_cod_usuario_culminacion" class="java.lang.Integer"/>
+	<field name="fk_cod_usuario" class="java.lang.Integer"/>
+	<field name="fk_reclamo_tipo_finalizacion_reclamo" class="java.lang.Integer"/>
+	<variable name="nombreApellido" class="java.lang.String">
+		<variableExpression><![CDATA[$P{nombrePersona}+" "+$P{apellidoPersona}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<image>
+				<reportElement x="51" y="4" width="132" height="57" uuid="1b28c69e-61f5-4411-8706-bf05d8c1769b"/>
+				<imageExpression><![CDATA[$P{urlImagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="37" y="4" width="407" height="19" uuid="93992970-279a-4480-be27-842fb8b10aa1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[	MUNICIPALIDAD DE ASUNCION]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="22" width="319" height="20" uuid="586932da-3fbd-4c41-953d-f6578b8d162f"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreDependencia}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="64" width="491" height="1" uuid="6dc022d4-98c3-4754-a933-c85f18f6a3ac"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="583" splitType="Stretch">
+			<rectangle radius="4">
+				<reportElement positionType="Float" mode="Transparent" x="0" y="-90" width="515" height="673" uuid="24990d90-6ef7-4858-a318-9248e2f41773"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="13" width="491" height="20" uuid="ca16b5f7-d19d-4650-8a69-46758f0a46a1"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipos de Reclamos por Dependencia]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="10" y="53" width="491" height="515" uuid="cc43d2b1-d705-4088-b6a2-0d3b8887332d"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="ReclamosTiposDependencias" uuid="1a8c3340-a3c2-4f9f-a9ba-94d4d3d25290">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="238" uuid="49cc44cb-58ea-4c15-b47d-a70b1cbe7eec">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="238" height="30" forecolor="#FFFFFF" backcolor="#0033FF" uuid="d4d3dc53-5169-4820-85e0-13e16fdff1c6"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Tipo de reclamo]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="238" height="20" uuid="8e8cb496-8dee-469c-b03e-0b5ccd243cb4"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{tipos_reclamos_nombre_tipo_reclamo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="252" uuid="8d8c1846-47cd-47cb-8344-862ae502704f">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="252" height="30" forecolor="#FFFFFF" backcolor="#0033FF" uuid="2162cb06-3a31-4182-b743-f6852aa68244"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Dependencia]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="252" height="20" uuid="c4b7a8eb-cbc9-44b8-b23f-3de237732baa"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{dependencias_nombre_dependencia}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>
