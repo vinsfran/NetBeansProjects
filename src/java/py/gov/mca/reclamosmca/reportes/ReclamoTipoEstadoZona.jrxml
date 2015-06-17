@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecepcionReclamo" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoTipoEstadoZona" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>

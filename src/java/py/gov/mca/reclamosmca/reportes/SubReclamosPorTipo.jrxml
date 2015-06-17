@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubReclamosPorTipo" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a6ef91cd-0ccb-4113-9804-6abacb24d2cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="codReclamo" class="java.lang.Integer"/>
+	<field name="descripcionReclamoContribuyente" class="java.lang.String"/>
+	<field name="direccionReclamo" class="java.lang.String"/>
+	<field name="latitud" class="java.lang.Double"/>
+	<field name="longitud" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="278" splitType="Stretch">
+			<textField>
+				<reportElement x="57" y="5" width="39" height="20" uuid="25c812da-fa71-4cee-a27e-7cd82bf35b46"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{codReclamo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="166" y="5" width="240" height="39" uuid="8d410c3f-7613-4691-b209-dbb1ddb9e92e"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{direccionReclamo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="25" width="126" height="239" uuid="7b75bb34-a1e4-4f9b-8f7d-aace00525164"/>
+				<textFieldExpression><![CDATA[$F{descripcionReclamoContribuyente}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="18" y="44" width="366" height="200" uuid="78144528-40b8-4535-b26e-210f8cf6a2d4"/>
+				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<mp:latitudeExpression><![CDATA[$F{latitud}.floatValue()]]></mp:latitudeExpression>
+					<mp:longitudeExpression><![CDATA[$F{longitud}.floatValue()]]></mp:longitudeExpression>
+					<mp:markerData>
+						<dataset resetType="Page"/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+					<mp:markerData>
+						<dataset resetType="Page"/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$F{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+				</mp:map>
+			</componentElement>
+			<staticText>
+				<reportElement x="18" y="5" width="39" height="20" uuid="57d87e11-dc0d-41c4-926e-3f740632a0cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="5" width="70" height="20" uuid="2458966b-9db2-4843-b730-7206c9c20e36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="406" y="5" width="100" height="20" uuid="2815b9a3-3424-470c-b8b1-a04bb6ab7473"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
