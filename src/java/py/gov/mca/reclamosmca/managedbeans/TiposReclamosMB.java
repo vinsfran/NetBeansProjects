@@ -57,33 +57,5 @@ public class TiposReclamosMB implements Serializable {
         return tiposReclamosSB.listarTiposReclamos();
     }
 
-    public void pdfReclamosPorTipo() throws JRException, IOException {
-        List<TiposReclamos> listaTiposReclamos = getListarTiposReclamos2();
-
-        Map parametros = new HashMap();
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-        String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
-        parametros.put("urlImagen", urlImagen);
-        parametros.put("nombreDependencia", listaTiposReclamos.get(0).getFkCodDependencia().getNombreDependencia());
-        parametros.put("SUBREPORT_DIR", "py/gov/mca/reclamosmca/reportes/");
-
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaTiposReclamos);
-        JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamosPorTipo.jasper"));
-
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
-        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("application/pdf");
-        response.addHeader("Content-disposition", "attachment; filename=RECLAMO_POR_TIPOS.pdf");
-
-        ServletOutputStream stream = response.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-
-        stream.flush();
-        stream.close();
-        FacesContext.getCurrentInstance().responseComplete();
-
-    }
+    
 }

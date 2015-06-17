@@ -63,4 +63,17 @@ public class TiposReclamosSB {
         Query q = em.createNamedQuery("TiposReclamos.findAll");
         return q.getResultList();
     }
+    
+    @SuppressWarnings("unchecked")
+    public List<TiposReclamos> listarTiposReclamosPorDependencia(Integer codDependencia) {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM TiposReclamos e ");
+        jpql.append("WHERE e.fkCodDependencia.codDependencia = :paramCodDependencia ");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodDependencia", codDependencia);
+        return q.getResultList();
+    }
+    
+    
 }

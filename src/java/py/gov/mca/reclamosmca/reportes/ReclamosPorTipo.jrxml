@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamosPorTipo" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
 		<box>
@@ -105,13 +105,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="427" splitType="Stretch">
-			<rectangle radius="4">
-				<reportElement positionType="Float" mode="Transparent" x="0" y="-90" width="515" height="506" uuid="24990d90-6ef7-4858-a318-9248e2f41773"/>
-				<graphicElement>
-					<pen lineWidth="1.0"/>
-				</graphicElement>
-			</rectangle>
+		<band height="335" splitType="Stretch">
 			<staticText>
 				<reportElement x="10" y="21" width="100" height="20" uuid="d31dd240-4918-4aaa-ab45-855d36bd2b48"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -149,29 +143,13 @@
 				<textFieldExpression><![CDATA[$F{diasMaximoFinalizados}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="10" y="194" width="491" height="222" uuid="b2a4290a-48c5-4882-be90-1a15dd87d9d0"/>
+				<reportElement x="10" y="71" width="491" height="222" uuid="b2a4290a-48c5-4882-be90-1a15dd87d9d0"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{reclamosList})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubReclamosPorTipo.jasper"]]></subreportExpression>
 			</subreport>
 			<break>
-				<reportElement x="0" y="426" width="100" height="1" uuid="a9c8806e-d017-4640-8ca4-8210df096b53"/>
+				<reportElement x="0" y="322" width="491" height="1" uuid="a9c8806e-d017-4640-8ca4-8210df096b53"/>
 			</break>
-			<staticText>
-				<reportElement x="37" y="107" width="100" height="20" uuid="e6a6d36c-5365-4ce7-8837-eb5f91615a18"/>
-				<text><![CDATA[fkCodDependencia.codDependencia]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="137" y="107" width="100" height="20" uuid="3971795f-7823-4a97-aaa1-fae7beb06848"/>
-				<textFieldExpression><![CDATA[$F{fkCodDependencia.codDependencia}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="42" y="135" width="100" height="20" uuid="5c5d8452-685c-43fb-8934-febb84400a53"/>
-				<text><![CDATA[fkCodDependencia.nombreDependencia]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="142" y="135" width="100" height="20" uuid="7a0c215b-bf7f-484b-b231-29cb589ed4c9"/>
-				<textFieldExpression><![CDATA[$F{fkCodDependencia.nombreDependencia}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 </jasperReport>
