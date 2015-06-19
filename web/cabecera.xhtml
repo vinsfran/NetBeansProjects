@@ -90,7 +90,7 @@
                         <ui:fragment rendered="#{usuariosWebMB.sessionIniciada}">
                             <li>
                             <h:form>
-                                <h:commandLink action="#{usuariosWebMB.btnSalir()}" value="Cerrar Sesión">
+                                <h:commandLink action="#{usuariosWebMB.btnSalir()}" value="Cerrar Sesión" rendered="#{elementosWebMB.btnCerrarSesionVisible}">
                                     <br/>
                                     <h:graphicImage library="images" name="exit.png"/>
                                 </h:commandLink>
