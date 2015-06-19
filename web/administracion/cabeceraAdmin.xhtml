@@ -37,7 +37,19 @@
                 <div id="right">
 
                     <ul id="menu">
-                        <ui:fragment rendered="#{usuariosMB.sessionIniciada}"><li><h:form><h:commandLink action="menuReportes" value="Reportes"><br/><h:graphicImage library="images" name="nuevoreclamo.png"/></h:commandLink></h:form></li></ui:fragment>                            
+                        <ui:fragment rendered="#{elementosWebMB.obtenerPermisoVisibleElemento('lnkAdministracion')}">
+                            <li>
+                                <h:form>
+                                    <h:commandLink action="menuAdministracion" value="Administración">
+                                        <br/>
+                                        <h:graphicImage library="images" name="administrador128.png"/>
+                                    </h:commandLink>
+                                </h:form>
+                            </li>
+                        </ui:fragment>                            
+                        <ui:fragment rendered="#{elementosWebMB.obtenerPermisoVisibleElemento('lnkMenuReportes')}">
+                            <li><h:form><h:commandLink action="menuReportes" value="Reportes"><br/><h:graphicImage library="images" name="nuevoreclamo.png"/></h:commandLink></h:form></li>
+                        </ui:fragment>                            
                         <ui:fragment rendered="#{usuariosMB.sessionIniciada}"><li><h:form><h:commandLink action="#{reclamosMB.changeActiveIndex(0)}" value="Reclamos"><br/><h:graphicImage library="images" name="misreclamos.png"/></h:commandLink></h:form></li></ui:fragment>
                     </ul>
 

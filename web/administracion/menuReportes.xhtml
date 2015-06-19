@@ -31,9 +31,8 @@
                         </p:panelGrid>
                     </h:form>
                 </p:panel>
-                <p:panel header="Reclamos por tipo, estado y zona" >
+                <p:panel header="Reclamos por tipo, estado y zona" rendered="#{elementosWebMB.obtenerPermisoVisibleElemento('btnCerrarSesion')}">
                     <h:form styleClass="form">
-                        <h3>Reclamos por rango de fecha</h3>
                         <p:panelGrid columns="2" >
                             <h:outputLabel value="Fecha desde:"/>
                             <p:calendar value="#{reclamosMB.fechaInicio}"
@@ -53,13 +52,6 @@
 
                 </p:panel>
             </div>
-
-
-
-
-
-
-
 
         </ui:define>
     </ui:composition>

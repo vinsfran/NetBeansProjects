@@ -1,6 +1,7 @@
 package py.gov.mca.reclamosmca.managedbeans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +21,7 @@ import py.gov.mca.reclamosmca.utiles.Converciones;
  */
 @ManagedBean(name = "usuariosWebMB")
 @SessionScoped
-public class UsuariosWebMB {
+public class UsuariosWebMB implements Serializable{
 
     private String loginUsuario;
     private String claveUsuario;
