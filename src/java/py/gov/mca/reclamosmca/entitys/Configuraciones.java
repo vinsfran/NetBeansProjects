@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Configuraciones.findAll", query = "SELECT c FROM Configuraciones c"),
     @NamedQuery(name = "Configuraciones.findByCodConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.codConfiguracion = :codConfiguracion"),
+    @NamedQuery(name = "Configuraciones.findByDetalleDeConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.detalleDeConfiguracion = :detalleDeConfiguracion"),
     @NamedQuery(name = "Configuraciones.findByPar01", query = "SELECT c FROM Configuraciones c WHERE c.par01 = :par01"),
     @NamedQuery(name = "Configuraciones.findByPar02", query = "SELECT c FROM Configuraciones c WHERE c.par02 = :par02"),
     @NamedQuery(name = "Configuraciones.findByPar03", query = "SELECT c FROM Configuraciones c WHERE c.par03 = :par03"),
@@ -37,7 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Configuraciones.findByPar08", query = "SELECT c FROM Configuraciones c WHERE c.par08 = :par08"),
     @NamedQuery(name = "Configuraciones.findByPar09", query = "SELECT c FROM Configuraciones c WHERE c.par09 = :par09"),
     @NamedQuery(name = "Configuraciones.findByPar10", query = "SELECT c FROM Configuraciones c WHERE c.par10 = :par10"),
-    @NamedQuery(name = "Configuraciones.findByDetalleDeConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.detalleDeConfiguracion = :detalleDeConfiguracion"),
     @NamedQuery(name = "Configuraciones.findByPar11", query = "SELECT c FROM Configuraciones c WHERE c.par11 = :par11"),
     @NamedQuery(name = "Configuraciones.findByPar12", query = "SELECT c FROM Configuraciones c WHERE c.par12 = :par12"),
     @NamedQuery(name = "Configuraciones.findByPar13", query = "SELECT c FROM Configuraciones c WHERE c.par13 = :par13"),
@@ -76,6 +76,9 @@ public class Configuraciones implements Serializable {
     @Column(name = "cod_configuracion")
     private Integer codConfiguracion;
     @Size(max = 255)
+    @Column(name = "detalle_de_configuracion")
+    private String detalleDeConfiguracion;
+    @Size(max = 255)
     @Column(name = "par01")
     private String par01;
     @Size(max = 255)
@@ -105,97 +108,94 @@ public class Configuraciones implements Serializable {
     @Size(max = 255)
     @Column(name = "par10")
     private String par10;
-    @Size(max = 2000)
-    @Column(name = "detalle_de_configuracion")
-    private String detalleDeConfiguracion;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par11")
     private String par11;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par12")
     private String par12;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par13")
     private String par13;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par14")
     private String par14;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par15")
     private String par15;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par16")
     private String par16;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par17")
     private String par17;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par18")
     private String par18;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par19")
     private String par19;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par20")
     private String par20;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par21")
     private String par21;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par22")
     private String par22;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par23")
     private String par23;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par24")
     private String par24;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par25")
     private String par25;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par26")
     private String par26;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par27")
     private String par27;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par28")
     private String par28;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par29")
     private String par29;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par30")
     private String par30;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par31")
     private String par31;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par32")
     private String par32;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par33")
     private String par33;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par34")
     private String par34;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par35")
     private String par35;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par36")
     private String par36;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par37")
     private String par37;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par38")
     private String par38;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par39")
     private String par39;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "par40")
     private String par40;
 
@@ -212,6 +212,14 @@ public class Configuraciones implements Serializable {
 
     public void setCodConfiguracion(Integer codConfiguracion) {
         this.codConfiguracion = codConfiguracion;
+    }
+
+    public String getDetalleDeConfiguracion() {
+        return detalleDeConfiguracion;
+    }
+
+    public void setDetalleDeConfiguracion(String detalleDeConfiguracion) {
+        this.detalleDeConfiguracion = detalleDeConfiguracion;
     }
 
     public String getPar01() {
@@ -292,14 +300,6 @@ public class Configuraciones implements Serializable {
 
     public void setPar10(String par10) {
         this.par10 = par10;
-    }
-
-    public String getDetalleDeConfiguracion() {
-        return detalleDeConfiguracion;
-    }
-
-    public void setDetalleDeConfiguracion(String detalleDeConfiguracion) {
-        this.detalleDeConfiguracion = detalleDeConfiguracion;
     }
 
     public String getPar11() {

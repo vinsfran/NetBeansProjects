@@ -47,6 +47,8 @@ public class Roles implements Serializable {
     @Column(name = "nombre_rol")
     private String nombreRol;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodRol")
+    private List<PermisosElementosWeb> permisosElementosWebList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodRol")
     private List<Usuarios> usuariosList;
 
     public Roles() {
@@ -75,6 +77,15 @@ public class Roles implements Serializable {
 
     public void setNombreRol(String nombreRol) {
         this.nombreRol = nombreRol;
+    }
+
+    @XmlTransient
+    public List<PermisosElementosWeb> getPermisosElementosWebList() {
+        return permisosElementosWebList;
+    }
+
+    public void setPermisosElementosWebList(List<PermisosElementosWeb> permisosElementosWebList) {
+        this.permisosElementosWebList = permisosElementosWebList;
     }
 
     @XmlTransient
