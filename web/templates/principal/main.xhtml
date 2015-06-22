@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="shortcut icon" href="../resources/images/favicon.ico" />
+            <title>Reclamos Online</title>
+        </f:facet>
+
+        <f:facet name="middle">
+
+            <!-- Bootstrap Core CSS -->
+            <h:outputStylesheet name="startbootstrap/css/bootstrap.min.css" />
+            <!-- Custom CSS -->
+            <h:outputStylesheet name="startbootstrap/css/stylish-portfolio.css" />
+
+            <!-- script references -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" />
+            <h:outputScript name="startbootstrap/js/bootstrap.min.js" />
+            <h:outputScript name="startbootstrap/js/scripts.js" /> 
+            <script>
+                // Closes the sidebar menu
+                $("#menu-close").click(function (e) {
+                    e.preventDefault();
+                    $("#sidebar-wrapper").toggleClass("active");
+                });
+
+                // Opens the sidebar menu
+                $("#menu-toggle").click(function (e) {
+                    e.preventDefault();
+                    $("#sidebar-wrapper").toggleClass("active");
+                });
+
+                // Scrolls to the selected menu item on the page
+                $(function () {
+                    $('a[href*=#]:not([href=#])').click(function () {
+                        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                            var target = $(this.hash);
+                            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                            if (target.length) {
+                                $('html,body').animate({
+                                    scrollTop: target.offset().top
+                                }, 1000);
+                                return false;
+                            }
+                        }
+                    });
+                });
+            </script>
+        </f:facet>
+
+        <f:facet name="last">
+            <!-- Custom Fonts -->
+            <h:outputStylesheet name="startbootstrap/font-awesome/css/font-awesome.min.css" />
+            <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+        </f:facet>
+
+    </h:head>
+
+    <h:body>
+        <ui:include src="header.xhtml" />
+        <ui:include src="content.xhtml" />
+        <ui:include src="footer.xhtml" />
+    </h:body>
+</html>
