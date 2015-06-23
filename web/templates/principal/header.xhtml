@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <header id="header">
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-4">
+                        <div class="top-number">
+                            <p>
+                                Reclamos Online
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-8">
+                        <div class="social">
+                            <ul class="social-share">
+                                <li><a target="_blank" href="https://www.facebook.com/asuncionmuni"><i class="fa fa-facebook"></i></a></li>
+                                <li><a target="_blank" href="https://twitter.com/AsuncionMuni"><i class="fa fa-twitter"></i></a></li>
+                                <li><a target="_blank" href="https://www.youtube.com/user/asuncionmuni"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/.container-->
+        </div><!--/.top-bar-->
+
+        <nav class="navbar navbar-inverse" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <h:graphicImage library="images" name="asulogo.png"/>
+                        M.C.A.
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-right">
+                    <h:form>
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="index2.xhtml"><i class="fa fa-home"></i> Inicio</a>
+                            </li>
+                            <li><a href="about-us.html"><i class="fa fa-pencil-square-o"></i> Registro</a></li>
+                            <li>
+                                <a href="login.xhtml"><i class="fa fa-sign-in"></i> Iniciar Sesión</a>
+                            </li>
+                            <li><a href="contact-us.html"><i class="fa fa-user"></i> Contacto</a></li>                        
+                        </ul>
+                    </h:form>
+                </div>
+            </div><!--/.container-->
+        </nav><!--/nav-->
+
+    </header><!--/header-->
+    <section id="bottom">
+    </section><!--/#bottom-->
+</ui:composition>

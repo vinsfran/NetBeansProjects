@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="shortcut icon" href="resources/images/favicon.ico" />
+            <title>Reclamos Online</title>
+        </f:facet>
+
+        <f:facet name="middle">
+            <!-- core CSS -->
+            <h:outputStylesheet name="corlate/css/bootstrap.min.css" />
+            <h:outputStylesheet name="corlate/css/font-awesome.min.css" />
+
+            <h:outputStylesheet name="corlate/css/animate.min.css" />
+            <h:outputStylesheet name="corlate/css/prettyPhoto.css" />
+            <h:outputStylesheet name="corlate/css/main.css" />
+            <h:outputStylesheet name="corlate/css/responsive.css" />
+
+            <!-- script references -->
+
+            <h:outputScript name="corlate/js/jquery.js" />
+            <h:outputScript name="corlate/js/bootstrap.min.js" />   
+            <h:outputScript name="corlate/js/jquery.prettyPhoto.js" />    
+            <h:outputScript name="corlate/js/jquery.isotope.min.js" />    
+            <h:outputScript name="corlate/js/main.js" />    
+            <h:outputScript name="corlate/js/wow.min.js" />    
+
+        </f:facet>
+    </h:head><!--/head-->
+
+    <h:body class="homepage">
+        <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
+        <ui:include src="header.xhtml" />
+        <ui:include src="content.xhtml" />
+        <ui:include src="footer.xhtml" />
+    </h:body>
+</html>

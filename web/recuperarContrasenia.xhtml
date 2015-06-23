@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/principal/main.xhtml">
+
+    <ui:define name="content">
+
+        <!-- Custom styles -->
+        <h:outputStylesheet name="login/css/style.css" />
+        <h:outputStylesheet name="login/css/style-responsive.css" />
+
+
+        <h:form class="login-form">        
+            <div class="login-wrap">
+                <div class="center">
+                    <p class="login-img">
+                        <i class="fa fa-exclamation-triangle"></i>                        
+                    </p>
+                    <span >Por favor, introduzca el Correo Electrónico que utilizó para registrarse y le enviaremos su nueva contraseña. </span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Correo Electrónico" 
+                                 value="#{usuariosWebMB.loginUsuario}" 
+                                 a:placeholder=" Correo Electrónico">
+                        <f:validator validatorId="emailValidator"/>
+                    </h:inputText>
+                </div>
+                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{usuariosWebMB.btnRecuperar()}" value="Enviar"/>
+            </div>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>   

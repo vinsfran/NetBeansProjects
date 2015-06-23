@@ -1,95 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <f:facet name="first">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link rel="shortcut icon" href="resources/images/favicon.ico" />
-            <title>Reclamos Online</title>
-        </f:facet>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                template="/templates/principal/main.xhtml">
 
-        <f:facet name="middle">
-            <!-- core CSS -->
-            <h:outputStylesheet name="corlate/css/bootstrap.min.css" />
-            <h:outputStylesheet name="corlate/css/font-awesome.min.css" />
-
-            <h:outputStylesheet name="corlate/css/animate.min.css" />
-            <h:outputStylesheet name="corlate/css/prettyPhoto.css" />
-            <h:outputStylesheet name="corlate/css/main.css" />
-            <h:outputStylesheet name="corlate/css/responsive.css" />
-
-            <!-- script references -->
-
-            <h:outputScript name="corlate/js/jquery.js" />
-            <h:outputScript name="corlate/js/bootstrap.min.js" />   
-            <h:outputScript name="corlate/js/jquery.prettyPhoto.js" />    
-            <h:outputScript name="corlate/js/jquery.isotope.min.js" />    
-            <h:outputScript name="corlate/js/main.js" />    
-            <h:outputScript name="corlate/js/wow.min.js" />    
-
-        </f:facet>
-    </h:head><!--/head-->
-    <h:body class="homepage">
-
-        <header id="header">
-            <div class="top-bar">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-4">
-                            <div class="top-number">
-                                <p>
-                                    Reclamos Online
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xs-8">
-                            <div class="social">
-                                <ul class="social-share">
-                                    <li><a target="_blank" href="https://www.facebook.com/asuncionmuni"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a target="_blank" href="https://twitter.com/AsuncionMuni"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a target="_blank" href="https://www.youtube.com/user/asuncionmuni"><i class="fa fa-youtube"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div><!--/.container-->
-            </div><!--/.top-bar-->
-
-            <nav class="navbar navbar-inverse" role="banner">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">
-                            <h:graphicImage library="images" name="asulogo.png"/>
-                            M.C.A.
-                        </a>
-                    </div>
-
-                    <div class="collapse navbar-collapse navbar-right">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="index2.xhtml"><i class="fa fa-home"></i> Inicio</a></li>
-                            <li><a href="about-us.html"><i class="fa fa-pencil-square-o"></i> Registro</a></li>
-                            <li><a href="services.html"><i class="fa fa-sign-in"></i> Iniciar Sesión</a></li>
-                            <li><a href="contact-us.html"><i class="fa fa-user"></i> Contacto</a></li>                        
-                        </ul>
-                    </div>
-                </div><!--/.container-->
-            </nav><!--/nav-->
-
-        </header><!--/header-->
-        <section id="bottom">
-        </section><!--/#bottom-->
+    <ui:define name="content">    
 
         <section id="main-slider" class="no-margin">
             <div class="carousel slide">
@@ -180,29 +96,5 @@
             </a>
         </section><!--/#main-slider-->
 
-
-
-        <section id="bottom">
-        </section><!--/#bottom-->
-
-        <footer id="footer" class="midnight-blue">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        © 2015 <a target="_blank" href="http://www.mca.gov.py/" title="Municipalidad de Asunción">Municipalidad de Asunción</a>. Todos los derechos reservados.
-                    </div>
-                    <div class="col-sm-6">
-                        <ul class="pull-right">
-                            <li>
-                                <p><i class="fa fa-check"></i>  Mcal. Lopéz esq. Cap. Bueno</p>
-                            </li>
-                            <li>
-                                <p><i class="fa fa-phone-square"></i>  +595 21 610 580</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer><!--/#footer-->
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>   
