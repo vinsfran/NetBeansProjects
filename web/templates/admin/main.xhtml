@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="shortcut icon" href="../resources/images/favicon.ico" />
+            <title>Reclamos Online</title>
+        </f:facet>
+
+
+        <f:facet name="middle">
+            <!-- BOOTSTRAP STYLES-->
+            <h:outputStylesheet name="assets/css/bootstrap.css" />
+
+            <!-- MORRIS CHART STYLES-->
+            <h:outputStylesheet name="assets/js/morris/morris-0.4.3.min.css" />
+
+            <!-- CUSTOM STYLES-->
+            <h:outputStylesheet name="assets/css/custom.css" />
+
+            <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+            <!-- JQUERY SCRIPTS -->
+            <h:outputScript name="assets/js/jquery-1.10.2.js" />
+            <!-- BOOTSTRAP SCRIPTS -->
+            <h:outputScript name="assets/js/bootstrap.min.js" />  
+
+            <!-- METISMENU SCRIPTS -->
+            <h:outputScript name="assets/js/jquery.metisMenu.js" />  
+            <!-- MORRIS CHART SCRIPTS -->
+            <h:outputScript name="assets/js/morris/raphael-2.1.0.min.js" />  
+            <h:outputScript name="assets/js/morris/morris.js" />  
+            <!-- CUSTOM SCRIPTS -->
+            <h:outputScript name="assets/js/custom.js" />              
+
+
+        </f:facet>
+
+        <f:facet name="last">
+            <!-- FONTAWESOME STYLES-->
+            <h:outputStylesheet name="css/font-awesome.css" />
+        </f:facet>
+
+    </h:head>
+
+    <h:body>
+        <div id="wrapper">
+            <ui:include src="header.xhtml" />
+            <ui:include src="content.xhtml" />
+        </div>
+    </h:body>
+</html>

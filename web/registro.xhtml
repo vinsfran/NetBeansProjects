@@ -9,42 +9,87 @@
     <ui:define name="content">
 
         <!-- Custom styles -->
-        <h:outputStylesheet name="login/css/style.css" />
-        <h:outputStylesheet name="login/css/style-responsive.css" />
+        <h:outputStylesheet name="form/css/style.css" />
+        <h:outputStylesheet name="form/css/style-responsive.css" />
 
 
         <h:form class="login-form">        
             <div class="login-wrap">
                 <div class="center">
                     <p class="login-img">
-                        <i class="fa fa-lock"></i>                        
+                        <i class="fa fa-edit"></i>                        
                     </p>
-                    <span >Información de Acceso </span>
+                    <span >Por favor complete el formulario y tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
                 </div>
-
+                <h2 class="form-signin-heading">Datos Personales</h2> 
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
                     <h:inputText class="form-control" 
-                                 label="Correo Electrónico" 
-                                 value="#{usuariosWebMB.loginUsuario}" 
+                                 label="Documento de identidad" 
+                                 value="#{registroUsuarioMB.cedula}" 
+                                 a:placeholder=" Documento de identidad"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Nombre" 
+                                 value="#{registroUsuarioMB.nombre}" 
+                                 a:placeholder=" Nombre(s)"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Apellido(s)" 
+                                 value="#{registroUsuarioMB.apellido}" 
+                                 a:placeholder=" Apellido(s)"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Dirección" 
+                                 value="#{registroUsuarioMB.direccion}" 
+                                 a:placeholder=" Dirección"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Cta. Cte. Ctral." 
+                                 value="#{registroUsuarioMB.cuentaCorriente}" 
+                                 a:placeholder=" Cta. Cte. Ctral."/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Teléfono" 
+                                 value="#{registroUsuarioMB.telefono}" 
+                                 a:placeholder=" Teléfono"/>
+                </div>
+                <h2 class="form-signin-heading">Información de Acceso</h2>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                    <h:inputText class="form-control" 
+                                 label="Correo electrónico" 
+                                 value="#{registroUsuarioMB.correo}" 
                                  a:placeholder=" Correo Electrónico">
                         <f:validator validatorId="emailValidator"/>
                     </h:inputText>
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                     <h:inputSecret class="form-control" 
                                    label="Contraseña" 
-                                   value="#{usuariosWebMB.claveUsuario}"
+                                   value="#{registroUsuarioMB.contrasena1}"
                                    a:placeholder=" Contraseña"/>
                 </div>
-                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{usuariosWebMB.btnIngresar()}" value="Ingresar"/>
-                <label class="checkbox">
-                    <span class="pull-right"><h:outputLink value="recuperarContrasenia.xhtml">Olvidaste tu contraseña?</h:outputLink></span>
-                </label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                    <h:inputSecret class="form-control" 
+                                   label="Repetir Contraseña" 
+                                   value="#{registroUsuarioMB.contrasena2}"
+                                   a:placeholder=" Repetir Contraseña"/>
+                </div>
+                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{registroUsuarioMB.btnConfirmar()}" value="Confirmar"/>
             </div>
         </h:form>
-
-
     </ui:define>
 </ui:composition>   
