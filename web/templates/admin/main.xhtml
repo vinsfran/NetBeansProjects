@@ -26,20 +26,12 @@
 
             <!-- CUSTOM STYLES-->
             <h:outputStylesheet name="assets/css/custom.css" />
+            <!-- TABLE STYLES-->
+            <h:outputStylesheet name="assets/js/dataTables/dataTables.bootstrap.css" />
 
-            <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-            <!-- JQUERY SCRIPTS -->
-            <h:outputScript name="assets/js/jquery-1.10.2.js" />
-            <!-- BOOTSTRAP SCRIPTS -->
-            <h:outputScript name="assets/js/bootstrap.min.js" />  
 
-            <!-- METISMENU SCRIPTS -->
-            <h:outputScript name="assets/js/jquery.metisMenu.js" />  
-            <!-- MORRIS CHART SCRIPTS -->
-            <h:outputScript name="assets/js/morris/raphael-2.1.0.min.js" />  
-            <h:outputScript name="assets/js/morris/morris.js" />  
-            <!-- CUSTOM SCRIPTS -->
-            <h:outputScript name="assets/js/custom.js" />              
+
+
 
 
         </f:facet>
@@ -47,6 +39,30 @@
         <f:facet name="last">
             <!-- FONTAWESOME STYLES-->
             <h:outputStylesheet name="css/font-awesome.css" />
+
+            <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+            <!-- JQUERY SCRIPTS -->
+
+            <h:outputScript name="assets/js/jquery-1.10.2.js" />
+            <!-- BOOTSTRAP SCRIPTS -->
+            <h:outputScript name="assets/js/bootstrap.min.js" /> 
+            <!-- DATA TABLE SCRIPTS -->
+            <h:outputScript name="assets/js/dataTables/jquery.dataTables.js" /> 
+            <h:outputScript name="assets/js/dataTables/dataTables.bootstrap.js" /> 
+            <script>
+                $(document).ready(function () {
+                    $('#dataTables-example').dataTable();
+                });
+            </script>
+
+            <!-- METISMENU SCRIPTS -->
+            <h:outputScript name="assets/js/jquery.metisMenu.js" />  
+            <!-- MORRIS CHART SCRIPTS -->
+            <h:outputScript name="assets/js/morris/raphael-2.1.0.min.js" />  
+            <h:outputScript name="assets/js/morris/morris.js" />  
+            <!-- CUSTOM SCRIPTS -->
+            <h:outputScript name="assets/js/custom.js" /> 
+
         </f:facet>
 
     </h:head>
@@ -54,7 +70,10 @@
     <h:body>
         <div id="wrapper">
             <ui:include src="header.xhtml" />
+            <ui:include src="leftMenu.xhtml" />
             <ui:include src="content.xhtml" />
         </div>
+
+
     </h:body>
 </html>
