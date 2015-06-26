@@ -5,85 +5,95 @@
     <!-- /. NAV TOP  -->
     <nav class="navbar-default navbar-side" role="navigation">
         <div class="sidebar-collapse">
-            <ul class="nav" id="main-menu">
-                <li class="text-center">
-                    <h:graphicImage library="images" name="asu128.png" class="user-image img-responsive"/>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#"><i class="fa fa-refresh"></i> Actualizar mis datos</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-key"></i> Cambiar contraseña</a>
-                        </li>
-                    </ul>
-                </li>  
-                <li>
-                    <a href="#"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="admin_reclamos_pendientes.xhtml"><i class="fa fa-briefcase"></i> Mis reclamos</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-edit"></i> Nuevo reclamo</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-search"></i> Buscar reclamo</a>
-                        </li>                        
-                    </ul>
-                </li>  
-                <li>
-                    <a href="#"><i class="fa fa-inbox fa-3x"></i> Gestión de reclamos<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
-                        </li>
-                    </ul>
-                </li>  
-                <li>
-                    <a href="#"><i class="fa fa-list-alt fa-3x"></i> Reportes<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
-                        </li>
-                    </ul>
-                </li>  	
-                <li>
-                    <a href="#"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#"><i class="fa fa-users"></i> Usuarios</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-shield"></i> Roles</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-university"></i> Dependencias</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-folder-o"></i> Tipos de reclamos</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-folder-o"></i> Estado de reclamos</a>
-                        </li>
-                    </ul>
-                </li> 
-            </ul>
+            <h:form>
+                <ul class="nav" id="main-menu">
+                    <li class="text-center">
+                        <h:graphicImage library="images" name="asu128.png" class="user-image img-responsive"/>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><i class="fa fa-refresh"></i> Actualizar mis datos</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-key"></i> Cambiar contraseña</a>
+                            </li>
+                        </ul>
+                    </li>  
+                    <li>
+                        <a href="#"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="admin_mis_reclamos.xhtml"><i class="fa fa-briefcase"></i> Mis reclamos</a>
+                            </li>
+                            <li>
 
+                                <ui:fragment >
+                                    <li class="#{direccionMB.inicio}">
+                                        <h:commandLink action="admin_nuevo_reclamo?faces-redirect=true" actionListener="#{reclamosWebMB.nuevoReclamo()}">
+                                            <i class="fa fa-edit"></i> Nuevo reclamo
+                                        </h:commandLink>
+
+                                    </li>
+                                </ui:fragment>
+                                <!--                            <a href="admin_nuevo_reclamo.xhtml"><i class="fa fa-edit"></i> Nuevo reclamo</a>-->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-search"></i> Buscar reclamo</a>
+                            </li>                        
+                        </ul>
+                    </li>  
+                    <li>
+                        <a href="#"><i class="fa fa-inbox fa-3x"></i> Gestión de reclamos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
+                            </li>
+                        </ul>
+                    </li>  
+                    <li>
+                        <a href="#"><i class="fa fa-list-alt fa-3x"></i> Reportes<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
+                            </li>
+                        </ul>
+                    </li>  	
+                    <li>
+                        <a href="#"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><i class="fa fa-users"></i> Usuarios</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-shield"></i> Roles</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-university"></i> Dependencias</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-folder-o"></i> Tipos de reclamos</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-folder-o"></i> Estado de reclamos</a>
+                            </li>
+                        </ul>
+                    </li> 
+                </ul>
+            </h:form>
         </div>
 
     </nav>  
