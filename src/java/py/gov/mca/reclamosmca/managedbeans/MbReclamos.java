@@ -1,5 +1,6 @@
 package py.gov.mca.reclamosmca.managedbeans;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -9,6 +10,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.servlet.http.HttpSession;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
+import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
@@ -19,7 +21,7 @@ import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
  */
 @ManagedBean(name = "mbReclamos")
 @SessionScoped
-public class MbReclamos {
+public class MbReclamos implements Serializable{
 
     @EJB
     private TiposReclamosSB tiposReclamosSB;
@@ -27,6 +29,8 @@ public class MbReclamos {
     private ReclamosSB reclamosSB;
 
     private DataModel misReclamos;
+    private List<TiposReclamos> tiposDeReclamos;
+    
 
     public MbReclamos() {
 
@@ -52,6 +56,22 @@ public class MbReclamos {
      */
     public void setMisReclamos(DataModel misReclamos) {
         this.misReclamos = misReclamos;
+    }
+
+    /**
+     * @return the tiposDeReclamos
+     */
+    public List<TiposReclamos> getTiposDeReclamos() {
+        System.out.println("ENTRO EN TIPOS DE RECLAMOS");
+        tiposDeReclamos = tiposReclamosSB.listarTiposReclamos();
+        return tiposDeReclamos;
+    }
+
+    /**
+     * @param tiposDeReclamos the tiposDeReclamos to set
+     */
+    public void setTiposDeReclamos(List<TiposReclamos> tiposDeReclamos) {
+        this.tiposDeReclamos = tiposDeReclamos;
     }
 
 }

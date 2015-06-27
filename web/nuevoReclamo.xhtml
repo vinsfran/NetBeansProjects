@@ -8,11 +8,12 @@
     <ui:composition template="plantilla.xhtml">
         <ui:define name="body">
             <body>
-                <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+
             <h:form  id="form" styleClass="form" style="width: 600px" >
                 <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="false" life="5000"/>
                 <div id="detalle" align="center">
                     <h:outputText id="text" value="#{usuario.empresa}" style="width: 250px;" />
+
                     <hr/>
                     <h3>Seleccione su reclamo</h3>
                     <div id="combo" align="left">
@@ -38,10 +39,12 @@
                     </div>
 
                 </div>
+                
                 <div id="historias" align="left">
                     <h4>Ubicación del Reclamo</h4>
                     <h>Haga click sobre el mapa para marcar la ubicación del reclamo.</h>
                     <div id="for">
+                        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 
                         <p:gmap id="gmap"
                                 center="#{reclamosWebMB.reclamos.latitud}, #{reclamosWebMB.reclamos.longitud}" 

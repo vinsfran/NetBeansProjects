@@ -35,16 +35,16 @@ public class EnviarCorreos {
 
     public String enviarMail(String destino, String asunto, String htmlMensaje) {
     //Envio de Correo desde appWeb: 
-    //par01=internet_address, 
-    //par02=mail_debug, 
-    //par03=mail_smtp_auth, 
-    //par04=mail_smtp_host, 
-    //par05=mail_smtp_port, 
-    //par06=mail_smtp_ssl_trust, 
-    //par07=mail_smtp_starttls_enable, 
-    //par08=nombre_proveedor, 
-    //par09=password, 
-    //par10=usuario
+    //par01=internet_address, no_responder@gmail.com
+    //par02=mail_debug, true
+    //par03=mail_smtp_auth, true
+    //par04=mail_smtp_host, smtp.gmail.com 
+    //par05=mail_smtp_port, 587
+    //par06=mail_smtp_ssl_trust, smtpserver
+    //par07=mail_smtp_starttls_enable, true
+    //par08=nombre_proveedor, GMAIL
+    //par09=password, dos123456
+    //par10=usuario, reclamosmca@gmail.com 
         
         setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(1));
         Properties props = new Properties();
