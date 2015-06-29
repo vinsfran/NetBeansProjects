@@ -28,12 +28,20 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Seleccione un tipo de reclamo</label>
-                                                <h:selectOneMenu value="#" class="form-control">
 
-                                                    <f:selectItems value="#{mbReclamos.tiposDeReclamos}" 
+
+
+                                                <h:selectOneMenu value="#{mbSReclamos.tipoDeReclamosSeleccionado}" class="form-control">
+                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"
+                                                                  />
+
+                                                    <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
                                                                    var="tiposReclamos" 
-                                                                   itemValue="#{tiposReclamos.codTipoReclamo}" 
-                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>                                     
+                                                                   itemValue="#{tiposReclamos}" 
+                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
+                                                    <p:ajax partialSubmit="true" listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
@@ -41,8 +49,15 @@
                                             <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
 
                                             <div class="gmap">
-                                                
-                                                <p:gmap id="gmap2" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/> 
+                                                <p:gmap id="gmap"
+                                                        center="#{mbSReclamos.latitud}, #{mbSReclamos.longitud}" 
+                                                        zoom="#{mbSReclamos.zoom}" type="HYBRID"  
+                                                        style="width:100%;height:400px"
+                                                        model="#{mbSReclamos.emptyModel}">
+
+                                                    <p:ajax event="stateChange" listener="#{reclamosWebMB.onStateChange}"/>
+                                                    <p:ajax event="pointSelect" listener="#{reclamosWebMB.puntoSelecionado}" update="gmap" />
+                                                </p:gmap>
 
                                             </div>
                                         </div>

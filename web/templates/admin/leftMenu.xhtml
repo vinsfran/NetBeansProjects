@@ -28,13 +28,16 @@
                             <a data-toggle="collapse" href="#collapse2"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
                             <div id="collapse2" class="collapse">
                                 <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="admin_mis_reclamos.xhtml"><i class="fa fa-briefcase"></i> Mis reclamos</a>
-
-                                    </li>
                                     <ui:fragment >
                                         <li>
-                                            <h:commandLink action="admin_nuevo_reclamo?faces-redirect=true" actionListener="#{reclamosWebMB.nuevoReclamo()}">
+                                            <h:commandLink action="admin_mis_reclamos">
+                                                <i class="fa fa-briefcase"></i> Mis reclamos
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="#{mbSReclamos.prepararNuevoReclamo()}">
                                                 <i class="fa fa-edit"></i> Nuevo reclamo
                                             </h:commandLink>
 
