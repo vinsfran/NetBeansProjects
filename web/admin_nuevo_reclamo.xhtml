@@ -25,46 +25,83 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <h:form >
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Seleccione un tipo de reclamo</label>
-
-
-
-                                                <h:selectOneMenu value="#{mbSReclamos.tipoDeReclamosSeleccionado}" class="form-control">
-                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
+                                                <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodTipoReclamo.codTipoReclamo}" 
+                                                                 class="form-control">
+                                                    <f:selectItem itemLabel="-----------" 
                                                                   noSelectionOption="false"
-                                                                  itemDisabled="true"
-                                                                  />
-
+                                                                  itemDisabled="true"/>
                                                     <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
-                                                                   var="tiposReclamos" 
-                                                                   itemValue="#{tiposReclamos}" 
+                                                                   var="tiposReclamos"
+                                                                   itemValue="#{tiposReclamos.codTipoReclamo}" 
                                                                    itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
-                                                    <p:ajax partialSubmit="true" listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
+                                                    <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
                                                 </h:selectOneMenu>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
+                                            <div class="form-group">
+                                                <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
+                                                <div class="gmap">
+                                                    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+                                                    <p:gmap id="gmap"
+                                                            center="#{mbSReclamos.nuevoReclamo.latitud}, #{mbSReclamos.nuevoReclamo.longitud}" 
+                                                            zoom="#{mbSReclamos.zoom}" type="HYBRID"  
+                                                            style="width:100%;height:400px"
+                                                            model="#{mbSReclamos.emptyModel}">
 
-                                            <div class="gmap">
-                                                <p:gmap id="gmap"
-                                                        center="#{mbSReclamos.latitud}, #{mbSReclamos.longitud}" 
-                                                        zoom="#{mbSReclamos.zoom}" type="HYBRID"  
-                                                        style="width:100%;height:400px"
-                                                        model="#{mbSReclamos.emptyModel}">
-
-                                                    <p:ajax event="stateChange" listener="#{reclamosWebMB.onStateChange}"/>
-                                                    <p:ajax event="pointSelect" listener="#{reclamosWebMB.puntoSelecionado}" update="gmap" />
-                                                </p:gmap>
-
+                                                        <p:ajax event="stateChange" listener="#{mbSReclamos.onStateChange}"/>
+                                                        <p:ajax event="pointSelect" listener="#{mbSReclamos.puntoSelecionado}" update="gmap" />
+                                                    </p:gmap>
+                                                </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label>Describa su reclamo.</label>
+                                                <p:inputTextarea required="false" 
+                                                                 id="descri" 
+                                                                 value="#{mbSReclamos.nuevoReclamo.descripcionReclamoContribuyente}"
+                                                                 title="Descripción del reclamo"
+                                                                 class="form-control"
+                                                                 autoResize="true"
+                                                                 maxlength="500"
+                                                                 counter="display"
+                                                                 counterTemplate="{0} characters remaining."/>
+                                                <h:outputText id="display" />
+                                            </div>
+
+
+                                            <h:form enctype="multipart/form-data">
+
+                                                <h:inputFile value="#{fileUploadFormBean.fileUpload}" 
+                                                             
+                                                             title="Buscar imagen"
+                                                             class="file"/>
+                                                <input id="input-1" type="file" class="file-input"/>
+                                                
+                                            </h:form> 
+
+<!--                                            <div class="form-group">
+                                                <label>Subir imagen</label>
+                                                <h:form enctype="multipart/form-data">  
+                                                    <p:fileUpload fileUploadListener="#{imagenesController.adicionarImagenesAutomaticamente}" 
+                                                                  mode="simple"
+                                                                  auto="true"
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                                  cancelLabel="Cancelar" 
+                                                                  multiple="false"
+                                                                  label="Subir Imagen"
+                                                                  invalidFileMessage="No se cargo la imagen"
+                                                                  class="btn btn-primary">
+                                                        <f:attribute name="codAutoparte" value="#{imagenesController.autoparte.codAutoparte}" />
+                                                        <f:attribute name="cantidadImagen" value="#{imagenesController.autoparte.cantidadImagen}" />
+                                                    </p:fileUpload>
+
+                                                </h:form> 
+                                            </div>-->
                                         </div>
                                     </h:form>
-                                    <!--<h:outputScript name="app/google-map-loader.js" library="js" target="head"/>-->
-                                    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript">
-                                    </script>
+
                                 </div>
 
                             </div>

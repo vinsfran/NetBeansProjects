@@ -1,8 +1,12 @@
 package py.gov.mca.reclamosmca.beansession;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -12,9 +16,13 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.servlet.http.HttpSession;
+import maps.java.Geocoding;
+import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
@@ -41,8 +49,8 @@ public class MbSReclamos implements Serializable {
 
     private MapModel emptyModel;
     private int zoom;
-    private String latitud;
-    private String longitud;
+    private String dirReclamo;
+    private LatLng latituteLongitude;
 
     public MbSReclamos() {
 
@@ -54,21 +62,55 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo = null;
         this.nuevoReclamo = new Reclamos();
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
-        this.latitud = "-25.3041049263554";
-        this.longitud = "-57.5597266852856";
+        this.nuevoReclamo.setLatitud(-25.3041049263554);
+        this.nuevoReclamo.setLongitud(-57.5597266852856);
+        this.tipoDeReclamosSeleccionado = new TiposReclamos();
         this.setZoom(15);
         return "admin_nuevo_reclamo";
     }
-    
+
     public void seleccionarTipoDeReclamo(AjaxBehaviorEvent event) {
-        this.tipoDeReclamosSeleccionado = (TiposReclamos) event.getComponent().getAttributes().get("value");
+        this.tipoDeReclamosSeleccionado = tiposReclamosSB.consultarTipoReclamo(getNuevoReclamo().getFkCodTipoReclamo().getCodTipoReclamo());
         //tipoReclamo = tiposReclamosSB.consultarTipoReclamo(getReclamos().getFkCodTipoReclamo().getCodTipoReclamo());
         System.out.println("Tipo: " + getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
         if (!emptyModel.getMarkers().isEmpty()) {
             emptyModel.getMarkers().get(0).setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
         }
     }
-    
+
+    public void puntoSelecionado(PointSelectEvent event) throws UnsupportedEncodingException, MalformedURLException {
+        setLatituteLongitude(event.getLatLng());
+        emptyModel = null;
+        emptyModel = new DefaultMapModel();
+        emptyModel.addOverlay(null);
+        Marker marca = new Marker(getLatituteLongitude());
+        marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
+        marca.setDraggable(false);
+        emptyModel.addOverlay(marca);
+        this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
+        this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
+        Geocoding ObjGeocod = new Geocoding();
+        ArrayList<String> resultadoCI = ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
+        for (String dir : resultadoCI) {
+            System.out.println(dir);
+        }
+        if (ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
+            setDirReclamo(ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+
+        } else {
+            setDirReclamo("DIR_FALSE");
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(
+                            FacesMessage.SEVERITY_INFO,
+                            "No se encuentra en Asunción",
+                            "Seleccione una ubicación valida."
+                    )
+            );
+        }
+
+    }
+
     public void onStateChange(StateChangeEvent event) {
         setZoom(event.getZoomLevel());
     }
@@ -108,34 +150,6 @@ public class MbSReclamos implements Serializable {
      */
     public void setTiposDeReclamos(List<TiposReclamos> tiposDeReclamos) {
         this.tiposDeReclamos = tiposDeReclamos;
-    }
-
-    /**
-     * @return the latitud
-     */
-    public String getLatitud() {
-        return latitud;
-    }
-
-    /**
-     * @param latitud the latitud to set
-     */
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
-    }
-
-    /**
-     * @return the longitud
-     */
-    public String getLongitud() {
-        return longitud;
-    }
-
-    /**
-     * @param longitud the longitud to set
-     */
-    public void setLongitud(String longitud) {
-        this.longitud = longitud;
     }
 
     /**
@@ -192,6 +206,34 @@ public class MbSReclamos implements Serializable {
      */
     public void setTipoDeReclamosSeleccionado(TiposReclamos tipoDeReclamosSeleccionado) {
         this.tipoDeReclamosSeleccionado = tipoDeReclamosSeleccionado;
+    }
+
+    /**
+     * @return the dirReclamo
+     */
+    public String getDirReclamo() {
+        return dirReclamo;
+    }
+
+    /**
+     * @param dirReclamo the dirReclamo to set
+     */
+    public void setDirReclamo(String dirReclamo) {
+        this.dirReclamo = dirReclamo;
+    }
+
+    /**
+     * @return the latituteLongitude
+     */
+    public LatLng getLatituteLongitude() {
+        return latituteLongitude;
+    }
+
+    /**
+     * @param latituteLongitude the latituteLongitude to set
+     */
+    public void setLatituteLongitude(LatLng latituteLongitude) {
+        this.latituteLongitude = latituteLongitude;
     }
 
 }
