@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
 
@@ -18,6 +19,7 @@ import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
 @Stateless
 @SuppressWarnings("unchecked")
 public class ReclamosSB {
+
     @EJB
     private EnviarCorreos enviarCorreos1;
     @EJB
@@ -30,8 +32,16 @@ public class ReclamosSB {
     public String crearReclamos(Reclamos objeto) {
         mensajes = "";
         try {
-            em.persist(objeto);
+            Imagenes imagen = new Imagenes();
+            imagen = objeto.getFkImagen();
+            em.persist(imagen);
+            objeto.setFkImagen(imagen);
+            //  em.persist(objeto.getFkCodPersona());
+            em.merge(objeto);
             em.flush();
+
+//            em.persist(objeto);
+//            em.flush();
 
             System.out.println("CODIGO DE ROL: " + objeto.getFkCodUsuario().getFkCodRol().getCodRol());
             if (objeto.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {
@@ -81,7 +91,7 @@ public class ReclamosSB {
             System.out.println("CODROL: " + objeto.getFkCodUsuario().getFkCodRol().getCodRol());
             //em.find(Reclamos.class, objeto.getCodReclamo());
             em.merge(objeto);
-           // em.flush();
+            // em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = ex.getMessage();
@@ -269,15 +279,14 @@ public class ReclamosSB {
         q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
         return q.getResultList();
     }
-    
+
     public List<Reclamos> listarPorRangoDeFecha(Integer codDependencia, Date fechaInicio, Date fechaFin) {
         StringBuilder jpql = new StringBuilder();
 
         jpql.append("SELECT e ");
         jpql.append("FROM Reclamos e ");
         jpql.append("WHERE e.fkCodTipoReclamo.fkCodDependencia.codDependencia = :paramCodDependencia ");
-        jpql.append("AND e.fechaReclamo BETWEEN :paramFechaInicio AND :paramFechaFin ");        
-        
+        jpql.append("AND e.fechaReclamo BETWEEN :paramFechaInicio AND :paramFechaFin ");
 
         //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
         Query q = em.createQuery(jpql.toString());
@@ -286,7 +295,7 @@ public class ReclamosSB {
         q.setParameter("paramFechaFin", fechaFin);
         return q.getResultList();
     }
-    
+
     public List<Reclamos> listarPorTiposReclamos(Integer codTipoReclamo) {
         StringBuilder jpql = new StringBuilder();
 

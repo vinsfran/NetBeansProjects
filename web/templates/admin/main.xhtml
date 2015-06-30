@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
 
@@ -20,7 +21,7 @@
         <f:facet name="middle">
             <!-- BOOTSTRAP STYLES-->
             <h:outputStylesheet name="assets/css/bootstrap.css" />
-            
+
 
             <!-- MORRIS CHART STYLES-->
             <h:outputStylesheet name="assets/js/morris/morris-0.4.3.min.css" />
@@ -30,8 +31,8 @@
             <h:outputStylesheet name="assets/css/fileinput.css" />
             <!-- TABLE STYLES-->
             <h:outputStylesheet name="assets/js/dataTables/dataTables.bootstrap.css" />
-            
-            
+
+
 
 
 
@@ -60,12 +61,12 @@
             </script>
 
             <!-- METISMENU SCRIPTS -->
-<!--            <h:outputScript name="assets/js/jquery.metisMenu.js" />  -->
+            <!--            <h:outputScript name="assets/js/jquery.metisMenu.js" />  -->
             <!-- MORRIS CHART SCRIPTS -->
-<!--            <h:outputScript name="assets/js/morris/raphael-2.1.0.min.js" />  
-            <h:outputScript name="assets/js/morris/morris.js" />  -->
+            <!--            <h:outputScript name="assets/js/morris/raphael-2.1.0.min.js" />  
+                        <h:outputScript name="assets/js/morris/morris.js" />  -->
             <!-- CUSTOM SCRIPTS -->
-<!--            <h:outputScript name="assets/js/custom.js" /> -->
+            <!--            <h:outputScript name="assets/js/custom.js" /> -->
 
         </f:facet>
 
@@ -73,6 +74,7 @@
 
     <h:body>
         <div id="wrapper">
+            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
             <ui:include src="header.xhtml" />
             <ui:include src="leftMenu.xhtml" />
             <ui:include src="content.xhtml" />

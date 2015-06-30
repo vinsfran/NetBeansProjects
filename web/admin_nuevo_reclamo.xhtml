@@ -24,7 +24,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <h:form >
+                                    <h:form>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Seleccione un tipo de reclamo</label>
@@ -71,34 +71,26 @@
                                             </div>
 
 
-                                            <h:form enctype="multipart/form-data">
+                                            <div class="form-group">
 
-                                                <h:inputFile value="#{fileUploadFormBean.fileUpload}" 
-                                                             
-                                                             title="Buscar imagen"
-                                                             class="file"/>
-                                                <input id="input-1" type="file" class="file-input"/>
-                                                
-                                            </h:form> 
 
-<!--                                            <div class="form-group">
                                                 <label>Subir imagen</label>
-                                                <h:form enctype="multipart/form-data">  
-                                                    <p:fileUpload fileUploadListener="#{imagenesController.adicionarImagenesAutomaticamente}" 
-                                                                  mode="simple"
-                                                                  auto="true"
-                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                                                  cancelLabel="Cancelar" 
-                                                                  multiple="false"
-                                                                  label="Subir Imagen"
-                                                                  invalidFileMessage="No se cargo la imagen"
-                                                                  class="btn btn-primary">
-                                                        <f:attribute name="codAutoparte" value="#{imagenesController.autoparte.codAutoparte}" />
-                                                        <f:attribute name="cantidadImagen" value="#{imagenesController.autoparte.cantidadImagen}" />
-                                                    </p:fileUpload>
 
-                                                </h:form> 
-                                            </div>-->
+                                                <h:form id="form" enctype="multipart/form-data">
+                                                    <h:inputFile id="file" value="#{mbSReclamos.cargarImagen}"
+                                                                 validator="#{mbSReclamos.validateFile}"/>
+                                                    <h:commandButton value="Upload"
+                                                                     action="#{mbSReclamos.upload}">
+                                                        <f:ajax execute="file" render="@all"/>
+                                                    </h:commandButton>
+                                                    <h:inputTextarea value="#{mbSReclamos.imagen.submittedFileName}"
+                                                                     readonly="true"/>
+                                                </h:form>
+
+
+                                            </div>
+
+                                            <h:commandButton class="btn btn-send btn-lg btn-primary" action="#{mbSReclamos.enviarReclamo()}" value="Enviar"/>
                                         </div>
                                     </h:form>
 

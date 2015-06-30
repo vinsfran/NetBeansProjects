@@ -6,20 +6,21 @@
 package py.gov.mca.reclamosmca.entitys;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -49,9 +50,8 @@ public class Imagenes implements Serializable {
     @Size(max = 45)
     @Column(name = "tipo_imagen")
     private String tipoImagen;
-    @JoinColumn(name = "fk_cod_reclamo", referencedColumnName = "cod_reclamo")
-    @ManyToOne(optional = false)
-    private Reclamos fkCodReclamo;
+    @OneToMany(mappedBy = "fkImagen")
+    private List<Reclamos> reclamosList;
 
     public Imagenes() {
     }
@@ -92,12 +92,13 @@ public class Imagenes implements Serializable {
         this.tipoImagen = tipoImagen;
     }
 
-    public Reclamos getFkCodReclamo() {
-        return fkCodReclamo;
+    @XmlTransient
+    public List<Reclamos> getReclamosList() {
+        return reclamosList;
     }
 
-    public void setFkCodReclamo(Reclamos fkCodReclamo) {
-        this.fkCodReclamo = fkCodReclamo;
+    public void setReclamosList(List<Reclamos> reclamosList) {
+        this.reclamosList = reclamosList;
     }
 
     @Override

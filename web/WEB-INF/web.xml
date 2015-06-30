@@ -2,9 +2,17 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-<!--        <param-value>Development</param-value>-->
+        <!--        <param-value>Development</param-value>-->
         <param-value>Production</param-value>
     </context-param>
+    <filter>
+        <filter-name>Character Encoding Filter</filter-name>
+        <filter-class>org.primefaces.optimus.filter.CharacterEncodingFilter</filter-class>
+    </filter> 
+    <filter-mapping>
+        <filter-name>Character Encoding Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -46,6 +54,25 @@
         <error-code>500</error-code>
         <location>/index.xhtml</location>
     </error-page>
+    
+    <!-- File Upload filter -->
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    <mime-mapping>   
+        <extension>jpg</extension>   
+        <mime-type>image/jpeg</mime-type>   
+    </mime-mapping>
+    <mime-mapping>   
+        <extension>gif</extension>   
+        <mime-type>image/gif</mime-type>   
+    </mime-mapping>
+    
     <!-- web fonts -->
     <mime-mapping>
         <extension>eot</extension>

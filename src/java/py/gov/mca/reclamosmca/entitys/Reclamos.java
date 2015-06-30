@@ -7,9 +7,7 @@ package py.gov.mca.reclamosmca.entitys;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,14 +17,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -93,11 +89,12 @@ public class Reclamos implements Serializable {
     private Double latitud;
     @Column(name = "longitud")
     private Double longitud;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodReclamo")
-    private List<Imagenes> imagenesList;
     @JoinColumn(name = "fk_cod_estado_reclamo", referencedColumnName = "cod_estado_reclamo")
     @ManyToOne(optional = false)
     private EstadosReclamos fkCodEstadoReclamo;
+    @JoinColumn(name = "fk_imagen", referencedColumnName = "cod_imagen")
+    @ManyToOne
+    private Imagenes fkImagen;
     @JoinColumn(name = "fk_reclamo_tipo_finalizacion_reclamo", referencedColumnName = "cod_tipo_finalizacion_reclamo")
     @ManyToOne
     private TiposFinalizacionReclamos fkReclamoTipoFinalizacionReclamo;
@@ -230,21 +227,20 @@ public class Reclamos implements Serializable {
         this.longitud = longitud;
     }
 
-    @XmlTransient
-    public List<Imagenes> getImagenesList() {
-        return imagenesList;
-    }
-
-    public void setImagenesList(List<Imagenes> imagenesList) {
-        this.imagenesList = imagenesList;
-    }
-
     public EstadosReclamos getFkCodEstadoReclamo() {
         return fkCodEstadoReclamo;
     }
 
     public void setFkCodEstadoReclamo(EstadosReclamos fkCodEstadoReclamo) {
         this.fkCodEstadoReclamo = fkCodEstadoReclamo;
+    }
+
+    public Imagenes getFkImagen() {
+        return fkImagen;
+    }
+
+    public void setFkImagen(Imagenes fkImagen) {
+        this.fkImagen = fkImagen;
     }
 
     public TiposFinalizacionReclamos getFkReclamoTipoFinalizacionReclamo() {
