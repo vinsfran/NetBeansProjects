@@ -69,22 +69,52 @@
                                                                  counterTemplate="{0} characters remaining."/>
                                                 <h:outputText id="display" />
                                             </div>
-
-
                                             <div class="form-group">
-
-
-                                                <label>Subir imagen</label>
-
+                                                <label>Imagen del reclamo</label>
                                                 <h:form id="form" enctype="multipart/form-data">
-                                                    <h:inputFile id="file" value="#{mbSReclamos.cargarImagen}"
-                                                                 validator="#{mbSReclamos.validateFile}"/>
-                                                    <h:commandButton value="Upload"
-                                                                     action="#{mbSReclamos.upload}">
-                                                        <f:ajax execute="file" render="@all"/>
-                                                    </h:commandButton>
-                                                    <h:inputTextarea value="#{mbSReclamos.imagen.submittedFileName}"
-                                                                     readonly="true"/>
+                                                    <h:panelGroup id="panelGroup">
+
+                                                        <style type="text/css">
+                                                            .ui-fileupload-content {
+                                                                /* padding: 0.2em 0.4em; */
+                                                                border-top-width: 0; 
+                                                            }
+                                                            .ui-fileupload .start {
+                                                                display: none;
+                                                            }
+                                                            .ui-fileupload .cancel {
+                                                                display: none;
+                                                            }
+                                                            .ui-fileupload .progress {
+                                                                display: none;
+                                                            }
+                                                        </style>
+                                                        <p:fileUpload fileUploadListener="#{mbSReclamos.cargarImagen}" 
+                                                                      mode="advanced" 
+                                                                      dragDropSupport="false"
+                                                                      multiple="false" 
+                                                                      auto="true"
+                                                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                                      update="panelGroup" 
+                                                                      rendered="#{!mbSReclamos.mostrarGraphicImage}"
+                                                                      label="Subir Imagen"
+                                                                      class="btn btn-file"/>
+
+
+                                                        <p:graphicImage  
+                                                            class="user-image img-responsive"
+                                                            value="#{mbSReclamos.imagenCargada}" cache="false"
+                                                            rendered="#{mbSReclamos.mostrarGraphicImage}"/>
+
+                                                        <p:commandLink actionListener="#{mbSReclamos.cancelarImagenCargada()}" 
+                                                                       value="Eliminar"  
+                                                                       update="panelGroup"
+                                                                       rendered="#{mbSReclamos.mostrarGraphicImage}"
+                                                                       class="btn btn-sm btn-danger"/>
+
+                                                    </h:panelGroup>
+
+
                                                 </h:form>
 
 

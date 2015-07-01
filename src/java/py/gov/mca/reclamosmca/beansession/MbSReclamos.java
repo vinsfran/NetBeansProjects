@@ -70,15 +70,16 @@ public class MbSReclamos implements Serializable {
     private List<TiposReclamos> tiposDeReclamos;
     private TiposReclamos tipoDeReclamosSeleccionado;
     private Reclamos nuevoReclamo;
+    private Imagenes imagenParaGuardar;
 
     private MapModel emptyModel;
     private int zoom;
     private String dirReclamo;
     private LatLng latituteLongitude;
-    private Part cargarImagen;
-    private Part imagen;
 
-    private DefaultStreamedContent fileContent;
+    private boolean mostrarGraphicImage;
+
+    private DefaultStreamedContent imagenCargada;
 
     public MbSReclamos() {
 
@@ -92,9 +93,12 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
         this.nuevoReclamo.setLatitud(-25.3041049263554);
         this.nuevoReclamo.setLongitud(-57.5597266852856);
+
         //this.tipoDeReclamosSeleccionado = new TiposReclamos();
-        this.cargarImagen = null;
+        this.setMostrarGraphicImage(false);
         this.setZoom(15);
+        this.imagenParaGuardar = null;
+        this.imagenCargada = null;
         return "admin_nuevo_reclamo";
     }
 
@@ -142,14 +146,14 @@ public class MbSReclamos implements Serializable {
 
     public String enviarReclamo() throws Exception {
         Usuarios usu = recuperarUsuarioSession();
-        if (cargarImagen != null) {
-            this.nuevoReclamo.setFkImagen(new Imagenes());
-            System.out.println("Nombre " + cargarImagen.getSubmittedFileName() + cargarImagen.getInputStream());
-            this.nuevoReclamo.getFkImagen().setNombreImagen(cargarImagen.getSubmittedFileName());
-            //        getImagen().setArchivoImagen(event.getFile().getContents());
-            //  this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType()));
-            this.nuevoReclamo.getFkImagen().setTipoImagen(cargarImagen.getContentType());
-        }
+//        if (cargarImagen != null) {
+//            this.nuevoReclamo.setFkImagen(new Imagenes());
+//            System.out.println("Nombre " + cargarImagen.getSubmittedFileName() + cargarImagen.getInputStream());
+//            this.nuevoReclamo.getFkImagen().setNombreImagen(cargarImagen.getSubmittedFileName());
+//            //        getImagen().setArchivoImagen(event.getFile().getContents());
+//            //  this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType()));
+//            this.nuevoReclamo.getFkImagen().setTipoImagen(cargarImagen.getContentType());
+//        }
 
         if (tipoDeReclamosSeleccionado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
@@ -215,38 +219,34 @@ public class MbSReclamos implements Serializable {
         }
     }
 
-    public void upload() throws IOException, Exception {
-        System.out.println("ENNNNNTRRR " + cargarImagen.getSubmittedFileName());
-        System.out.println("ENNNNNTRRR2 " + cargarImagen.getSize());
+    public void cargarImagen(FileUploadEvent event) throws IOException {
 
-//        fileContent = ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType());
-    }
-
-    public void handleFileUpload(FileUploadEvent event) throws IOException {
-        
         UploadedFile file = event.getFile();
-        
-        BufferedImage src = ImageIO.read(file.getInputstream());
-
         FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
-        System.out.println("canti1: " + file.getContentType());
-        System.out.println(Arrays.toString(file.getContents()) + "canti2: ");
-
+        
         try {
-            Imagenes ima = new Imagenes();
-            System.out.println("TAMAnte: "+ file.getSize());
-            ima.setArchivoImagen(resize(file.getInputstream(), 800, 600));
-            
-            ima.setTipoImagen(file.getContentType());
-            ima.setNombreImagen(file.getFileName());
-            fileContent = null;
-            fileContent = new DefaultStreamedContent(new ByteArrayInputStream(ima.getArchivoImagen()), ima.getTipoImagen());
-            fileContent.setName(ima.getNombreImagen());
-            fileContent.setContentType(ima.getTipoImagen());
+            //Se obtine la imagen que se va a guardar en la Base de datos
+            this.imagenParaGuardar = new Imagenes();
+            this.imagenParaGuardar.setArchivoImagen(resize(file.getInputstream(), 800, 600));
+            this.imagenParaGuardar.setTipoImagen(file.getContentType());
+            this.imagenParaGuardar.setNombreImagen(file.getFileName());
+            //Se convierte la imagen obtenida para mostrar como previa
+            this.imagenCargada = null;
+            this.imagenCargada = new DefaultStreamedContent(new ByteArrayInputStream(this.imagenParaGuardar.getArchivoImagen()), this.imagenParaGuardar.getTipoImagen());
+            this.imagenCargada.setName(this.imagenParaGuardar.getNombreImagen());
+            this.imagenCargada.setContentType(this.imagenParaGuardar.getTipoImagen());
+            this.setMostrarGraphicImage(true);
+            System.out.println("Mostrar " + this.mostrarGraphicImage);
         } catch (Exception ex) {
             Logger.getLogger(MbSReclamos.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void cancelarImagenCargada(){
+        this.setMostrarGraphicImage(false);
+        this.imagenParaGuardar = null;
+        this.imagenCargada = null;
     }
 
     public void adicionarImagen(FileUploadEvent event) throws Exception {
@@ -309,17 +309,17 @@ public class MbSReclamos implements Serializable {
     }
 
     public byte[] resize(InputStream input, int width, int height) throws Exception {
-        
+
         BufferedImage src = ImageIO.read(input);
         BufferedImage dest = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = dest.createGraphics();
         AffineTransform at = AffineTransform.getScaleInstance((double) width / src.getWidth(), (double) height / src.getHeight());
         g.drawRenderedImage(src, at);
-        
-        ByteArrayOutputStream output = new ByteArrayOutputStream(); 
-        
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
         ImageIO.write(dest, "JPG", output);
-       
+
         return output.toByteArray();
     }
 
@@ -430,46 +430,45 @@ public class MbSReclamos implements Serializable {
     }
 
     /**
-     * @return the cargarImagen
+     * @return the imagenCargada
      */
-    public Part getCargarImagen() {
-
-        return cargarImagen;
+    public DefaultStreamedContent getImagenCargada() {
+        return imagenCargada;
     }
 
     /**
-     * @param cargarImagen the cargarImagen to set
+     * @param imagenCargada the imagenCargada to set
      */
-    public void setCargarImagen(Part cargarImagen) {
-        this.cargarImagen = cargarImagen;
+    public void setImagenCargada(DefaultStreamedContent imagenCargada) {
+        this.imagenCargada = imagenCargada;
     }
 
     /**
-     * @return the imagen
+     * @return the imagenParaGuardar
      */
-    public Part getImagen() {
-        return imagen;
+    public Imagenes getImagenParaGuardar() {
+        return imagenParaGuardar;
     }
 
     /**
-     * @param imagen the imagen to set
+     * @param imagenParaGuardar the imagenParaGuardar to set
      */
-    public void setImagen(Part imagen) {
-        this.imagen = imagen;
+    public void setImagenParaGuardar(Imagenes imagenParaGuardar) {
+        this.imagenParaGuardar = imagenParaGuardar;
     }
 
     /**
-     * @return the fileContent
+     * @return the mostrarGraphicImage
      */
-    public DefaultStreamedContent getFileContent() {
-        return fileContent;
+    public boolean isMostrarGraphicImage() {
+        return mostrarGraphicImage;
     }
 
     /**
-     * @param fileContent the fileContent to set
+     * @param mostrarGraphicImage the mostrarGraphicImage to set
      */
-    public void setFileContent(DefaultStreamedContent fileContent) {
-        this.fileContent = fileContent;
+    public void setMostrarGraphicImage(boolean mostrarGraphicImage) {
+        this.mostrarGraphicImage = mostrarGraphicImage;
     }
 
 }
