@@ -13,12 +13,11 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -34,12 +33,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import maps.java.Geocoding;
-import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -84,6 +81,11 @@ public class MbSReclamos implements Serializable {
     public MbSReclamos() {
 
     }
+    
+    @PostConstruct
+    public void init() {
+        emptyModel = new DefaultMapModel();
+    }
 
     public String prepararNuevoReclamo() {
         this.emptyModel = null;
@@ -93,8 +95,7 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
         this.nuevoReclamo.setLatitud(-25.3041049263554);
         this.nuevoReclamo.setLongitud(-57.5597266852856);
-
-        //this.tipoDeReclamosSeleccionado = new TiposReclamos();
+        this.tipoDeReclamosSeleccionado = null;
         this.setMostrarGraphicImage(false);
         this.setZoom(15);
         this.imagenParaGuardar = null;
@@ -112,50 +113,42 @@ public class MbSReclamos implements Serializable {
     }
 
     public void puntoSelecionado(PointSelectEvent event) throws UnsupportedEncodingException, MalformedURLException {
-        setLatituteLongitude(event.getLatLng());
-        emptyModel = null;
-        emptyModel = new DefaultMapModel();
-        emptyModel.addOverlay(null);
-        Marker marca = new Marker(getLatituteLongitude());
-        marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
-        marca.setDraggable(false);
-        emptyModel.addOverlay(marca);
-        this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
-        this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
-        Geocoding ObjGeocod = new Geocoding();
-        ArrayList<String> resultadoCI = ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
-        for (String dir : resultadoCI) {
-            System.out.println(dir);
-        }
-        if (ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
-            setDirReclamo(ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
-
+        System.out.println("ENTRE EN PUNTO");
+        if (this.tipoDeReclamosSeleccionado == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
         } else {
-            setDirReclamo("DIR_FALSE");
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(
-                            FacesMessage.SEVERITY_INFO,
-                            "No se encuentra en Asunción",
-                            "Seleccione una ubicación valida."
-                    )
-            );
+            setLatituteLongitude(event.getLatLng());
+            emptyModel = null;
+            emptyModel = new DefaultMapModel();
+            emptyModel.addOverlay(null);
+            Marker marca = new Marker(getLatituteLongitude());
+            marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
+            marca.setDraggable(false);
+            emptyModel.addOverlay(marca);
+            this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
+            this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
+            Geocoding ObjGeocod = new Geocoding();
+            ArrayList<String> resultadoCI = ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
+            for (String dir : resultadoCI) {
+                System.out.println(dir);
+            }
+            if (ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
+                setDirReclamo(ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+            } else {
+                setDirReclamo("DIR_FALSE");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
+            }
         }
-
     }
 
     public String enviarReclamo() throws Exception {
         Usuarios usu = recuperarUsuarioSession();
-//        if (cargarImagen != null) {
-//            this.nuevoReclamo.setFkImagen(new Imagenes());
-//            System.out.println("Nombre " + cargarImagen.getSubmittedFileName() + cargarImagen.getInputStream());
-//            this.nuevoReclamo.getFkImagen().setNombreImagen(cargarImagen.getSubmittedFileName());
-//            //        getImagen().setArchivoImagen(event.getFile().getContents());
-//            //  this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType()));
-//            this.nuevoReclamo.getFkImagen().setTipoImagen(cargarImagen.getContentType());
-//        }
+        if (this.imagenParaGuardar != null) {
+            this.nuevoReclamo.setFkImagen(new Imagenes());
+            this.nuevoReclamo.setFkImagen(this.imagenParaGuardar);
+        }
 
-        if (tipoDeReclamosSeleccionado == null) {
+        if (this.tipoDeReclamosSeleccionado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
             return "admin_nuevo_reclamo";
         } else if (emptyModel.getMarkers().isEmpty()) {
@@ -220,15 +213,27 @@ public class MbSReclamos implements Serializable {
     }
 
     public void cargarImagen(FileUploadEvent event) throws IOException {
-
         UploadedFile file = event.getFile();
-        FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        
+        BufferedImage src = ImageIO.read(file.getInputstream());
+        int valor1 = 1024;
+        int valor2 = 768;
+        int nAlto;
+        int nAncho;
+        if (src.getHeight() > src.getWidth()) {
+            nAlto = valor1;
+            nAncho = valor2;
+        } else if (src.getHeight() < src.getWidth()) {
+            nAlto = valor2;
+            nAncho = valor1;
+        } else {
+            nAlto = valor2;
+            nAncho = valor2;
+        }
         try {
             //Se obtine la imagen que se va a guardar en la Base de datos
             this.imagenParaGuardar = new Imagenes();
-            this.imagenParaGuardar.setArchivoImagen(resize(file.getInputstream(), 800, 600));
+            this.imagenParaGuardar.setArchivoImagen(resize(file.getInputstream(), nAncho, nAlto));
+            //this.imagenParaGuardar.setArchivoImagen(ajustarImagen(file.getInputstream(), nAncho, nAlto, file.getContentType()));
             this.imagenParaGuardar.setTipoImagen(file.getContentType());
             this.imagenParaGuardar.setNombreImagen(file.getFileName());
             //Se convierte la imagen obtenida para mostrar como previa
@@ -237,41 +242,15 @@ public class MbSReclamos implements Serializable {
             this.imagenCargada.setName(this.imagenParaGuardar.getNombreImagen());
             this.imagenCargada.setContentType(this.imagenParaGuardar.getTipoImagen());
             this.setMostrarGraphicImage(true);
-            System.out.println("Mostrar " + this.mostrarGraphicImage);
         } catch (Exception ex) {
             Logger.getLogger(MbSReclamos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void cancelarImagenCargada(){
+
+    public void cancelarImagenCargada() {
         this.setMostrarGraphicImage(false);
         this.imagenParaGuardar = null;
         this.imagenCargada = null;
-    }
-
-    public void adicionarImagen(FileUploadEvent event) throws Exception {
-//        String codAutoparteW = event.getComponent().getAttributes().get("codAutoparte").toString();
-//        Integer codAutoparteTemp = Integer.parseInt(codAutoparteW);
-        System.out.println("canti: " + event.getFile().getFileName());
-        //      fileContent = ajustaImagen(event.getFile().getContents(), 640, 480, event.getFile().getContentType());
-//        setImagen(new Imagenes());
-//        try {
-        //  this.nuevoReclamo.getFkImagen().setNombreImagen(event.getFile().getFileName());
-        //        getImagen().setArchivoImagen(event.getFile().getContents());
-        ///   this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(event.getFile().getContents(), 640, 480, event.getFile().getContentType()));
-        //     this.nuevoReclamo.getFkImagen().setTipoImagen(event.getFile().getContentType());
-        //getImagen().setFkCodAutoparte(codAutoparteTemp);
-//            ImagenesDao dao = new ImagenesDaoImpl();
-//            dao.guardar(getImagen(), getAutoparte().getCantidadImagen());
-//            getAutoparte().setCantidadImagen(getAutoparte().getCantidadImagen() + 1);
-//            mostrarImagenesPorCodAutoparte(getAutoparte());
-//            FacesMessage msg = new FacesMessage("El archivo ", this.nuevoReclamo.getFkImagen().getNombreImagen() + " se cargo.");
-//            FacesContext.getCurrentInstance().addMessage(null, msg);
-//        } catch (Exception ex) {
-//            //Logger.getLogger(ImagenesController.class.getName()).log(Level.SEVERE, null, ex);
-//            FacesMessage msg = new FacesMessage("El archivo ", this.nuevoReclamo.getFkImagen().getNombreImagen() + " no se cargo.");
-//            FacesContext.getCurrentInstance().addMessage(null, msg);
-//        }
     }
 
     private byte[] ajustarImagen(InputStream imagen, int IMG_WIDTH, int IMG_HEIGHT, String tipoImagen) throws Exception {

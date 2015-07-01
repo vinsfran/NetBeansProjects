@@ -4,7 +4,6 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/templates/admin/main.xhtml">
-
     <ui:define name="content">    
         <div id="page-wrapper" >
             <div id="page-inner">
@@ -13,7 +12,6 @@
                         <h2>Nuevo reclamo</h2>
                     </div>
                 </div>
-                <!-- /. ROW  -->
                 <hr />
                 <div class="row">
                     <div class="col-md-12">
@@ -24,10 +22,12 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <h:form>
-                                        <div class="col-md-12">
+
+                                    <div class="col-md-12">
+                                        <h:form>
                                             <div class="form-group">
                                                 <label>Seleccione un tipo de reclamo</label>
+
                                                 <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodTipoReclamo.codTipoReclamo}" 
                                                                  class="form-control">
                                                     <f:selectItem itemLabel="-----------" 
@@ -39,6 +39,7 @@
                                                                    itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
                                                     <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
                                                 </h:selectOneMenu>
+
                                             </div>
                                             <div class="form-group">
                                                 <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
@@ -69,63 +70,47 @@
                                                                  counterTemplate="{0} characters remaining."/>
                                                 <h:outputText id="display" />
                                             </div>
+                                        </h:form>
+                                        <h:form id="form" enctype="multipart/form-data">
                                             <div class="form-group">
-                                                <label>Imagen del reclamo</label>
-                                                <h:form id="form" enctype="multipart/form-data">
-                                                    <h:panelGroup id="panelGroup">
 
-                                                        <style type="text/css">
-                                                            .ui-fileupload-content {
-                                                                /* padding: 0.2em 0.4em; */
-                                                                border-top-width: 0; 
-                                                            }
-                                                            .ui-fileupload .start {
-                                                                display: none;
-                                                            }
-                                                            .ui-fileupload .cancel {
-                                                                display: none;
-                                                            }
-                                                            .ui-fileupload .progress {
-                                                                display: none;
-                                                            }
-                                                        </style>
-                                                        <p:fileUpload fileUploadListener="#{mbSReclamos.cargarImagen}" 
-                                                                      mode="advanced" 
-                                                                      dragDropSupport="false"
-                                                                      multiple="false" 
-                                                                      auto="true"
-                                                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                                                      update="panelGroup" 
-                                                                      rendered="#{!mbSReclamos.mostrarGraphicImage}"
-                                                                      label="Subir Imagen"
-                                                                      class="btn btn-file"/>
+                                                <h:panelGroup id="panelGroup">
 
-
-                                                        <p:graphicImage  
-                                                            class="user-image img-responsive"
-                                                            value="#{mbSReclamos.imagenCargada}" cache="false"
-                                                            rendered="#{mbSReclamos.mostrarGraphicImage}"/>
-
-                                                        <p:commandLink actionListener="#{mbSReclamos.cancelarImagenCargada()}" 
-                                                                       value="Eliminar"  
-                                                                       update="panelGroup"
-                                                                       rendered="#{mbSReclamos.mostrarGraphicImage}"
-                                                                       class="btn btn-sm btn-danger"/>
-
-                                                    </h:panelGroup>
-
-
-                                                </h:form>
-
+                                                    <p:fileUpload fileUploadListener="#{mbSReclamos.cargarImagen}" 
+                                                                  mode="advanced" 
+                                                                  dragDropSupport="false"
+                                                                  multiple="false" 
+                                                                  auto="true"
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                                  update="panelGroup" 
+                                                                  rendered="#{!mbSReclamos.mostrarGraphicImage}"
+                                                                  label="Subir Imagen"
+                                                                  style="float: left;"/>
+                                                    <h:outputLabel value="Imagen del reclamo" rendered="#{mbSReclamos.mostrarGraphicImage}"/>
+                                                    <p:graphicImage id="imagen" 
+                                                                    class="img-responsive"
+                                                                    value="#{mbSReclamos.imagenCargada}" cache="false"
+                                                                    rendered="#{mbSReclamos.mostrarGraphicImage}"/>
+                                                    <br/>
+                                                    <p:commandLink actionListener="#{mbSReclamos.cancelarImagenCargada()}" 
+                                                                   value="Eliminar imagen"  
+                                                                   update="panelGroup"
+                                                                   rendered="#{mbSReclamos.mostrarGraphicImage}"
+                                                                   class="btn btn-danger btn-sm"/>
+                                                </h:panelGroup>
 
                                             </div>
-
-                                            <h:commandButton class="btn btn-send btn-lg btn-primary" action="#{mbSReclamos.enviarReclamo()}" value="Enviar"/>
+                                        </h:form>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="modal-footer">
+                                            <h:form>
+                                                <h:commandButton class="btn btn-default" action="admin_mis_reclamos" value="Cancelar"/>
+                                                <h:commandButton class="btn btn-primary" action="#{mbSReclamos.enviarReclamo()}" value="Enviar reclamo"/>
+                                            </h:form>
                                         </div>
-                                    </h:form>
-
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

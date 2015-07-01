@@ -6,9 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-
     <h:head>
-
         <f:facet name="first">
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
@@ -16,24 +14,17 @@
             <link rel="shortcut icon" href="../resources/images/favicon.ico" />
             <title>Reclamos Online</title>
         </f:facet>
-
-
         <f:facet name="middle">
             <!-- BOOTSTRAP STYLES-->
             <h:outputStylesheet name="assets/css/bootstrap.css" />
-
-
             <!-- MORRIS CHART STYLES-->
             <h:outputStylesheet name="assets/js/morris/morris-0.4.3.min.css" />
-
             <!-- CUSTOM STYLES-->
             <h:outputStylesheet name="assets/css/custom.css" />
             <h:outputStylesheet name="css/botoncargar.css" />
             <!-- TABLE STYLES-->
             <h:outputStylesheet name="assets/js/dataTables/dataTables.bootstrap.css" />
-
         </f:facet>
-
         <f:facet name="last">
             <!-- FONTAWESOME STYLES-->
             <h:outputStylesheet name="css/font-awesome.css" />
@@ -41,7 +32,7 @@
             <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
             <!-- JQUERY SCRIPTS -->
 
-<!--            <h:outputScript name="assets/js/jquery-1.10.2.js" />-->
+            <!--            <h:outputScript name="assets/js/jquery-1.10.2.js" />-->
             <!-- BOOTSTRAP SCRIPTS -->
             <h:outputScript name="assets/js/bootstrap.min.js" /> 
             <!-- DATA TABLE SCRIPTS -->
@@ -62,9 +53,7 @@
             <!--            <h:outputScript name="assets/js/custom.js" /> -->
 
         </f:facet>
-
     </h:head>
-
     <h:body>
         <div id="wrapper">
             <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="true" life="5000"/>
@@ -72,7 +61,5 @@
             <ui:include src="leftMenu.xhtml" />
             <ui:include src="content.xhtml" />
         </div>
-
-
     </h:body>
 </html>

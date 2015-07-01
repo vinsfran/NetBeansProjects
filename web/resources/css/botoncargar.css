@@ -1,91 +1,21 @@
-.fileupload-buttonbar {
-    background: transparent none;
-    border: none;
-    /*    width: 132px;*/
-}
-
-.fileupload-content {
-    background: transparent none;
-    border: none;
-}
-
-.fileupload-content .fileupload-progressbar {
-    width: 200px;
-    margin: 10px 0;
+.ui-fileupload-buttonbar .ui-button {
+    background-color: green !important; /*Only an example*/
 }
 
 .ui-fileupload-content {
     /* padding: 0.2em 0.4em; */
-    border-top-width: 0; 
+    border-top-width: 0 !important;
 }
 
-.ui-fileupload-preview img {
-    width: 80px;
-}
-.ui-fileupload-progress div {
-    width: 150px;
-    height: 15px;
-}
-
-
-.fileinput-button span{
-    display: none;
-    /*    
-        background-image: url(../images/inicio.jpg);
-        height: 10px;*/
-
-}
-
-.fileupload-buttonbar label{
-    display: inline-block;
-    text-align:center;
-}
-
-/*.fileupload-buttonbar .delete,
-.fileupload-buttonbar .toggle {
-    display: none;
-}*/
-
-.ui-fileupload .start {
-    display: none;
-}
-.ui-fileupload .cancel {
-    display: none;
-}
-.ui-fileupload .progress {
-    /*    display: none;*/
-}
-
-.ui-fileupload .img {
-    display: none;
-}
-
-.files {
-    border-color: red;    
-}
-
-.files .content{
-    display: none;
-}
-
-.files .preview {
-    display: none;
-}
-
-.files .name {
-    display: none;
-}
-
-.files .size {
-    display: none;
-}
-
-.files .progress {
-    /*    display: none;*/
-}
-
-.template-upload {
+.ui-fileupload-buttonbar {
+    background: transparent none;
     border: none;
-    /*    padding: 5px;
-        border-spacing: 5px;*/
+}
+
+.ui-fileupload-content {
+    display: none;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-choose {
+    background-color: rgba(142, 103, 64, 0.98);
 }

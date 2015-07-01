@@ -41,7 +41,33 @@
                                         <h:column>
                                             <f:facet name="header">Detalles</f:facet>
                                             <div align="center">
-                                                <h:commandButton value="Mostrar" class="btn btn-primary btn-sm" />
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}">
+                                                    Mostrar
+                                                </button>
+                                                <div class="modal fade" id="#{reclamos.codReclamo}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                                                <h4 class="modal-title" id="myModalLabel">#{reclamos.fkCodTipoReclamo.nombreTipoReclamo}</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+                                                                <p:gmap id="gmap"
+                                                                        center="#{reclamos.latitud}, #{reclamos.longitud}" 
+                                                                        zoom="15" type="HYBRID"  
+                                                                        style="width:100%;height:400px"
+                                                                        model="#{mbSReclamos.emptyModel}">
+                                                                </p:gmap>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </h:column>
                                     </h:dataTable>
