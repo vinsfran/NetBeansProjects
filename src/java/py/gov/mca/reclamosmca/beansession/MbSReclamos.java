@@ -3,6 +3,7 @@ package py.gov.mca.reclamosmca.beansession;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,9 +13,12 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -30,9 +34,12 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import maps.java.Geocoding;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -71,7 +78,7 @@ public class MbSReclamos implements Serializable {
     private Part cargarImagen;
     private Part imagen;
 
-    private String fileContent;
+    private DefaultStreamedContent fileContent;
 
     public MbSReclamos() {
 
@@ -140,7 +147,7 @@ public class MbSReclamos implements Serializable {
             System.out.println("Nombre " + cargarImagen.getSubmittedFileName() + cargarImagen.getInputStream());
             this.nuevoReclamo.getFkImagen().setNombreImagen(cargarImagen.getSubmittedFileName());
             //        getImagen().setArchivoImagen(event.getFile().getContents());
-            this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType()));
+            //  this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType()));
             this.nuevoReclamo.getFkImagen().setTipoImagen(cargarImagen.getContentType());
         }
 
@@ -208,37 +215,66 @@ public class MbSReclamos implements Serializable {
         }
     }
 
-    public void upload() {
-        System.out.println("ENNNNNTRRR");
-        setFileContent(cargarImagen.getSubmittedFileName());
+    public void upload() throws IOException, Exception {
+        System.out.println("ENNNNNTRRR " + cargarImagen.getSubmittedFileName());
+        System.out.println("ENNNNNTRRR2 " + cargarImagen.getSize());
 
+//        fileContent = ajustaImagen(cargarImagen.getInputStream(), 640, 480, cargarImagen.getContentType());
     }
 
-    public void adicionarImagen(FileUploadEvent event) {
+    public void handleFileUpload(FileUploadEvent event) throws IOException {
+        
+        UploadedFile file = event.getFile();
+        
+        BufferedImage src = ImageIO.read(file.getInputstream());
+
+        FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        System.out.println("canti1: " + file.getContentType());
+        System.out.println(Arrays.toString(file.getContents()) + "canti2: ");
+
+        try {
+            Imagenes ima = new Imagenes();
+            System.out.println("TAMAnte: "+ file.getSize());
+            ima.setArchivoImagen(resize(file.getInputstream(), 800, 600));
+            
+            ima.setTipoImagen(file.getContentType());
+            ima.setNombreImagen(file.getFileName());
+            fileContent = null;
+            fileContent = new DefaultStreamedContent(new ByteArrayInputStream(ima.getArchivoImagen()), ima.getTipoImagen());
+            fileContent.setName(ima.getNombreImagen());
+            fileContent.setContentType(ima.getTipoImagen());
+        } catch (Exception ex) {
+            Logger.getLogger(MbSReclamos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void adicionarImagen(FileUploadEvent event) throws Exception {
 //        String codAutoparteW = event.getComponent().getAttributes().get("codAutoparte").toString();
 //        Integer codAutoparteTemp = Integer.parseInt(codAutoparteW);
         System.out.println("canti: " + event.getFile().getFileName());
+        //      fileContent = ajustaImagen(event.getFile().getContents(), 640, 480, event.getFile().getContentType());
 //        setImagen(new Imagenes());
-        try {
-            this.nuevoReclamo.getFkImagen().setNombreImagen(event.getFile().getFileName());
-            //        getImagen().setArchivoImagen(event.getFile().getContents());
-            ///   this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(event.getFile().getContents(), 640, 480, event.getFile().getContentType()));
-            this.nuevoReclamo.getFkImagen().setTipoImagen(event.getFile().getContentType());
-            //getImagen().setFkCodAutoparte(codAutoparteTemp);
+//        try {
+        //  this.nuevoReclamo.getFkImagen().setNombreImagen(event.getFile().getFileName());
+        //        getImagen().setArchivoImagen(event.getFile().getContents());
+        ///   this.nuevoReclamo.getFkImagen().setArchivoImagen(ajustaImagen(event.getFile().getContents(), 640, 480, event.getFile().getContentType()));
+        //     this.nuevoReclamo.getFkImagen().setTipoImagen(event.getFile().getContentType());
+        //getImagen().setFkCodAutoparte(codAutoparteTemp);
 //            ImagenesDao dao = new ImagenesDaoImpl();
 //            dao.guardar(getImagen(), getAutoparte().getCantidadImagen());
 //            getAutoparte().setCantidadImagen(getAutoparte().getCantidadImagen() + 1);
 //            mostrarImagenesPorCodAutoparte(getAutoparte());
-            FacesMessage msg = new FacesMessage("El archivo ", this.nuevoReclamo.getFkImagen().getNombreImagen() + " se cargo.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        } catch (Exception ex) {
-            //Logger.getLogger(ImagenesController.class.getName()).log(Level.SEVERE, null, ex);
-            FacesMessage msg = new FacesMessage("El archivo ", this.nuevoReclamo.getFkImagen().getNombreImagen() + " no se cargo.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
+//            FacesMessage msg = new FacesMessage("El archivo ", this.nuevoReclamo.getFkImagen().getNombreImagen() + " se cargo.");
+//            FacesContext.getCurrentInstance().addMessage(null, msg);
+//        } catch (Exception ex) {
+//            //Logger.getLogger(ImagenesController.class.getName()).log(Level.SEVERE, null, ex);
+//            FacesMessage msg = new FacesMessage("El archivo ", this.nuevoReclamo.getFkImagen().getNombreImagen() + " no se cargo.");
+//            FacesContext.getCurrentInstance().addMessage(null, msg);
+//        }
     }
 
-    private byte[] ajustaImagen(InputStream imagen, int IMG_WIDTH, int IMG_HEIGHT, String tipoImagen) throws Exception {
+    private byte[] ajustarImagen(InputStream imagen, int IMG_WIDTH, int IMG_HEIGHT, String tipoImagen) throws Exception {
         String tipo = "";
         if (tipoImagen.equals("image/jpeg") || tipoImagen.equals("image/jpg")) {
             tipo = "jpg";
@@ -248,7 +284,7 @@ public class MbSReclamos implements Serializable {
             tipo = "gif";
         }
 
-        //InputStream inputStream = new ByteArrayInputStream(imagen);
+        // InputStream inputStream = new ByteArrayInputStream(imagen);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             BufferedImage originalImage = ImageIO.read(imagen);
@@ -265,10 +301,26 @@ public class MbSReclamos implements Serializable {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             ImageIO.write(resizedImage, tipo, baos);
+            System.out.println("PASO");
         } catch (Throwable ex) {
             throw new Exception("Error proceso Tamaño Imagen " + ex.toString(), ex);
         }
         return baos.toByteArray();
+    }
+
+    public byte[] resize(InputStream input, int width, int height) throws Exception {
+        
+        BufferedImage src = ImageIO.read(input);
+        BufferedImage dest = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = dest.createGraphics();
+        AffineTransform at = AffineTransform.getScaleInstance((double) width / src.getWidth(), (double) height / src.getHeight());
+        g.drawRenderedImage(src, at);
+        
+        ByteArrayOutputStream output = new ByteArrayOutputStream(); 
+        
+        ImageIO.write(dest, "JPG", output);
+       
+        return output.toByteArray();
     }
 
     /**
@@ -409,14 +461,14 @@ public class MbSReclamos implements Serializable {
     /**
      * @return the fileContent
      */
-    public String getFileContent() {
+    public DefaultStreamedContent getFileContent() {
         return fileContent;
     }
 
     /**
      * @param fileContent the fileContent to set
      */
-    public void setFileContent(String fileContent) {
+    public void setFileContent(DefaultStreamedContent fileContent) {
         this.fileContent = fileContent;
     }
 
