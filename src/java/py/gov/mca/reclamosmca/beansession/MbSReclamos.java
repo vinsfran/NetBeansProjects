@@ -14,7 +14,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,14 +67,22 @@ public class MbSReclamos implements Serializable {
     private ReclamosSB reclamosSB;
 
     private DataModel misReclamos;
+
     private List<TiposReclamos> tiposDeReclamos;
+
     private TiposReclamos tipoDeReclamosSeleccionado;
+
     private Reclamos nuevoReclamo;
+
     private Imagenes imagenParaGuardar;
 
-    private MapModel emptyModel;
-    private int zoom;
     private String dirReclamo;
+    private String imagenSemaforo;
+
+    private MapModel emptyModel;
+
+    private int zoom;
+
     private LatLng latituteLongitude;
 
     private boolean mostrarGraphicImage;
@@ -278,12 +288,49 @@ public class MbSReclamos implements Serializable {
         String patron = "dd-MM-yyyy";
         SimpleDateFormat formato = new SimpleDateFormat(patron);
         if (fecha == null) {
-            return formato.format(new Date());
+            return "";
         } else {
             return formato.format(fecha);
         }
     }
-    
+
+    public int tiempoTranscurrido(Reclamos reclamo) {
+        //Se crean objetos calendario con la fecha actual
+        Calendar hoy = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        int dias = 0;
+        int ban = 0;
+        int diasMaximo = 0;
+        //Se crea un objeto calendario con la fecha del inicio del reclamo
+        Calendar fechaInicio = new GregorianCalendar();
+        if (reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("PENDIENTE")) {
+            fechaInicio.setTime(reclamo.getFechaReclamo());
+            diasMaximo = reclamo.getFkCodTipoReclamo().getDiasMaximoPendientes();
+            ban = 1;
+        } else if (reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("EN PROCESO")) {
+            fechaInicio.setTime(reclamo.getFechaAtencionReclamo());
+            diasMaximo = reclamo.getFkCodTipoReclamo().getDiasMaximoFinalizados();
+            ban = 1;
+        }
+        if (ban == 1) {
+            //obtiene el dia
+            c.setTimeInMillis(hoy.getTime().getTime() - fechaInicio.getTime().getTime());
+            dias = c.get(Calendar.DAY_OF_YEAR);
+            mostrarSemaforo(dias, diasMaximo);
+        }
+        return dias;
+    }
+
+    public void mostrarSemaforo(Integer dias, Integer diasMaximo) {
+        if (dias < diasMaximo) {
+            setImagenSemaforo("verde20.jpg");
+        } else if (dias >= diasMaximo && dias < diasMaximo) {
+            setImagenSemaforo("amarillo20.jpg");
+        } else if (dias >= diasMaximo) {
+            setImagenSemaforo("rojo20.gif");
+        }
+    }
+
     /**
      * @return the misReclamos
      */
@@ -439,6 +486,20 @@ public class MbSReclamos implements Serializable {
      */
     public void setMostrarGraphicImage(boolean mostrarGraphicImage) {
         this.mostrarGraphicImage = mostrarGraphicImage;
+    }
+
+    /**
+     * @return the imagenSemaforo
+     */
+    public String getImagenSemaforo() {
+        return imagenSemaforo;
+    }
+
+    /**
+     * @param imagenSemaforo the imagenSemaforo to set
+     */
+    public void setImagenSemaforo(String imagenSemaforo) {
+        this.imagenSemaforo = imagenSemaforo;
     }
 
 }

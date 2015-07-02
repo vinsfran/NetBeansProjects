@@ -1,0 +1,3 @@
+
+Uso de condicion IF dentro de una pagina web en JSF
+#{reclamos.fechaAtencionReclamo != null? mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo) : '' }

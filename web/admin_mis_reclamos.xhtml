@@ -94,20 +94,20 @@
                                                                         <tbody>
                                                                             <tr>
                                                                                 <td style="border-top: none;">Fecha de atención:</td>
-                                                                                <td style="border-top: none;">#{reclamos.fechaAtencionReclamo != null? mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo) : '' }</td>
+                                                                                <td style="border-top: none;">#{mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo)}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td style="border-top: none;">Atendido por:</td>
-                                                                                <td style="border-top: none;"> #{reclamos.fkCodTipoReclamo.nombreTipoReclamo}</td>
+                                                                                <td style="border-top: none;">#{reclamos.fkCodUsuarioAtencion.fkCodPersona.nombrePersona} #{reclamos.fkCodUsuarioAtencion.fkCodPersona.apellidoPersona}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td style="border-top: none;">Descripción de tarea a realizar:</td>
-                                                                                <td style="border-top: none;"> #{reclamos.fechaReclamo}</td>
+                                                                                <td style="border-top: none;">#{reclamos.descripcionAtencionReclamo}</td>
                                                                             </tr>
-                                                                            
+
                                                                             <tr>
-                                                                                <td>Dirección del reclamo:</td>
-                                                                                <td> #{reclamos.direccionReclamo}</td>
+                                                                                <td>Tiempo estimado para finalizar:</td>
+                                                                                <td> #{reclamos.fkCodTipoReclamo.diasMaximoFinalizados}</td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
