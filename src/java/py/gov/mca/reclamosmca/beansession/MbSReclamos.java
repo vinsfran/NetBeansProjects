@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +82,7 @@ public class MbSReclamos implements Serializable {
     public MbSReclamos() {
 
     }
-    
+
     @PostConstruct
     public void init() {
         emptyModel = new DefaultMapModel();
@@ -128,10 +129,6 @@ public class MbSReclamos implements Serializable {
             this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
             this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
             Geocoding ObjGeocod = new Geocoding();
-            ArrayList<String> resultadoCI = ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
-            for (String dir : resultadoCI) {
-                System.out.println(dir);
-            }
             if (ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
                 setDirReclamo(ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
             } else {
@@ -147,7 +144,6 @@ public class MbSReclamos implements Serializable {
             this.nuevoReclamo.setFkImagen(new Imagenes());
             this.nuevoReclamo.setFkImagen(this.imagenParaGuardar);
         }
-
         if (this.tipoDeReclamosSeleccionado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
             return "admin_nuevo_reclamo";
@@ -158,6 +154,7 @@ public class MbSReclamos implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
             return "admin_nuevo_reclamo";
         } else {
+            System.out.println("Des: " + nuevoReclamo.getDescripcionReclamoContribuyente());
             nuevoReclamo.setFkCodUsuario(usu);
             nuevoReclamo.getFkCodUsuario().setFkCodRol(usu.getFkCodRol());
             nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
@@ -176,20 +173,10 @@ public class MbSReclamos implements Serializable {
                 return "admin_nuevo_reclamo";
             }
         }
-
     }
 
     public void onStateChange(StateChangeEvent event) {
         setZoom(event.getZoomLevel());
-    }
-
-    /**
-     * @return the misReclamos
-     */
-    public DataModel getMisReclamos() {
-        List<Reclamos> lista = reclamosSB.listarPorUsuario(recuperarUsuarioSession().getLoginUsuario());
-        misReclamos = new ListDataModel(lista);
-        return misReclamos;
     }
 
     public Usuarios recuperarUsuarioSession() {
@@ -232,8 +219,8 @@ public class MbSReclamos implements Serializable {
         try {
             //Se obtine la imagen que se va a guardar en la Base de datos
             this.imagenParaGuardar = new Imagenes();
-            this.imagenParaGuardar.setArchivoImagen(resize(file.getInputstream(), nAncho, nAlto));
-            //this.imagenParaGuardar.setArchivoImagen(ajustarImagen(file.getInputstream(), nAncho, nAlto, file.getContentType()));
+            //this.imagenParaGuardar.setArchivoImagen(resize(file.getInputstream(), nAncho, nAlto));
+            this.imagenParaGuardar.setArchivoImagen(ajustarImagen(file.getInputstream(), nAncho, nAlto, file.getContentType()));
             this.imagenParaGuardar.setTipoImagen(file.getContentType());
             this.imagenParaGuardar.setNombreImagen(file.getFileName());
             //Se convierte la imagen obtenida para mostrar como previa
@@ -254,33 +241,21 @@ public class MbSReclamos implements Serializable {
     }
 
     private byte[] ajustarImagen(InputStream imagen, int IMG_WIDTH, int IMG_HEIGHT, String tipoImagen) throws Exception {
-        String tipo = "";
-        if (tipoImagen.equals("image/jpeg") || tipoImagen.equals("image/jpg")) {
-            tipo = "jpg";
-        } else if (tipoImagen.equals("image/png")) {
-            tipo = "png";
-        } else if (tipoImagen.equals("image/gif")) {
-            tipo = "gif";
-        }
-
+        String tipo = tipoImagen.substring(6, tipoImagen.length());
         // InputStream inputStream = new ByteArrayInputStream(imagen);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             BufferedImage originalImage = ImageIO.read(imagen);
             int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-
             BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
             Graphics2D g = resizedImage.createGraphics();
             g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
             g.dispose();
             g.setComposite(AlphaComposite.Src);
-
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
             ImageIO.write(resizedImage, tipo, baos);
-            System.out.println("PASO");
         } catch (Throwable ex) {
             throw new Exception("Error proceso Tamaño Imagen " + ex.toString(), ex);
         }
@@ -288,18 +263,34 @@ public class MbSReclamos implements Serializable {
     }
 
     public byte[] resize(InputStream input, int width, int height) throws Exception {
-
         BufferedImage src = ImageIO.read(input);
         BufferedImage dest = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = dest.createGraphics();
         AffineTransform at = AffineTransform.getScaleInstance((double) width / src.getWidth(), (double) height / src.getHeight());
         g.drawRenderedImage(src, at);
-
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-
         ImageIO.write(dest, "JPG", output);
-
         return output.toByteArray();
+    }
+
+    public String formatearFecha(Date fecha) {
+        // formateo de fechas
+        String patron = "dd-MM-yyyy";
+        SimpleDateFormat formato = new SimpleDateFormat(patron);
+        if (fecha == null) {
+            return formato.format(new Date());
+        } else {
+            return formato.format(fecha);
+        }
+    }
+    
+    /**
+     * @return the misReclamos
+     */
+    public DataModel getMisReclamos() {
+        List<Reclamos> lista = reclamosSB.listarPorUsuario(recuperarUsuarioSession().getLoginUsuario());
+        misReclamos = new ListDataModel(lista);
+        return misReclamos;
     }
 
     /**

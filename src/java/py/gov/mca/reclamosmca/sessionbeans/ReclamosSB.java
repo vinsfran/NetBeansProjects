@@ -32,16 +32,19 @@ public class ReclamosSB {
     public String crearReclamos(Reclamos objeto) {
         mensajes = "";
         try {
-            Imagenes imagen = new Imagenes();
-            imagen = objeto.getFkImagen();
-            em.persist(imagen);
-            objeto.setFkImagen(imagen);
-            //  em.persist(objeto.getFkCodPersona());
-            em.merge(objeto);
-            em.flush();
-
-//            em.persist(objeto);
-//            em.flush();
+            if (objeto.getFkImagen() != null) {
+                Imagenes imagen = new Imagenes();
+                imagen = objeto.getFkImagen();
+                em.persist(imagen);
+                objeto.setFkImagen(imagen);
+                //  em.persist(objeto.getFkCodPersona());
+                em.merge(objeto);
+                em.flush();
+            }else{
+                
+                em.persist(objeto);
+                em.flush();
+            }
 
             System.out.println("CODIGO DE ROL: " + objeto.getFkCodUsuario().getFkCodRol().getCodRol());
             if (objeto.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {

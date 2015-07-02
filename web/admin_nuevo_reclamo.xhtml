@@ -22,9 +22,8 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-
-                                    <div class="col-md-12">
-                                        <h:form>
+                                    <h:form enctype="multipart/form-data">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Seleccione un tipo de reclamo</label>
 
@@ -40,7 +39,7 @@
                                                     <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
                                                 </h:selectOneMenu>
 
-                                            </div>
+                                            </div>                                            
                                             <div class="form-group">
                                                 <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
                                                 <div class="gmap">
@@ -56,7 +55,6 @@
                                                     </p:gmap>
                                                 </div>
                                             </div>
-
                                             <div class="form-group">
                                                 <label>Describa su reclamo.</label>
                                                 <p:inputTextarea required="false" 
@@ -70,12 +68,8 @@
                                                                  counterTemplate="{0} characters remaining."/>
                                                 <h:outputText id="display" />
                                             </div>
-                                        </h:form>
-                                        <h:form id="form" enctype="multipart/form-data">
                                             <div class="form-group">
-
                                                 <h:panelGroup id="panelGroup">
-
                                                     <p:fileUpload fileUploadListener="#{mbSReclamos.cargarImagen}" 
                                                                   mode="advanced" 
                                                                   dragDropSupport="false"
@@ -98,18 +92,15 @@
                                                                    rendered="#{mbSReclamos.mostrarGraphicImage}"
                                                                    class="btn btn-danger btn-sm"/>
                                                 </h:panelGroup>
-
                                             </div>
-                                        </h:form>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="modal-footer">
-                                            <h:form>
-                                                <h:commandButton class="btn btn-default" action="admin_mis_reclamos" value="Cancelar"/>
-                                                <h:commandButton class="btn btn-primary" action="#{mbSReclamos.enviarReclamo()}" value="Enviar reclamo"/>
-                                            </h:form>
                                         </div>
-                                    </div>
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandButton class="btn btn-default" action="admin_mis_reclamos" value="Cancelar"/>
+                                                <p:commandButton class="btn btn-primary" action="#{mbSReclamos.enviarReclamo()}" value="Enviar reclamo" ajax="false"/>
+                                            </div>
+                                        </div>
+                                    </h:form>
                                 </div>
                             </div>
                         </div>

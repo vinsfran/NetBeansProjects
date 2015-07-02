@@ -49,16 +49,70 @@
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                                                                <h4 class="modal-title" id="myModalLabel">#{reclamos.fkCodTipoReclamo.nombreTipoReclamo}</h4>
+                                                                <h3 class="modal-title" id="myModalLabel">Datos del Reclamo</h3>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-                                                                <p:gmap id="gmap"
-                                                                        center="#{reclamos.latitud}, #{reclamos.longitud}" 
-                                                                        zoom="15" type="HYBRID"  
-                                                                        style="width:100%;height:400px"
-                                                                        model="#{mbSReclamos.emptyModel}">
-                                                                </p:gmap>
+
+                                                                <div class="table-responsive">
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="2">Tipo de reclamo: #{reclamos.fkCodTipoReclamo.nombreTipoReclamo}</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Numero de reclamo:</td>
+                                                                                <td style="border-top: none;">#{reclamos.codReclamo}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Fecha de realización:</td>
+                                                                                <td style="border-top: none;"> #{mbSReclamos.formatearFecha(reclamos.fechaReclamo)}</td>
+                                                                            </tr>
+                                                                            <tr style="border-top: none;">
+                                                                                <td style="border-top: none;">Dirección del reclamo:</td>
+                                                                                <td style="border-top: none;"> #{reclamos.direccionReclamo}</td>
+                                                                            </tr>
+                                                                            <tr >
+                                                                                <td style="border-top: none;">Descripción del reclamo:</td>
+                                                                                <td style="border-top: none;"> #{reclamos.descripcionReclamoContribuyente}</td>
+                                                                            </tr>
+                                                                            <tr >
+                                                                                <td style="border-top: none;">Departamento responsable:</td>
+                                                                                <td style="border-top: none;"> #{reclamos.fkCodTipoReclamo.fkCodDependencia.nombreDependencia}</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="2">Estado del reclamo: #{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo}</th>
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Fecha de atención:</td>
+                                                                                <td style="border-top: none;">#{reclamos.fechaAtencionReclamo != null? mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo) : '' }</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Atendido por:</td>
+                                                                                <td style="border-top: none;"> #{reclamos.fkCodTipoReclamo.nombreTipoReclamo}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Descripción de tarea a realizar:</td>
+                                                                                <td style="border-top: none;"> #{reclamos.fechaReclamo}</td>
+                                                                            </tr>
+                                                                            
+                                                                            <tr>
+                                                                                <td>Dirección del reclamo:</td>
+                                                                                <td> #{reclamos.direccionReclamo}</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
