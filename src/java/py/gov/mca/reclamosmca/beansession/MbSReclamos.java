@@ -311,18 +311,27 @@ public class MbSReclamos implements Serializable {
             fechaInicio.setTime(reclamo.getFechaAtencionReclamo());
             diasMaximo = reclamo.getFkCodTipoReclamo().getDiasMaximoFinalizados();
             ban = 1;
+        } else if (reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("FINALIZADO")) {
+            diasMaximo = reclamo.getCantidadDiasProceso();
         }
         if (ban == 1) {
             //obtiene el dia
             c.setTimeInMillis(hoy.getTime().getTime() - fechaInicio.getTime().getTime());
             dias = c.get(Calendar.DAY_OF_YEAR);
-            mostrarSemaforo(dias, diasMaximo);
+
+        }
+        mostrarSemaforo(dias, diasMaximo);
+        if (ban == 0) {
+            dias = diasMaximo;
         }
         return dias;
     }
 
     public void mostrarSemaforo(Integer dias, Integer diasMaximo) {
-        if (dias < diasMaximo) {
+        if (dias == 0) {
+            System.out.println("ENTRA EN NULL");
+            setImagenSemaforo(null);
+        } else if (dias < diasMaximo) {
             setImagenSemaforo("verde20.jpg");
         } else if (dias >= diasMaximo && dias < diasMaximo) {
             setImagenSemaforo("amarillo20.jpg");
