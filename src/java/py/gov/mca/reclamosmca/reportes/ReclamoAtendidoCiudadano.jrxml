@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoPendienteCiudadano" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoAtendidoCiudadano" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<property name="ireport.background.image.properties" value="false,false,0.05,0,0,0,0,0,0"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
@@ -30,6 +30,9 @@
 	<parameter name="direccionReclamo" class="java.lang.String"/>
 	<parameter name="descripcionReclamoContribuyente" class="java.lang.String"/>
 	<parameter name="imagenReclamo" class="java.lang.Object"/>
+	<parameter name="fechaAtencion" class="java.util.Date"/>
+	<parameter name="usuarioAtencion" class="java.lang.String"/>
+	<parameter name="descripcionAtencion" class="java.lang.String"/>
 	<parameter name="estadoReclamo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -153,25 +156,6 @@
 				<reportElement x="0" y="300" width="515" height="65" uuid="8712c7b0-177a-4135-b5b5-966e6bcf5243"/>
 				<textFieldExpression><![CDATA[$P{descripcionReclamoContribuyente}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="0" y="420" width="252" height="170" uuid="51fa8767-3b89-411e-812e-607377af641c"/>
-				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<mp:latitudeExpression><![CDATA[$P{latitud}.floatValue()]]></mp:latitudeExpression>
-					<mp:longitudeExpression><![CDATA[$P{longitud}.floatValue()]]></mp:longitudeExpression>
-					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
-					<mp:markerData>
-						<dataset/>
-						<mp:item>
-							<mp:itemProperty name="latitude">
-								<valueExpression><![CDATA[$P{latitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-							<mp:itemProperty name="longitude">
-								<valueExpression><![CDATA[$P{longitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-						</mp:item>
-					</mp:markerData>
-				</mp:map>
-			</componentElement>
 			<staticText>
 				<reportElement x="0" y="250" width="162" height="20" uuid="896f470d-213a-4790-9e4a-15b58438e5fc"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -184,10 +168,6 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{direccionReclamo}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
-				<reportElement x="263" y="420" width="252" height="170" uuid="96b141a2-de0d-4b79-985f-4a35cf7a26de"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte []) $P{imagenReclamo})]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="0" y="275" width="515" height="20" uuid="c642a084-1132-44e2-9bc9-165af5c6259f"/>
 				<textElement verticalAlignment="Middle">
@@ -229,38 +209,107 @@
 				<textFieldExpression><![CDATA[$P{codReclamo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="263" y="395" width="252" height="20" uuid="3ac8847d-b545-49ca-9aec-5dabddddf3b3"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="0" y="445" width="515" height="20" uuid="0019c6ea-d6ff-4fbf-b627-400d5fe6dca7"/>
+				<textElement verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Imagen del reclamo]]></text>
+				<text><![CDATA[Descripción de tarea a realizar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="395" width="252" height="20" uuid="cd5339c3-50e2-4a40-a231-3118e3c359e7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="0" y="395" width="162" height="20" uuid="32136b00-9ffd-42bd-b247-dc6946de949d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Ubicación del reclamo]]></text>
+				<text><![CDATA[Fecha de atención:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="370" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="188bdc56-2a14-4659-a0cc-d8aab81ddde7"/>
+				<reportElement x="0" y="420" width="162" height="20" uuid="f6ddc4ff-6b57-4e9b-8a13-90604a6abce2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Atendido por:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="162" y="395" width="353" height="20" uuid="efd650cc-f2e8-4a57-816c-c4b57d0187ea"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaAtencion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="162" y="420" width="353" height="20" uuid="71ad5ad1-24c5-4532-b9fd-4442f2f01e3d"/>
+				<textFieldExpression><![CDATA[$P{usuarioAtencion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="470" width="515" height="65" uuid="95048d08-9f64-48b7-8476-45851d5ca9b7"/>
+				<textFieldExpression><![CDATA[$P{descripcionAtencion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="370" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="36047668-8a46-446e-b087-5c3462508e8b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
-				<text><![CDATA[Imagenes del reclamo]]></text>
+				<text><![CDATA[Detalle de atención]]></text>
 			</staticText>
+			<break>
+				<reportElement x="0" y="709" width="100" height="1" uuid="59ec5463-a621-4309-93a1-41abba6bc521"/>
+			</break>
 			<staticText>
-				<reportElement x="0" y="175" width="162" height="20" uuid="aea38f5d-68fa-4c06-91b5-14287b3c785f"/>
+				<reportElement x="0" y="175" width="162" height="20" uuid="54229684-79f8-4141-bdec-77dc56df6898"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Estado del reclamo:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="162" y="175" width="353" height="20" uuid="a311e717-f3fe-429f-83ab-702831fb848c"/>
+				<reportElement x="162" y="175" width="353" height="20" uuid="64df02cc-35b3-4b38-867f-58e3c677d4d3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{estadoReclamo}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="710" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="038e3d7b-b0ed-421f-b15f-c815b27b4ce3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Imagenes del reclamo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="515" height="20" uuid="c6955b44-eb6e-471d-ac82-218c8af99e84"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Ubicación del reclamo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="336" width="515" height="20" uuid="c8f6011e-30dd-47f6-a3ca-1d4e65d1b60b"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Imagen del reclamo]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="50" width="515" height="281" uuid="51fa8767-3b89-411e-812e-607377af641c"/>
+				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<mp:latitudeExpression><![CDATA[$P{latitud}.floatValue()]]></mp:latitudeExpression>
+					<mp:longitudeExpression><![CDATA[$P{longitud}.floatValue()]]></mp:longitudeExpression>
+					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$P{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$P{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+				</mp:map>
+			</componentElement>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="0" y="361" width="515" height="281" uuid="96b141a2-de0d-4b79-985f-4a35cf7a26de"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte []) $P{imagenReclamo})]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

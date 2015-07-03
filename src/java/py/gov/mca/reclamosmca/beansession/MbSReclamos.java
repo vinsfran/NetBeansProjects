@@ -363,7 +363,7 @@ public class MbSReclamos implements Serializable {
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
-        String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
+
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
         parametros.put("nombreDependencia", reclamoSeleccionado.getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
@@ -381,29 +381,29 @@ public class MbSReclamos implements Serializable {
         parametros.put("longitud", reclamoSeleccionado.getLongitud());
         parametros.put("direccionReclamo", reclamoSeleccionado.getDireccionReclamo());
         parametros.put("descripcionReclamoContribuyente", reclamoSeleccionado.getDescripcionReclamoContribuyente());
+        parametros.put("estadoReclamo", reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo());
 
         if (reclamoSeleccionado.getFkImagen() == null) {
-            System.out.println("ENTRO");
+            String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
             File imageFile = new File(urlImagen3);
-            
-            InputStream is = new FileInputStream (imageFile);
-            
+            InputStream is = new FileInputStream(imageFile);
             parametros.put("imagenReclamo", ajustarImagen(is, 640, 480, "image/png"));
-            
-        }else{
+        } else {
             parametros.put("imagenReclamo", reclamoSeleccionado.getFkImagen().getArchivoImagen());
         }
 
-        
-        System.out.println("CodReclamo2: " + codReclamo);
         if (reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("PENDIENTE")) {
             jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper"));
+        } else if (reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("EN PROCESO")) {
+            parametros.put("fechaAtencion", reclamoSeleccionado.getFechaAtencionReclamo());
+            parametros.put("usuarioAtencion", reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getApellidoPersona());
+            parametros.put("descripcionAtencion", reclamoSeleccionado.getDescripcionAtencionReclamo());
+            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper"));
         } else {
-            parametros.put("fechaCulminacionReclamo", reclamoSeleccionado.getFechaCulminacionReclamo());
-            parametros.put("usuarioFin", reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getApellidoPersona());
-            parametros.put("descripcionCulminacionReclamo", reclamoSeleccionado.getDescripcionCulminacionReclamo());
-
-            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoFinalizado.jasper"));
+            parametros.put("fechaAtencion", reclamoSeleccionado.getFechaAtencionReclamo());
+            parametros.put("usuarioAtencion", reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getApellidoPersona());
+            parametros.put("descripcionAtencion", reclamoSeleccionado.getDescripcionAtencionReclamo());
+            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper"));
         }
 
         // File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/src/java/py/gov/mca/reclamosmca/reportes/mapas.jasper"));
