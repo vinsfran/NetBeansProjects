@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoPendienteCiudadano" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
+	<property name="ireport.zoom" value="1.100000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="254"/>
+	<property name="ireport.background.image.properties" value="false,false,0.05,0,0,0,0,0,0"/>
+	<style name="style1">
+		<pen lineStyle="Double" lineColor="#040202"/>
+		<box>
+			<pen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<topPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<leftPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<bottomPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<rightPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="urlImagen" class="java.lang.String"/>
+	<parameter name="urlImagen2" class="java.lang.String"/>
+	<parameter name="nombreDependencia" class="java.lang.String"/>
+	<parameter name="nombreTipoReclamo" class="java.lang.String"/>
+	<parameter name="cedulaPersona" class="java.lang.String"/>
+	<parameter name="nombrePersona" class="java.lang.String"/>
+	<parameter name="apellidoPersona" class="java.lang.String"/>
+	<parameter name="direccionPersona" class="java.lang.String"/>
+	<parameter name="telefonoPersona" class="java.lang.String"/>
+	<parameter name="codReclamo" class="java.lang.Integer"/>
+	<parameter name="fechaReclamo" class="java.util.Date"/>
+	<parameter name="latitud" class="java.lang.Double"/>
+	<parameter name="longitud" class="java.lang.Double"/>
+	<parameter name="direccionReclamo" class="java.lang.String"/>
+	<parameter name="descripcionReclamoContribuyente" class="java.lang.String"/>
+	<parameter name="imagenReclamo" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<variable name="nombreApellido" class="java.lang.String">
+		<variableExpression><![CDATA[$P{nombrePersona}+" "+$P{apellidoPersona}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="71" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="-10" width="106" height="71" uuid="1b28c69e-61f5-4411-8706-bf05d8c1769b"/>
+				<imageExpression><![CDATA[$P{urlImagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="0" width="515" height="19" uuid="93992970-279a-4480-be27-842fb8b10aa1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[	MUNICIPALIDAD DE ASUNCION]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="70" width="515" height="1" uuid="6dc022d4-98c3-4754-a933-c85f18f6a3ac"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="24" width="515" height="20" uuid="6cacdb36-9761-4922-8b78-697932201b70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Reclamo Ciudadano]]></text>
+			</staticText>
+			<image>
+				<reportElement x="430" y="-22" width="101" height="92" uuid="8d4b4bab-df5f-4a44-8d5b-117902c6e276"/>
+				<imageExpression><![CDATA[$P{urlImagen2}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="500" splitType="Stretch">
+			<textField>
+				<reportElement x="162" y="150" width="353" height="20" uuid="46ac4e17-d85b-4cf8-a4c2-fce7e95dc99a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreTipoReclamo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="4563b118-d191-47f7-a184-44bd1604c50f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Datos del ciudadano]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="116" height="20" uuid="c59059a4-75f5-4381-98b3-46ee77bdfc9a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cedula:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="25" width="104" height="20" uuid="586c3843-4f4c-47dd-a7ac-78a4bb536cc3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$P{cedulaPersona}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="116" height="20" uuid="19caf777-1e82-43ff-aabb-bd5e69f19a46"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Nombre y Apellido:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="50" width="399" height="20" uuid="ed800efc-4e74-400e-85fc-2568f7cbdfbd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{nombreApellido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="75" width="116" height="20" uuid="8b53c268-e000-4de9-9f43-e06507bbbf11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="75" width="399" height="20" uuid="9836ff3d-7f62-4ec9-8e1e-6eb8540105af"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{direccionPersona}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="225" y="25" width="116" height="20" uuid="8b53c268-e000-4de9-9f43-e06507bbbf11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Telefono:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="341" y="25" width="104" height="20" uuid="7a911f48-37d9-4f18-bde2-3a4ebf8b1737"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{telefonoPersona}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="100" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="2df47002-06d2-43c4-8ab4-d6f521db951b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Datos del reclamo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="200" width="162" height="20" uuid="8b53c268-e000-4de9-9f43-e06507bbbf11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de realización:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="162" y="200" width="353" height="20" uuid="58252ec0-c793-468b-8e7b-2d75aa2e1ccf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaReclamo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="162" y="250" width="353" height="71" uuid="8712c7b0-177a-4135-b5b5-966e6bcf5243"/>
+				<textFieldExpression><![CDATA[$P{descripcionReclamoContribuyente}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="0" y="328" width="252" height="170" uuid="51fa8767-3b89-411e-812e-607377af641c"/>
+				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<mp:latitudeExpression><![CDATA[$P{latitud}.floatValue()]]></mp:latitudeExpression>
+					<mp:longitudeExpression><![CDATA[$P{longitud}.floatValue()]]></mp:longitudeExpression>
+					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
+					<mp:markerData>
+						<dataset/>
+						<mp:item>
+							<mp:itemProperty name="latitude">
+								<valueExpression><![CDATA[$P{latitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+							<mp:itemProperty name="longitude">
+								<valueExpression><![CDATA[$P{longitud}.floatValue()]]></valueExpression>
+							</mp:itemProperty>
+						</mp:item>
+					</mp:markerData>
+				</mp:map>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="225" width="162" height="20" uuid="896f470d-213a-4790-9e4a-15b58438e5fc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Dirección del reclamo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="162" y="225" width="353" height="20" uuid="96de1c03-3569-4171-8f0d-d8d3c0184952"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{direccionReclamo}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="263" y="328" width="252" height="170" uuid="96b141a2-de0d-4b79-985f-4a35cf7a26de"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte []) $P{imagenReclamo})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="250" width="162" height="20" uuid="c642a084-1132-44e2-9bc9-165af5c6259f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Descripción del reclamo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="175" width="162" height="20" uuid="8d49b410-bf75-4668-8ff0-59ff0d5cf194"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Departamento responsable:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="150" width="162" height="20" uuid="5a2c763f-cbb3-486e-810b-a20202f40c3e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de reclamo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="175" width="353" height="20" uuid="6eea085e-01ce-4ae6-83b4-99d999679bd5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{nombreDependencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="125" width="162" height="20" uuid="f3a53f1a-a020-4029-9286-c6abf3ead0a7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de reclamo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="162" y="125" width="353" height="20" uuid="65d2a040-8f7e-4b58-89dc-1ab4731803dc"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codReclamo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

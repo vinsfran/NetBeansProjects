@@ -56,11 +56,10 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>
-                                                                                    El reclamo esta: #{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo}
+                                                                                    <h:outputText value="El reclamo esta: #{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo}"/>
                                                                                 </th>
                                                                                 <th>
-                                                                                    Tiempo trascurrido:  
-                                                                                    #{mbSReclamos.tiempoTranscurrido(reclamos)}
+                                                                                    Tiempo trascurrido: #{mbSReclamos.tiempoTranscurrido(reclamos)} #{mbSReclamos.tiempoTranscurrido(reclamos) > 1? 'dias': 'dia'}  
                                                                                     <h:graphicImage library="images" name="#{mbSReclamos.imagenSemaforo}" rendered="#{mbSReclamos.imagenSemaforo != null? true : false}"/>
                                                                                 </th>
                                                                             </tr>
@@ -80,7 +79,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td style="border-top: none;">Tiempo estimado para finalizar:</td>
-                                                                                <td style="border-top: none;"> #{reclamos.fkCodTipoReclamo.diasMaximoFinalizados} dias</td>
+                                                                                <td style="border-top: none;"> #{reclamos.fkCodTipoReclamo.diasMaximoFinalizados} #{reclamos.fkCodTipoReclamo.diasMaximoFinalizados > 1? 'dias': 'dia'}</td>
                                                                             </tr>
                                                                             <tr style="border-top: none;">
                                                                                 <td style="border-top: none;">Dirección del reclamo:</td>
@@ -100,7 +99,7 @@
                                                                         <table class="table">
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th colspan="2">Informe sobre tareas</th>
+                                                                                    <th colspan="2">Detalle de atención</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -116,23 +115,43 @@
                                                                                     <td style="border-top: none;">Descripción de tarea a realizar:</td>
                                                                                     <td style="border-top: none;">#{reclamos.descripcionAtencionReclamo}</td>
                                                                                 </tr>
-
-                                                                                <tr>
-                                                                                    <td>Tiempo trascurrido:</td>
-                                                                                    <td> 
-                                                                                        #{mbSReclamos.tiempoTranscurrido(reclamos)}
-                                                                                        <h:graphicImage library="images" name="#{mbSReclamos.imagenSemaforo}"/>
-                                                                                    </td>
-                                                                                </tr>
                                                                             </tbody>
                                                                         </table>
+                                                                        <h:panelGroup rendered="#{reclamos.fechaCulminacionReclamo != null? true : false}" >
+                                                                            <table class="table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th colspan="2">Detalle de finalización</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td style="border-top: none;">Fecha de finalización:</td>
+                                                                                        <td style="border-top: none;">#{mbSReclamos.formatearFecha(reclamos.fechaCulminacionReclamo)}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="border-top: none;">Atendido por:</td>
+                                                                                        <td style="border-top: none;">#{reclamos.fkCodUsuarioCulminacion.fkCodPersona.nombrePersona} #{reclamos.fkCodUsuarioCulminacion.fkCodPersona.apellidoPersona}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="border-top: none;">Descripción de tarea a realizada:</td>
+                                                                                        <td style="border-top: none;">#{reclamos.descripcionCulminacionReclamo}</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </h:panelGroup>
                                                                     </h:panelGroup>
                                                                 </div>
 
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                                
+                                                                <h:form>
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                                    <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
+                                                                        <i class="fa fa-file-pdf-o"></i> Descargar PDF
+                                                                    </h:commandLink>
+                                                                </h:form>
                                                             </div>
                                                         </div>
                                                     </div>

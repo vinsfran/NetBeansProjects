@@ -63,11 +63,8 @@ public class UsuariosMB implements Serializable {
                 if (getUsuario() != null) {
                     if (getUsuario().getClaveUsuario().equals(contrasenaMD5) && getUsuario().getFkCodEstadoUsuario().getCodEstadoUsuario().equals(1)) {
                         setSessionIniciada(true);
-                        if (getUsuario().getFkCodRol().getCodRol().equals(1)) {
-                            pagina = "administracion" + getRedireccion();
-                        } else {
-                            pagina = "listarreclamos" + getRedireccion();
-                        }
+
+                        pagina = "listarreclamos" + getRedireccion();
 
                     } else if (getUsuario().getClaveUsuario().equals(contrasenaMD5) && getUsuario().getFkCodEstadoUsuario().getCodEstadoUsuario().equals(2)) {
                         FacesContext context = FacesContext.getCurrentInstance();

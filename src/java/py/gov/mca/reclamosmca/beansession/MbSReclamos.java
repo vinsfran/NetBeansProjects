@@ -7,6 +7,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -17,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -26,16 +30,27 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import maps.java.Geocoding;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
@@ -338,6 +353,77 @@ public class MbSReclamos implements Serializable {
         } else if (dias >= diasMaximo) {
             setImagenSemaforo("rojo20.gif");
         }
+    }
+
+    public void exportarPDF(Integer codReclamo) throws JRException, IOException, Exception {
+        System.out.println("CodReclamo: " + codReclamo);
+        Reclamos reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
+        JasperReport jasper;
+        Map parametros = new HashMap();
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
+        parametros.put("urlImagen", urlImagen);
+        parametros.put("urlImagen2", urlImagen2);
+        parametros.put("nombreDependencia", reclamoSeleccionado.getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
+        parametros.put("nombreTipoReclamo", reclamoSeleccionado.getFkCodTipoReclamo().getNombreTipoReclamo());
+        parametros.put("cedulaPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getCedulaPersona());
+        parametros.put("nombrePersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getNombrePersona());
+        parametros.put("apellidoPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getApellidoPersona());
+        parametros.put("direccionPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getDireccionPersona());
+        parametros.put("telefonoPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getTelefonoPersona());
+
+        parametros.put("codReclamo", reclamoSeleccionado.getCodReclamo());
+        parametros.put("fechaReclamo", reclamoSeleccionado.getFechaReclamo());
+        parametros.put("direccionReclamo", reclamoSeleccionado.getDireccionReclamo());
+        parametros.put("latitud", reclamoSeleccionado.getLatitud());
+        parametros.put("longitud", reclamoSeleccionado.getLongitud());
+        parametros.put("direccionReclamo", reclamoSeleccionado.getDireccionReclamo());
+        parametros.put("descripcionReclamoContribuyente", reclamoSeleccionado.getDescripcionReclamoContribuyente());
+
+        if (reclamoSeleccionado.getFkImagen() == null) {
+            System.out.println("ENTRO");
+            File imageFile = new File(urlImagen3);
+            
+            InputStream is = new FileInputStream (imageFile);
+            
+            parametros.put("imagenReclamo", ajustarImagen(is, 640, 480, "image/png"));
+            
+        }else{
+            parametros.put("imagenReclamo", reclamoSeleccionado.getFkImagen().getArchivoImagen());
+        }
+
+        
+        System.out.println("CodReclamo2: " + codReclamo);
+        if (reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("PENDIENTE")) {
+            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper"));
+        } else {
+            parametros.put("fechaCulminacionReclamo", reclamoSeleccionado.getFechaCulminacionReclamo());
+            parametros.put("usuarioFin", reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getApellidoPersona());
+            parametros.put("descripcionCulminacionReclamo", reclamoSeleccionado.getDescripcionCulminacionReclamo());
+
+            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoFinalizado.jasper"));
+        }
+
+        // File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/src/java/py/gov/mca/reclamosmca/reportes/mapas.jasper"));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JREmptyDataSource());
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("application/pdf");
+        response.addHeader("Content-disposition", "attachment; filename=RECLAMO_" + reclamoSeleccionado.getCodReclamo() + "_" + reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo() + ".pdf");
+        //response.
+        //Response.Write("<script>window.print();</script>"); 
+
+        ServletOutputStream stream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+        stream.flush();
+        stream.close();
+        FacesContext.getCurrentInstance().responseComplete();
+
     }
 
     /**
