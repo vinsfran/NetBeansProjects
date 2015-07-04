@@ -355,8 +355,8 @@ public class MbSReclamos implements Serializable {
         }
     }
 
-    public void exportarPDF(Integer codReclamo) throws JRException, IOException, Exception {
-        System.out.println("CodReclamo: " + codReclamo);
+    public void exportarPDF(Integer codReclamo) throws JRException, IOException, Exception {        
+        System.out.println("exportarPDF CodReclamo: " + codReclamo);
         Reclamos reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
         Map parametros = new HashMap();
@@ -391,19 +391,19 @@ public class MbSReclamos implements Serializable {
         } else {
             parametros.put("imagenReclamo", reclamoSeleccionado.getFkImagen().getArchivoImagen());
         }
-
-        if (reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("PENDIENTE")) {
-            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper"));
-        } else if (reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("EN PROCESO")) {
+        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper"));
+        //Se verifica que estado tiene el reclamo. codEstadoReclamo = 1 --> PENDIENTE, codEstadoReclamo = 2 --> ATENDIDO, codEstadoReclamo = 3 --> FINALIZADO
+        if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(2) || reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
             parametros.put("fechaAtencion", reclamoSeleccionado.getFechaAtencionReclamo());
             parametros.put("usuarioAtencion", reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getApellidoPersona());
             parametros.put("descripcionAtencion", reclamoSeleccionado.getDescripcionAtencionReclamo());
             jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper"));
-        } else {
-            parametros.put("fechaAtencion", reclamoSeleccionado.getFechaAtencionReclamo());
-            parametros.put("usuarioAtencion", reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getApellidoPersona());
-            parametros.put("descripcionAtencion", reclamoSeleccionado.getDescripcionAtencionReclamo());
-            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper"));
+            if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
+                parametros.put("fechaFinalizacion", reclamoSeleccionado.getFechaCulminacionReclamo());
+                parametros.put("usuarioFinalizacion", reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getApellidoPersona());
+                parametros.put("descripcionFinalizacion", reclamoSeleccionado.getDescripcionCulminacionReclamo());
+                jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jasper"));
+            }
         }
 
         // File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/src/java/py/gov/mca/reclamosmca/reportes/mapas.jasper"));

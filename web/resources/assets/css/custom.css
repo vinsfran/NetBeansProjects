@@ -81,6 +81,7 @@ body {
 #wrapper {
     width: 100%;
     background:#202020;
+    /*    background:#fff;*/
 }
 
 #page-wrapper {
@@ -268,12 +269,13 @@ p {
 }
 
 .navbar-cls-top .navbar-brand {
-    color: #fff;
-/*    background: #c52d2f;*/
-    width: 260px;
+
+    /*    background: #c52d2f;*/
+    color: #FFF;
+    width: 255px;
     text-align: center;
     height: 60px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
 }
 .active-menu {
@@ -307,6 +309,7 @@ p {
 }
 .sidebar-collapse , .sidebar-collapse .nav{
     background:none;
+    padding-left: 0px;
 }
 .sidebar-collapse .nav {
     padding:0;
@@ -364,16 +367,15 @@ p {
 .navbar-side {
     border:none;
     background-color: #202020;
-
 }
 .navbar-cls-top {
-    background:#4D4D4D;
+    background:#202020;
     border-bottom:none;
 
 }
 .navbar-cls-top .navbar-brand:hover {
 
-    background: #A70303;
+    /*    background: #A70303;*/
     color:#fff;
 
 }
@@ -383,7 +385,8 @@ p {
 
 }
 .navbar-header {
-    background: #A70303;
+
+    background: linear-gradient( 90deg, #202020, #4CAE4C);
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
     background-color: #B40101;
@@ -419,22 +422,54 @@ p {
 
 @media(min-width:768px) {
     #page-wrapper{
-        margin: 0 0 0 260px;
-        padding: 15px 30px;
+        margin: 0px 0px 0px 255px;
+        padding: 2px 5px;
         min-height: 1200px;
-
     }
 
 
     .navbar-side {
         z-index: 1;
         position: absolute;
-        width: 260px;
+        width: 255px;
     }
 
     .navbar {
         border-radius: 0px; 
     }
+
+    .navbar-collapse {
+        padding-right: 15px;
+        padding-left: 0px;
+        overflow-x: visible;
+        border-top: 1px solid transparent;
+        box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.1) inset;
+    }
+
+/*    .table-responsive {
+        width: 100%;
+        margin-bottom: 15px;
+        overflow-y: hidden;
+                border: 1px solid #DDD;
+    }
+
+    .table-bordered {
+          border: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+    .table-bordered > thead > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > tbody > tr > th{
+        border-left: none;
+        border-right: none;
+    }
+    
+    .table-bordered > thead > tr > td,
+    .table-bordered > tbody > tr > td,
+    .table-bordered > tfoot > tr > td {
+          border: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }*/
 
 }
 

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoAtendidoCiudadano" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="110"/>
 	<property name="ireport.background.image.properties" value="false,false,0.05,0,0,0,0,0,0"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
@@ -30,10 +30,13 @@
 	<parameter name="direccionReclamo" class="java.lang.String"/>
 	<parameter name="descripcionReclamoContribuyente" class="java.lang.String"/>
 	<parameter name="imagenReclamo" class="java.lang.Object"/>
+	<parameter name="estadoReclamo" class="java.lang.String"/>
 	<parameter name="fechaAtencion" class="java.util.Date"/>
 	<parameter name="usuarioAtencion" class="java.lang.String"/>
 	<parameter name="descripcionAtencion" class="java.lang.String"/>
-	<parameter name="estadoReclamo" class="java.lang.String"/>
+	<parameter name="fechaFinalizacion" class="java.util.Date"/>
+	<parameter name="usuarioFinalizacion" class="java.lang.String"/>
+	<parameter name="descripcionFinalizacion" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -263,6 +266,49 @@
 				<reportElement x="162" y="175" width="353" height="20" uuid="64df02cc-35b3-4b38-867f-58e3c677d4d3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{estadoReclamo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="540" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="70f231bb-6cb6-4e05-b966-8df8cf90d8cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Detalle de finalización]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="615" width="515" height="20" uuid="47b25f06-da13-4cb7-819a-1fb48fa347b9"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Descripción de tarea a realizada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="590" width="162" height="20" uuid="e67d181e-a673-4ac0-ba3e-0e6ecea9db5c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Atendido por:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="565" width="162" height="20" uuid="822aa97c-0fec-4622-8f65-d60f7afb781e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de finalización:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="162" y="565" width="353" height="20" uuid="de02d89e-3f76-42a7-aef3-7d77a43f59a6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinalizacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="590" width="353" height="20" uuid="109ca6f5-1e98-429a-afb9-9e0680a8b7d7"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{usuarioFinalizacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="640" width="515" height="65" uuid="1834134d-3b02-4a88-a0df-d8659fd1938d"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{descripcionFinalizacion}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="710" splitType="Stretch">

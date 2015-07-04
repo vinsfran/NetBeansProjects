@@ -1,30 +1,133 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-        <h:form>
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Reclamos Online</a> 
-            </div>
+    <nav class="navbar-inverse navbar-cls-top" role="navigation">
+        <div class="navbar-header" style="float: none;">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Reclamos Online</a> 
             <div style="color: #FFFFFF;
-                 padding: 15px 50px 5px 50px;
+                 padding: 13px;
                  float: right;
                  font-size: 14px;"> 
+                <h:form>
+                    <h:outputText value="Sesión iniciada como: #{mbSLogin.usuario.loginUsuario} "/>
 
-                <h:outputText value="Sesión iniciada como: #{mbSLogin.usuario.loginUsuario} "/>
-                <h:commandLink action="#{mbSLogin.btnSalir()}" class="btn btn-primary">
-                    <i class="fa fa-external-link"></i> Cerrar sesión
-                </h:commandLink>
-
-
+                    <h:commandLink action="#{mbSLogin.btnSalir()}" class="btn btn-primary">
+                        <i class="fa fa-external-link"></i> Cerrar sesión
+                    </h:commandLink>
+                </h:form>
             </div>
-        </h:form>
+        </div>
+        <div class="navbar-collapse collapse">
+            <div class="sidebar-collapse">
+                <h:form>
+                    <ul class="nav navbar-side" >
+                        <li class="text-center">
+                            <h:graphicImage library="images" name="asu128.png"/>
+                        </li>
+                        <li>
+                            <a data-toggle="collapse" href="#collapse1"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
+                            <div id="collapse1" class="collapse">
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="#"><i class="fa fa-refresh"></i> Actualizar mis datos</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-key"></i> Cambiar contraseña</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a data-toggle="collapse" href="#collapse2"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
+                            <div id="collapse2" class="collapse">
+                                <ul class="nav nav-second-level">
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="admin_mis_reclamos">
+                                                <i class="fa fa-briefcase"></i> Mis reclamos
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="#{mbSReclamos.prepararNuevoReclamo()}">
+                                                <i class="fa fa-edit"></i> Nuevo reclamo
+                                            </h:commandLink>
+
+                                        </li>
+                                    </ui:fragment>
+                                    <li>
+                                        <a href="#"><i class="fa fa-search"></i> Buscar reclamo</a>
+                                    </li>  
+                                </ul>
+                            </div>
+                        </li> 
+                        <li>
+                            <a data-toggle="collapse" href="#collapse3"><i class="fa fa-inbox fa-3x"></i> Gestionar reclamos<span class="fa arrow"></span></a>
+                            <div id="collapse3" class="collapse">
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>  
+                        <li>
+                            <a data-toggle="collapse" href="#collapse4"><i class="fa fa-list-alt fa-3x"></i> Reportes<span class="fa arrow"></span></a>
+                            <div id="collapse4" class="collapse">
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>  	
+                        <li>
+                            <a data-toggle="collapse" href="#collapse5"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
+                            <div id="collapse5" class="collapse">
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="#"><i class="fa fa-users"></i> Usuarios</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-shield"></i> Roles</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-university"></i> Dependencias</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-folder-o"></i> Tipos de reclamos</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-folder-o"></i> Estado de reclamos</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li> 
+                    </ul>
+                </h:form>
+            </div>
+        </div>
+
+
     </nav>   
     <!-- /. NAV TOP  -->
 </ui:composition>

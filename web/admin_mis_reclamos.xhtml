@@ -31,27 +31,33 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Tipo de reclamo</f:facet>
-                                            <h:outputText value="#{reclamos.fkCodTipoReclamo.nombreTipoReclamo}"/>
+                                            <h:outputText value="#{reclamos.fkCodTipoReclamo.nombreTipoReclamo.trim()}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Situación del reclamo</f:facet>
-                                            <h:outputText value="#{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo}"/>
+                                            <h:outputText value="#{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo.trim()}"/>
+
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Detalles</f:facet>
-                                            <div align="center">
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}">
-                                                    Mostrar
-                                                </button>
-                                                <div class="modal fade" id="#{reclamos.codReclamo}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                                                                <h3 class="modal-title" id="myModalLabel">Datos del Reclamo</h3>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="table-responsive">
+
+                                            <f:facet name="header">Acciones</f:facet>
+
+                                            <button style="margin-left: 5px; margin-right: 2px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}">
+                                                Ver detalles
+                                            </button>
+
+
+
+                                            <div class="modal fade" id="#{reclamos.codReclamo}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                                            <h3 class="modal-title" id="myModalLabel">Datos del Reclamo</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="table-responsive">
+                                                                <h:panelGroup>
                                                                     <table class="table">
                                                                         <thead>
                                                                             <tr>
@@ -93,16 +99,12 @@
                                                                                 <td style="border-top: none;">Departamento responsable:</td>
                                                                                 <td style="border-top: none;"> #{reclamos.fkCodTipoReclamo.fkCodDependencia.nombreDependencia}</td>
                                                                             </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                    <h:panelGroup rendered="#{reclamos.fechaAtencionReclamo != null? true : false}" >
-                                                                        <table class="table">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th colspan="2">Detalle de atención</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
+                                                                            <h:panelGroup rendered="#{reclamos.fechaAtencionReclamo != null? true : false}" >
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th colspan="2" style="border-top: none;">Detalle de atención</th>
+                                                                                    </tr>
+                                                                                </thead>
                                                                                 <tr>
                                                                                     <td style="border-top: none;">Fecha de atención:</td>
                                                                                     <td style="border-top: none;">#{mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo)}</td>
@@ -115,16 +117,12 @@
                                                                                     <td style="border-top: none;">Descripción de tarea a realizar:</td>
                                                                                     <td style="border-top: none;">#{reclamos.descripcionAtencionReclamo}</td>
                                                                                 </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <h:panelGroup rendered="#{reclamos.fechaCulminacionReclamo != null? true : false}" >
-                                                                            <table class="table">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th colspan="2">Detalle de finalización</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
+                                                                                <h:panelGroup rendered="#{reclamos.fechaCulminacionReclamo != null? true : false}" >
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th colspan="2" style="border-top: none;">Detalle de finalización</th>
+                                                                                        </tr>
+                                                                                    </thead>
                                                                                     <tr>
                                                                                         <td style="border-top: none;">Fecha de finalización:</td>
                                                                                         <td style="border-top: none;">#{mbSReclamos.formatearFecha(reclamos.fechaCulminacionReclamo)}</td>
@@ -137,25 +135,25 @@
                                                                                         <td style="border-top: none;">Descripción de tarea a realizada:</td>
                                                                                         <td style="border-top: none;">#{reclamos.descripcionCulminacionReclamo}</td>
                                                                                     </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </h:panelGroup>
-                                                                    </h:panelGroup>
-                                                                </div>
+                                                                                </h:panelGroup>
+                                                                            </h:panelGroup>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </h:panelGroup>
+                                                            </div>
 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                
-                                                                <h:form>
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                                                    <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
-                                                                        <i class="fa fa-file-pdf-o"></i> Descargar PDF
-                                                                    </h:commandLink>
-                                                                </h:form>
-                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <h:form>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                                <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
+                                                                    <i class="fa fa-file-pdf-o"></i> Descargar PDF
+                                                                </h:commandLink>
+                                                            </h:form>
                                                         </div>
                                                     </div>
                                                 </div>
+
 
                                             </div>
                                         </h:column>

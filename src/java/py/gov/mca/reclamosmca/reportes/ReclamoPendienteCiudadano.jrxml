@@ -219,7 +219,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Tipo de reclamo:]]></text>
+				<text><![CDATA[Nro. de reclamo:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="162" y="125" width="353" height="20" uuid="65d2a040-8f7e-4b58-89dc-1ab4731803dc"/>
