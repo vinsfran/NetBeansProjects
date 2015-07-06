@@ -60,9 +60,22 @@
     </h:head>
     <h:body style="background: #202020 none repeat scroll 0%">
         <div align="center">
-            <p:graphicImage id="imagen" 
-                            class="img-responsive"
-                            value="#{mbSReclamos.imagenCargada}" cache="false"/>
+            <h:panelGrid columns="1" rendered="#{mbSReclamos.reclamoSeleccionado.fkImagen != null? true : false}">
+                <h1>Imagen del reclamo</h1>
+                <p:graphicImage id="imagen1" 
+                                class="img-responsive"
+                                value="#{mbSReclamos.imagenCargada}" cache="false"/>
+            </h:panelGrid>
+            <h:panelGrid columns="1" rendered="#{mbSReclamos.reclamoSeleccionado.fkImagen != null? false : true}">
+                <h1>Reclamo sin imagen</h1>
+                <p:graphicImage id="imagen2" 
+                                class="img-responsive"
+                                library="images"
+                                width="400"
+                                height="400"
+                                name="imagen_no_encontrada.jpg" cache="false"/>
+            </h:panelGrid>
+
         </div>
 
     </h:body>

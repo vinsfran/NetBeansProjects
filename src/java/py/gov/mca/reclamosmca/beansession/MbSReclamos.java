@@ -91,6 +91,7 @@ public class MbSReclamos implements Serializable {
     private TiposReclamos tipoDeReclamosSeleccionado;
 
     private Reclamos nuevoReclamo;
+    private Reclamos reclamoSeleccionado;
 
     private Imagenes imagenParaGuardar;
 
@@ -475,14 +476,16 @@ public class MbSReclamos implements Serializable {
     }
 
     public void verImagen(Reclamos reclamo) {
-        System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
+        reclamoSeleccionado = reclamo;
+        //System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
         //Se convierte la imagen obtenida para mostrar como previa
-        reclamo.getFkImagen().getArchivoImagen();
+        
         this.imagenCargada = null;
-        this.imagenCargada = new DefaultStreamedContent(new ByteArrayInputStream(reclamo.getFkImagen().getArchivoImagen()), reclamo.getFkImagen().getTipoImagen());
-        this.imagenCargada.setName(reclamo.getFkImagen().getNombreImagen());
-        this.imagenCargada.setContentType(reclamo.getFkImagen().getTipoImagen());
-        // this.setMostrarGraphicImage(true);
+        if (reclamoSeleccionado.getFkImagen() != null) {
+            this.imagenCargada = new DefaultStreamedContent(new ByteArrayInputStream(reclamoSeleccionado.getFkImagen().getArchivoImagen()), reclamoSeleccionado.getFkImagen().getTipoImagen());
+            this.imagenCargada.setName(reclamoSeleccionado.getFkImagen().getNombreImagen());
+            this.imagenCargada.setContentType(reclamoSeleccionado.getFkImagen().getTipoImagen());
+        } 
     }
 
     public void actualizarReclamoPendiente(Reclamos reclamo) {
@@ -726,6 +729,20 @@ public class MbSReclamos implements Serializable {
      */
     public void setReclamosFinalizados(DataModel reclamosFinalizados) {
         this.reclamosFinalizados = reclamosFinalizados;
+    }
+
+    /**
+     * @return the reclamoSeleccionado
+     */
+    public Reclamos getReclamoSeleccionado() {
+        return reclamoSeleccionado;
+    }
+
+    /**
+     * @param reclamoSeleccionado the reclamoSeleccionado to set
+     */
+    public void setReclamoSeleccionado(Reclamos reclamoSeleccionado) {
+        this.reclamoSeleccionado = reclamoSeleccionado;
     }
 
 }
