@@ -479,35 +479,46 @@ public class MbSReclamos implements Serializable {
         reclamoSeleccionado = reclamo;
         //System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
         //Se convierte la imagen obtenida para mostrar como previa
-        
+
         this.imagenCargada = null;
         if (reclamoSeleccionado.getFkImagen() != null) {
             this.imagenCargada = new DefaultStreamedContent(new ByteArrayInputStream(reclamoSeleccionado.getFkImagen().getArchivoImagen()), reclamoSeleccionado.getFkImagen().getTipoImagen());
             this.imagenCargada.setName(reclamoSeleccionado.getFkImagen().getNombreImagen());
             this.imagenCargada.setContentType(reclamoSeleccionado.getFkImagen().getTipoImagen());
-        } 
+        }
     }
 
-    public void actualizarReclamoPendiente(Reclamos reclamo) {
-        System.out.println("ENTRO2");
-        if (reclamo.getDescripcionAtencionReclamo().equals("") || reclamo.getDescripcionAtencionReclamo().isEmpty()) {
+    public String recuperarReclamo(Integer codReclamo) {
+        System.out.println("MbSReclamos recuperarReclamo ENTRO " + codReclamo);
+        reclamoSeleccionado = null;
+        reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
+        System.out.println("MbSReclamos recuperarReclamo ENTRO " + reclamoSeleccionado.getOrigenReclamo());
+        return "/admin_procesar_reclamo_pendiente";
+    }
+
+    public String actualizarReclamoPendiente() {
+        System.out.println("MbSReclamos actualizarReclamoPendiente ENTRO");
+        if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo requerido", "Debe completar el campo Descripción Atencion."));
+            return "/admin_procesar_reclamo_pendiente";
         } else {
             //Se completa el reclamo
-            reclamo.setFkCodEstadoReclamo(new EstadosReclamos());
-            reclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
-            reclamo.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
-            reclamo.setFkCodUsuarioAtencion(new Usuarios());
-            reclamo.setFkCodUsuarioAtencion(recuperarUsuarioSession());
-            reclamo.setFechaAtencionReclamo(new Date());
-            reclamo.setFkReclamoTipoFinalizacionReclamo(null);
-            String mensaje = reclamosSB.actualizarReclamos(reclamo);
+            reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
+            reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
+            reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
+            reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
+            reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
+            reclamoSeleccionado.setFechaAtencionReclamo(new Date());
+            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(null);
+            String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
                 System.out.println("ENTRO");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo actualizado.", ""));
                 //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
+                return "admin_gestion_reclamos_pendientes";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no actualizado.", ""));
+                return "/admin_procesar_reclamo_pendiente";
             }
         }
     }

@@ -54,12 +54,12 @@
 
                                             <f:facet name="header">Acciones</f:facet>
                                             <h:form>
-                                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Detalles">
+                                                <a style="margin-right: 2px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Detalles">
                                                     Detalles
                                                 </a>
-                                                <a style="margin-right: 2px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Procesar">
-                                                    Procesar
-                                                </a>
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
+                                                    <i class="fa fa-check-square-o"></i> Procesar
+                                                </h:commandLink>
                                                 <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
                                                     <i class="fa fa-file-pdf-o"></i> Descargar PDF
                                                 </h:commandLink>
@@ -73,7 +73,6 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="table-responsive">
-
                                                                 <table class="table">
                                                                     <thead>
                                                                         <tr>
@@ -127,7 +126,6 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-
                                                         </div>
                                                         <div class="modal-footer">
                                                             <h:form>
@@ -139,48 +137,6 @@
                                                                 </h:commandLink>
                                                             </h:form>
                                                         </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                            <div class="modal fade" id="#{reclamos.codReclamo}Procesar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                                                            <h3 class="modal-title" id="myModalLabel"><h:outputText value="Formulario de atención de reclamos"/>   </h3>
-                                                        </div>
-                                                        <h:form>
-                                                            <div class="modal-body">
-
-                                                                <form>
-                                                                    <div class="">
-                                                                        <div class="input-group">
-                                                                            <label>Descripción de tarea a realizar.</label>
-                                                                            <p:inputTextarea required="false" 
-                                                                                             id="descri" 
-                                                                                             value="#{reclamos.descripcionAtencionReclamo}"
-                                                                                             title="Descripción de atención del reclamo"
-                                                                                             class="form-control"
-                                                                                             autoResize="true"
-                                                                                             maxlength="500"
-                                                                                             counter="display"
-                                                                                             counterTemplate="{0} caracteres disponibles."/>
-                                                                            <br/>
-                                                                            <h:outputText id="display" />
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                                <h:commandButton class="btn btn-primary" actionListener="#{mbSReclamos.actualizarReclamoPendiente(reclamos)}">
-                                                                    <i class="fa fa-check-square-o"></i> Procesar
-                                                                </h:commandButton>
-                                                            </div>
-                                                        </h:form>
                                                     </div>
                                                 </div>
                                             </div>

@@ -66,6 +66,7 @@ public class MbSUsuarios implements Serializable {
                 } else {
                     Converciones c = new Converciones();
                     String contrasenaMD5 = c.getMD5(claveUsuario);
+                   /// System.out.println("Clave" +contrasenaMD5);
                     if (contrasenaMD5 == null) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo ingresar, intentelo de nuevo.", ""));
                         return "/login";
