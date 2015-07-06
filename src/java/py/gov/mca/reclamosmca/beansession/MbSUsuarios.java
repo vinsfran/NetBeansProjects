@@ -75,17 +75,16 @@ public class MbSUsuarios implements Serializable {
                         if(usuario.getFkCodRol().getCodRol().equals(1)){
                             pagina = "/admin_gestion_reclamos_pendientes";
                         }else if (usuario.getFkCodRol().getCodRol().equals(2)) {
-                            pagina = "";
+                            pagina = "/admin_gestion_reclamos_pendientes";
                         }else if (usuario.getFkCodRol().getCodRol().equals(3)) {
-                            pagina = "";
+                            pagina = "/admin_gestion_reclamos_pendientes";
                         }else if (usuario.getFkCodRol().getCodRol().equals(4)) {
-                            pagina = "";
+                            pagina = "/admin_gestion_reclamos_pendientes";
                         }else if (usuario.getFkCodRol().getCodRol().equals(5)) {
-                            pagina = "";
+                            pagina = "/admin_gestion_reclamos_pendientes";
                         }else {
                             pagina = "/admin_mis_reclamos";
-                        }
-                        
+                        }                        
                         return pagina;
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario o contraseña no validos, intentelo de nuevo.", ""));

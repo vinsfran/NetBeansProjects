@@ -142,7 +142,6 @@ public class MbSReclamos implements Serializable {
     }
 
     public void puntoSelecionado(PointSelectEvent event) throws UnsupportedEncodingException, MalformedURLException {
-        System.out.println("ENTRE EN PUNTO");
         if (this.tipoDeReclamosSeleccionado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
         } else {
