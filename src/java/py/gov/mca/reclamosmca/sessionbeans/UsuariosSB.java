@@ -16,6 +16,7 @@ import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
  */
 @Stateless
 public class UsuariosSB {
+
     @EJB
     private EnviarCorreos enviarCorreos;
 
@@ -114,6 +115,46 @@ public class UsuariosSB {
         mensajes = "";
         try {
             em.merge(objeto);
+            em.flush();
+            if (objeto.getFkCodRol().getCodRol().equals(6) && objeto.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(3)) {
+                String asunto = "Datos de nueva contraseña";
+                String mensaje = "<html>"
+                        + "     <head>"
+                        + "         <meta charset=\"UTF-8\">"
+                        + "         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                        + "     </head>"
+                        + "     <body style='background-color: #ffffff'>"
+                        + "       <div style='text-align: center;'>"
+                        + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
+                        + "       </div> "
+                        + "       <div> "
+                        + "             <p>"
+                        + "                Estimado/a: <i>" + objeto.getFkCodPersona().getNombrePersona() + " " + objeto.getFkCodPersona().getApellidoPersona() + "</i>"
+                        + "             </p> "
+                        + "             <p>"
+                        + "                Le informamos que poder acceder al sistema por primera vez debera hacerlo con las siguiente credenciales:"
+                        + "             </p>   "
+                        + "             <p>"
+                        + "                 <table border='0'> "
+                        + "                     <tr>"
+                        + "                         <td><strong>Correo Electrónico:</strong></td>"
+                        + "                         <td>" + objeto.getLoginUsuario() + "</td>"
+                        + "                     </tr>"
+                        + "                     <tr>"
+                        + "                         <td><strong>Contraseña:</strong></td>"
+                        + "                         <td>" + objeto.getClaveUsuario().substring(0, 6) + "</td>"
+                        + "                     </tr>"
+                        + "                 </table>"
+                        + "             </p>"
+                        + "             <p>"
+                        + "                Gracias por utilizar al Sistema de Reclamos de la Municipalidad de Asunción."
+                        + "             </p>"
+                        + "        </div>"
+                        + "     </body>"
+                        + "</html>";
+
+                enviarCorreos.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
+            }
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = objeto.getLoginUsuario() + " no se pudo actualizar. (" + ex.getMessage() + ")";
@@ -166,7 +207,7 @@ public class UsuariosSB {
                         + "        </div>"
                         + "     </body>"
                         + "</html>";
-                
+
                 enviarCorreos.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
             }
             mensajes = "OK";

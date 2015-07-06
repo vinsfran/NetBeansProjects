@@ -33,9 +33,10 @@ public class PersonasSB {
         mensajes = "";
         try {
             em.merge(objeto);
-            mensajes = objeto.getNombrePersona() + " se actualizó con exito!";
+            em.flush();
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombrePersona() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = "No se pudo actualizar los datos. (" + ex.getMessage() + ")";
         }
         return mensajes;
     }

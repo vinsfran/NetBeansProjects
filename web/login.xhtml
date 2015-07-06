@@ -26,19 +26,19 @@
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                     <h:inputText class="form-control" 
                                  label="Correo Electrónico" 
-                                 value="#{mbSLogin.loginUsuario}" 
+                                 value="#{mbSUsuarios.loginUsuario}" 
                                  a:placeholder=" Correo Electrónico">
-                        <f:validator validatorId="emailValidator"/>
+<!--                        <f:validator validatorId="emailValidator"/>-->
                     </h:inputText>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
                     <h:inputSecret class="form-control" 
                                    label="Contraseña" 
-                                   value="#{mbSLogin.claveUsuario}"
+                                   value="#{mbSUsuarios.claveUsuario}"
                                    a:placeholder=" Contraseña"/>
                 </div>
-                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{mbSLogin.btnIngresar()}" value="Ingresar"/>
+                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{mbSUsuarios.btnIngresar()}" value="Ingresar"/>
                 <label class="checkbox">
                     <span class="pull-right"><h:outputLink value="recuperarContrasenia.xhtml">Olvidaste tu contraseña?</h:outputLink></span>
                 </label>

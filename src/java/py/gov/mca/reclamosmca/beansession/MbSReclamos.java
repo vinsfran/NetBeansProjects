@@ -82,6 +82,9 @@ public class MbSReclamos implements Serializable {
     private ReclamosSB reclamosSB;
 
     private DataModel misReclamos;
+    private DataModel reclamosPendientes;
+    private DataModel reclamosAtendidos;
+    private DataModel reclamosFinalizados;
 
     private List<TiposReclamos> tiposDeReclamos;
 
@@ -206,8 +209,8 @@ public class MbSReclamos implements Serializable {
 
     public Usuarios recuperarUsuarioSession() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        MbSLogin login = (MbSLogin) session.getAttribute("mbSLogin");
-        return login.getUsuario();
+        MbSUsuarios usuario = (MbSUsuarios) session.getAttribute("mbSUsuarios");
+        return usuario.getUsuario();
     }
 
     public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
@@ -355,7 +358,7 @@ public class MbSReclamos implements Serializable {
         }
     }
 
-    public void exportarPDF(Integer codReclamo) throws JRException, IOException, Exception {        
+    public void exportarPDF(Integer codReclamo) throws JRException, IOException, Exception {
         System.out.println("exportarPDF CodReclamo: " + codReclamo);
         Reclamos reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
@@ -424,6 +427,87 @@ public class MbSReclamos implements Serializable {
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
 
+    }
+
+    public Integer cantidadReclamosPorZona(Reclamos reclamo) {
+        List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
+        List<Reclamos> lista2 = new ArrayList<>();
+        for (Reclamos reclamoAux : lista1) {
+            if (!reclamoAux.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamo.getCodReclamo().equals(reclamoAux.getCodReclamo())) {
+                double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
+                if (distancia < 11) {
+                    lista2.add(reclamoAux);
+                }
+
+            }
+        }
+        return lista2.size();
+        //listarReclamosPorZona = new ListDataModel(lista2);
+    }
+
+    private double distanciaEntrePuntos(double lat1, double lon1, double lat2, double lon2) {
+        // Formula de Haversine para obtener la distancia entre dos puntos geográficos (longitud y latitud)
+        // Radio de la Tierra: 6378 km.
+        // R = earth’s radius (mean radius = 6,378km)
+        // Δlat = lat2− lat1
+        // Δlong = long2− long1
+        // a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
+        // c = 2.atan2(√a, √(1−a))
+        // d = R.c
+        double R = 6378; // km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c * 1000;
+        return d;
+    }
+
+    public void verMapa(Reclamos reclamo) {
+        System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
+        emptyModel = new DefaultMapModel();
+        emptyModel.addOverlay(null);
+        LatLng latiLongi = new LatLng(reclamo.getLatitud(), reclamo.getLongitud());
+        Marker marca = new Marker(latiLongi);
+        marca.setTitle(reclamo.getFkCodTipoReclamo().getNombreTipoReclamo());
+        marca.setDraggable(false);
+        emptyModel.addOverlay(marca);
+        this.nuevoReclamo = reclamo;
+    }
+
+    public void verImagen(Reclamos reclamo) {
+        System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
+        //Se convierte la imagen obtenida para mostrar como previa
+        reclamo.getFkImagen().getArchivoImagen();
+        this.imagenCargada = null;
+        this.imagenCargada = new DefaultStreamedContent(new ByteArrayInputStream(reclamo.getFkImagen().getArchivoImagen()), reclamo.getFkImagen().getTipoImagen());
+        this.imagenCargada.setName(reclamo.getFkImagen().getNombreImagen());
+        this.imagenCargada.setContentType(reclamo.getFkImagen().getTipoImagen());
+        // this.setMostrarGraphicImage(true);
+    }
+
+    public void actualizarReclamoPendiente(Reclamos reclamo) {
+        System.out.println("ENTRO2");
+        if (reclamo.getDescripcionAtencionReclamo().equals("") || reclamo.getDescripcionAtencionReclamo().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo requerido", "Debe completar el campo Descripción Atencion."));
+        } else {
+            //Se completa el reclamo
+            reclamo.setFkCodEstadoReclamo(new EstadosReclamos());
+            reclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
+            reclamo.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
+            reclamo.setFkCodUsuarioAtencion(new Usuarios());
+            reclamo.setFkCodUsuarioAtencion(recuperarUsuarioSession());
+            reclamo.setFechaAtencionReclamo(new Date());
+            reclamo.setFkReclamoTipoFinalizacionReclamo(null);
+            String mensaje = reclamosSB.actualizarReclamos(reclamo);
+            if (mensaje.equals("OK")) {
+                System.out.println("ENTRO");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo actualizado.", ""));
+                //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no actualizado.", ""));
+            }
+        }
     }
 
     /**
@@ -595,6 +679,54 @@ public class MbSReclamos implements Serializable {
      */
     public void setImagenSemaforo(String imagenSemaforo) {
         this.imagenSemaforo = imagenSemaforo;
+    }
+
+    /**
+     * @return the reclamosPendientes
+     */
+    public DataModel getReclamosPendientes() {
+        List<Reclamos> lista = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 1);
+        reclamosPendientes = new ListDataModel(lista);
+        return reclamosPendientes;
+    }
+
+    /**
+     * @param reclamosPendientes the reclamosPendientes to set
+     */
+    public void setReclamosPendientes(DataModel reclamosPendientes) {
+        this.reclamosPendientes = reclamosPendientes;
+    }
+
+    /**
+     * @return the reclamosAtendidos
+     */
+    public DataModel getReclamosAtendidos() {
+        List<Reclamos> lista = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 2);
+        reclamosAtendidos = new ListDataModel(lista);
+        return reclamosAtendidos;
+    }
+
+    /**
+     * @param reclamosAtendidos the reclamosAtendidos to set
+     */
+    public void setReclamosAtendidos(DataModel reclamosAtendidos) {
+        this.reclamosAtendidos = reclamosAtendidos;
+    }
+
+    /**
+     * @return the reclamosFinalizados
+     */
+    public DataModel getReclamosFinalizados() {
+        List<Reclamos> lista = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 3);
+        reclamosFinalizados = new ListDataModel(lista);
+        return reclamosFinalizados;
+    }
+
+    /**
+     * @param reclamosFinalizados the reclamosFinalizados to set
+     */
+    public void setReclamosFinalizados(DataModel reclamosFinalizados) {
+        this.reclamosFinalizados = reclamosFinalizados;
     }
 
 }

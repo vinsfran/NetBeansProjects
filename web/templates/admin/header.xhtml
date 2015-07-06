@@ -15,9 +15,9 @@
                  float: right;
                  font-size: 14px;"> 
                 <h:form>
-                    <h:outputText value="Sesión iniciada como: #{mbSLogin.usuario.loginUsuario} "/>
+                    <h:outputText value="Sesión iniciada como: #{mbSUsuarios.usuario.loginUsuario} "/>
 
-                    <h:commandLink action="#{mbSLogin.btnSalir()}" class="btn btn-primary">
+                    <h:commandLink action="#{mbSUsuarios.btnSalir()}" class="btn btn-primary">
                         <i class="fa fa-external-link"></i> Cerrar sesión
                     </h:commandLink>
                 </h:form>
@@ -34,12 +34,20 @@
                             <a data-toggle="collapse" href="#collapse1"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
                             <div id="collapse1" class="collapse">
                                 <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="#"><i class="fa fa-refresh"></i> Actualizar mis datos</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-key"></i> Cambiar contraseña</a>
-                                    </li>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="admin_actualizar_datos">
+                                                <i class="fa fa-refresh"></i> Actualizar datos
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="admin_cambiar_contrasenia">
+                                                <i class="fa fa-key"></i> Cambiar contraseña
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
                                 </ul>
                             </div>
                         </li>
@@ -61,10 +69,7 @@
                                             </h:commandLink>
 
                                         </li>
-                                    </ui:fragment>
-                                    <li>
-                                        <a href="#"><i class="fa fa-search"></i> Buscar reclamo</a>
-                                    </li>  
+                                    </ui:fragment> 
                                 </ul>
                             </div>
                         </li> 
@@ -72,15 +77,27 @@
                             <a data-toggle="collapse" href="#collapse3"><i class="fa fa-inbox fa-3x"></i> Gestionar reclamos<span class="fa arrow"></span></a>
                             <div id="collapse3" class="collapse">
                                 <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
-                                    </li>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="admin_gestion_reclamos_pendientes">
+                                                <i class="fa fa-folder-o"></i> Pendientes
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="admin_gestion_reclamos_atendidos">
+                                                <i class="fa fa-folder-o"></i> Atendidos
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment >
+                                        <li>
+                                            <h:commandLink action="admin_gestion_reclamos_finalizados">
+                                                <i class="fa fa-folder-o"></i> Finalizados
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
                                 </ul>
                             </div>
                         </li>  

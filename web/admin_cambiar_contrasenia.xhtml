@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Datos Personales</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span >Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form class="col-md-12"> 
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                           label="Contraseña" 
+                                                           value="#{mbSUsuarios.contrasenaActual}"
+                                                           a:placeholder=" Contraseña Actual"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                           label="Contraseña" 
+                                                           value="#{mbSUsuarios.contrasena1}"
+                                                           a:placeholder=" Contraseña nueva"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                           label="Repetir contraseña nueva" 
+                                                           value="#{mbSUsuarios.contrasena2}"
+                                                           a:placeholder=" Repetir Contraseña"/>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandButton class="btn btn-default" action="admin_mis_reclamos" value="Cancelar"/>
+                                                <p:commandButton class="btn btn-primary" action="#{mbSUsuarios.btnCambioContrasena()}" value="Actualizar"/>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

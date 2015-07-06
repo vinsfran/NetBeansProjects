@@ -239,6 +239,7 @@ public class ReclamosSB {
     }
 
     public List<Reclamos> listarPorUsuarioEstado(Integer codUsuario, Integer codEstadoReclamo) {
+        System.out.println("ReclamosSB entra listarPorUsuarioEstado");
         StringBuilder jpql = new StringBuilder();
 
         jpql.append("SELECT e ");

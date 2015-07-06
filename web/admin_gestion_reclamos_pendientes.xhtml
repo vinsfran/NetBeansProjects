@@ -1,0 +1,199 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                template="/templates/admin/main.xhtml">
+
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Reclamos pendientes</h2>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Advanced Tables -->
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <h:dataTable value="#{mbSReclamos.reclamosPendientes}" 
+                                                 var="reclamos"
+                                                 class="table table-striped table-bordered table-hover table-condensed"
+                                                 id="dataTables-example">
+                                        <h:column>
+                                            <f:facet name="header">Nro. de reclamo</f:facet>
+                                            <h:outputText style="padding-left: 50%;" value="#{reclamos.codReclamo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de reclamo</f:facet>
+                                            <h:outputText value="#{reclamos.fkCodTipoReclamo.nombreTipoReclamo.trim()}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha de realización</f:facet>
+                                            <h:outputText style="padding-left: 25%;" value="#{mbSReclamos.formatearFecha(reclamos.fechaReclamo)}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Reclamos en la zona</f:facet>
+                                            <h:outputText style="padding-left: 50%;" value="#{mbSReclamos.cantidadReclamosPorZona(reclamos)}"/>
+                                        </h:column>
+                                        <h:column >
+                                            <f:facet name="header">Tiempo trascurrido</f:facet>
+                                            <h:outputText style="padding-left: 25%;" value="#{mbSReclamos.tiempoTranscurrido(reclamos)} #{mbSReclamos.tiempoTranscurrido(reclamos) > 1? 'dias': 'dia'}"/>
+
+                                            <h:graphicImage 
+                                                style="float: right; padding-right: 25%;"
+                                                library="images" name="#{mbSReclamos.imagenSemaforo}" rendered="#{mbSReclamos.imagenSemaforo != null? true : false}"/>
+                                        </h:column>
+
+                                        <h:column>
+
+                                            <f:facet name="header">Acciones</f:facet>
+                                            <h:form>
+                                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Detalles">
+                                                    Detalles
+                                                </a>
+                                                <a style="margin-right: 2px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Procesar">
+                                                    Procesar
+                                                </a>
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
+                                                    <i class="fa fa-file-pdf-o"></i> Descargar PDF
+                                                </h:commandLink>
+                                            </h:form>
+                                            <div class="modal fade" id="#{reclamos.codReclamo}Detalles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                                            <h3 class="modal-title" id="myModalLabel"><h:outputText value="Datos del Reclamo (#{reclamos.fkCodUsuario.fkCodRol.codRol == 6? 'EXTERNO' : 'INTERNO'})"/>   </h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="table-responsive">
+
+                                                                <table class="table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="2">
+                                                                                <h:outputText value="Datos Personales del Ciudadano"/>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style="border-top: none;"><h:outputText value="Cedula:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.fkCodUsuario.fkCodPersona.cedulaPersona}"/></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="border-top: none;"><h:outputText value="Nombre y apellido:"/></td>
+                                                                            <td style="border-top: none;">#{reclamos.fkCodUsuario.fkCodPersona.nombrePersona} #{reclamos.fkCodUsuario.fkCodPersona.apellidoPersona}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="border-top: none;"><h:outputText value="Dirección:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.fkCodUsuario.fkCodPersona.direccionPersona}"/></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="border-top: none;"><h:outputText value="Telefono:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.fkCodUsuario.fkCodPersona.telefonoPersona}"/></td>
+                                                                        </tr>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="2" style="border-top: none;"><h:outputText value="Datos del Reclamo"/></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tr >
+                                                                            <td style="border-top: none;"><h:outputText value="Número de reclamo:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.codReclamo}"/></td>
+                                                                        </tr>
+                                                                        <tr >
+                                                                            <td style="border-top: none;"><h:outputText value="Tipo de reclamo:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.fkCodTipoReclamo.nombreTipoReclamo}"/></td>
+                                                                        </tr>
+                                                                        <tr >
+                                                                            <td style="border-top: none;"><h:outputText value="Fecha del reclamo:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{mbSReclamos.formatearFecha(reclamos.fechaReclamo)}"/></td>
+                                                                        </tr>
+                                                                        <tr >
+                                                                            <td style="border-top: none;"><h:outputText value="Dirección del reclamo:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.direccionReclamo}"/></td>
+                                                                        </tr>
+                                                                        <tr >
+                                                                            <td style="border-top: none;"><h:outputText value="Descripción del reclamo:"/></td>
+                                                                            <td style="border-top: none;"><h:outputText value="#{reclamos.descripcionReclamoContribuyente}"/></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <h:form>
+                                                                <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.verImagen(reclamos)}" action="imagen" target="_blank">
+                                                                    <i class="fa fa-file-image-o"></i> Ver imagen
+                                                                </h:commandLink>
+                                                                <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.verMapa(reclamos)}" action="mapa" target="_blank">
+                                                                    <i class="fa fa-map-marker"></i> Ver mapa
+                                                                </h:commandLink>
+                                                            </h:form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="modal fade" id="#{reclamos.codReclamo}Procesar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                                            <h3 class="modal-title" id="myModalLabel"><h:outputText value="Formulario de atención de reclamos"/>   </h3>
+                                                        </div>
+                                                        <h:form>
+                                                            <div class="modal-body">
+
+                                                                <form>
+                                                                    <div class="">
+                                                                        <div class="input-group">
+                                                                            <label>Descripción de tarea a realizar.</label>
+                                                                            <p:inputTextarea required="false" 
+                                                                                             id="descri" 
+                                                                                             value="#{reclamos.descripcionAtencionReclamo}"
+                                                                                             title="Descripción de atención del reclamo"
+                                                                                             class="form-control"
+                                                                                             autoResize="true"
+                                                                                             maxlength="500"
+                                                                                             counter="display"
+                                                                                             counterTemplate="{0} caracteres disponibles."/>
+                                                                            <br/>
+                                                                            <h:outputText id="display" />
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                <h:commandButton class="btn btn-primary" actionListener="#{mbSReclamos.actualizarReclamoPendiente(reclamos)}">
+                                                                    <i class="fa fa-check-square-o"></i> Procesar
+                                                                </h:commandButton>
+                                                            </div>
+                                                        </h:form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /. PAGE INNER  -->
+        <!-- /. WRAPPER  -->
+    </ui:define>
+</ui:composition>   

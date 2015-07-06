@@ -26,12 +26,12 @@
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                     <h:inputText class="form-control" 
                                  label="Correo Electrónico" 
-                                 value="#{usuariosWebMB.loginUsuario}" 
+                                 value="#{mbSUsuarios.loginUsuario}" 
                                  a:placeholder=" Correo Electrónico">
                         <f:validator validatorId="emailValidator"/>
                     </h:inputText>
                 </div>
-                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{usuariosWebMB.btnRecuperar()}" value="Enviar"/>
+                <h:commandButton class="btn btn-send btn-lg btn-block" action="#{mbSUsuarios.btnRecuperarContrasena()}" value="Enviar"/>
             </div>
         </h:form>
 

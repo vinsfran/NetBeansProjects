@@ -26,7 +26,7 @@
             <!-- TABLE STYLES-->
             <!--            <h:outputStylesheet name="assets/js/dataTables/dataTables.bootstrap.css" />-->
 
-          
+
         </f:facet>
         <f:facet name="last">
             <!-- FONTAWESOME STYLES-->
@@ -59,11 +59,12 @@
         </f:facet>
     </h:head>
     <h:body>
-        <div id="wrapper">
-            <p:growl id="growl" showDetail="true" autoUpdate="true" sticky="false" life="5000"/>
-            <ui:include src="header.xhtml" />
-            <ui:include src="leftMenu.xhtml" />
-            <ui:include src="content.xhtml" />
-        </div>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <p:gmap id="gmap"
+                center="#{mbSReclamos.nuevoReclamo.latitud}, #{mbSReclamos.nuevoReclamo.longitud}" 
+                zoom="15" type="HYBRID"  
+                style="width:100%;height:800px"
+                model="#{mbSReclamos.emptyModel}">
+        </p:gmap>
     </h:body>
 </html>
