@@ -22,9 +22,9 @@ public class DependenciasSB {
         mensajes = "";
         try {
             em.persist(objeto);
-            mensajes = objeto.getNombreDependencia() + " se creo con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreDependencia() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }
@@ -33,9 +33,9 @@ public class DependenciasSB {
         mensajes = "";
         try {
             em.merge(objeto);
-            mensajes = objeto.getNombreDependencia() + " se actualizó con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreDependencia() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }

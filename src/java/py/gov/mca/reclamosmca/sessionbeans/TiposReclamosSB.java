@@ -22,9 +22,9 @@ public class TiposReclamosSB {
         mensajes = "";
         try {
             em.persist(objeto);
-            mensajes = objeto.getNombreTipoReclamo() + " se creo con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreTipoReclamo() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }
@@ -33,9 +33,9 @@ public class TiposReclamosSB {
         mensajes = "";
         try {
             em.merge(objeto);
-            mensajes = objeto.getNombreTipoReclamo() + " se actualizó con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreTipoReclamo() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }

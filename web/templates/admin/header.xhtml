@@ -127,12 +127,20 @@
                                     <li>
                                         <a href="#"><i class="fa fa-shield"></i> Roles</a>
                                     </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-university"></i> Dependencias</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-folder-o"></i> Tipos de reclamos</a>
-                                    </li>
+                                    <ui:fragment>
+                                        <li>
+                                            <h:commandLink action="admin_matenimiento_dependencias">
+                                                <i class="fa fa-university"></i> Dependencias
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment>
+                                        <li>
+                                            <h:commandLink action="admin_matenimiento_tipos_reclamos">
+                                                <i class="fa fa-folder-o"></i> Tipos de reclamos
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
                                     <li>
                                         <a href="#"><i class="fa fa-folder-o"></i> Estado de reclamos</a>
                                     </li>

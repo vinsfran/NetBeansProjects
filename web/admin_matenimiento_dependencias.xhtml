@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                template="/templates/admin/main.xhtml">
+
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h2>Matenimiento de Dependencias</h2>
+                        <h:form class="modal-footer">
+                            <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary" action="#{mbSDependencias.btnAgregar()}">
+                                <i class="fa fa-check"></i> Agregar
+                            </h:commandLink>
+                        </h:form>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Advanced Tables -->
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <h:dataTable value="#{mbSDependencias.dependencias}" 
+                                                 var="dependencias"
+                                                 class="table table-striped table-bordered table-hover table-condensed"
+                                                 id="dataTables-example">
+                                        <h:column>
+                                            <f:facet name="header">Codigo</f:facet>
+                                            <h:outputText value="#{dependencias.codDependencia}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Nombre</f:facet>
+                                            <h:outputText value="#{dependencias.nombreDependencia}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Telefono - Interno</f:facet>
+                                            <h:outputText value="#{dependencias.telefonoDependencia} - #{dependencias.internoDependencia}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Correo eletrónico</f:facet>
+                                            <h:outputText value="#{dependencias.mailDependencia}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Acciones</f:facet>
+                                            <h:form>
+                                                <h:commandLink class="btn btn-primary btn-sm" action="#{mbSDependencias.btnModificar(dependencias)}">
+                                                    <i class="fa fa-edit"></i> Modificar
+                                                </h:commandLink>
+                                            </h:form>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /. PAGE INNER  -->
+        <!-- /. WRAPPER  -->
+    </ui:define>
+</ui:composition>   
