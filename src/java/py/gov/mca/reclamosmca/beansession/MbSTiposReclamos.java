@@ -21,49 +21,46 @@ import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
 @ManagedBean(name = "mbSTiposReclamos")
 @SessionScoped
 public class MbSTiposReclamos implements Serializable {
-
+    
     @EJB
     private TiposReclamosSB tiposReclamosSB;
-
+    
     @EJB
     private DependenciasSB dependenciasSB;
-
+    
     private DataModel tiposReclamos;
-
+    
     private List<Dependencias> dependencias;
-
+    
     private TiposReclamos tipoReclamo;
-
+    
     public MbSTiposReclamos() {
-
+        
     }
-
+    
     public String btnAgregar() {
         this.tipoReclamo = null;
         this.tipoReclamo = new TiposReclamos();
         this.tipoReclamo.setFkCodDependencia(new Dependencias());
         return "/admin_form_tipos_reclamos";
     }
-
+    
     public String btnModificar(TiposReclamos tipoReclamo) {
         this.tipoReclamo = tipoReclamo;
-        System.out.println("NOM " + tipoReclamo.getNombreTipoReclamo());
         return "/admin_form_tipos_reclamos";
     }
-
+    
     public String btnCancelar() {
         tipoReclamo = null;
         tipoReclamo = new TiposReclamos();
         return "/admin_matenimiento_tipos_reclamos";
     }
-
+    
     public String btnCrear() {
         if (tipoReclamo.getNombreTipoReclamo() == null || tipoReclamo.getNombreTipoReclamo().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_tipos_reclamos";
         } else {
-            System.out.println("DEPE " + tipoReclamo.getFkCodDependencia().getNombreDependencia());
-
             String mensaje = tiposReclamosSB.crearTiposReclamos(tipoReclamo);
             if (mensaje.equals("OK")) {
                 this.tipoReclamo = null;
@@ -75,14 +72,15 @@ public class MbSTiposReclamos implements Serializable {
             }
         }
     }
-
+    
     public String btnAcualizar() {
         if (tipoReclamo.getNombreTipoReclamo() == null || tipoReclamo.getNombreTipoReclamo().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_tipos_reclamos";
         } else {
-            System.out.println("DEPE " + tipoReclamo.getFkCodDependencia().getNombreDependencia());
-
+            Dependencias nuevaDependencia = new Dependencias();
+            nuevaDependencia.setCodDependencia(tipoReclamo.getFkCodDependencia().getCodDependencia());
+            tipoReclamo.setFkCodDependencia(nuevaDependencia);
             String mensaje = tiposReclamosSB.actualizarTiposReclamos(tipoReclamo);
             if (mensaje.equals("OK")) {
                 this.tipoReclamo = null;
@@ -139,5 +137,5 @@ public class MbSTiposReclamos implements Serializable {
     public void setDependencias(List<Dependencias> dependencias) {
         this.dependencias = dependencias;
     }
-
+    
 }

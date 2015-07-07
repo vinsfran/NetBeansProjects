@@ -109,7 +109,7 @@ public class MbSUsuarios implements Serializable {
             this.setUsuario(null);
             session.invalidate();
         }
-        return "/index2";
+        return "/index";
     }
 
     public String btnActualizarDatos() {

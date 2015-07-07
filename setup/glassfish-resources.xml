@@ -5,8 +5,8 @@
         <property name="serverName" value="126.10.10.152"/>
         <property name="portNumber" value="5432"/>
         <property name="databaseName" value="sisreclamos_db"/>
-        <property name="User" value="reclamos"/>
-        <property name="Password" value="reclamos01"/>
+        <property name="User" value="simeac"/>
+        <property name="Password" value="simeac01"/>
         <property name="URL" value="jdbc:postgresql://126.10.10.152:5432/sisreclamos_db"/>
         <property name="driverClass" value="org.postgresql.Driver"/>
     </jdbc-connection-pool>

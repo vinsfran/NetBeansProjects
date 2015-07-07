@@ -42,7 +42,9 @@
                                                                var="dependencias"
                                                                itemValue="#{dependencias.codDependencia}" 
                                                                itemLabel="#{dependencias.nombreDependencia}"/>
+                                                <f:ajax render="prueba"/>
                                             </h:selectOneMenu>
+                                            <h:outputText id="prueba" value="#{mbSTiposReclamos.tipoReclamo.fkCodDependencia.codDependencia}"/>
                                         </div>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-square-o"></i></span>

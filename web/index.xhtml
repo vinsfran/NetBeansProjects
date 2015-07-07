@@ -1,7 +1,100 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-      <ui:composition template="plantilla.xhtml"></ui:composition>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                template="/templates/principal/main.xhtml">
 
+    <ui:define name="content">    
+
+        <section id="main-slider" class="no-margin">
+            <div class="carousel slide">
+                <ol class="carousel-indicators">
+                    <li data-target="#main-slider" data-slide-to="0" class="active"></li>
+                    <li data-target="#main-slider" data-slide-to="1"></li>
+                    <li data-target="#main-slider" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+
+                    <div class="item active" style="background-image: url(resources/corlate/images/slider/bg1.jpg)">
+                        <div class="container">
+                            <div class="row slide-margin">
+                                <div class="col-sm-6">
+                                    <div class="carousel-content">
+                                        <h1 class="animation animated-item-1">Bienvenido al Sistema de Reclamos Online</h1>
+                                        <h2 class="animation animated-item-2">La Municipalidad de la Ciudad de Asunción incorpora a sus servicios, 
+                                            la opción de realizar y consultar sus reclamos en línea, permitiendo 
+                                            a los ciudadanos interactuar con el municipio de una manera mas 
+                                            directa y eficiente, ahorrando el tiempo que le tomaría efectuar 
+                                            los mismos de manera presencial en nuestras oficinas.</h2>
+                                        <a class="btn-slide animation animated-item-3" href="#">Read More</a>
+                                    </div>
+                                </div>
+
+                                <!--                                <div class="col-sm-6 hidden-xs animation animated-item-4">
+                                                                    <div class="slider-img">
+                                                                        <img src="resources/corlate/images/slider/img1.png" class="img-responsive"/>
+                                                                    </div>
+                                                                </div>-->
+
+                            </div>
+                        </div>
+                    </div><!--/.item-->
+
+                    <div class="item" style="background-image: url(resources/corlate/images/slider/bg3.jpg)">
+                        <div class="container">
+                            <div class="row slide-margin">
+                                <div class="col-sm-6">
+                                    <div class="carousel-content">
+                                        <h1 class="animation animated-item-1">Bienvenido al Sistema de Reclamos Online</h1>
+                                        <h2 class="animation animated-item-2">El sistema esta preparado para informarle por medio de un correo 
+                                            electrónico la situación en que se encuentran los reclamos que Ud. 
+                                            realice, así como la finalización de los mismos. Con esta funcionalidad 
+                                            se mantendrá al tanto de todo lo referente a sus reclamos en el momento
+                                            que son gestionados dentro de nuestro municipio.</h2>
+                                        <a class="btn-slide animation animated-item-3" href="#">Read More</a>
+                                    </div>
+                                </div>
+
+                                <!--                                <div class="col-sm-6 hidden-xs animation animated-item-4">
+                                                                    <div class="slider-img">
+                                                                        <img src="resources/corlate/images/slider/img2.png" class="img-responsive"/>
+                                                                    </div>
+                                                                </div>-->
+
+                            </div>
+                        </div>
+                    </div><!--/.item-->
+
+                    <div class="item" style="background-image: url(resources/corlate/images/slider/bg2.jpg)">
+                        <div class="container">
+                            <div class="row slide-margin">
+                                <div class="col-sm-6">
+                                    <div class="carousel-content">
+                                        <h1 class="animation animated-item-1">Bienvenido al Sistema de Reclamos Online</h1>
+                                        <h2 class="animation animated-item-2">Deberá registrarse como usuario para realizar su reclamo</h2>
+                                        <h:form>
+                                            <h:commandLink action="#" value="Registro" class="btn-slide animation animated-item-3"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+                                <!--                                <div class="col-sm-6 hidden-xs animation animated-item-4">
+                                                                    <div class="slider-img">
+                                                                        <img src="resources/corlate/images/slider/img3.png" class="img-responsive"/>
+                                                                    </div>
+                                                                </div>-->
+                            </div>
+                        </div>
+                    </div><!--/.item-->
+                </div><!--/.carousel-inner-->
+            </div><!--/.carousel-->
+            <a class="prev hidden-xs" href="#main-slider" data-slide="prev">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+            <a class="next hidden-xs" href="#main-slider" data-slide="next">
+                <i class="fa fa-chevron-right"></i>
+            </a>
+        </section><!--/#main-slider-->
+
+    </ui:define>
+</ui:composition>   
