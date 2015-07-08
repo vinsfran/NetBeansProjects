@@ -10,7 +10,7 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>#{mbSTiposReclamos.tipoReclamo.codTipoReclamo > 0 ? 'Modificar':'Nuevo' } Tipo de Reclamo</h2>
+                        <h2>#{mbSAdminUsuarios.usuario.codUsuario > 0 ? 'Modificar' : 'Nuevo '} Usuario</h2>
                     </div>
                 </div>
                 <hr />
@@ -27,37 +27,45 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                             <h:inputText class="form-control" 
-                                                         label="Nombre tipo de reclamo" 
-                                                         value="#{mbSTiposReclamos.tipoReclamo.nombreTipoReclamo}" 
-                                                         a:placeholder=" Nombre tipo de reclamo"/>
+                                                         label="Login" 
+                                                         value="#{mbSAdminUsuarios.usuario.loginUsuario}" 
+                                                         a:placeholder=" Nombre tipo de reclamo"
+                                                         disabled="true"/>
+                                            <span class="input-group-addon">Login</span>
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                         label="Clave" 
+                                                         value="#{mbSAdminUsuarios.usuario.claveUsuario}" 
+                                                         a:placeholder=" Clave"
+                                                         disabled="true"/>
+                                            <span class="input-group-addon">Clave</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                         label="Repetir clave" 
+                                                         value="#{mbSAdminUsuarios.usuario.loginUsuario}" 
+                                                         a:placeholder=" Repetir clave"
+                                                         disabled="true"/>
+                                            <span class="input-group-addon">Repetir clave</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                             <h:selectOneMenu class="form-control"
-                                                             value="#{mbSTiposReclamos.tipoReclamo.fkCodDependencia.codDependencia}">
-                                                <f:selectItem itemLabel=" Dependencia responsable" 
+                                                             value="#{mbSAdminUsuarios.usuario.fkCodRol.codRol}">
+                                                <f:selectItem itemLabel=" Rol" 
                                                               noSelectionOption="false"
                                                               itemDisabled="true"/>
-                                                <f:selectItems value="#{mbSTiposReclamos.dependencias}" 
-                                                               var="dependencias"
-                                                               itemValue="#{dependencias.codDependencia}" 
-                                                               itemLabel="#{dependencias.nombreDependencia}"/>
+                                                <f:selectItems value="#{mbSAdminUsuarios.roles}" 
+                                                               var="roles"
+                                                               itemValue="#{roles.codRol}" 
+                                                               itemLabel="#{roles.nombreRol}"/>
                                             </h:selectOneMenu>
+                                            <span class="input-group-addon">Rol de usuario</span>
                                         </div>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
-                                            <h:inputText class="form-control" 
-                                                         label="Tiempo maximo para atención" 
-                                                         value="#{mbSTiposReclamos.tipoReclamo.diasMaximoPendientes}" 
-                                                         a:placeholder=" Tiempo maximo para atención"/>
-                                        </div>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
-                                            <h:inputText class="form-control" 
-                                                         label="Tiempo maximo para finalización" 
-                                                         value="#{mbSTiposReclamos.tipoReclamo.diasMaximoFinalizados}" 
-                                                         a:placeholder=" Tiempo maximo para finalización"/>
-                                        </div>
+                                        
                                         <div class="col-md-12">
                                             <div class="modal-footer">
                                                 <h:commandLink class="btn btn-default" action="#{mbSTiposReclamos.btnCancelar()}" immediate="true">

@@ -73,7 +73,7 @@ public class MbSTiposReclamos implements Serializable {
         }
     }
     
-    public String btnAcualizar() {
+    public String btnActualizar() {
         if (tipoReclamo.getNombreTipoReclamo() == null || tipoReclamo.getNombreTipoReclamo().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_tipos_reclamos";

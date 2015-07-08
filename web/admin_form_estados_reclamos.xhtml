@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>#{mbSEstadosReclamos.estadoReclamo.codEstadoReclamo > 0 ? 'Modificar':'Nuevo' } Estado de Reclamo</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span >Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form class="col-md-12"> 
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputText class="form-control" 
+                                                         label="Nombre de tipo de estado" 
+                                                         value="#{mbSEstadosReclamos.estadoReclamo.nombreEstadoReclamo }" 
+                                                         a:placeholder=" Nombre de tipo de estado"/>
+                                        </div>                                        
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandLink class="btn btn-default" action="#{mbSEstadosReclamos.btnCancelar()}" immediate="true">
+                                                    Cancelar
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" action="#{mbSEstadosReclamos.btnCrear()}" rendered="#{mbSEstadosReclamos.estadoReclamo.codEstadoReclamo > 0 ? false : true}">
+                                                    <i class="fa fa-check-square-o"></i> Crear
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" action="#{mbSEstadosReclamos.btnActualizar()}" rendered="#{mbSEstadosReclamos.estadoReclamo.codEstadoReclamo > 0 ? true : false}">
+                                                    <i class="fa fa-check-square-o"></i> Actualizar
+                                                </h:commandLink>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

@@ -10,7 +10,7 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>#{mbSDependencias.dependencia.codDependencia > 0 ? 'Modificar':'Nueva' } Dependencia</h2>
+                        <h2>#{mbSElementosWeb.elementoWeb.codElementoWeb > 0 ? 'Modificar':'Nuevo' } Elemento Web</h2>
                     </div>
                 </div>
                 <hr />
@@ -27,19 +27,27 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                             <h:inputText class="form-control" 
-                                                         label="Nombre de tipo de estado" 
-                                                         value="#{mbSDependencias.dependencia.nombreDependencia}" 
-                                                         a:placeholder=" Nombre de tipo de estado"/>
-                                        </div>                                        
+                                                         label="Nombre de elemento web" 
+                                                         value="#{mbSElementosWeb.elementoWeb.nombreElementoWeb}" 
+                                                         a:placeholder=" Nombre"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                                            <h:inputText class="form-control" 
+                                                         label="Descripción" 
+                                                         value="#{mbSElementosWeb.elementoWeb.descripcionDelElementoWeb}" 
+                                                         a:placeholder=" Descripción"/>
+                                        </div>
+
                                         <div class="col-md-12">
                                             <div class="modal-footer">
-                                                <h:commandLink class="btn btn-default" action="#{mbSDependencias.btnCancelar()}" immediate="true">
+                                                <h:commandLink class="btn btn-default" action="#{mbSElementosWeb.btnCancelar()}" immediate="true">
                                                     Cancelar
                                                 </h:commandLink>
-                                                <h:commandLink class="btn btn-primary" action="#{mbSDependencias.btnCrear()}" rendered="#{mbSDependencias.dependencia.codDependencia > 0 ? false : true}">
+                                                <h:commandLink class="btn btn-primary" action="#{mbSElementosWeb.btnCrear()}" rendered="#{mbSElementosWeb.elementoWeb.codElementoWeb > 0 ? false : true}">
                                                     <i class="fa fa-check-square-o"></i> Crear
                                                 </h:commandLink>
-                                                <h:commandLink class="btn btn-primary" action="#{mbSDependencias.btnAcualizar()}" rendered="#{mbSDependencias.dependencia.codDependencia > 0 ? true : false}">
+                                                <h:commandLink class="btn btn-primary" action="#{mbSElementosWeb.btnActualizar()}" rendered="#{mbSElementosWeb.elementoWeb.codElementoWeb > 0 ? true : false}">
                                                     <i class="fa fa-check-square-o"></i> Actualizar
                                                 </h:commandLink>
                                             </div>

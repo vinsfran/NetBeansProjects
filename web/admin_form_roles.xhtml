@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>#{mbSRoles.rol.codRol > 0 ? 'Modificar':'Nuevo' } Rol</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span >Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form class="col-md-12"> 
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre del rol:</label>
+                                            <h:inputText id="nombre"
+                                                         class="form-control" 
+                                                         label="Nombre" 
+                                                         value="#{mbSRoles.rol.nombreRol}" 
+                                                         a:placeholder=" Nombre"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="nombre">Elemento Web:</label>
+                                            <h:selectOneMenu class="form-control"
+                                                             value="#{mbSRoles.elementoWeb.codElementoWeb}">
+                                                <f:selectItem itemLabel=" Elementos Web" 
+                                                              noSelectionOption="false"
+                                                              itemDisabled="true"/>
+                                                <f:selectItems value="#{mbSRoles.elementosWeb}" 
+                                                               var="elementosWeb"
+                                                               itemValue="#{elementosWeb.codElementoWeb}" 
+                                                               itemLabel="#{elementosWeb.nombreElementoWeb}"/>
+                                                <f:ajax render="visible desactivado descri" listener="#{mbSRoles.buscarEstadoPermisos()}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div >
+                                                    <label><h:selectBooleanCheckbox id="visible" value="#{mbSRoles.elementoVisible}"/> Visible</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div >
+                                                <label><h:selectBooleanCheckbox id="desactivado" value="#{mbSRoles.elementoDesactivado}"/> Desactivado</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group col-md-12">
+                                            <label for="descri">Descripción del permiso: </label>
+                                            <p:inputTextarea required="false" 
+                                                             id="descri" 
+                                                             value="#{mbSRoles.permisosElementosWeb.detalleDelPermiso}"
+                                                             title="Descripción del reclamo"
+                                                             class="form-control"
+                                                             autoResize="true"
+                                                             maxlength="255"
+                                                             counter="display"
+                                                             counterTemplate="{0} caracteres disponibles."
+                                                             style="width: 100%;"/>
+
+                                        </div>
+                                        <h:outputText id="display" />
+
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandLink class="btn btn-default" action="#{mbSRoles.btnCancelar()}" immediate="true">
+                                                    Cancelar
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnCrear()}" rendered="#{mbSRoles.rol.codRol > 0 ? false : true}">
+                                                    <i class="fa fa-check-square-o"></i> Crear
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnActualizar()}" rendered="#{mbSRoles.rol.codRol > 0 ? true : false}">
+                                                    <i class="fa fa-check-square-o"></i> Actualizar
+                                                </h:commandLink>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

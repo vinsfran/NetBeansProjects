@@ -1,6 +1,7 @@
 package py.gov.mca.reclamosmca.beansession;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -10,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
+import py.gov.mca.reclamosmca.entitys.PermisosElementosWeb;
 import py.gov.mca.reclamosmca.entitys.Personas;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
@@ -66,26 +68,26 @@ public class MbSUsuarios implements Serializable {
                 } else {
                     Converciones c = new Converciones();
                     String contrasenaMD5 = c.getMD5(claveUsuario);
-                   /// System.out.println("Clave" +contrasenaMD5);
+                    /// System.out.println("Clave" +contrasenaMD5);
                     if (contrasenaMD5 == null) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo ingresar, intentelo de nuevo.", ""));
                         return "/login";
                     } else if (usuario.getClaveUsuario().equals(contrasenaMD5) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(1)) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido!", usuario.getFkCodPersona().getNombrePersona()));
                         String pagina;
-                        if(usuario.getFkCodRol().getCodRol().equals(1)){
+                        if (usuario.getFkCodRol().getCodRol().equals(1)) {
                             pagina = "/admin_gestion_reclamos_pendientes";
-                        }else if (usuario.getFkCodRol().getCodRol().equals(2)) {
+                        } else if (usuario.getFkCodRol().getCodRol().equals(2)) {
                             pagina = "/admin_gestion_reclamos_pendientes";
-                        }else if (usuario.getFkCodRol().getCodRol().equals(3)) {
+                        } else if (usuario.getFkCodRol().getCodRol().equals(3)) {
                             pagina = "/admin_gestion_reclamos_pendientes";
-                        }else if (usuario.getFkCodRol().getCodRol().equals(4)) {
+                        } else if (usuario.getFkCodRol().getCodRol().equals(4)) {
                             pagina = "/admin_gestion_reclamos_pendientes";
-                        }else if (usuario.getFkCodRol().getCodRol().equals(5)) {
+                        } else if (usuario.getFkCodRol().getCodRol().equals(5)) {
                             pagina = "/admin_gestion_reclamos_pendientes";
-                        }else {
+                        } else {
                             pagina = "/admin_mis_reclamos";
-                        }                        
+                        }
                         return pagina;
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario o contraseña no validos, intentelo de nuevo.", ""));
@@ -222,6 +224,19 @@ public class MbSUsuarios implements Serializable {
                 return "/recuperarContrasenia";
             }
         }
+    }
+
+    public String obtenerPermisoVisibleElemento(String nombreElemento) {
+        System.out.println("Nom: " + nombreElemento);
+        List<PermisosElementosWeb> listaDePermisosDeElementos = usuario.getFkCodRol().getPermisosElementosWebList();
+        String valorRetorno = "false";
+        for (int i = 0; i < listaDePermisosDeElementos.size(); i++) {
+            PermisosElementosWeb per = listaDePermisosDeElementos.get(i);
+            if (per.getFkCodElementoWeb().getNombreElementoWeb().equals(nombreElemento)) {
+                valorRetorno = per.getValorVisible();
+            }
+        }
+        return valorRetorno;
     }
 
     /**

@@ -5,24 +5,23 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
+import py.gov.mca.reclamosmca.entitys.PermisosElementosWeb;
 
 /**
  *
  * @author vinsfran
  */
 @Stateless
-public class EstadosReclamosSB {
+public class PermisosElementosWebSB {
 
     @PersistenceContext(unitName = "reclamosmcaPU")
     private EntityManager em;
     private String mensajes = "";
 
-    public String crearEstadosReclamos(EstadosReclamos objeto) {
+    public String crearPermisosElementosWeb(PermisosElementosWeb objeto) {
         mensajes = "";
         try {
             em.persist(objeto);
-            em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = ex.getMessage();
@@ -30,11 +29,10 @@ public class EstadosReclamosSB {
         return mensajes;
     }
 
-    public String actualizarEstadosReclamos(EstadosReclamos objeto) {
+    public String actualizarPermisosElementosWeb(PermisosElementosWeb objeto) {
         mensajes = "";
         try {
             em.merge(objeto);
-            em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = ex.getMessage();
@@ -42,27 +40,27 @@ public class EstadosReclamosSB {
         return mensajes;
     }
 
-    public String eliminarEstadosReclamos(EstadosReclamos objeto) {
+    public String eliminarPermisosElementosWeb(PermisosElementosWeb objeto) {
         mensajes = "";
         try {
             em.remove(objeto);
-            mensajes = objeto.getNombreEstadoReclamo() + " se elimino con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreEstadoReclamo() + " no se pudo eliminar. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }
 
     @SuppressWarnings("unchecked")
-    public EstadosReclamos consultarEstadoReclamo(Integer codEstadoReclamo) {
-        Query q = em.createNamedQuery("EstadosReclamos.findByCodEstadoReclamo");
-        q.setParameter("codEstadoReclamo", codEstadoReclamo);
-        return (EstadosReclamos) q.getResultList().get(0);
+    public PermisosElementosWeb consultarPermisosElementosWeb(Integer codPermisoElementoWeb) {
+        Query q = em.createNamedQuery("PermisosElementosWeb.findByCodPermisoElementoWeb");
+        q.setParameter("codPermisoElementoWeb", codPermisoElementoWeb);
+        return (PermisosElementosWeb) q.getResultList().get(0);
     }
 
     @SuppressWarnings("unchecked")
-    public List<EstadosReclamos> listarEstadosReclamos() {
-        Query q = em.createNamedQuery("EstadosReclamos.findAll");
+    public List<PermisosElementosWeb> listarPermisosElementosWeb() {
+        Query q = em.createNamedQuery("PermisosElementosWeb.findAll");
         return q.getResultList();
     }
 }

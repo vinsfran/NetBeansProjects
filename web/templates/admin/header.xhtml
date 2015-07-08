@@ -36,27 +36,29 @@
                         <li class="text-center">
                             <h:graphicImage library="images" name="asu128.png"/>
                         </li>
-                        <li>
-                            <a data-toggle="collapse" href="#collapse1"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
-                            <div id="collapse1" class="collapse">
-                                <ul class="nav nav-second-level">
-                                    <ui:fragment >
-                                        <li>
-                                            <h:commandLink action="admin_actualizar_datos">
-                                                <i class="fa fa-refresh"></i> Actualizar datos
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment >
-                                        <li>
-                                            <h:commandLink action="admin_cambiar_contrasenia">
-                                                <i class="fa fa-key"></i> Cambiar contraseña
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                </ul>
-                            </div>
-                        </li>
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('perfil')}">
+                            <li>
+                                <a data-toggle="collapse" href="#collapse1"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
+                                <div id="collapse1" class="collapse">
+                                    <ul class="nav nav-second-level">
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('admin_actualizar_datos')}">
+                                            <li>
+                                                <h:commandLink action="admin_actualizar_datos">
+                                                    <i class="fa fa-refresh"></i> Actualizar datos
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment >
+                                            <li>
+                                                <h:commandLink action="admin_cambiar_contrasenia">
+                                                    <i class="fa fa-key"></i> Cambiar contraseña
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ui:fragment>
                         <li>
                             <a data-toggle="collapse" href="#collapse2"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
                             <div id="collapse2" class="collapse">
@@ -127,12 +129,13 @@
                             <a data-toggle="collapse" href="#collapse5"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
                             <div id="collapse5" class="collapse">
                                 <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="#"><i class="fa fa-users"></i> Usuarios</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shield"></i> Roles</a>
-                                    </li>
+                                    <ui:fragment>
+                                        <li>
+                                            <h:commandLink action="admin_matenimiento_usuarios">
+                                                <i class="fa fa-users"></i> Usuarios
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
                                     <ui:fragment>
                                         <li>
                                             <h:commandLink action="admin_matenimiento_dependencias">
@@ -147,9 +150,27 @@
                                             </h:commandLink>
                                         </li>
                                     </ui:fragment>
-                                    <li>
-                                        <a href="#"><i class="fa fa-folder-o"></i> Estado de reclamos</a>
-                                    </li>
+                                    <ui:fragment>
+                                        <li>
+                                            <h:commandLink action="admin_matenimiento_estados_reclamos">
+                                                <i class="fa fa-folder-o"></i> Estado de reclamos
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment>
+                                        <li>
+                                            <h:commandLink action="admin_matenimiento_elementos_web">
+                                                <i class="fa fa-folder-o"></i> Elementos web
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment>
+                                        <li>
+                                            <h:commandLink action="admin_matenimiento_roles">
+                                                <i class="fa fa-folder-o"></i> Roles
+                                            </h:commandLink>
+                                        </li>
+                                    </ui:fragment>
                                 </ul>
                             </div>
                         </li> 

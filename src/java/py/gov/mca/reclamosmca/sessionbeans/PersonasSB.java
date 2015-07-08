@@ -22,9 +22,10 @@ public class PersonasSB {
         mensajes = "";
         try {
             em.persist(objeto);
-            mensajes = objeto.getNombrePersona() + " se creo con exito!";
+            em.flush();
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombrePersona() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }
@@ -36,7 +37,7 @@ public class PersonasSB {
             em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = "No se pudo actualizar los datos. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }

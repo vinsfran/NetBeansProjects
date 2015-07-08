@@ -22,9 +22,9 @@ public class RolesSB {
         mensajes = "";
         try {
             em.persist(objeto);
-            mensajes = objeto.getNombreRol() + " se creo con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreRol() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }
@@ -33,9 +33,9 @@ public class RolesSB {
         mensajes = "";
         try {
             em.merge(objeto);
-            mensajes = objeto.getNombreRol() + " se actualizó con exito!";
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombreRol() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = ex.getMessage();
         }
         return mensajes;
     }

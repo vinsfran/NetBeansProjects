@@ -43,8 +43,8 @@ public class MbSDependencias implements Serializable {
     }
 
     public String btnCancelar() {
-        dependencia = null;
-        dependencia = new Dependencias();
+        this.dependencia = null;
+        this.dependencia = new Dependencias();
         return "/admin_matenimiento_dependencias";
     }
 
@@ -56,16 +56,16 @@ public class MbSDependencias implements Serializable {
             String mensaje = dependenciasSB.crearDependencias(dependencia);
             if (mensaje.equals("OK")) {
                 this.dependencia = null;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Dependencia creada.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Creado.", ""));
                 return "/admin_matenimiento_dependencias";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se creo la Dependencia.", mensaje));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo crear.", mensaje));
                 return "/admin_form_dependencias";
             }
         }
     }
 
-    public String btnAcualizar() {
+    public String btnActualizar() {
         if (dependencia.getNombreDependencia() == null || dependencia.getNombreDependencia().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_dependencias";
@@ -73,10 +73,10 @@ public class MbSDependencias implements Serializable {
             String mensaje = dependenciasSB.actualizarDependencias(dependencia);
             if (mensaje.equals("OK")) {
                 this.dependencia = null;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Dependencia actualizada.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado.", ""));
                 return "/admin_matenimiento_dependencias";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se actualizo la Dependencia.", mensaje));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo actualizar.", mensaje));
                 return "/admin_form_dependencias";
             }
         }
