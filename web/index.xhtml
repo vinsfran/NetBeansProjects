@@ -27,7 +27,11 @@
                                             a los ciudadanos interactuar con el municipio de una manera mas 
                                             directa y eficiente, ahorrando el tiempo que le tomaría efectuar 
                                             los mismos de manera presencial en nuestras oficinas.</h2>
-                                        <a class="btn-slide animation animated-item-3" href="#">Read More</a>
+                                        <h:form>
+                                            <h:commandLink class="btn-slide animation animated-item-3" action="login?faces-redirect=true" actionListener="#{direccionMB.asignarEstilo('Sesion')}">
+                                                <i class="fa fa-sign-in"></i> Iniciar Sesión
+                                            </h:commandLink>
+                                        </h:form>
                                     </div>
                                 </div>
 
@@ -52,7 +56,11 @@
                                             realice, así como la finalización de los mismos. Con esta funcionalidad 
                                             se mantendrá al tanto de todo lo referente a sus reclamos en el momento
                                             que son gestionados dentro de nuestro municipio.</h2>
-                                        <a class="btn-slide animation animated-item-3" href="#">Read More</a>
+                                        <h:form>
+                                            <h:commandLink class="btn-slide animation animated-item-3" action="login?faces-redirect=true" actionListener="#{direccionMB.asignarEstilo('Sesion')}">
+                                                <i class="fa fa-sign-in"></i> Iniciar Sesión
+                                            </h:commandLink>
+                                        </h:form>
                                     </div>
                                 </div>
 
@@ -74,7 +82,9 @@
                                         <h1 class="animation animated-item-1">Bienvenido al Sistema de Reclamos Online</h1>
                                         <h2 class="animation animated-item-2">Deberá registrarse como usuario para realizar su reclamo</h2>
                                         <h:form>
-                                            <h:commandLink action="#" value="Registro" class="btn-slide animation animated-item-3"/>
+                                            <h:commandLink class="btn-slide animation animated-item-3" action="registro?faces-redirect=true" actionListener="#{direccionMB.asignarEstilo('Sesion')}">
+                                                <i class="fa fa-edit"></i> Registrarse
+                                            </h:commandLink>
                                         </h:form>
                                     </div>
                                 </div>

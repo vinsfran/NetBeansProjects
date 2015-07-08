@@ -36,19 +36,19 @@
                         <li class="text-center">
                             <h:graphicImage library="images" name="asu128.png"/>
                         </li>
-                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('perfil')}">
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_mi_cuenta')}">
                             <li>
                                 <a data-toggle="collapse" href="#collapse1"><i class="fa fa-user fa-2x"></i> Mi cuenta<span class="fa arrow"></span></a>
                                 <div id="collapse1" class="collapse">
                                     <ul class="nav nav-second-level">
-                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('admin_actualizar_datos')}">
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_actualizar_datos')}">
                                             <li>
                                                 <h:commandLink action="admin_actualizar_datos">
                                                     <i class="fa fa-refresh"></i> Actualizar datos
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment >
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_cambiar_contrasenia')}">
                                             <li>
                                                 <h:commandLink action="admin_cambiar_contrasenia">
                                                     <i class="fa fa-key"></i> Cambiar contraseña
@@ -59,73 +59,79 @@
                                 </div>
                             </li>
                         </ui:fragment>
-                        <li>
-                            <a data-toggle="collapse" href="#collapse2"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
-                            <div id="collapse2" class="collapse">
-                                <ul class="nav nav-second-level">
-                                    <ui:fragment >
-                                        <li>
-                                            <h:commandLink action="admin_mis_reclamos">
-                                                <i class="fa fa-briefcase"></i> Mis reclamos
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment >
-                                        <li>
-                                            <h:commandLink action="#{mbSReclamos.prepararNuevoReclamo()}">
-                                                <i class="fa fa-edit"></i> Nuevo reclamo
-                                            </h:commandLink>
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_reclamos')}">
+                            <li>
+                                <a data-toggle="collapse" href="#collapse2"><i class="fa fa-envelope-o fa-2x"></i> Reclamos<span class="fa arrow"></span></a>
+                                <div id="collapse2" class="collapse">
+                                    <ul class="nav nav-second-level">
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_mis_reclamos')}">
+                                            <li>
+                                                <h:commandLink action="admin_mis_reclamos">
+                                                    <i class="fa fa-briefcase"></i> Mis reclamos
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment >
+                                            <li>
+                                                <h:commandLink action="#{mbSReclamos.prepararNuevoReclamo()}">
+                                                    <i class="fa fa-edit"></i> Nuevo reclamo
+                                                </h:commandLink>
 
-                                        </li>
-                                    </ui:fragment> 
-                                </ul>
-                            </div>
-                        </li> 
-                        <li>
-                            <a data-toggle="collapse" href="#collapse3"><i class="fa fa-inbox fa-3x"></i> Gestionar reclamos<span class="fa arrow"></span></a>
-                            <div id="collapse3" class="collapse">
-                                <ul class="nav nav-second-level">
-                                    <ui:fragment >
+                                            </li>
+                                        </ui:fragment> 
+                                    </ul>
+                                </div>
+                            </li>
+                        </ui:fragment>                        
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_gestion_reclamos')}">
+                            <li>
+                                <a data-toggle="collapse" href="#collapse3"><i class="fa fa-inbox fa-3x"></i> Gestionar reclamos<span class="fa arrow"></span></a>
+                                <div id="collapse3" class="collapse">
+                                    <ul class="nav nav-second-level">
+                                        <ui:fragment >
+                                            <li>
+                                                <h:commandLink action="admin_gestion_reclamos_pendientes">
+                                                    <i class="fa fa-folder-o"></i> Pendientes
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment >
+                                            <li>
+                                                <h:commandLink action="admin_gestion_reclamos_atendidos">
+                                                    <i class="fa fa-folder-o"></i> Atendidos
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment >
+                                            <li>
+                                                <h:commandLink action="admin_gestion_reclamos_finalizados">
+                                                    <i class="fa fa-folder-o"></i> Finalizados
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                    </ul>
+                                </div>
+                            </li>  
+                        </ui:fragment>
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_reportes')}">
+                            <li>
+                                <a data-toggle="collapse" href="#collapse4"><i class="fa fa-list-alt fa-3x"></i> Reportes<span class="fa arrow"></span></a>
+                                <div id="collapse4" class="collapse">
+                                    <ul class="nav nav-second-level">
                                         <li>
-                                            <h:commandLink action="admin_gestion_reclamos_pendientes">
-                                                <i class="fa fa-folder-o"></i> Pendientes
-                                            </h:commandLink>
+                                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
                                         </li>
-                                    </ui:fragment>
-                                    <ui:fragment >
                                         <li>
-                                            <h:commandLink action="admin_gestion_reclamos_atendidos">
-                                                <i class="fa fa-folder-o"></i> Atendidos
-                                            </h:commandLink>
+                                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
                                         </li>
-                                    </ui:fragment>
-                                    <ui:fragment >
                                         <li>
-                                            <h:commandLink action="admin_gestion_reclamos_finalizados">
-                                                <i class="fa fa-folder-o"></i> Finalizados
-                                            </h:commandLink>
+                                            <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
                                         </li>
-                                    </ui:fragment>
-                                </ul>
-                            </div>
-                        </li>  
-                        <li>
-                            <a data-toggle="collapse" href="#collapse4"><i class="fa fa-list-alt fa-3x"></i> Reportes<span class="fa arrow"></span></a>
-                            <div id="collapse4" class="collapse">
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>  	
-                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('panel_de_control')}">
+                                    </ul>
+                                </div>
+                            </li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_panel_de_control')}">
                             <li>
                                 <a data-toggle="collapse" href="#collapse5"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
                                 <div id="collapse5" class="collapse">
