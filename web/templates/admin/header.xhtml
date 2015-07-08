@@ -125,55 +125,57 @@
                                 </ul>
                             </div>
                         </li>  	
-                        <li>
-                            <a data-toggle="collapse" href="#collapse5"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
-                            <div id="collapse5" class="collapse">
-                                <ul class="nav nav-second-level">
-                                    <ui:fragment>
-                                        <li>
-                                            <h:commandLink action="admin_matenimiento_usuarios">
-                                                <i class="fa fa-users"></i> Usuarios
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment>
-                                        <li>
-                                            <h:commandLink action="admin_matenimiento_dependencias">
-                                                <i class="fa fa-university"></i> Dependencias
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment>
-                                        <li>
-                                            <h:commandLink action="admin_matenimiento_tipos_reclamos">
-                                                <i class="fa fa-folder-o"></i> Tipos de reclamos
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment>
-                                        <li>
-                                            <h:commandLink action="admin_matenimiento_estados_reclamos">
-                                                <i class="fa fa-folder-o"></i> Estado de reclamos
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment>
-                                        <li>
-                                            <h:commandLink action="admin_matenimiento_elementos_web">
-                                                <i class="fa fa-folder-o"></i> Elementos web
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                    <ui:fragment>
-                                        <li>
-                                            <h:commandLink action="admin_matenimiento_roles">
-                                                <i class="fa fa-folder-o"></i> Roles
-                                            </h:commandLink>
-                                        </li>
-                                    </ui:fragment>
-                                </ul>
-                            </div>
-                        </li> 
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('panel_de_control')}">
+                            <li>
+                                <a data-toggle="collapse" href="#collapse5"><i class="fa fa-desktop fa-3x"></i> Panel de control<span class="fa arrow"></span></a>
+                                <div id="collapse5" class="collapse">
+                                    <ul class="nav nav-second-level">
+                                        <ui:fragment>
+                                            <li>
+                                                <h:commandLink action="admin_matenimiento_usuarios">
+                                                    <i class="fa fa-users"></i> Usuarios
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment>
+                                            <li>
+                                                <h:commandLink action="admin_matenimiento_dependencias">
+                                                    <i class="fa fa-university"></i> Dependencias
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment>
+                                            <li>
+                                                <h:commandLink action="admin_matenimiento_tipos_reclamos">
+                                                    <i class="fa fa-folder-o"></i> Tipos de reclamos
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment>
+                                            <li>
+                                                <h:commandLink action="admin_matenimiento_estados_reclamos">
+                                                    <i class="fa fa-folder-o"></i> Estado de reclamos
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment>
+                                            <li>
+                                                <h:commandLink action="admin_matenimiento_elementos_web">
+                                                    <i class="fa fa-folder-o"></i> Elementos web
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment>
+                                            <li>
+                                                <h:commandLink action="admin_matenimiento_roles">
+                                                    <i class="fa fa-folder-o"></i> Roles
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                    </ul>
+                                </div>
+                            </li> 
+                        </ui:fragment>
                     </ul>
                 </h:form>
             </div>
