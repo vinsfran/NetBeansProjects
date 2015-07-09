@@ -227,7 +227,6 @@ public class MbSUsuarios implements Serializable {
     }
 
     public String obtenerPermisoVisibleElemento(String nombreElemento) {
-        System.out.println("Nom: " + nombreElemento);
         List<PermisosElementosWeb> listaDePermisosDeElementos = usuario.getFkCodRol().getPermisosElementosWebList();
         String valorRetorno = "false";
         for (int i = 0; i < listaDePermisosDeElementos.size(); i++) {

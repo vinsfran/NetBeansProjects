@@ -112,13 +112,12 @@ public class MbSRoles implements Serializable {
     }
 
     public void buscarEstadoPermisos() {
-        
-        this.rol = rolesSB.consultarRol(rol.getCodRol());
-        this.elementoVisible = false;
-        this.elementoDesactivado = false;
 
         int codElementoWeb = elementoWeb.getCodElementoWeb();
         elementoWeb = elementosWebSB.consultarElementoWeb(codElementoWeb);
+        this.rol = rolesSB.consultarRol(this.rol.getCodRol());
+        this.elementoVisible = false;
+        this.elementoDesactivado = false;
 
         String descripcionDelElementoWeb = "Permiso para elemento: ";
         descripcionDelElementoWeb = descripcionDelElementoWeb + elementoWeb.getDescripcionDelElementoWeb();
@@ -129,7 +128,7 @@ public class MbSRoles implements Serializable {
         for (int i = 0; this.rol.getPermisosElementosWebList().size() > i; i++) {
 
             if (this.rol.getPermisosElementosWebList().get(i).getFkCodElementoWeb().getCodElementoWeb() == codElementoWeb) {
-
+                System.out.println("COD PERMI: " + this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
                 this.permisosElementosWeb.setCodPermisoElementoWeb(this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
                 // this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
 
@@ -141,6 +140,7 @@ public class MbSRoles implements Serializable {
                     this.elementoDesactivado = true;
                 }
             }
+
         }
 
     }
