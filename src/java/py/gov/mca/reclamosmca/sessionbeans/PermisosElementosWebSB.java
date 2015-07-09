@@ -22,6 +22,7 @@ public class PermisosElementosWebSB {
         mensajes = "";
         try {
             em.persist(objeto);
+            em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = ex.getMessage();
@@ -33,6 +34,7 @@ public class PermisosElementosWebSB {
         mensajes = "";
         try {
             em.merge(objeto);
+            em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = ex.getMessage();

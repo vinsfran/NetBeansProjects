@@ -56,6 +56,7 @@ public class MbSRoles implements Serializable {
 
     public String btnModificar(Roles rol) {
         this.rol = rol;
+        this.rol = rolesSB.consultarRol(rol.getCodRol());
         this.elementoWeb = new ElementosWeb();
         this.permisosElementosWeb = new PermisosElementosWeb();
         return "/admin_form_roles";
@@ -85,7 +86,7 @@ public class MbSRoles implements Serializable {
         }
     }
 
-    public String btnActualizar() {
+    public String btnActualizarPermisos() {
         if (this.rol == null || this.rol.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_roles";
@@ -96,18 +97,12 @@ public class MbSRoles implements Serializable {
             this.permisosElementosWeb.setFkCodRol(rol);
             this.permisosElementosWeb.setFkCodElementoWeb(elementoWeb);
 
-            String mensaje = rolesSB.actualizarRoles(this.rol);
+            String mensaje = permisosElementosWebSB.actualizarPermisosElementosWeb(permisosElementosWeb);
             if (mensaje.equals("OK")) {
-                this.rol = null;
-                String mensaje1 = permisosElementosWebSB.actualizarPermisosElementosWeb(permisosElementosWeb);
-                if (mensaje1.equals("OK")) {
-                    this.rol = null;
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado.", ""));
-                    return "/admin_matenimiento_roles";
-                } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo actualizar.", mensaje));
-                    return "/admin_form_roles";
-                }
+                setElementosWeb(null);
+                getElementosWeb();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado.", ""));
+                return "/admin_form_roles";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo actualizar.", mensaje));
                 return "/admin_form_roles";
@@ -117,6 +112,8 @@ public class MbSRoles implements Serializable {
     }
 
     public void buscarEstadoPermisos() {
+        
+        this.rol = rolesSB.consultarRol(rol.getCodRol());
         this.elementoVisible = false;
         this.elementoDesactivado = false;
 
@@ -134,7 +131,7 @@ public class MbSRoles implements Serializable {
             if (this.rol.getPermisosElementosWebList().get(i).getFkCodElementoWeb().getCodElementoWeb() == codElementoWeb) {
 
                 this.permisosElementosWeb.setCodPermisoElementoWeb(this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
-               // this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
+                // this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
 
                 if (this.rol.getPermisosElementosWebList().get(i).getValorVisible().trim().equals("true")) {
                     this.elementoVisible = true;

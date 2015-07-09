@@ -26,11 +26,11 @@
                                     <h:form class="col-md-12"> 
                                         <div class="form-group">
                                             <label for="nombre">Nombre del rol:</label>
-                                            <h:inputText id="nombre"
-                                                         class="form-control" 
-                                                         label="Nombre" 
-                                                         value="#{mbSRoles.rol.nombreRol}" 
-                                                         a:placeholder=" Nombre"/>
+
+                                            <h:outputText id="nombre"
+                                                          class="form-control" 
+                                                          value="#{mbSRoles.rol.nombreRol}"
+                                                          />
                                         </div>
 
                                         <div class="form-group">
@@ -64,20 +64,14 @@
 
                                         <div class="input-group col-md-12">
                                             <label for="descri">Descripción del permiso: </label>
-                                            <p:inputTextarea required="false" 
-                                                             id="descri" 
-                                                             value="#{mbSRoles.permisosElementosWeb.detalleDelPermiso}"
-                                                             title="Descripción del reclamo"
-                                                             class="form-control"
-                                                             autoResize="true"
-                                                             maxlength="255"
-                                                             counter="display"
-                                                             counterTemplate="{0} caracteres disponibles."
-                                                             style="width: 100%;"/>
+                                            <h:outputText id="descri" 
+                                                          value="#{mbSRoles.permisosElementosWeb.detalleDelPermiso}"
+                                                          title="Descripción del reclamo"
+                                                          class="input-sm"
+                                                          style="width: 100%; white-space: pre-wrap;"/>
 
                                         </div>
-                                        <h:outputText id="display" />
-
+                                        <br/>
                                         <div class="col-md-12">
                                             <div class="modal-footer">
                                                 <h:commandLink class="btn btn-default" action="#{mbSRoles.btnCancelar()}" immediate="true">
@@ -86,7 +80,7 @@
                                                 <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnCrear()}" rendered="#{mbSRoles.rol.codRol > 0 ? false : true}">
                                                     <i class="fa fa-check-square-o"></i> Crear
                                                 </h:commandLink>
-                                                <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnActualizar()}" rendered="#{mbSRoles.rol.codRol > 0 ? true : false}">
+                                                <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnActualizarPermisos()}" rendered="#{mbSRoles.rol.codRol > 0 ? true : false}">
                                                     <i class="fa fa-check-square-o"></i> Actualizar
                                                 </h:commandLink>
                                             </div>
