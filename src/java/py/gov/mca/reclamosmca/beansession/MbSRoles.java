@@ -119,15 +119,23 @@ public class MbSRoles implements Serializable {
     public void buscarEstadoPermisos() {
         this.elementoVisible = false;
         this.elementoDesactivado = false;
-        this.permisosElementosWeb.setDetalleDelPermiso("");
+
         int codElementoWeb = elementoWeb.getCodElementoWeb();
-        System.out.println("COD: " + codElementoWeb);
+        elementoWeb = elementosWebSB.consultarElementoWeb(codElementoWeb);
+
+        String descripcionDelElementoWeb = "Permiso para elemento: ";
+        descripcionDelElementoWeb = descripcionDelElementoWeb + elementoWeb.getDescripcionDelElementoWeb();
+        descripcionDelElementoWeb = descripcionDelElementoWeb + " - Rol: " + this.rol.getNombreRol();
+        System.out.println(descripcionDelElementoWeb);
+        this.permisosElementosWeb.setDetalleDelPermiso(descripcionDelElementoWeb);
+
         for (int i = 0; this.rol.getPermisosElementosWebList().size() > i; i++) {
+
             if (this.rol.getPermisosElementosWebList().get(i).getFkCodElementoWeb().getCodElementoWeb() == codElementoWeb) {
-                
+
                 this.permisosElementosWeb.setCodPermisoElementoWeb(this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
-                this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
-                
+               // this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
+
                 if (this.rol.getPermisosElementosWebList().get(i).getValorVisible().trim().equals("true")) {
                     this.elementoVisible = true;
                 }
