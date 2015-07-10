@@ -39,10 +39,13 @@ public class MbSRoles implements Serializable {
 
     private Roles rol;
     private ElementosWeb elementoWeb;
-    private PermisosElementosWeb permisosElementosWeb;
 
     private boolean elementoVisible;
     private boolean elementoDesactivado;
+
+    private String detalleDelPermiso;
+
+    private Integer codPermisoElementoWeb;
 
     public MbSRoles() {
 
@@ -58,7 +61,9 @@ public class MbSRoles implements Serializable {
         this.rol = rol;
         this.rol = rolesSB.consultarRol(rol.getCodRol());
         this.elementoWeb = new ElementosWeb();
-        this.permisosElementosWeb = new PermisosElementosWeb();
+        this.elementoVisible = false;
+        this.elementoDesactivado = false;
+
         return "/admin_form_roles";
     }
 
@@ -92,10 +97,13 @@ public class MbSRoles implements Serializable {
             return "/admin_form_roles";
         } else {
 
-            this.permisosElementosWeb.setValorVisible(this.elementoVisible + "");
-            this.permisosElementosWeb.setValorDesactivado(this.elementoDesactivado + "");
-            this.permisosElementosWeb.setFkCodRol(rol);
-            this.permisosElementosWeb.setFkCodElementoWeb(elementoWeb);
+            PermisosElementosWeb permisosElementosWeb = new PermisosElementosWeb();
+            permisosElementosWeb.setCodPermisoElementoWeb(codPermisoElementoWeb);
+            permisosElementosWeb.setValorVisible(elementoVisible + "");
+            permisosElementosWeb.setValorDesactivado(elementoDesactivado + "");
+            permisosElementosWeb.setFkCodRol(rol);
+            permisosElementosWeb.setFkCodElementoWeb(elementoWeb);
+            permisosElementosWeb.setDetalleDelPermiso(getDetalleDelPermiso());
 
             String mensaje = permisosElementosWebSB.actualizarPermisosElementosWeb(permisosElementosWeb);
             if (mensaje.equals("OK")) {
@@ -116,20 +124,18 @@ public class MbSRoles implements Serializable {
         int codElementoWeb = elementoWeb.getCodElementoWeb();
         elementoWeb = elementosWebSB.consultarElementoWeb(codElementoWeb);
         this.rol = rolesSB.consultarRol(this.rol.getCodRol());
+
         this.elementoVisible = false;
         this.elementoDesactivado = false;
 
-        String descripcionDelElementoWeb = "Permiso para elemento: ";
-        descripcionDelElementoWeb = descripcionDelElementoWeb + elementoWeb.getDescripcionDelElementoWeb();
-        descripcionDelElementoWeb = descripcionDelElementoWeb + " - Rol: " + this.rol.getNombreRol();
-        System.out.println(descripcionDelElementoWeb);
-        this.permisosElementosWeb.setDetalleDelPermiso(descripcionDelElementoWeb);
+        this.setDetalleDelPermiso("Permiso para elemento: " + elementoWeb.getDescripcionDelElementoWeb() + " - Rol: " + this.rol.getNombreRol());
+        System.out.println(this.getDetalleDelPermiso());
 
         for (int i = 0; this.rol.getPermisosElementosWebList().size() > i; i++) {
 
             if (this.rol.getPermisosElementosWebList().get(i).getFkCodElementoWeb().getCodElementoWeb() == codElementoWeb) {
                 System.out.println("COD PERMI: " + this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
-                this.permisosElementosWeb.setCodPermisoElementoWeb(this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
+                this.codPermisoElementoWeb = this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb();
                 // this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
 
                 if (this.rol.getPermisosElementosWebList().get(i).getValorVisible().trim().equals("true")) {
@@ -139,6 +145,8 @@ public class MbSRoles implements Serializable {
                 if (this.rol.getPermisosElementosWebList().get(i).getValorDesactivado().trim().equals("true")) {
                     this.elementoDesactivado = true;
                 }
+            } else {
+                this.codPermisoElementoWeb = null;
             }
 
         }
@@ -233,17 +241,17 @@ public class MbSRoles implements Serializable {
     }
 
     /**
-     * @return the permisosElementosWeb
+     * @return the detalleDelPermiso
      */
-    public PermisosElementosWeb getPermisosElementosWeb() {
-        return permisosElementosWeb;
+    public String getDetalleDelPermiso() {
+        return detalleDelPermiso;
     }
 
     /**
-     * @param permisosElementosWeb the permisosElementosWeb to set
+     * @param detalleDelPermiso the detalleDelPermiso to set
      */
-    public void setPermisosElementosWeb(PermisosElementosWeb permisosElementosWeb) {
-        this.permisosElementosWeb = permisosElementosWeb;
+    public void setDetalleDelPermiso(String detalleDelPermiso) {
+        this.detalleDelPermiso = detalleDelPermiso;
     }
 
 }

@@ -21,8 +21,6 @@ import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
 public class ReclamosSB {
 
     @EJB
-    private EnviarCorreos enviarCorreos1;
-    @EJB
     private EnviarCorreos enviarCorreos;
 
     @PersistenceContext(unitName = "reclamosmcaPU")
@@ -32,6 +30,12 @@ public class ReclamosSB {
     public String crearReclamos(Reclamos objeto) {
         mensajes = "";
         try {
+            if(objeto.getDescripcionReclamoContribuyente() == null){
+                objeto.setDescripcionReclamoContribuyente("NULL");
+            }
+            if(objeto.getDescripcionReclamoContribuyente().equals("")){
+                objeto.setDescripcionReclamoContribuyente("SIN DESCRIPCION");
+            }
             if (objeto.getFkImagen() != null) {
                 Imagenes imagen = new Imagenes();
                 imagen = objeto.getFkImagen();
@@ -40,8 +44,8 @@ public class ReclamosSB {
                 //  em.persist(objeto.getFkCodPersona());
                 em.merge(objeto);
                 em.flush();
-            }else{
-                
+            } else {
+
                 em.persist(objeto);
                 em.flush();
             }
@@ -199,6 +203,18 @@ public class ReclamosSB {
             }
         }
 
+        return mensajes;
+    }
+
+    public String actualizarReclamosAdmin(Reclamos objeto) {
+        mensajes = "";
+        try {
+            em.merge(objeto);
+            em.flush();
+            mensajes = "OK";
+        } catch (Exception ex) {
+            mensajes = ex.getMessage();
+        }
         return mensajes;
     }
 

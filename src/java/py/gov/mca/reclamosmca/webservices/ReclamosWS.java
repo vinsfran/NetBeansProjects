@@ -126,7 +126,13 @@ public class ReclamosWS {
     @Produces({MediaType.APPLICATION_JSON})
     public List<Reclamos> consultarReclamosLoginUsuarioEstadoReclamo(String json) throws JSONException, ParseException {
         JSONObject jsonObject = new JSONObject(json);
-        return reclamosSB.listarPorLoginUsuarioEstadoReclamo(jsonObject.getString("loginUsuario"), jsonObject.getInt("codEstadoReclamo"));
+        List<Reclamos> lista = reclamosSB.listarPorLoginUsuarioEstadoReclamo(jsonObject.getString("loginUsuario"), jsonObject.getInt("codEstadoReclamo"));
+        //Verificar para el momento en que se necesite enviar la imagen
+        for (int i=0; lista.size()> i; i++) {
+            lista.get(i).setFkImagen(null);            
+        }
+        
+        return lista;
     }
 
     @GET
