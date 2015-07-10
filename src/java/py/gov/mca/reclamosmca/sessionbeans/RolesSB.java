@@ -52,8 +52,7 @@ public class RolesSB {
     }
 
     @SuppressWarnings("unchecked")
-    public Roles consultarRol(Integer codRol) {
-        System.out.println("RolesSB consultarRol " + codRol);
+    public Roles consultarRol(Integer codRol) {        
         Query q = em.createNamedQuery("Roles.findByCodRol");
         q.setParameter("codRol", codRol);
         return (Roles) q.getResultList().get(0);

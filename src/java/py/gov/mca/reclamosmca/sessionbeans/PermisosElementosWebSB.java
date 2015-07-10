@@ -61,6 +61,25 @@ public class PermisosElementosWebSB {
     }
 
     @SuppressWarnings("unchecked")
+    public PermisosElementosWeb consultarCodRolCodElementoWeb(Integer codRol, Integer codElementoWeb) {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM PermisosElementosWeb e ");
+        jpql.append("WHERE e.fkCodRol.codRol = :paramCodRol ");
+        jpql.append("AND e.fkCodElementoWeb.codElementoWeb = :paramCodElementoWeb ");
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodRol", codRol);
+        q.setParameter("paramCodElementoWeb", codElementoWeb);
+        if (q.getResultList().isEmpty()) {
+            return null;
+        } else {
+            return (PermisosElementosWeb) q.getResultList().get(0);
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
     public List<PermisosElementosWeb> listarPermisosElementosWeb() {
         Query q = em.createNamedQuery("PermisosElementosWeb.findAll");
         return q.getResultList();

@@ -39,13 +39,11 @@ public class MbSRoles implements Serializable {
 
     private Roles rol;
     private ElementosWeb elementoWeb;
+    private PermisosElementosWeb permisosElementosWeb;
 
     private boolean elementoVisible;
     private boolean elementoDesactivado;
-
-    private String detalleDelPermiso;
-
-    private Integer codPermisoElementoWeb;
+    private boolean estadoBtnActualizar;
 
     public MbSRoles() {
 
@@ -63,6 +61,8 @@ public class MbSRoles implements Serializable {
         this.elementoWeb = new ElementosWeb();
         this.elementoVisible = false;
         this.elementoDesactivado = false;
+        this.estadoBtnActualizar = true;
+        this.permisosElementosWeb = new PermisosElementosWeb();
 
         return "/admin_form_roles";
     }
@@ -97,13 +97,8 @@ public class MbSRoles implements Serializable {
             return "/admin_form_roles";
         } else {
 
-            PermisosElementosWeb permisosElementosWeb = new PermisosElementosWeb();
-            permisosElementosWeb.setCodPermisoElementoWeb(codPermisoElementoWeb);
             permisosElementosWeb.setValorVisible(elementoVisible + "");
             permisosElementosWeb.setValorDesactivado(elementoDesactivado + "");
-            permisosElementosWeb.setFkCodRol(rol);
-            permisosElementosWeb.setFkCodElementoWeb(elementoWeb);
-            permisosElementosWeb.setDetalleDelPermiso(getDetalleDelPermiso());
 
             String mensaje = permisosElementosWebSB.actualizarPermisosElementosWeb(permisosElementosWeb);
             if (mensaje.equals("OK")) {
@@ -120,35 +115,34 @@ public class MbSRoles implements Serializable {
     }
 
     public void buscarEstadoPermisos() {
-
-        int codElementoWeb = elementoWeb.getCodElementoWeb();
-        elementoWeb = elementosWebSB.consultarElementoWeb(codElementoWeb);
-        this.rol = rolesSB.consultarRol(this.rol.getCodRol());
-
+        
+        System.out.println("MbSRoles buscarEstadoPermisos rol " + rol.getCodRol());
+        System.out.println("MbSRoles buscarEstadoPermisos elemento " + elementoWeb.getCodElementoWeb());
+        this.elementoWeb = elementosWebSB.consultarElementoWeb(elementoWeb.getCodElementoWeb());
+        String detalleDelPermiso = "Permiso para elemento: " + elementoWeb.getDescripcionDelElementoWeb() + " - Rol: " + this.rol.getNombreRol();
         this.elementoVisible = false;
-        this.elementoDesactivado = false;
+        this.elementoDesactivado = true;
+        this.estadoBtnActualizar = false;
+        permisosElementosWeb = permisosElementosWebSB.consultarCodRolCodElementoWeb(rol.getCodRol(), elementoWeb.getCodElementoWeb());
+        if (permisosElementosWeb == null) {
+            System.out.println("MbSRoles buscarEstadoPermisos Null");
+            permisosElementosWeb = new PermisosElementosWeb();
+            permisosElementosWeb.setFkCodRol(rol);
+            permisosElementosWeb.setFkCodElementoWeb(elementoWeb);
+            permisosElementosWeb.setValorVisible("false");
+            permisosElementosWeb.setValorDesactivado("true");
+            permisosElementosWeb.setDetalleDelPermiso(detalleDelPermiso);
 
-        this.setDetalleDelPermiso("Permiso para elemento: " + elementoWeb.getDescripcionDelElementoWeb() + " - Rol: " + this.rol.getNombreRol());
-        System.out.println(this.getDetalleDelPermiso());
-
-        for (int i = 0; this.rol.getPermisosElementosWebList().size() > i; i++) {
-
-            if (this.rol.getPermisosElementosWebList().get(i).getFkCodElementoWeb().getCodElementoWeb() == codElementoWeb) {
-                System.out.println("COD PERMI: " + this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb());
-                this.codPermisoElementoWeb = this.rol.getPermisosElementosWebList().get(i).getCodPermisoElementoWeb();
-                // this.permisosElementosWeb.setDetalleDelPermiso(this.rol.getPermisosElementosWebList().get(i).getDetalleDelPermiso());
-
-                if (this.rol.getPermisosElementosWebList().get(i).getValorVisible().trim().equals("true")) {
-                    this.elementoVisible = true;
-                }
-
-                if (this.rol.getPermisosElementosWebList().get(i).getValorDesactivado().trim().equals("true")) {
-                    this.elementoDesactivado = true;
-                }
-            } else {
-                this.codPermisoElementoWeb = null;
+        } else {
+            System.out.println("MbSRoles buscarEstadoPermisos NO Null");
+            permisosElementosWeb.setDetalleDelPermiso(detalleDelPermiso);
+            if (permisosElementosWeb.getValorVisible().trim().equals("true")) {
+                this.elementoVisible = true;
             }
 
+            if (permisosElementosWeb.getValorDesactivado().trim().equals("false")) {
+                this.elementoDesactivado = false;
+            }
         }
 
     }
@@ -241,17 +235,31 @@ public class MbSRoles implements Serializable {
     }
 
     /**
-     * @return the detalleDelPermiso
+     * @return the permisosElementosWeb
      */
-    public String getDetalleDelPermiso() {
-        return detalleDelPermiso;
+    public PermisosElementosWeb getPermisosElementosWeb() {
+        return permisosElementosWeb;
     }
 
     /**
-     * @param detalleDelPermiso the detalleDelPermiso to set
+     * @param permisosElementosWeb the permisosElementosWeb to set
      */
-    public void setDetalleDelPermiso(String detalleDelPermiso) {
-        this.detalleDelPermiso = detalleDelPermiso;
+    public void setPermisosElementosWeb(PermisosElementosWeb permisosElementosWeb) {
+        this.permisosElementosWeb = permisosElementosWeb;
+    }
+
+    /**
+     * @return the estadoBtnActualizar
+     */
+    public boolean isEstadoBtnActualizar() {
+        return estadoBtnActualizar;
+    }
+
+    /**
+     * @param estadoBtnActualizar the estadoBtnActualizar to set
+     */
+    public void setEstadoBtnActualizar(boolean estadoBtnActualizar) {
+        this.estadoBtnActualizar = estadoBtnActualizar;
     }
 
 }

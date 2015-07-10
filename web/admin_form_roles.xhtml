@@ -43,8 +43,8 @@
                                                 <f:selectItems value="#{mbSRoles.elementosWeb}" 
                                                                var="elementosWeb"
                                                                itemValue="#{elementosWeb.codElementoWeb}" 
-                                                               itemLabel="#{elementosWeb.nombreElementoWeb}"/>
-                                                <f:ajax render="visible desactivado descri" listener="#{mbSRoles.buscarEstadoPermisos()}"/>
+                                                               itemLabel="#{elementosWeb.descripcionDelElementoWeb}"/>
+                                                <f:ajax render="visible desactivado descri actualizar" listener="#{mbSRoles.buscarEstadoPermisos()}"/>
                                             </h:selectOneMenu>
                                         </div>
                                         <div class="col-md-6">
@@ -65,7 +65,7 @@
                                         <div class="input-group col-md-12">
                                             <label for="descri">Descripción del permiso: </label>
                                             <h:outputText id="descri" 
-                                                          value="#{mbSRoles.detalleDelPermiso}"
+                                                          value="#{mbSRoles.permisosElementosWeb.detalleDelPermiso}"
                                                           title="Descripción del reclamo"
                                                           class="input-sm"
                                                           style="width: 100%; white-space: pre-wrap;"/>
@@ -80,7 +80,11 @@
                                                 <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnCrear()}" rendered="#{mbSRoles.rol.codRol > 0 ? false : true}">
                                                     <i class="fa fa-check-square-o"></i> Crear
                                                 </h:commandLink>
-                                                <h:commandLink class="btn btn-primary" action="#{mbSRoles.btnActualizarPermisos()}" rendered="#{mbSRoles.rol.codRol > 0 ? true : false}">
+                                                <h:commandLink id="actualizar"
+                                                               class="btn btn-primary" 
+                                                               action="#{mbSRoles.btnActualizarPermisos()}" 
+                                                               rendered="#{mbSRoles.rol.codRol > 0 ? true : false}"
+                                                               disabled="#{mbSRoles.estadoBtnActualizar}">
                                                     <i class="fa fa-check-square-o"></i> Actualizar
                                                 </h:commandLink>
                                             </div>
