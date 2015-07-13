@@ -42,7 +42,9 @@ public class MbSUsuarios implements Serializable {
     private Usuarios usuario;
 
     public MbSUsuarios() {
-
+        //Control de tiempo de session de usuario, en segundos seteado en 300 segundos equivalentes a 5 minutos
+        HttpSession sessionUsuario = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        sessionUsuario.setMaxInactiveInterval(300);
     }
 
     public String btnIngresar() {
@@ -56,6 +58,10 @@ public class MbSUsuarios implements Serializable {
                 if (usuario.getClaveUsuario().substring(0, 6).equals(claveUsuario) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(2)) {
                     usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
                     if (usuariosSB.actualizarUsuarios(usuario).equals("OK")) {
+                        
+                        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                        httpSession.setAttribute("loginUsuario", this.loginUsuario);
+
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cuenta activada.", ""));
                         return "/admin_mis_reclamos";
                     } else {
@@ -63,6 +69,10 @@ public class MbSUsuarios implements Serializable {
                         return "/login";
                     }
                 } else if (usuario.getClaveUsuario().substring(0, 6).equals(claveUsuario) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(3)) {
+                    
+                    HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                    httpSession.setAttribute("loginUsuario", this.loginUsuario);
+                    
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contraseña reestablecida.", "Por favor cambie su contraseña."));
                     return "/admin_cambiar_contrasenia";
                 } else {
@@ -73,6 +83,10 @@ public class MbSUsuarios implements Serializable {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo ingresar, intentelo de nuevo.", ""));
                         return "/login";
                     } else if (usuario.getClaveUsuario().equals(contrasenaMD5) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(1)) {
+                        
+                        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                        httpSession.setAttribute("loginUsuario", this.loginUsuario);
+                        
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido!", usuario.getFkCodPersona().getNombrePersona()));
                         String pagina;
                         if (usuario.getFkCodRol().getCodRol().equals(1)) {
@@ -103,14 +117,20 @@ public class MbSUsuarios implements Serializable {
     }
 
     public String btnSalir() {
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
-        HttpSession session = (HttpSession) ctx.getSession(false);
-        this.setUsuario(null);
-        if (session != null) {
-            this.setUsuario(null);
-            session.invalidate();
-        }
+        this.usuario = null;
+        this.loginUsuario = null;
+        this.claveUsuario = null;
+
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        session.invalidate();
+
+//        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+//        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+//        HttpSession session = (HttpSession) ctx.getSession(false);
+//        if (session != null) {
+//            this.setUsuario(null);
+//            session.invalidate();
+//        }
         return "/index";
     }
 
