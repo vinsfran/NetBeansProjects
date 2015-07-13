@@ -441,7 +441,7 @@ public class MbSReclamos implements Serializable {
 
             }
         }
-        return lista2.size();
+        return lista2.size()+1;
         //listarReclamosPorZona = new ListDataModel(lista2);
     }
 

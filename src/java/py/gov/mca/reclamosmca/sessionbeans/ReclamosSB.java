@@ -30,10 +30,10 @@ public class ReclamosSB {
     public String crearReclamos(Reclamos objeto) {
         mensajes = "";
         try {
-            if(objeto.getDescripcionReclamoContribuyente() == null){
+            if (objeto.getDescripcionReclamoContribuyente() == null) {
                 objeto.setDescripcionReclamoContribuyente("NULL");
             }
-            if(objeto.getDescripcionReclamoContribuyente().equals("")){
+            if (objeto.getDescripcionReclamoContribuyente().equals("")) {
                 objeto.setDescripcionReclamoContribuyente("SIN DESCRIPCION");
             }
             if (objeto.getFkImagen() != null) {
@@ -326,6 +326,20 @@ public class ReclamosSB {
         //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
         Query q = em.createQuery(jpql.toString());
         q.setParameter("paramCodTipoReclamo", codTipoReclamo);
+        return q.getResultList();
+    }
+
+    public List<Reclamos> listarPorTiposReclamosEstado(Integer codTipoReclamo, Integer codEstadoReclamo) {
+        StringBuilder jpql = new StringBuilder();
+
+        jpql.append("SELECT e ");
+        jpql.append("FROM Reclamos e ");
+        jpql.append("WHERE e.fkCodTipoReclamo.codTipoReclamo = :paramCodTipoReclamo ");
+        jpql.append("AND e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodTipoReclamo", codTipoReclamo);
+        q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
         return q.getResultList();
     }
 
