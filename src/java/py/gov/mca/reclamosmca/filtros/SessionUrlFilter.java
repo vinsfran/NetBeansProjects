@@ -53,6 +53,7 @@ public class SessionUrlFilter implements Filter {
                 res.sendRedirect(req.getContextPath() + "/faces/index.xhtml");
             }
         } else {
+            //VALIDACION PARA ACCESO NO AUTORIZADO POR URL
 //            if (mbSUsuarios != null) {
 //                Usuarios usuario = mbSUsuarios.getUsuario();
 //                List<PermisosElementosWeb> listaDePermisosDeElementos = usuario.getFkCodRol().getPermisosElementosWebList();
