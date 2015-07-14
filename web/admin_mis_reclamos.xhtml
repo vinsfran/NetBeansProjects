@@ -151,14 +151,13 @@
                                                         <div class="modal-footer">
                                                             <h:form>
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                                                <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
+                                                                <h:commandLink class="btn btn-primary" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo, 'MIS_RECLAMOS')}">
                                                                     <i class="fa fa-file-pdf-o"></i> Descargar PDF
                                                                 </h:commandLink>
                                                             </h:form>
                                                         </div>
                                                     </div>
                                                 </div>
-
 
                                             </div>
                                         </h:column>

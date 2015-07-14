@@ -322,19 +322,22 @@ public class MbSReclamos implements Serializable {
         int diasMaximo = 0;
         //Se crea un objeto calendario con la fecha del inicio del reclamo
         Calendar fechaInicio = new GregorianCalendar();
-        if (reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("PENDIENTE")) {
+        if (reclamo.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(1)) {
+            //PARA ESTADO PENDIENTE
             fechaInicio.setTime(reclamo.getFechaReclamo());
             diasMaximo = reclamo.getFkCodTipoReclamo().getDiasMaximoPendientes();
             ban = 1;
-        } else if (reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("EN PROCESO")) {
+        } else if (reclamo.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(2)) {
+            //PARA ESTADO ATENDIDO
             fechaInicio.setTime(reclamo.getFechaAtencionReclamo());
             diasMaximo = reclamo.getFkCodTipoReclamo().getDiasMaximoFinalizados();
             ban = 1;
-        } else if (reclamo.getFkCodEstadoReclamo().getNombreEstadoReclamo().equals("FINALIZADO")) {
+        } else if (reclamo.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
+            //PARA ESTADO FINALIZADO
             diasMaximo = reclamo.getCantidadDiasProceso();
         }
         if (ban == 1) {
-            //obtiene el dia
+            //Obtiene el dia
             c.setTimeInMillis(hoy.getTime().getTime() - fechaInicio.getTime().getTime());
             dias = c.get(Calendar.DAY_OF_YEAR);
 
@@ -348,7 +351,6 @@ public class MbSReclamos implements Serializable {
 
     public void mostrarSemaforo(Integer dias, Integer diasMaximo) {
         if (dias == 0) {
-            System.out.println("ENTRA EN NULL");
             setImagenSemaforo(null);
         } else if (dias < diasMaximo) {
             setImagenSemaforo("verde20.jpg");
@@ -359,9 +361,9 @@ public class MbSReclamos implements Serializable {
         }
     }
 
-    public void exportarPDF(Integer codReclamo) throws JRException, IOException, Exception {
+    public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
         System.out.println("exportarPDF CodReclamo: " + codReclamo);
-        Reclamos reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
+        Reclamos reclamoSeleccionadoPDF = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
         Map parametros = new HashMap();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
@@ -370,44 +372,62 @@ public class MbSReclamos implements Serializable {
 
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
-        parametros.put("nombreDependencia", reclamoSeleccionado.getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
-        parametros.put("nombreTipoReclamo", reclamoSeleccionado.getFkCodTipoReclamo().getNombreTipoReclamo());
-        parametros.put("cedulaPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getCedulaPersona());
-        parametros.put("nombrePersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getNombrePersona());
-        parametros.put("apellidoPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getApellidoPersona());
-        parametros.put("direccionPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getDireccionPersona());
-        parametros.put("telefonoPersona", reclamoSeleccionado.getFkCodUsuario().getFkCodPersona().getTelefonoPersona());
+        parametros.put("nombreDependencia", reclamoSeleccionadoPDF.getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
+        parametros.put("nombreTipoReclamo", reclamoSeleccionadoPDF.getFkCodTipoReclamo().getNombreTipoReclamo());
+        parametros.put("cedulaPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getCedulaPersona());
+        parametros.put("nombrePersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getNombrePersona());
+        parametros.put("apellidoPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getApellidoPersona());
+        parametros.put("direccionPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getDireccionPersona());
+        parametros.put("telefonoPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getTelefonoPersona());
 
-        parametros.put("codReclamo", reclamoSeleccionado.getCodReclamo());
-        parametros.put("fechaReclamo", reclamoSeleccionado.getFechaReclamo());
-        parametros.put("direccionReclamo", reclamoSeleccionado.getDireccionReclamo());
-        parametros.put("latitud", reclamoSeleccionado.getLatitud());
-        parametros.put("longitud", reclamoSeleccionado.getLongitud());
-        parametros.put("direccionReclamo", reclamoSeleccionado.getDireccionReclamo());
-        parametros.put("descripcionReclamoContribuyente", reclamoSeleccionado.getDescripcionReclamoContribuyente());
-        parametros.put("estadoReclamo", reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo());
+        parametros.put("codReclamo", reclamoSeleccionadoPDF.getCodReclamo());
+        parametros.put("fechaReclamo", reclamoSeleccionadoPDF.getFechaReclamo());
+        parametros.put("direccionReclamo", reclamoSeleccionadoPDF.getDireccionReclamo());
+        parametros.put("latitud", reclamoSeleccionadoPDF.getLatitud());
+        parametros.put("longitud", reclamoSeleccionadoPDF.getLongitud());
+        parametros.put("direccionReclamo", reclamoSeleccionadoPDF.getDireccionReclamo());
+        parametros.put("descripcionReclamoContribuyente", reclamoSeleccionadoPDF.getDescripcionReclamoContribuyente());
+        parametros.put("estadoReclamo", reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getNombreEstadoReclamo());
 
-        if (reclamoSeleccionado.getFkImagen() == null) {
+        if (reclamoSeleccionadoPDF.getFkImagen() == null) {
             String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
             File imageFile = new File(urlImagen3);
             InputStream is = new FileInputStream(imageFile);
             parametros.put("imagenReclamo", ajustarImagen(is, 640, 480, "image/png"));
         } else {
-            parametros.put("imagenReclamo", reclamoSeleccionado.getFkImagen().getArchivoImagen());
+            parametros.put("imagenReclamo", reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen());
         }
-        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper"));
-        //Se verifica que estado tiene el reclamo. codEstadoReclamo = 1 --> PENDIENTE, codEstadoReclamo = 2 --> ATENDIDO, codEstadoReclamo = 3 --> FINALIZADO
-        if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(2) || reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
-            parametros.put("fechaAtencion", reclamoSeleccionado.getFechaAtencionReclamo());
-            parametros.put("usuarioAtencion", reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioAtencion().getFkCodPersona().getApellidoPersona());
-            parametros.put("descripcionAtencion", reclamoSeleccionado.getDescripcionAtencionReclamo());
-            jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper"));
-            if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
-                parametros.put("fechaFinalizacion", reclamoSeleccionado.getFechaCulminacionReclamo());
-                parametros.put("usuarioFinalizacion", reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionado.getFkCodUsuarioCulminacion().getFkCodPersona().getApellidoPersona());
-                parametros.put("descripcionFinalizacion", reclamoSeleccionado.getDescripcionCulminacionReclamo());
-                jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jasper"));
+
+        //Se verifica estado del reclamo. codEstadoReclamo = 1 --> PENDIENTE
+        if (reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(1)) {
+            if (modo.equals("MIS_RECLAMOS")) { //Se verifica el modo para generar. modo = MIS_RECLAMOS o modo = GESTION
+                jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper"));
+            } else {
+                jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoPendienteGestion.jasper"));
             }
+            //Se verifica que estado tiene el reclamo. codEstadoReclamo = 2 --> ATENDIDO, codEstadoReclamo = 3 --> FINALIZADO
+        } else if (reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(2) || reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
+            parametros.put("fechaAtencion", reclamoSeleccionadoPDF.getFechaAtencionReclamo());
+            parametros.put("usuarioAtencion", reclamoSeleccionadoPDF.getFkCodUsuarioAtencion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionadoPDF.getFkCodUsuarioAtencion().getFkCodPersona().getApellidoPersona());
+            parametros.put("descripcionAtencion", reclamoSeleccionadoPDF.getDescripcionAtencionReclamo());
+            if (modo.equals("MIS_RECLAMOS")) { //Se verifica el modo para generar. modo = MIS_RECLAMOS o modo = GESTION
+                jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper"));
+            } else {
+                jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoAtendidoGestion.jasper"));
+            }
+            //Se verifica estado del reclamo. codEstadoReclamo = 3 --> FINALIZADO
+            if (reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3)) {
+                parametros.put("fechaFinalizacion", reclamoSeleccionadoPDF.getFechaCulminacionReclamo());
+                parametros.put("usuarioFinalizacion", reclamoSeleccionadoPDF.getFkCodUsuarioCulminacion().getFkCodPersona().getNombrePersona() + " " + reclamoSeleccionadoPDF.getFkCodUsuarioCulminacion().getFkCodPersona().getApellidoPersona());
+                parametros.put("descripcionFinalizacion", reclamoSeleccionadoPDF.getDescripcionCulminacionReclamo());
+                if (modo.equals("MIS_RECLAMOS")) { //Se verifica el modo para generar. modo = MIS_RECLAMOS o modo = GESTION
+                    jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jasper"));
+                } else {
+                    jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoGestion.jasper"));
+                }
+            }
+        } else {
+            jasper = null;
         }
 
         // File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/src/java/py/gov/mca/reclamosmca/reportes/mapas.jasper"));
@@ -417,7 +437,7 @@ public class MbSReclamos implements Serializable {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
         response.setContentType("application/pdf");
-        response.addHeader("Content-disposition", "attachment; filename=RECLAMO_" + reclamoSeleccionado.getCodReclamo() + "_" + reclamoSeleccionado.getFkCodEstadoReclamo().getNombreEstadoReclamo() + ".pdf");
+        response.addHeader("Content-disposition", "attachment; filename=RECLAMO_" + reclamoSeleccionadoPDF.getCodReclamo() + "_" + reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getNombreEstadoReclamo() + ".pdf");
         //response.
         //Response.Write("<script>window.print();</script>"); 
 
@@ -445,7 +465,7 @@ public class MbSReclamos implements Serializable {
         return lista2.size();
         //listarReclamosPorZona = new ListDataModel(lista2);
     }
-    
+
     public String verReclamosPorZona(Reclamos reclamo) {
         List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
         List<Reclamos> lista2 = new ArrayList<>();
@@ -458,7 +478,7 @@ public class MbSReclamos implements Serializable {
             }
         }
         reclamosPorZona = new ListDataModel(lista2);
-        return "admin_gestion_reclamos_zona";        
+        return "admin_gestion_reclamos_zona";
     }
 
     private double distanciaEntrePuntos(double lat1, double lon1, double lat2, double lon2) {
