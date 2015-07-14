@@ -1,6 +1,10 @@
 package py.gov.mca.reclamosmca.beansession;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -38,6 +42,7 @@ public class MbSUsuarios implements Serializable {
     private String contrasenaActual;
     private String contrasena1;
     private String contrasena2;
+    private String linkExpediente;
 
     private Usuarios usuario;
 
@@ -58,7 +63,7 @@ public class MbSUsuarios implements Serializable {
                 if (usuario.getClaveUsuario().substring(0, 6).equals(claveUsuario) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(2)) {
                     usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
                     if (usuariosSB.actualizarUsuarios(usuario).equals("OK")) {
-                        
+
                         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                         httpSession.setAttribute("loginUsuario", this.loginUsuario);
 
@@ -69,10 +74,10 @@ public class MbSUsuarios implements Serializable {
                         return "/login";
                     }
                 } else if (usuario.getClaveUsuario().substring(0, 6).equals(claveUsuario) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(3)) {
-                    
+
                     HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     httpSession.setAttribute("loginUsuario", this.loginUsuario);
-                    
+
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contraseña reestablecida.", "Por favor cambie su contraseña."));
                     return "/admin_cambiar_contrasenia";
                 } else {
@@ -83,10 +88,10 @@ public class MbSUsuarios implements Serializable {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo ingresar, intentelo de nuevo.", ""));
                         return "/login";
                     } else if (usuario.getClaveUsuario().equals(contrasenaMD5) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(1)) {
-                        
+
                         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                         httpSession.setAttribute("loginUsuario", this.loginUsuario);
-                        
+
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido!", usuario.getFkCodPersona().getNombrePersona()));
                         String pagina;
                         if (usuario.getFkCodRol().getCodRol().equals(1)) {
@@ -258,6 +263,20 @@ public class MbSUsuarios implements Serializable {
         return valorRetorno;
     }
 
+    public String generarLinkExpediente(String direccion) {
+        String patron = "yyyyMMddHH";
+        SimpleDateFormat formato = new SimpleDateFormat(patron);
+        String md5 = usuario.getLoginUsuario() + formato.format(new Date()) + "mca";
+        System.out.println("md5 antes: " + md5);
+        Converciones c = new Converciones();
+        md5 = c.getMD5(md5);
+        System.out.println("md5 despues: " + md5);
+        //this.linkExpediente = "http://126.10.10.33:8080/MCA_InicioExpedientes2/servlet/mcalogin?" + usuario.getLoginUsuario() + "," + direccion + "," + md5;
+        this.linkExpediente = "http://expediente.mca.gov.py/portal/mcalogin?" + usuario.getLoginUsuario() + "," + direccion + "," + md5;
+        System.out.println("LINK: " + linkExpediente);
+        return "admin_expediente";
+    }
+
     /**
      * @return the loginUsuario
      */
@@ -340,6 +359,20 @@ public class MbSUsuarios implements Serializable {
      */
     public void setContrasenaActual(String contrasenaActual) {
         this.contrasenaActual = contrasenaActual;
+    }
+
+    /**
+     * @return the linkExpediente
+     */
+    public String getLinkExpediente() {
+        return linkExpediente;
+    }
+
+    /**
+     * @param linkExpediente the linkExpediente to set
+     */
+    public void setLinkExpediente(String linkExpediente) {
+        this.linkExpediente = linkExpediente;
     }
 
 }

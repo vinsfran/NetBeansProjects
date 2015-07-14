@@ -564,10 +564,37 @@ public class MbSReclamos implements Serializable {
                 System.out.println("ENTRO");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo actualizado.", ""));
                 //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
-                return "admin_gestion_reclamos_pendientes";
+                return "/admin_gestion_reclamos_pendientes";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no actualizado.", ""));
                 return "/admin_procesar_reclamo_pendiente";
+            }
+        }
+    }
+    //METODO PARA PROCESAR RECLAMOS ATENDIDOS
+    public String actualizarReclamoAtendido() {
+        System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO");
+        if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo requerido", "Debe completar el campo Descripción Atencion."));
+            return "/admin_procesar_reclamo_atendido";
+        } else {
+            //Se completa el reclamo
+            reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
+            reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
+            reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
+            reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
+            reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
+            reclamoSeleccionado.setFechaAtencionReclamo(new Date());
+            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(null);
+            String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
+            if (mensaje.equals("OK")) {
+                System.out.println("ENTRO");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo actualizado.", ""));
+                //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
+                return "admin_gestion_reclamo_atendido";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no actualizado.", ""));
+                return "/admin_procesar_reclamo_atendido";
             }
         }
     }

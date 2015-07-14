@@ -189,7 +189,38 @@
                                 </div>
                             </li> 
                         </ui:fragment>
-                        
+
+                        <ui:fragment>
+                            <li>
+                                <a data-toggle="collapse" href="#collapse4"><i class="fa fa-list-alt fa-3x"></i> Expediente<span class="fa arrow"></span></a>
+                                <div id="collapse4" class="collapse">
+                                    <ul class="nav nav-second-level">
+                                        <li>
+                                            <h:commandLink action="#{mbSUsuarios.generarLinkExpediente('GUIA')}">
+                                                <i class="fa fa-folder-o"></i> Guías de trámites
+                                            </h:commandLink>
+                                        </li>
+                                        <li>
+                                            <h:commandLink action="#{mbSUsuarios.generarLinkExpediente('inicio')}">
+                                                <i class="fa fa-folder-o"></i> Iniciar trámite
+                                            </h:commandLink>
+                                        </li>
+
+                                        <li>
+                                            <h:commandLink action="#{mbSUsuarios.generarLinkExpediente('consulta')}">
+                                                <i class="fa fa-folder-o"></i> Consultar trámite
+                                            </h:commandLink>
+                                        </li>
+                                        <li>
+                                            <h:commandLink action="#{mbSUsuarios.generarLinkExpediente('ayuda')}">
+                                                <i class="fa fa-folder-o"></i> Ayuda en línea
+                                            </h:commandLink>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ui:fragment>
+
 <!--                        <li><a target="_blank" href="126.10.10.152/#{mbSUsuarios.usuario.loginUsuario}"><i class="fa fa-check"></i></a></li>-->
                     </ul>
                 </h:form>

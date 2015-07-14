@@ -25,11 +25,11 @@
                                     <h:form enctype="multipart/form-data">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Seleccione un tipo de reclamo</label>
+                                                <label>Tipo de reclamo</label>
 
                                                 <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodTipoReclamo.codTipoReclamo}" 
                                                                  class="form-control">
-                                                    <f:selectItem itemLabel="-----------" 
+                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
                                                                   noSelectionOption="false"
                                                                   itemDisabled="true"/>
                                                     <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 

@@ -28,29 +28,26 @@
                                                 <p:outputLabel value="Motivo de la finalización: ">
                                                     (<span style="color: red;">*</span>)
                                                 </p:outputLabel>
-                                                <p:selectOneMenu id="tiposFinalizacionReclamos"   
-                                                                 value="#{mbSReclamos.reclamoSeleccionado.fkReclamoTipoFinalizacionReclamo.codTipoFinalizacionReclamo}"
-                                                                 required="false"
-                                                                 filter="true">
+                                                <h:selectOneMenu id="tiposFinalizacionReclamos"   
+                                                                 value="#{mbSReclamos.reclamoSeleccionado.fkReclamoTipoFinalizacionReclamo.codTipoFinalizacionReclamo}">
 
                                                     <f:selectItem itemLabel="Seleccione motivo de la finalización" 
-                                                                  noSelectionOption="true"
-                                                                  itemDisabled="false"
-                                                                  itemValue="0"/>
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"/>
                                                     <f:selectItems value="#{mbSReclamos.listTiposFinalizacionReclamos}" 
                                                                    var="tipoFinalizacionReclamo" 
                                                                    itemValue="#{tipoFinalizacionReclamo.codTipoFinalizacionReclamo}" 
                                                                    itemLabel="#{tipoFinalizacionReclamo.nombreTipoFinalizacionReclamo}"
                                                                    />
 
-                                                </p:selectOneMenu>
+                                                </h:selectOneMenu>
                                             </div>
                                             <div class="form-group">
                                                 <label>Descripción de tarea realizada.</label>
                                                 <p:inputTextarea required="false" 
                                                                  id="descri" 
-                                                                 value="#{mbSReclamos.reclamoSeleccionado.descripcionAtencionReclamo}"
-                                                                 title="Descripción de atención del reclamo"
+                                                                 value="#{mbSReclamos.reclamoSeleccionado.descripcionCulminacionReclamo}"
+                                                                 title="Descripción de culminación del reclamo"
                                                                  class="form-control"
                                                                  autoResize="true"
                                                                  maxlength="500"
