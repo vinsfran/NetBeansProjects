@@ -65,7 +65,7 @@
                                                 <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
                                                     <i class="fa fa-check-square-o"></i> Procesar
                                                 </h:commandLink>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo, 'GESTION')}">
                                                     <i class="fa fa-file-pdf-o"></i> Descargar PDF
                                                 </h:commandLink>
                                             </h:form>

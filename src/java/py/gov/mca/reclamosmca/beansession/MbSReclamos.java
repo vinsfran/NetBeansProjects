@@ -63,9 +63,11 @@ import org.primefaces.model.map.Marker;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
+import py.gov.mca.reclamosmca.entitys.TiposFinalizacionReclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
+import py.gov.mca.reclamosmca.sessionbeans.TiposFinalizacionReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
 
 /**
@@ -77,17 +79,20 @@ import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
 public class MbSReclamos implements Serializable {
 
     @EJB
+    private ReclamosSB reclamosSB;
+    @EJB
     private TiposReclamosSB tiposReclamosSB;
     @EJB
-    private ReclamosSB reclamosSB;
+    private TiposFinalizacionReclamosSB tiposFinalizacionReclamosSB;
 
     private DataModel misReclamos;
     private DataModel reclamosPendientes;
     private DataModel reclamosAtendidos;
     private DataModel reclamosFinalizados;
     private DataModel reclamosPorZona;
-
+    
     private List<TiposReclamos> tiposDeReclamos;
+    private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
 
     private TiposReclamos tipoDeReclamosSeleccionado;
 
@@ -528,8 +533,16 @@ public class MbSReclamos implements Serializable {
         System.out.println("MbSReclamos recuperarReclamo ENTRO " + codReclamo);
         reclamoSeleccionado = null;
         reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
-        System.out.println("MbSReclamos recuperarReclamo ENTRO " + reclamoSeleccionado.getOrigenReclamo());
-        return "/admin_procesar_reclamo_pendiente";
+        reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
+        String pagina;
+        //Si el estado del reclamo es PENDIENTE
+        if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(1)) {
+            pagina = "/admin_procesar_reclamo_pendiente";
+            //Si el estado del reclamo es ATENDIDO
+        } else {
+            pagina = "/admin_procesar_reclamo_atendido";
+        }
+        return pagina;
     }
 
     public String actualizarReclamoPendiente() {
@@ -805,5 +818,22 @@ public class MbSReclamos implements Serializable {
     public void setReclamosPorZona(DataModel reclamosPorZona) {
         this.reclamosPorZona = reclamosPorZona;
     }
+
+    /**
+     * @return the listTiposFinalizacionReclamos
+     */
+    public List<TiposFinalizacionReclamos> getListTiposFinalizacionReclamos() {
+        listTiposFinalizacionReclamos = tiposFinalizacionReclamosSB.listarTiposFinalizacionReclamosPorDependencia(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia());
+        return listTiposFinalizacionReclamos;
+    }
+
+    /**
+     * @param listTiposFinalizacionReclamos the listTiposFinalizacionReclamos to set
+     */
+    public void setListTiposFinalizacionReclamos(List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos) {
+        this.listTiposFinalizacionReclamos = listTiposFinalizacionReclamos;
+    }
+
+
 
 }
