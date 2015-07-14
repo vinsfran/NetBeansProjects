@@ -10,7 +10,7 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Reclamos pendientes</h2>
+                        <h2>Reclamos por zona</h2>
                     </div>
                 </div>
                 <!-- /. ROW  -->
@@ -21,7 +21,7 @@
                         <div class="panel panel-info">
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <h:dataTable value="#{mbSReclamos.reclamosPendientes}" 
+                                    <h:dataTable value="#{mbSReclamos.reclamosPorZona}" 
                                                  var="reclamos"
                                                  class="table table-striped table-bordered table-hover table-condensed"
                                                  id="dataTables-example">
@@ -38,22 +38,13 @@
                                             <h:outputText value="#{mbSReclamos.formatearFecha(reclamos.fechaReclamo)}"/>
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Tiempo trascurrido</f:facet>
-                                            <h:outputText value="#{mbSReclamos.tiempoTranscurrido(reclamos)} #{mbSReclamos.tiempoTranscurrido(reclamos) > 1? 'dias': 'dia'}"/>
+                                            <f:facet name="header">Estado</f:facet>
+                                            <h:outputText value="#{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo}"/>
 
-                                            <h:graphicImage 
-                                                style="float: right; padding-right: 25%;"
-                                                library="images" name="#{mbSReclamos.imagenSemaforo}" rendered="#{mbSReclamos.imagenSemaforo != null? true : false}"/>
+                                           
                                         </h:column>
 
-                                        <h:column >
-                                            <f:facet name="header">Reclamos en la zona</f:facet>
-                                            <h:form>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.verReclamosPorZona(reclamos)}">
-                                                    <h:outputText value="#{mbSReclamos.cantidadReclamosPorZona(reclamos)}"/> <i class="fa fa-eye"></i> Ver reclamos
-                                                </h:commandLink>
-                                            </h:form>
-                                        </h:column>
+                                        
 
                                         <h:column>
 

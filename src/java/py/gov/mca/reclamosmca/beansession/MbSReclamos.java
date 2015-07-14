@@ -85,6 +85,7 @@ public class MbSReclamos implements Serializable {
     private DataModel reclamosPendientes;
     private DataModel reclamosAtendidos;
     private DataModel reclamosFinalizados;
+    private DataModel reclamosPorZona;
 
     private List<TiposReclamos> tiposDeReclamos;
 
@@ -435,14 +436,29 @@ public class MbSReclamos implements Serializable {
         for (Reclamos reclamoAux : lista1) {
             if (!reclamoAux.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamo.getCodReclamo().equals(reclamoAux.getCodReclamo())) {
                 double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
-                if (distancia < 11) {
+                if (distancia < 20) {
                     lista2.add(reclamoAux);
                 }
 
             }
         }
-        return lista2.size()+1;
+        return lista2.size();
         //listarReclamosPorZona = new ListDataModel(lista2);
+    }
+    
+    public String verReclamosPorZona(Reclamos reclamo) {
+        List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
+        List<Reclamos> lista2 = new ArrayList<>();
+        for (Reclamos reclamoAux : lista1) {
+            if (!reclamoAux.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamo.getCodReclamo().equals(reclamoAux.getCodReclamo())) {
+                double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
+                if (distancia < 20) {
+                    lista2.add(reclamoAux);
+                }
+            }
+        }
+        reclamosPorZona = new ListDataModel(lista2);
+        return "admin_gestion_reclamos_zona";        
     }
 
     private double distanciaEntrePuntos(double lat1, double lon1, double lat2, double lon2) {
@@ -754,6 +770,20 @@ public class MbSReclamos implements Serializable {
      */
     public void setReclamoSeleccionado(Reclamos reclamoSeleccionado) {
         this.reclamoSeleccionado = reclamoSeleccionado;
+    }
+
+    /**
+     * @return the reclamosPorZona
+     */
+    public DataModel getReclamosPorZona() {
+        return reclamosPorZona;
+    }
+
+    /**
+     * @param reclamosPorZona the reclamosPorZona to set
+     */
+    public void setReclamosPorZona(DataModel reclamosPorZona) {
+        this.reclamosPorZona = reclamosPorZona;
     }
 
 }
