@@ -8,7 +8,6 @@ package py.gov.mca.reclamosmca.entitys;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,8 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ElementosWeb.findAll", query = "SELECT e FROM ElementosWeb e"),
     @NamedQuery(name = "ElementosWeb.findByCodElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.codElementoWeb = :codElementoWeb"),
-    @NamedQuery(name = "ElementosWeb.findByNombreElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.nombreElementoWeb = :nombreElementoWeb"),
-    @NamedQuery(name = "ElementosWeb.findByDescripcionDelElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.descripcionDelElementoWeb = :descripcionDelElementoWeb")})
+    @NamedQuery(name = "ElementosWeb.findByDescripcionDelElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.descripcionDelElementoWeb = :descripcionDelElementoWeb"),
+    @NamedQuery(name = "ElementosWeb.findByNombreElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.nombreElementoWeb = :nombreElementoWeb")})
 public class ElementosWeb implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,17 +40,13 @@ public class ElementosWeb implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_elemento_web")
     private Integer codElementoWeb;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_elemento_web")
-    private String nombreElementoWeb;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 255)
     @Column(name = "descripcion_del_elemento_web")
     private String descripcionDelElementoWeb;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodElementoWeb")
+    @Size(max = 255)
+    @Column(name = "nombre_elemento_web")
+    private String nombreElementoWeb;
+    @OneToMany(mappedBy = "fkCodElementoWeb")
     private List<PermisosElementosWeb> permisosElementosWebList;
 
     public ElementosWeb() {
@@ -60,12 +54,6 @@ public class ElementosWeb implements Serializable {
 
     public ElementosWeb(Integer codElementoWeb) {
         this.codElementoWeb = codElementoWeb;
-    }
-
-    public ElementosWeb(Integer codElementoWeb, String nombreElementoWeb, String descripcionDelElementoWeb) {
-        this.codElementoWeb = codElementoWeb;
-        this.nombreElementoWeb = nombreElementoWeb;
-        this.descripcionDelElementoWeb = descripcionDelElementoWeb;
     }
 
     public Integer getCodElementoWeb() {
@@ -76,20 +64,20 @@ public class ElementosWeb implements Serializable {
         this.codElementoWeb = codElementoWeb;
     }
 
-    public String getNombreElementoWeb() {
-        return nombreElementoWeb;
-    }
-
-    public void setNombreElementoWeb(String nombreElementoWeb) {
-        this.nombreElementoWeb = nombreElementoWeb;
-    }
-
     public String getDescripcionDelElementoWeb() {
         return descripcionDelElementoWeb;
     }
 
     public void setDescripcionDelElementoWeb(String descripcionDelElementoWeb) {
         this.descripcionDelElementoWeb = descripcionDelElementoWeb;
+    }
+
+    public String getNombreElementoWeb() {
+        return nombreElementoWeb;
+    }
+
+    public void setNombreElementoWeb(String nombreElementoWeb) {
+        this.nombreElementoWeb = nombreElementoWeb;
     }
 
     @XmlTransient

@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -38,16 +36,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p"),
     @NamedQuery(name = "Personas.findByCodPersona", query = "SELECT p FROM Personas p WHERE p.codPersona = :codPersona"),
-    @NamedQuery(name = "Personas.findByCedulaPersona", query = "SELECT p FROM Personas p WHERE p.cedulaPersona = :cedulaPersona"),
-    @NamedQuery(name = "Personas.findByNombrePersona", query = "SELECT p FROM Personas p WHERE p.nombrePersona = :nombrePersona"),
     @NamedQuery(name = "Personas.findByApellidoPersona", query = "SELECT p FROM Personas p WHERE p.apellidoPersona = :apellidoPersona"),
+    @NamedQuery(name = "Personas.findByCedulaPersona", query = "SELECT p FROM Personas p WHERE p.cedulaPersona = :cedulaPersona"),
+    @NamedQuery(name = "Personas.findByCelularPersona", query = "SELECT p FROM Personas p WHERE p.celularPersona = :celularPersona"),
+    @NamedQuery(name = "Personas.findByCtaCtePersona", query = "SELECT p FROM Personas p WHERE p.ctaCtePersona = :ctaCtePersona"),
+    @NamedQuery(name = "Personas.findByDireccionPersona", query = "SELECT p FROM Personas p WHERE p.direccionPersona = :direccionPersona"),
     @NamedQuery(name = "Personas.findByFechaIngresoPersona", query = "SELECT p FROM Personas p WHERE p.fechaIngresoPersona = :fechaIngresoPersona"),
     @NamedQuery(name = "Personas.findByFechaNacimientoPersona", query = "SELECT p FROM Personas p WHERE p.fechaNacimientoPersona = :fechaNacimientoPersona"),
     @NamedQuery(name = "Personas.findByFechaRegistroPersona", query = "SELECT p FROM Personas p WHERE p.fechaRegistroPersona = :fechaRegistroPersona"),
-    @NamedQuery(name = "Personas.findByDireccionPersona", query = "SELECT p FROM Personas p WHERE p.direccionPersona = :direccionPersona"),
-    @NamedQuery(name = "Personas.findByTelefonoPersona", query = "SELECT p FROM Personas p WHERE p.telefonoPersona = :telefonoPersona"),
-    @NamedQuery(name = "Personas.findByCelularPersona", query = "SELECT p FROM Personas p WHERE p.celularPersona = :celularPersona"),
-    @NamedQuery(name = "Personas.findByCtaCtePersona", query = "SELECT p FROM Personas p WHERE p.ctaCtePersona = :ctaCtePersona")})
+    @NamedQuery(name = "Personas.findByNombrePersona", query = "SELECT p FROM Personas p WHERE p.nombrePersona = :nombrePersona"),
+    @NamedQuery(name = "Personas.findByTelefonoPersona", query = "SELECT p FROM Personas p WHERE p.telefonoPersona = :telefonoPersona")})
 public class Personas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,21 +53,21 @@ public class Personas implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_persona")
     private Integer codPersona;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "cedula_persona")
-    private String cedulaPersona;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_persona")
-    private String nombrePersona;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 255)
     @Column(name = "apellido_persona")
     private String apellidoPersona;
+    @Size(max = 255)
+    @Column(name = "cedula_persona")
+    private String cedulaPersona;
+    @Size(max = 255)
+    @Column(name = "celular_persona")
+    private String celularPersona;
+    @Size(max = 255)
+    @Column(name = "cta_cte_persona")
+    private String ctaCtePersona;
+    @Size(max = 255)
+    @Column(name = "direccion_persona")
+    private String direccionPersona;
     @Column(name = "fecha_ingreso_persona")
     @Temporal(TemporalType.DATE)
     private Date fechaIngresoPersona;
@@ -79,19 +77,13 @@ public class Personas implements Serializable {
     @Column(name = "fecha_registro_persona")
     @Temporal(TemporalType.DATE)
     private Date fechaRegistroPersona;
-    @Size(max = 2147483647)
-    @Column(name = "direccion_persona")
-    private String direccionPersona;
-    @Size(max = 2147483647)
+    @Size(max = 255)
+    @Column(name = "nombre_persona")
+    private String nombrePersona;
+    @Size(max = 255)
     @Column(name = "telefono_persona")
     private String telefonoPersona;
-    @Size(max = 2147483647)
-    @Column(name = "celular_persona")
-    private String celularPersona;
-    @Size(max = 2147483647)
-    @Column(name = "cta_cte_persona")
-    private String ctaCtePersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodPersona")
+    @OneToMany(mappedBy = "fkCodPersona")
     private List<Usuarios> usuariosList;
     @JoinColumn(name = "fk_cod_dependencia", referencedColumnName = "cod_dependencia")
     @ManyToOne
@@ -110,19 +102,20 @@ public class Personas implements Serializable {
         this.codPersona = codPersona;
     }
 
-    public Personas(Integer codPersona, String cedulaPersona, String nombrePersona, String apellidoPersona) {
-        this.codPersona = codPersona;
-        this.cedulaPersona = cedulaPersona;
-        this.nombrePersona = nombrePersona;
-        this.apellidoPersona = apellidoPersona;
-    }
-
     public Integer getCodPersona() {
         return codPersona;
     }
 
     public void setCodPersona(Integer codPersona) {
         this.codPersona = codPersona;
+    }
+
+    public String getApellidoPersona() {
+        return apellidoPersona;
+    }
+
+    public void setApellidoPersona(String apellidoPersona) {
+        this.apellidoPersona = apellidoPersona;
     }
 
     public String getCedulaPersona() {
@@ -133,20 +126,28 @@ public class Personas implements Serializable {
         this.cedulaPersona = cedulaPersona;
     }
 
-    public String getNombrePersona() {
-        return nombrePersona;
+    public String getCelularPersona() {
+        return celularPersona;
     }
 
-    public void setNombrePersona(String nombrePersona) {
-        this.nombrePersona = nombrePersona;
+    public void setCelularPersona(String celularPersona) {
+        this.celularPersona = celularPersona;
     }
 
-    public String getApellidoPersona() {
-        return apellidoPersona;
+    public String getCtaCtePersona() {
+        return ctaCtePersona;
     }
 
-    public void setApellidoPersona(String apellidoPersona) {
-        this.apellidoPersona = apellidoPersona;
+    public void setCtaCtePersona(String ctaCtePersona) {
+        this.ctaCtePersona = ctaCtePersona;
+    }
+
+    public String getDireccionPersona() {
+        return direccionPersona;
+    }
+
+    public void setDireccionPersona(String direccionPersona) {
+        this.direccionPersona = direccionPersona;
     }
 
     public Date getFechaIngresoPersona() {
@@ -173,12 +174,12 @@ public class Personas implements Serializable {
         this.fechaRegistroPersona = fechaRegistroPersona;
     }
 
-    public String getDireccionPersona() {
-        return direccionPersona;
+    public String getNombrePersona() {
+        return nombrePersona;
     }
 
-    public void setDireccionPersona(String direccionPersona) {
-        this.direccionPersona = direccionPersona;
+    public void setNombrePersona(String nombrePersona) {
+        this.nombrePersona = nombrePersona;
     }
 
     public String getTelefonoPersona() {
@@ -187,22 +188,6 @@ public class Personas implements Serializable {
 
     public void setTelefonoPersona(String telefonoPersona) {
         this.telefonoPersona = telefonoPersona;
-    }
-
-    public String getCelularPersona() {
-        return celularPersona;
-    }
-
-    public void setCelularPersona(String celularPersona) {
-        this.celularPersona = celularPersona;
-    }
-
-    public String getCtaCtePersona() {
-        return ctaCtePersona;
-    }
-
-    public void setCtaCtePersona(String ctaCtePersona) {
-        this.ctaCtePersona = ctaCtePersona;
     }
 
     @XmlTransient

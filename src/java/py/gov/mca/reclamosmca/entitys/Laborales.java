@@ -17,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -40,9 +39,7 @@ public class Laborales implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_laboral")
     private Integer codLaboral;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 255)
     @Column(name = "nombre_laboral")
     private String nombreLaboral;
     @OneToMany(mappedBy = "fkCodLaboral")
@@ -53,11 +50,6 @@ public class Laborales implements Serializable {
 
     public Laborales(Integer codLaboral) {
         this.codLaboral = codLaboral;
-    }
-
-    public Laborales(Integer codLaboral, String nombreLaboral) {
-        this.codLaboral = codLaboral;
-        this.nombreLaboral = nombreLaboral;
     }
 
     public Integer getCodLaboral() {

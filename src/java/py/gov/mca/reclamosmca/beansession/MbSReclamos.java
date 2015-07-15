@@ -90,7 +90,7 @@ public class MbSReclamos implements Serializable {
     private DataModel reclamosAtendidos;
     private DataModel reclamosFinalizados;
     private DataModel reclamosPorZona;
-    
+
     private List<TiposReclamos> tiposDeReclamos;
     private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
 
@@ -533,13 +533,14 @@ public class MbSReclamos implements Serializable {
         System.out.println("MbSReclamos recuperarReclamo ENTRO " + codReclamo);
         reclamoSeleccionado = null;
         reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
-        reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
         String pagina;
         //Si el estado del reclamo es PENDIENTE
         if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(1)) {
             pagina = "/admin_procesar_reclamo_pendiente";
             //Si el estado del reclamo es ATENDIDO
         } else {
+            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
+            reclamoSeleccionado.getFkReclamoTipoFinalizacionReclamo().setCodTipoFinalizacionReclamo(0);
             pagina = "/admin_procesar_reclamo_atendido";
         }
         return pagina;
@@ -548,13 +549,13 @@ public class MbSReclamos implements Serializable {
     public String actualizarReclamoPendiente() {
         System.out.println("MbSReclamos actualizarReclamoPendiente ENTRO");
         if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo requerido", "Debe completar el campo Descripción Atencion."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo Descripción de tarea a realizar.", ""));
             return "/admin_procesar_reclamo_pendiente";
         } else {
             //Se completa el reclamo
             reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
             reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
-            reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
+            // reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
             reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
             reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
             reclamoSeleccionado.setFechaAtencionReclamo(new Date());
@@ -562,41 +563,61 @@ public class MbSReclamos implements Serializable {
             String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
                 System.out.println("ENTRO");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo actualizado.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo procesado.", ""));
                 //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
                 return "/admin_gestion_reclamos_pendientes";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no actualizado.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no procesado.", ""));
                 return "/admin_procesar_reclamo_pendiente";
             }
         }
     }
+
     //METODO PARA PROCESAR RECLAMOS ATENDIDOS
+
     public String actualizarReclamoAtendido() {
         System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO");
-        if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Campo requerido", "Debe completar el campo Descripción Atencion."));
+
+        if (reclamoSeleccionado.getFkReclamoTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un Motivo de finalización.", ""));
+            return "/admin_procesar_reclamo_atendido";
+        } else if (reclamoSeleccionado.getDescripcionCulminacionReclamo().equals("") || reclamoSeleccionado.getDescripcionCulminacionReclamo().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo de Descripción de tarea realizada.", ""));
             return "/admin_procesar_reclamo_atendido";
         } else {
             //Se completa el reclamo
             reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
-            reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
-            reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
-            reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
-            reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
-            reclamoSeleccionado.setFechaAtencionReclamo(new Date());
-            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(null);
+            reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(3);
+            //   reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("FINALIZADO");
+            reclamoSeleccionado.setFkCodUsuarioCulminacion(new Usuarios());
+            reclamoSeleccionado.setFkCodUsuarioCulminacion(recuperarUsuarioSession());
+            reclamoSeleccionado.setFechaCulminacionReclamo(new Date());
+            reclamoSeleccionado.setCantidadDiasProceso(cantidadDias(reclamoSeleccionado.getFechaAtencionReclamo()));
+
             String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
-                System.out.println("ENTRO");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo actualizado.", ""));
+                System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO EN OK ");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo finalizado.", ""));
                 //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
-                return "admin_gestion_reclamo_atendido";
+                return "/admin_gestion_reclamos_atendidos";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no actualizado.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no finalizado.", ""));
                 return "/admin_procesar_reclamo_atendido";
             }
         }
+    }
+
+    public int cantidadDias(Date fecha) {
+        Calendar c = Calendar.getInstance();
+        //Se crea un objeto calendario con la fecha del inicio del reclamo
+        Calendar fechaInicio = new GregorianCalendar();
+        fechaInicio.setTime(fecha);
+        //Se crea un objeto calendario con la fecha actual
+        Calendar hoy = Calendar.getInstance();
+        //obtiene el dia
+        c.setTimeInMillis(hoy.getTime().getTime() - fechaInicio.getTime().getTime());
+        int dias = c.get(Calendar.DAY_OF_YEAR);
+        return dias;
     }
 
     /**
@@ -850,17 +871,16 @@ public class MbSReclamos implements Serializable {
      * @return the listTiposFinalizacionReclamos
      */
     public List<TiposFinalizacionReclamos> getListTiposFinalizacionReclamos() {
-        listTiposFinalizacionReclamos = tiposFinalizacionReclamosSB.listarTiposFinalizacionReclamosPorDependencia(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia());
+        listTiposFinalizacionReclamos = tiposFinalizacionReclamosSB.listarTiposFinalizacionReclamos();
         return listTiposFinalizacionReclamos;
     }
 
     /**
-     * @param listTiposFinalizacionReclamos the listTiposFinalizacionReclamos to set
+     * @param listTiposFinalizacionReclamos the listTiposFinalizacionReclamos to
+     * set
      */
     public void setListTiposFinalizacionReclamos(List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos) {
         this.listTiposFinalizacionReclamos = listTiposFinalizacionReclamos;
     }
-
-
 
 }

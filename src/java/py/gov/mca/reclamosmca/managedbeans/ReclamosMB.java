@@ -501,7 +501,7 @@ public class ReclamosMB implements Serializable {
             if (!tiposFinalizacionReclamosSB.consultarTiposFinalizacionReclamosPorNombreDependencia(nuevoMotivoFin, codDepenUsu)) {
                 TiposFinalizacionReclamos tiposFinalizacionReclamos = new TiposFinalizacionReclamos();
                 tiposFinalizacionReclamos.setNombreTipoFinalizacionReclamo(nuevoMotivoFin);
-                tiposFinalizacionReclamos.setFkDependenciaTipoFinalizacionReclamo(usu.getFkCodPersona().getFkCodDependencia());
+               // tiposFinalizacionReclamos.setFkDependenciaTipoFinalizacionReclamo(usu.getFkCodPersona().getFkCodDependencia());
                 String resultado = tiposFinalizacionReclamosSB.crearTiposFinalizacionReclamos(tiposFinalizacionReclamos);
                 if (resultado.equals("OK")) {
                     this.nuevoMotivoFin = "";

@@ -17,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -40,9 +39,7 @@ public class Sexos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_sexo")
     private Integer codSexo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 255)
     @Column(name = "nombre_sexo")
     private String nombreSexo;
     @OneToMany(mappedBy = "fkCodSexo")
@@ -53,11 +50,6 @@ public class Sexos implements Serializable {
 
     public Sexos(Integer codSexo) {
         this.codSexo = codSexo;
-    }
-
-    public Sexos(Integer codSexo, String nombreSexo) {
-        this.codSexo = codSexo;
-        this.nombreSexo = nombreSexo;
     }
 
     public Integer getCodSexo() {

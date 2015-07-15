@@ -8,7 +8,6 @@ package py.gov.mca.reclamosmca.entitys;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,9 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposReclamos.findAll", query = "SELECT t FROM TiposReclamos t"),
     @NamedQuery(name = "TiposReclamos.findByCodTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.codTipoReclamo = :codTipoReclamo"),
-    @NamedQuery(name = "TiposReclamos.findByNombreTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.nombreTipoReclamo = :nombreTipoReclamo"),
+    @NamedQuery(name = "TiposReclamos.findByDiasMaximoFinalizados", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoFinalizados = :diasMaximoFinalizados"),
     @NamedQuery(name = "TiposReclamos.findByDiasMaximoPendientes", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoPendientes = :diasMaximoPendientes"),
-    @NamedQuery(name = "TiposReclamos.findByDiasMaximoFinalizados", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoFinalizados = :diasMaximoFinalizados")})
+    @NamedQuery(name = "TiposReclamos.findByNombreTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.nombreTipoReclamo = :nombreTipoReclamo")})
 public class TiposReclamos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,19 +43,17 @@ public class TiposReclamos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_tipo_reclamo")
     private Integer codTipoReclamo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_tipo_reclamo")
-    private String nombreTipoReclamo;
-    @Column(name = "dias_maximo_pendientes")
-    private Integer diasMaximoPendientes;
     @Column(name = "dias_maximo_finalizados")
     private Integer diasMaximoFinalizados;
+    @Column(name = "dias_maximo_pendientes")
+    private Integer diasMaximoPendientes;
+    @Size(max = 255)
+    @Column(name = "nombre_tipo_reclamo")
+    private String nombreTipoReclamo;
     @JoinColumn(name = "fk_cod_dependencia", referencedColumnName = "cod_dependencia")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Dependencias fkCodDependencia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodTipoReclamo")
+    @OneToMany(mappedBy = "fkCodTipoReclamo")
     private List<Reclamos> reclamosList;
 
     public TiposReclamos() {
@@ -65,11 +61,6 @@ public class TiposReclamos implements Serializable {
 
     public TiposReclamos(Integer codTipoReclamo) {
         this.codTipoReclamo = codTipoReclamo;
-    }
-
-    public TiposReclamos(Integer codTipoReclamo, String nombreTipoReclamo) {
-        this.codTipoReclamo = codTipoReclamo;
-        this.nombreTipoReclamo = nombreTipoReclamo;
     }
 
     public Integer getCodTipoReclamo() {
@@ -80,12 +71,12 @@ public class TiposReclamos implements Serializable {
         this.codTipoReclamo = codTipoReclamo;
     }
 
-    public String getNombreTipoReclamo() {
-        return nombreTipoReclamo;
+    public Integer getDiasMaximoFinalizados() {
+        return diasMaximoFinalizados;
     }
 
-    public void setNombreTipoReclamo(String nombreTipoReclamo) {
-        this.nombreTipoReclamo = nombreTipoReclamo;
+    public void setDiasMaximoFinalizados(Integer diasMaximoFinalizados) {
+        this.diasMaximoFinalizados = diasMaximoFinalizados;
     }
 
     public Integer getDiasMaximoPendientes() {
@@ -96,12 +87,12 @@ public class TiposReclamos implements Serializable {
         this.diasMaximoPendientes = diasMaximoPendientes;
     }
 
-    public Integer getDiasMaximoFinalizados() {
-        return diasMaximoFinalizados;
+    public String getNombreTipoReclamo() {
+        return nombreTipoReclamo;
     }
 
-    public void setDiasMaximoFinalizados(Integer diasMaximoFinalizados) {
-        this.diasMaximoFinalizados = diasMaximoFinalizados;
+    public void setNombreTipoReclamo(String nombreTipoReclamo) {
+        this.nombreTipoReclamo = nombreTipoReclamo;
     }
 
     public Dependencias getFkCodDependencia() {

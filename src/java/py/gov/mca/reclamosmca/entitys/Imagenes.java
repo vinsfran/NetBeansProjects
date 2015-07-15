@@ -41,13 +41,13 @@ public class Imagenes implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_imagen")
     private Integer codImagen;
-    @Size(max = 2147483647)
-    @Column(name = "nombre_imagen")
-    private String nombreImagen;
     @Lob
     @Column(name = "archivo_imagen")
     private byte[] archivoImagen;
-    @Size(max = 45)
+    @Size(max = 255)
+    @Column(name = "nombre_imagen")
+    private String nombreImagen;
+    @Size(max = 255)
     @Column(name = "tipo_imagen")
     private String tipoImagen;
     @OneToMany(mappedBy = "fkImagen")
@@ -68,20 +68,20 @@ public class Imagenes implements Serializable {
         this.codImagen = codImagen;
     }
 
-    public String getNombreImagen() {
-        return nombreImagen;
-    }
-
-    public void setNombreImagen(String nombreImagen) {
-        this.nombreImagen = nombreImagen;
-    }
-
     public byte[] getArchivoImagen() {
         return archivoImagen;
     }
 
     public void setArchivoImagen(byte[] archivoImagen) {
         this.archivoImagen = archivoImagen;
+    }
+
+    public String getNombreImagen() {
+        return nombreImagen;
+    }
+
+    public void setNombreImagen(String nombreImagen) {
+        this.nombreImagen = nombreImagen;
     }
 
     public String getTipoImagen() {

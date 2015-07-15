@@ -25,15 +25,15 @@
                                     <h:form>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <p:outputLabel value="Motivo de la finalización: ">
-                                                    (<span style="color: red;">*</span>)
-                                                </p:outputLabel>
-                                                <h:selectOneMenu id="tiposFinalizacionReclamos"   
-                                                                 value="#{mbSReclamos.reclamoSeleccionado.fkReclamoTipoFinalizacionReclamo.codTipoFinalizacionReclamo}">
+                                                <label>Motivo de la finalización.<span style="color: red;">*</span></label>
+
+                                                <h:selectOneMenu value="#{mbSReclamos.reclamoSeleccionado.fkReclamoTipoFinalizacionReclamo.codTipoFinalizacionReclamo}"
+                                                                 class="form-control">
 
                                                     <f:selectItem itemLabel="Seleccione motivo de la finalización" 
-                                                                  noSelectionOption="false"
-                                                                  itemDisabled="true"/>
+                                                                  noSelectionOption="true"
+                                                                  itemDisabled="false"
+                                                                  itemValue="0"/>
                                                     <f:selectItems value="#{mbSReclamos.listTiposFinalizacionReclamos}" 
                                                                    var="tipoFinalizacionReclamo" 
                                                                    itemValue="#{tipoFinalizacionReclamo.codTipoFinalizacionReclamo}" 
@@ -43,7 +43,7 @@
                                                 </h:selectOneMenu>
                                             </div>
                                             <div class="form-group">
-                                                <label>Descripción de tarea realizada.</label>
+                                                <label>Descripción de tarea realizada.<span style="color: red;">*</span></label>
                                                 <p:inputTextarea required="false" 
                                                                  id="descri" 
                                                                  value="#{mbSReclamos.reclamoSeleccionado.descripcionCulminacionReclamo}"
@@ -55,12 +55,18 @@
                                                                  counterTemplate="{0} caracteres disponibles."/>
                                                 <br/>
                                                 <h:outputText id="display" />
+                                                <p>
+                                                    Para finalizar el reclamo debe seleccionar un 
+                                                    motivo de finalización y completar la descripción de tarea realizada.
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                            <h:commandLink class="btn btn-primary" action="#{mbSReclamos.actualizarReclamoPendiente()}">
-                                                <i class="fa fa-check-square-o"></i> Procesar
+                                            <h:commandLink class="btn btn-default" action="admin_gestion_reclamos_atendidos">
+                                                <i class="fa fa-times"></i> Cancelar
+                                            </h:commandLink>
+                                            <h:commandLink class="btn btn-primary" action="#{mbSReclamos.actualizarReclamoAtendido()}">
+                                                <i class="fa fa-check-square-o"></i> Finalizar
                                             </h:commandLink>
                                         </div>
                                     </h:form>

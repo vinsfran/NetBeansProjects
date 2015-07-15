@@ -13,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -41,12 +39,9 @@ public class TiposFinalizacionReclamos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_tipo_finalizacion_reclamo")
     private Integer codTipoFinalizacionReclamo;
-    @Size(max = 2147483647)
+    @Size(max = 255)
     @Column(name = "nombre_tipo_finalizacion_reclamo")
     private String nombreTipoFinalizacionReclamo;
-    @JoinColumn(name = "fk_dependencia_tipo_finalizacion_reclamo", referencedColumnName = "cod_dependencia")
-    @ManyToOne(optional = false)
-    private Dependencias fkDependenciaTipoFinalizacionReclamo;
     @OneToMany(mappedBy = "fkReclamoTipoFinalizacionReclamo")
     private List<Reclamos> reclamosList;
 
@@ -71,14 +66,6 @@ public class TiposFinalizacionReclamos implements Serializable {
 
     public void setNombreTipoFinalizacionReclamo(String nombreTipoFinalizacionReclamo) {
         this.nombreTipoFinalizacionReclamo = nombreTipoFinalizacionReclamo;
-    }
-
-    public Dependencias getFkDependenciaTipoFinalizacionReclamo() {
-        return fkDependenciaTipoFinalizacionReclamo;
-    }
-
-    public void setFkDependenciaTipoFinalizacionReclamo(Dependencias fkDependenciaTipoFinalizacionReclamo) {
-        this.fkDependenciaTipoFinalizacionReclamo = fkDependenciaTipoFinalizacionReclamo;
     }
 
     @XmlTransient

@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,9 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PermisosElementosWeb.findAll", query = "SELECT p FROM PermisosElementosWeb p"),
     @NamedQuery(name = "PermisosElementosWeb.findByCodPermisoElementoWeb", query = "SELECT p FROM PermisosElementosWeb p WHERE p.codPermisoElementoWeb = :codPermisoElementoWeb"),
-    @NamedQuery(name = "PermisosElementosWeb.findByValorVisible", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorVisible = :valorVisible"),
+    @NamedQuery(name = "PermisosElementosWeb.findByDetalleDelPermiso", query = "SELECT p FROM PermisosElementosWeb p WHERE p.detalleDelPermiso = :detalleDelPermiso"),
     @NamedQuery(name = "PermisosElementosWeb.findByValorDesactivado", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorDesactivado = :valorDesactivado"),
-    @NamedQuery(name = "PermisosElementosWeb.findByDetalleDelPermiso", query = "SELECT p FROM PermisosElementosWeb p WHERE p.detalleDelPermiso = :detalleDelPermiso")})
+    @NamedQuery(name = "PermisosElementosWeb.findByValorVisible", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorVisible = :valorVisible")})
 public class PermisosElementosWeb implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,26 +40,20 @@ public class PermisosElementosWeb implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_permiso_elemento_web")
     private Integer codPermisoElementoWeb;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "valor_visible")
-    private String valorVisible;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "valor_desactivado")
-    private String valorDesactivado;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 255)
     @Column(name = "detalle_del_permiso")
     private String detalleDelPermiso;
+    @Size(max = 255)
+    @Column(name = "valor_desactivado")
+    private String valorDesactivado;
+    @Size(max = 255)
+    @Column(name = "valor_visible")
+    private String valorVisible;
     @JoinColumn(name = "fk_cod_elemento_web", referencedColumnName = "cod_elemento_web")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private ElementosWeb fkCodElementoWeb;
     @JoinColumn(name = "fk_cod_rol", referencedColumnName = "cod_rol")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Roles fkCodRol;
 
     public PermisosElementosWeb() {
@@ -68,13 +61,6 @@ public class PermisosElementosWeb implements Serializable {
 
     public PermisosElementosWeb(Integer codPermisoElementoWeb) {
         this.codPermisoElementoWeb = codPermisoElementoWeb;
-    }
-
-    public PermisosElementosWeb(Integer codPermisoElementoWeb, String valorVisible, String valorDesactivado, String detalleDelPermiso) {
-        this.codPermisoElementoWeb = codPermisoElementoWeb;
-        this.valorVisible = valorVisible;
-        this.valorDesactivado = valorDesactivado;
-        this.detalleDelPermiso = detalleDelPermiso;
     }
 
     public Integer getCodPermisoElementoWeb() {
@@ -85,12 +71,12 @@ public class PermisosElementosWeb implements Serializable {
         this.codPermisoElementoWeb = codPermisoElementoWeb;
     }
 
-    public String getValorVisible() {
-        return valorVisible;
+    public String getDetalleDelPermiso() {
+        return detalleDelPermiso;
     }
 
-    public void setValorVisible(String valorVisible) {
-        this.valorVisible = valorVisible;
+    public void setDetalleDelPermiso(String detalleDelPermiso) {
+        this.detalleDelPermiso = detalleDelPermiso;
     }
 
     public String getValorDesactivado() {
@@ -101,12 +87,12 @@ public class PermisosElementosWeb implements Serializable {
         this.valorDesactivado = valorDesactivado;
     }
 
-    public String getDetalleDelPermiso() {
-        return detalleDelPermiso;
+    public String getValorVisible() {
+        return valorVisible;
     }
 
-    public void setDetalleDelPermiso(String detalleDelPermiso) {
-        this.detalleDelPermiso = detalleDelPermiso;
+    public void setValorVisible(String valorVisible) {
+        this.valorVisible = valorVisible;
     }
 
     public ElementosWeb getFkCodElementoWeb() {

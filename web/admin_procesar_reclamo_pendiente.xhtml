@@ -25,7 +25,7 @@
                                     <h:form>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Descripción de tarea a realizar.</label>
+                                                <label>Descripción de tarea a realizar.<span style="color: red;">*</span></label>
                                                 <p:inputTextarea required="false" 
                                                                  id="descri" 
                                                                  value="#{mbSReclamos.reclamoSeleccionado.descripcionAtencionReclamo}"
@@ -37,10 +37,15 @@
                                                                  counterTemplate="{0} caracteres disponibles."/>
                                                 <br/>
                                                 <h:outputText id="display" />
+                                                <p>
+                                                    Para procesar el reclamo debe completar la descripción de tarea a realizar.
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            <h:commandLink class="btn btn-default" action="admin_gestion_reclamos_pendientes">
+                                                <i class="fa fa-times"></i> Cancelar
+                                            </h:commandLink>
                                             <h:commandLink class="btn btn-primary" action="#{mbSReclamos.actualizarReclamoPendiente()}">
                                                 <i class="fa fa-check-square-o"></i> Procesar
                                             </h:commandLink>

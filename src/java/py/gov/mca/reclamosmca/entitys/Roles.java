@@ -8,7 +8,6 @@ package py.gov.mca.reclamosmca.entitys;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,14 +39,12 @@ public class Roles implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_rol")
     private Integer codRol;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 255)
     @Column(name = "nombre_rol")
     private String nombreRol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodRol")
+    @OneToMany(mappedBy = "fkCodRol")
     private List<PermisosElementosWeb> permisosElementosWebList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodRol")
+    @OneToMany(mappedBy = "fkCodRol")
     private List<Usuarios> usuariosList;
 
     public Roles() {
@@ -56,11 +52,6 @@ public class Roles implements Serializable {
 
     public Roles(Integer codRol) {
         this.codRol = codRol;
-    }
-
-    public Roles(Integer codRol, String nombreRol) {
-        this.codRol = codRol;
-        this.nombreRol = nombreRol;
     }
 
     public Integer getCodRol() {
