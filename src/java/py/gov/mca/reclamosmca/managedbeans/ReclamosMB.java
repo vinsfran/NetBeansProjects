@@ -155,7 +155,7 @@ public class ReclamosMB implements Serializable {
         setMostrarBotonImprimir(false);
         setMostrarBotonExportarPDF(false);
         reclamoSeleccionado = (Reclamos) event.getObject();
-        reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
+        reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
         emptyModel = new DefaultMapModel();
         emptyModel.addOverlay(null);
         LatLng latiLongi = new LatLng(reclamoSeleccionado.getLatitud(), reclamoSeleccionado.getLongitud());
@@ -210,7 +210,7 @@ public class ReclamosMB implements Serializable {
             reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
             reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
             reclamoSeleccionado.setFechaAtencionReclamo(new Date());
-            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(null);
+            reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
             String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
                 System.out.println("ENTRO");
@@ -239,7 +239,7 @@ public class ReclamosMB implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getFlash().setKeepMessages(true);
 
-        if (reclamoSeleccionado.getFkReclamoTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
+        if (reclamoSeleccionado.getFkCodTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
             message.setSeverity(FacesMessage.SEVERITY_WARN);
             message.setSummary("Campo requerido");
             message.setDetail("Debe seleccionar un motivo de finalización.");

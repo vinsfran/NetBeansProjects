@@ -464,7 +464,6 @@ public class MbSReclamos implements Serializable {
                 if (distancia < 20) {
                     lista2.add(reclamoAux);
                 }
-
             }
         }
         return lista2.size();
@@ -539,8 +538,8 @@ public class MbSReclamos implements Serializable {
             pagina = "/admin_procesar_reclamo_pendiente";
             //Si el estado del reclamo es ATENDIDO
         } else {
-            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
-            reclamoSeleccionado.getFkReclamoTipoFinalizacionReclamo().setCodTipoFinalizacionReclamo(0);
+            reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(new TiposFinalizacionReclamos());
+            reclamoSeleccionado.getFkCodTipoFinalizacionReclamo().setCodTipoFinalizacionReclamo(0);
             pagina = "/admin_procesar_reclamo_atendido";
         }
         return pagina;
@@ -559,7 +558,7 @@ public class MbSReclamos implements Serializable {
             reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
             reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
             reclamoSeleccionado.setFechaAtencionReclamo(new Date());
-            reclamoSeleccionado.setFkReclamoTipoFinalizacionReclamo(null);
+            reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
             String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
                 System.out.println("ENTRO");
@@ -578,7 +577,7 @@ public class MbSReclamos implements Serializable {
     public String actualizarReclamoAtendido() {
         System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO");
 
-        if (reclamoSeleccionado.getFkReclamoTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
+        if (reclamoSeleccionado.getFkCodTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un Motivo de finalización.", ""));
             return "/admin_procesar_reclamo_atendido";
         } else if (reclamoSeleccionado.getDescripcionCulminacionReclamo().equals("") || reclamoSeleccionado.getDescripcionCulminacionReclamo().isEmpty()) {

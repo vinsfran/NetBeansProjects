@@ -39,10 +39,10 @@ public class TiposFinalizacionReclamos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_tipo_finalizacion_reclamo")
     private Integer codTipoFinalizacionReclamo;
-    @Size(max = 255)
+    @Size(max = 2147483647)
     @Column(name = "nombre_tipo_finalizacion_reclamo")
     private String nombreTipoFinalizacionReclamo;
-    @OneToMany(mappedBy = "fkReclamoTipoFinalizacionReclamo")
+    @OneToMany(mappedBy = "fkCodTipoFinalizacionReclamo")
     private List<Reclamos> reclamosList;
 
     public TiposFinalizacionReclamos() {

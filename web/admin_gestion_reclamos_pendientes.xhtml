@@ -49,7 +49,7 @@
                                         <h:column >
                                             <f:facet name="header">Reclamos en la zona</f:facet>
                                             <h:form>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.verReclamosPorZona(reclamos)}">
+                                                <h:commandLink class="btn btn-primary btn-sm" action="#{mbSReclamos.verReclamosPorZona(reclamos)}">
                                                     <h:outputText value="#{mbSReclamos.cantidadReclamosPorZona(reclamos)}"/> <i class="fa fa-eye"></i> Ver reclamos
                                                 </h:commandLink>
                                             </h:form>
@@ -62,11 +62,11 @@
                                                 <a style="margin-right: 2px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Detalles">
                                                     Detalles
                                                 </a>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
-                                                    <i class="fa fa-check-square-o"></i> Procesar
-                                                </h:commandLink>
                                                 <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo, 'GESTION')}">
                                                     <i class="fa fa-file-pdf-o"></i> Descargar PDF
+                                                </h:commandLink>
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
+                                                    <i class="fa fa-check-square-o"></i> Procesar
                                                 </h:commandLink>
                                             </h:form>
                                             <div class="modal fade" id="#{reclamos.codReclamo}Detalles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

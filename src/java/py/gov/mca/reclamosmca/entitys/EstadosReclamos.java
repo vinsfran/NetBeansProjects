@@ -8,6 +8,7 @@ package py.gov.mca.reclamosmca.entitys;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,10 +41,12 @@ public class EstadosReclamos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_estado_reclamo")
     private Integer codEstadoReclamo;
-    @Size(max = 255)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre_estado_reclamo")
     private String nombreEstadoReclamo;
-    @OneToMany(mappedBy = "fkCodEstadoReclamo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodEstadoReclamo")
     private List<Reclamos> reclamosList;
 
     public EstadosReclamos() {
@@ -50,6 +54,11 @@ public class EstadosReclamos implements Serializable {
 
     public EstadosReclamos(Integer codEstadoReclamo) {
         this.codEstadoReclamo = codEstadoReclamo;
+    }
+
+    public EstadosReclamos(Integer codEstadoReclamo, String nombreEstadoReclamo) {
+        this.codEstadoReclamo = codEstadoReclamo;
+        this.nombreEstadoReclamo = nombreEstadoReclamo;
     }
 
     public Integer getCodEstadoReclamo() {

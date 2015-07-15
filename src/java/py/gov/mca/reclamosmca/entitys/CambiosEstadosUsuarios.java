@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,10 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "CambiosEstadosUsuarios.findAll", query = "SELECT c FROM CambiosEstadosUsuarios c"),
     @NamedQuery(name = "CambiosEstadosUsuarios.findByCodCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.codCambioEstadoUsuario = :codCambioEstadoUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByDetalleCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.detalleCambioEstadoUsuario = :detalleCambioEstadoUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByFechaCambioEstado", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.fechaCambioEstado = :fechaCambioEstado"),
     @NamedQuery(name = "CambiosEstadosUsuarios.findByLoginUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.loginUsuario = :loginUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByNombreEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.nombreEstadoUsuario = :nombreEstadoUsuario")})
+    @NamedQuery(name = "CambiosEstadosUsuarios.findByNombreEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.nombreEstadoUsuario = :nombreEstadoUsuario"),
+    @NamedQuery(name = "CambiosEstadosUsuarios.findByDetalleCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.detalleCambioEstadoUsuario = :detalleCambioEstadoUsuario"),
+    @NamedQuery(name = "CambiosEstadosUsuarios.findByFechaCambioEstado", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.fechaCambioEstado = :fechaCambioEstado")})
 public class CambiosEstadosUsuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,18 +43,26 @@ public class CambiosEstadosUsuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_cambio_estado_usuario")
     private Integer codCambioEstadoUsuario;
-    @Size(max = 255)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "login_usuario")
+    private String loginUsuario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre_estado_usuario")
+    private String nombreEstadoUsuario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "detalle_cambio_estado_usuario")
     private String detalleCambioEstadoUsuario;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "fecha_cambio_estado")
     @Temporal(TemporalType.DATE)
     private Date fechaCambioEstado;
-    @Size(max = 255)
-    @Column(name = "login_usuario")
-    private String loginUsuario;
-    @Size(max = 255)
-    @Column(name = "nombre_estado_usuario")
-    private String nombreEstadoUsuario;
 
     public CambiosEstadosUsuarios() {
     }
@@ -62,28 +71,20 @@ public class CambiosEstadosUsuarios implements Serializable {
         this.codCambioEstadoUsuario = codCambioEstadoUsuario;
     }
 
+    public CambiosEstadosUsuarios(Integer codCambioEstadoUsuario, String loginUsuario, String nombreEstadoUsuario, String detalleCambioEstadoUsuario, Date fechaCambioEstado) {
+        this.codCambioEstadoUsuario = codCambioEstadoUsuario;
+        this.loginUsuario = loginUsuario;
+        this.nombreEstadoUsuario = nombreEstadoUsuario;
+        this.detalleCambioEstadoUsuario = detalleCambioEstadoUsuario;
+        this.fechaCambioEstado = fechaCambioEstado;
+    }
+
     public Integer getCodCambioEstadoUsuario() {
         return codCambioEstadoUsuario;
     }
 
     public void setCodCambioEstadoUsuario(Integer codCambioEstadoUsuario) {
         this.codCambioEstadoUsuario = codCambioEstadoUsuario;
-    }
-
-    public String getDetalleCambioEstadoUsuario() {
-        return detalleCambioEstadoUsuario;
-    }
-
-    public void setDetalleCambioEstadoUsuario(String detalleCambioEstadoUsuario) {
-        this.detalleCambioEstadoUsuario = detalleCambioEstadoUsuario;
-    }
-
-    public Date getFechaCambioEstado() {
-        return fechaCambioEstado;
-    }
-
-    public void setFechaCambioEstado(Date fechaCambioEstado) {
-        this.fechaCambioEstado = fechaCambioEstado;
     }
 
     public String getLoginUsuario() {
@@ -100,6 +101,22 @@ public class CambiosEstadosUsuarios implements Serializable {
 
     public void setNombreEstadoUsuario(String nombreEstadoUsuario) {
         this.nombreEstadoUsuario = nombreEstadoUsuario;
+    }
+
+    public String getDetalleCambioEstadoUsuario() {
+        return detalleCambioEstadoUsuario;
+    }
+
+    public void setDetalleCambioEstadoUsuario(String detalleCambioEstadoUsuario) {
+        this.detalleCambioEstadoUsuario = detalleCambioEstadoUsuario;
+    }
+
+    public Date getFechaCambioEstado() {
+        return fechaCambioEstado;
+    }
+
+    public void setFechaCambioEstado(Date fechaCambioEstado) {
+        this.fechaCambioEstado = fechaCambioEstado;
     }
 
     @Override

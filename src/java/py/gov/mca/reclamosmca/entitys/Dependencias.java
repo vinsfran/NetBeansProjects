@@ -8,6 +8,7 @@ package py.gov.mca.reclamosmca.entitys;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -31,10 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Dependencias.findAll", query = "SELECT d FROM Dependencias d"),
     @NamedQuery(name = "Dependencias.findByCodDependencia", query = "SELECT d FROM Dependencias d WHERE d.codDependencia = :codDependencia"),
-    @NamedQuery(name = "Dependencias.findByInternoDependencia", query = "SELECT d FROM Dependencias d WHERE d.internoDependencia = :internoDependencia"),
-    @NamedQuery(name = "Dependencias.findByMailDependencia", query = "SELECT d FROM Dependencias d WHERE d.mailDependencia = :mailDependencia"),
     @NamedQuery(name = "Dependencias.findByNombreDependencia", query = "SELECT d FROM Dependencias d WHERE d.nombreDependencia = :nombreDependencia"),
-    @NamedQuery(name = "Dependencias.findByTelefonoDependencia", query = "SELECT d FROM Dependencias d WHERE d.telefonoDependencia = :telefonoDependencia")})
+    @NamedQuery(name = "Dependencias.findByTelefonoDependencia", query = "SELECT d FROM Dependencias d WHERE d.telefonoDependencia = :telefonoDependencia"),
+    @NamedQuery(name = "Dependencias.findByInternoDependencia", query = "SELECT d FROM Dependencias d WHERE d.internoDependencia = :internoDependencia"),
+    @NamedQuery(name = "Dependencias.findByMailDependencia", query = "SELECT d FROM Dependencias d WHERE d.mailDependencia = :mailDependencia")})
 public class Dependencias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,19 +44,21 @@ public class Dependencias implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_dependencia")
     private Integer codDependencia;
-    @Size(max = 255)
-    @Column(name = "interno_dependencia")
-    private String internoDependencia;
-    @Size(max = 255)
-    @Column(name = "mail_dependencia")
-    private String mailDependencia;
-    @Size(max = 255)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre_dependencia")
     private String nombreDependencia;
-    @Size(max = 255)
+    @Size(max = 2147483647)
     @Column(name = "telefono_dependencia")
     private String telefonoDependencia;
-    @OneToMany(mappedBy = "fkCodDependencia")
+    @Size(max = 2147483647)
+    @Column(name = "interno_dependencia")
+    private String internoDependencia;
+    @Size(max = 2147483647)
+    @Column(name = "mail_dependencia")
+    private String mailDependencia;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodDependencia")
     private List<TiposReclamos> tiposReclamosList;
     @OneToMany(mappedBy = "fkCodDependencia")
     private List<Personas> personasList;
@@ -66,28 +70,17 @@ public class Dependencias implements Serializable {
         this.codDependencia = codDependencia;
     }
 
+    public Dependencias(Integer codDependencia, String nombreDependencia) {
+        this.codDependencia = codDependencia;
+        this.nombreDependencia = nombreDependencia;
+    }
+
     public Integer getCodDependencia() {
         return codDependencia;
     }
 
     public void setCodDependencia(Integer codDependencia) {
         this.codDependencia = codDependencia;
-    }
-
-    public String getInternoDependencia() {
-        return internoDependencia;
-    }
-
-    public void setInternoDependencia(String internoDependencia) {
-        this.internoDependencia = internoDependencia;
-    }
-
-    public String getMailDependencia() {
-        return mailDependencia;
-    }
-
-    public void setMailDependencia(String mailDependencia) {
-        this.mailDependencia = mailDependencia;
     }
 
     public String getNombreDependencia() {
@@ -104,6 +97,22 @@ public class Dependencias implements Serializable {
 
     public void setTelefonoDependencia(String telefonoDependencia) {
         this.telefonoDependencia = telefonoDependencia;
+    }
+
+    public String getInternoDependencia() {
+        return internoDependencia;
+    }
+
+    public void setInternoDependencia(String internoDependencia) {
+        this.internoDependencia = internoDependencia;
+    }
+
+    public String getMailDependencia() {
+        return mailDependencia;
+    }
+
+    public void setMailDependencia(String mailDependencia) {
+        this.mailDependencia = mailDependencia;
     }
 
     @XmlTransient

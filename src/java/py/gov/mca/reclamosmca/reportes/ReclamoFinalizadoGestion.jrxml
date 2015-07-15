@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoAtendidoGestion" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="464"/>
 	<property name="ireport.background.image.properties" value="false,false,0.05,0,0,0,0,0,0"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
@@ -267,7 +267,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Descripción de tarea a realizada]]></text>
+				<text><![CDATA[Descripción de tarea realizada]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="565" width="162" height="20" uuid="e67d181e-a673-4ac0-ba3e-0e6ecea9db5c"/>

@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,8 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
     @NamedQuery(name = "Usuarios.findByCodUsuario", query = "SELECT u FROM Usuarios u WHERE u.codUsuario = :codUsuario"),
-    @NamedQuery(name = "Usuarios.findByClaveUsuario", query = "SELECT u FROM Usuarios u WHERE u.claveUsuario = :claveUsuario"),
-    @NamedQuery(name = "Usuarios.findByLoginUsuario", query = "SELECT u FROM Usuarios u WHERE u.loginUsuario = :loginUsuario")})
+    @NamedQuery(name = "Usuarios.findByLoginUsuario", query = "SELECT u FROM Usuarios u WHERE u.loginUsuario = :loginUsuario"),
+    @NamedQuery(name = "Usuarios.findByClaveUsuario", query = "SELECT u FROM Usuarios u WHERE u.claveUsuario = :claveUsuario")})
 public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,26 +43,30 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_usuario")
     private Integer codUsuario;
-    @Size(max = 255)
-    @Column(name = "clave_usuario")
-    private String claveUsuario;
-    @Size(max = 255)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "login_usuario")
     private String loginUsuario;
-    @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
-    private List<Reclamos> reclamosList;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "clave_usuario")
+    private String claveUsuario;
     @OneToMany(mappedBy = "fkCodUsuarioAtencion")
+    private List<Reclamos> reclamosList;
+    @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
     private List<Reclamos> reclamosList1;
     @OneToMany(mappedBy = "fkCodUsuario")
     private List<Reclamos> reclamosList2;
     @JoinColumn(name = "fk_cod_estado_usuario", referencedColumnName = "cod_estado_usuario")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private EstadosUsuarios fkCodEstadoUsuario;
     @JoinColumn(name = "fk_cod_persona", referencedColumnName = "cod_persona")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Personas fkCodPersona;
     @JoinColumn(name = "fk_cod_rol", referencedColumnName = "cod_rol")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Roles fkCodRol;
 
     public Usuarios() {
@@ -69,6 +74,12 @@ public class Usuarios implements Serializable {
 
     public Usuarios(Integer codUsuario) {
         this.codUsuario = codUsuario;
+    }
+
+    public Usuarios(Integer codUsuario, String loginUsuario, String claveUsuario) {
+        this.codUsuario = codUsuario;
+        this.loginUsuario = loginUsuario;
+        this.claveUsuario = claveUsuario;
     }
 
     public Integer getCodUsuario() {
@@ -79,20 +90,20 @@ public class Usuarios implements Serializable {
         this.codUsuario = codUsuario;
     }
 
-    public String getClaveUsuario() {
-        return claveUsuario;
-    }
-
-    public void setClaveUsuario(String claveUsuario) {
-        this.claveUsuario = claveUsuario;
-    }
-
     public String getLoginUsuario() {
         return loginUsuario;
     }
 
     public void setLoginUsuario(String loginUsuario) {
         this.loginUsuario = loginUsuario;
+    }
+
+    public String getClaveUsuario() {
+        return claveUsuario;
+    }
+
+    public void setClaveUsuario(String claveUsuario) {
+        this.claveUsuario = claveUsuario;
     }
 
     @XmlTransient

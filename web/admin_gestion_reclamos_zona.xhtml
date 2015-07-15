@@ -34,17 +34,17 @@
                                             <h:outputText value="#{reclamos.fkCodTipoReclamo.nombreTipoReclamo.trim()}"/>
                                         </h:column>
                                         <h:column>
+                                            <f:facet name="header">Dirección del reclamo</f:facet>
+                                            <h:outputText value="#{reclamos.direccionReclamo}"/>
+                                        </h:column>
+                                        <h:column>
                                             <f:facet name="header">Fecha de realización</f:facet>
                                             <h:outputText value="#{mbSReclamos.formatearFecha(reclamos.fechaReclamo)}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Estado</f:facet>
                                             <h:outputText value="#{reclamos.fkCodEstadoReclamo.nombreEstadoReclamo}"/>
-
-                                           
                                         </h:column>
-
-                                        
 
                                         <h:column>
 
@@ -53,12 +53,13 @@
                                                 <a style="margin-right: 2px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="##{reclamos.codReclamo}Detalles">
                                                     Detalles
                                                 </a>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
-                                                    <i class="fa fa-check-square-o"></i> Procesar
-                                                </h:commandLink>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo)}">
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo, 'GESTION')}">
                                                     <i class="fa fa-file-pdf-o"></i> Descargar PDF
                                                 </h:commandLink>
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
+                                                    <i class="fa fa-check-square-o"></i> #{reclamos.fkCodEstadoReclamo.codEstadoReclamo > 1 ? 'Finalizar':'Procesar' }
+                                                </h:commandLink>
+
                                             </h:form>
                                             <div class="modal fade" id="#{reclamos.codReclamo}Detalles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -119,6 +120,25 @@
                                                                             <td style="border-top: none;"><h:outputText value="Descripción del reclamo:"/></td>
                                                                             <td style="border-top: none;"><h:outputText value="#{reclamos.descripcionReclamoContribuyente}"/></td>
                                                                         </tr>
+                                                                        <h:panelGroup rendered="#{reclamos.fkCodEstadoReclamo.codEstadoReclamo > 1 ? true : false}" >
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th colspan="2" style="border-top: none;">Detalle de atención</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Fecha de atención:</td>
+                                                                                <td style="border-top: none;">#{mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo)}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Atendido por:</td>
+                                                                                <td style="border-top: none;">#{reclamos.fkCodUsuarioAtencion.fkCodPersona.nombrePersona} #{reclamos.fkCodUsuarioAtencion.fkCodPersona.apellidoPersona}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="border-top: none;">Descripción de tarea a realizar:</td>
+                                                                                <td style="border-top: none;">#{reclamos.descripcionAtencionReclamo}</td>
+                                                                            </tr>
+                                                                        </h:panelGroup>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
