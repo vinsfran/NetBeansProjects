@@ -119,10 +119,14 @@
                                 <div id="collapse4" class="collapse">
                                     <ul class="nav nav-second-level">
                                         <li>
-                                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos pendientes</a>
+                                            <h:commandLink action="admin_form_reporte_rango_fecha_dependencia">
+                                                <i class="fa fa-folder-o"></i> Rango de fecha por dependencia
+                                            </h:commandLink>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fa fa-folder-o"></i> Reclamos en proceso</a>
+                                            <h:commandLink action="admin_form_reporte_rango_fecha_dependencia_tipos_reclamos">
+                                                <i class="fa fa-folder-o"></i> Rango de fecha por dependencia y tipos de reclamos 
+                                            </h:commandLink>
                                         </li>
                                         <li>
                                             <a href="#"><i class="fa fa-search"></i> Buscar reclamos</a>
@@ -223,8 +227,5 @@
                 </h:form>
             </div>
         </div>
-
-
-    </nav>   
-    <!-- /. NAV TOP  -->
+    </nav>
 </ui:composition>
