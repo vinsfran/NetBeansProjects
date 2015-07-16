@@ -39,7 +39,7 @@ public class ReportesMB {
         Usuarios usu = recuperarSessionUsuario();
         List<TiposReclamos> listaTiposReclamos = tiposReclamosSB.listarTiposReclamosPorDependencia(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia());
 
-        Map parametros = new HashMap();
+        Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         parametros.put("urlImagen", urlImagen);

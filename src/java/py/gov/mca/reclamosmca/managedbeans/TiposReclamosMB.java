@@ -23,7 +23,7 @@ import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
 @SessionScoped
 public class TiposReclamosMB implements Serializable {
 
-    private DataModel listarTiposReclamos;
+    private DataModel<TiposReclamos> listarTiposReclamos;
     @EJB
     private TiposReclamosSB tiposReclamosSB;
 
@@ -33,7 +33,7 @@ public class TiposReclamosMB implements Serializable {
 
     public DataModel getListarTiposReclamos() {
         List<TiposReclamos> lista = tiposReclamosSB.listarTiposReclamos();
-        listarTiposReclamos = new ListDataModel(lista);
+        listarTiposReclamos = new ListDataModel<>(lista);
         return listarTiposReclamos;
     }
 

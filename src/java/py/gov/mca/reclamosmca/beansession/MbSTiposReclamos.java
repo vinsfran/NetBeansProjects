@@ -7,8 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import py.gov.mca.reclamosmca.entitys.Dependencias;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.sessionbeans.DependenciasSB;
@@ -28,8 +26,7 @@ public class MbSTiposReclamos implements Serializable {
     @EJB
     private DependenciasSB dependenciasSB;
     
-    private DataModel tiposReclamos;
-    
+    private List<TiposReclamos> tiposReclamos;    
     private List<Dependencias> dependencias;
     
     private TiposReclamos tipoReclamo;
@@ -96,16 +93,15 @@ public class MbSTiposReclamos implements Serializable {
     /**
      * @return the tiposReclamos
      */
-    public DataModel getTiposReclamos() {
-        List<TiposReclamos> lista = tiposReclamosSB.listarTiposReclamos();
-        tiposReclamos = new ListDataModel(lista);
+    public List<TiposReclamos> getTiposReclamos() { 
+        tiposReclamos = tiposReclamosSB.listarTiposReclamos();
         return tiposReclamos;
     }
 
     /**
      * @param tiposReclamos the tiposReclamos to set
      */
-    public void setTiposReclamos(DataModel tiposReclamos) {
+    public void setTiposReclamos(List<TiposReclamos> tiposReclamos) {
         this.tiposReclamos = tiposReclamos;
     }
 

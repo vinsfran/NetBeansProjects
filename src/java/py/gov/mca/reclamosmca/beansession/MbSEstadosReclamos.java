@@ -7,8 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
 import py.gov.mca.reclamosmca.sessionbeans.EstadosReclamosSB;
 
@@ -23,7 +21,7 @@ public class MbSEstadosReclamos implements Serializable {
     @EJB
     private EstadosReclamosSB estadosReclamosSB;
 
-    private DataModel estadosReclamos;
+    private List<EstadosReclamos> estadosReclamos;
 
     private EstadosReclamos estadoReclamo;
 
@@ -85,16 +83,15 @@ public class MbSEstadosReclamos implements Serializable {
     /**
      * @return the estadosReclamos
      */
-    public DataModel getEstadosReclamos() {
-        List<EstadosReclamos> lista = estadosReclamosSB.listarEstadosReclamos();
-        estadosReclamos = new ListDataModel(lista);
+    public List<EstadosReclamos> getEstadosReclamos() {
+        estadosReclamos = estadosReclamosSB.listarEstadosReclamos();
         return estadosReclamos;
     }
 
     /**
      * @param estadosReclamos the estadosReclamos to set
      */
-    public void setEstadosReclamos(DataModel estadosReclamos) {
+    public void setEstadosReclamos(List<EstadosReclamos> estadosReclamos) {
         this.estadosReclamos = estadosReclamos;
     }
 

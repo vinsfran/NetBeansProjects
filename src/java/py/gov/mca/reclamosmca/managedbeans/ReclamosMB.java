@@ -69,8 +69,8 @@ public class ReclamosMB implements Serializable {
     private Boolean busqueda;
     private Reclamos reclamos;
     private Reclamos reclamoSeleccionado;
-    private DataModel listarReclamos;
-    private DataModel listarReclamosPorZona;
+    private DataModel<Reclamos> listarReclamos;
+    private DataModel<Reclamos> listarReclamosPorZona;
     private int cantidadDeReclamosPorZona;
     private int currentTab;
     private String redireccion;
@@ -296,7 +296,7 @@ public class ReclamosMB implements Serializable {
             }
         }
 
-        Map parametros = new HashMap();
+        Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         parametros.put("urlImagen", urlImagen);
@@ -330,7 +330,7 @@ public class ReclamosMB implements Serializable {
 
     public void exportarPDF() throws JRException, IOException {
         JasperReport jasper;
-        Map parametros = new HashMap();
+        Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         parametros.put("urlImagen", urlImagen);
@@ -386,7 +386,7 @@ public class ReclamosMB implements Serializable {
 
     public void imprimirPDF() throws JRException, IOException {
         JasperReport jasper;
-        Map parametros = new HashMap();
+        Map<String, Object> parametros = new HashMap<>();
 
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
@@ -433,7 +433,7 @@ public class ReclamosMB implements Serializable {
         try {
 
             JasperReport jasper;
-            Map parametros = new HashMap();
+            Map<String, Object> parametros = new HashMap<>();
 
             ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
             String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
@@ -501,7 +501,7 @@ public class ReclamosMB implements Serializable {
             if (!tiposFinalizacionReclamosSB.consultarTiposFinalizacionReclamosPorNombreDependencia(nuevoMotivoFin, codDepenUsu)) {
                 TiposFinalizacionReclamos tiposFinalizacionReclamos = new TiposFinalizacionReclamos();
                 tiposFinalizacionReclamos.setNombreTipoFinalizacionReclamo(nuevoMotivoFin);
-               // tiposFinalizacionReclamos.setFkDependenciaTipoFinalizacionReclamo(usu.getFkCodPersona().getFkCodDependencia());
+                // tiposFinalizacionReclamos.setFkDependenciaTipoFinalizacionReclamo(usu.getFkCodPersona().getFkCodDependencia());
                 String resultado = tiposFinalizacionReclamosSB.crearTiposFinalizacionReclamos(tiposFinalizacionReclamos);
                 if (resultado.equals("OK")) {
                     this.nuevoMotivoFin = "";
@@ -666,7 +666,7 @@ public class ReclamosMB implements Serializable {
             setFinalizados(true);
         }
         List<Reclamos> lista1 = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), codEstadoReclamo);
-        listarReclamos = new ListDataModel(lista1);
+        listarReclamos = new ListDataModel<>(lista1);
         return "listarreclamos?faces-redirect=true";
     }
 
@@ -683,7 +683,7 @@ public class ReclamosMB implements Serializable {
             }
         }
         setCantidadDeReclamosPorZona(lista2.size());
-        listarReclamosPorZona = new ListDataModel(lista2);
+        listarReclamosPorZona = new ListDataModel<>(lista2);
     }
 
     public String verReclamosPorZona() {
@@ -710,7 +710,7 @@ public class ReclamosMB implements Serializable {
         setBusqueda(true);
         this.currentTab = 4;
         List<Reclamos> lista1 = reclamosSB.burcarPorDependencia(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), palabraBuscada);
-        listarReclamos = new ListDataModel(lista1);
+        listarReclamos = new ListDataModel<>(lista1);
         mostrarDialogoBuscar = false;
         return "listarreclamos?faces-redirect=true";
     }
@@ -867,7 +867,7 @@ public class ReclamosMB implements Serializable {
     /**
      * @param listarReclamos the listarReclamos to set
      */
-    public void setListarReclamos(DataModel listarReclamos) {
+    public void setListarReclamos(DataModel<Reclamos> listarReclamos) {
         this.listarReclamos = listarReclamos;
     }
 
@@ -1231,7 +1231,7 @@ public class ReclamosMB implements Serializable {
     /**
      * @param listarReclamosPorZona the listarReclamosPorZona to set
      */
-    public void setListarReclamosPorZona(DataModel listarReclamosPorZona) {
+    public void setListarReclamosPorZona(DataModel<Reclamos> listarReclamosPorZona) {
         this.listarReclamosPorZona = listarReclamosPorZona;
     }
 

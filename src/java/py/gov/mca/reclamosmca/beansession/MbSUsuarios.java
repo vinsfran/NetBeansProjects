@@ -1,8 +1,6 @@
 package py.gov.mca.reclamosmca.beansession;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,9 +8,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.PermisosElementosWeb;
@@ -58,7 +54,7 @@ public class MbSUsuarios implements Serializable {
             return "/login";
         } else {
             usuario = null;
-            usuario = usuariosSB.consultarUsuarios(loginUsuario);
+            usuario = usuariosSB.consultarUsuarios(loginUsuario.trim());
             if (usuario != null) {
                 if (usuario.getClaveUsuario().substring(0, 6).equals(claveUsuario) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(2)) {
                     usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
@@ -92,7 +88,7 @@ public class MbSUsuarios implements Serializable {
                         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                         httpSession.setAttribute("loginUsuario", this.loginUsuario);
 
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido!", usuario.getFkCodPersona().getNombrePersona()));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido!", ""));
                         String pagina;
                         if (usuario.getFkCodRol().getCodRol().equals(1)) {
                             pagina = "/admin_gestion_reclamos_pendientes";

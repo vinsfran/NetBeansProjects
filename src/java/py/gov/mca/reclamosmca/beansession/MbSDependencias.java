@@ -7,8 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import py.gov.mca.reclamosmca.entitys.Dependencias;
 import py.gov.mca.reclamosmca.sessionbeans.DependenciasSB;
 
@@ -23,7 +21,7 @@ public class MbSDependencias implements Serializable {
     @EJB
     private DependenciasSB dependenciasSB;
 
-    private DataModel dependencias;
+    private List<Dependencias> dependencias;
 
     private Dependencias dependencia;
 
@@ -99,16 +97,15 @@ public class MbSDependencias implements Serializable {
     /**
      * @return the dependencias
      */
-    public DataModel getDependencias() {
-        List<Dependencias> lista = dependenciasSB.listarDependencias();
-        dependencias = new ListDataModel(lista);
+    public List<Dependencias> getDependencias() {
+        dependencias = dependenciasSB.listarDependencias();
         return dependencias;
     }
 
     /**
      * @param dependencias the dependencias to set
      */
-    public void setDependencias(DataModel dependencias) {
+    public void setDependencias(List<Dependencias> dependencias) {
         this.dependencias = dependencias;
     }
 }

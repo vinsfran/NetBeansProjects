@@ -7,9 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import py.gov.mca.reclamosmca.entitys.Dependencias;
 import py.gov.mca.reclamosmca.entitys.ElementosWeb;
 import py.gov.mca.reclamosmca.sessionbeans.ElementosWebSB;
 
@@ -24,7 +21,7 @@ public class MbSElementosWeb implements Serializable{
     @EJB
     private ElementosWebSB elementosWebSB;
     
-    private DataModel elementosWeb;
+    private List<ElementosWeb> elementosWeb;
     
     private ElementosWeb elementoWeb;
     
@@ -86,16 +83,15 @@ public class MbSElementosWeb implements Serializable{
     /**
      * @return the elementosWeb
      */
-    public DataModel getElementosWeb() {
-        List<ElementosWeb> lista = elementosWebSB.listarElementosWeb();
-        elementosWeb = new ListDataModel(lista);
+    public List<ElementosWeb> getElementosWeb() { 
+        elementosWeb = elementosWebSB.listarElementosWeb();
         return elementosWeb;
     }
 
     /**
      * @param elementosWeb the elementosWeb to set
      */
-    public void setElementosWeb(DataModel elementosWeb) {
+    public void setElementosWeb(List<ElementosWeb> elementosWeb) {
         this.elementosWeb = elementosWeb;
     }
 

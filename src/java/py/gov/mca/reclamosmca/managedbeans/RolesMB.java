@@ -20,15 +20,15 @@ public class RolesMB {
     @EJB
     private RolesSB rolesSB;
 
-    private DataModel listarRoles;
+    private DataModel<Roles> listarRoles;
 
     public DataModel getListarRoles() {
         List<Roles> lista = rolesSB.listarRoles();
-        listarRoles = new ListDataModel(lista);
+        listarRoles = new ListDataModel<>(lista);
         return listarRoles;
     }
 
-    public void setListarRoles(DataModel listarRoles) {
+    public void setListarRoles(DataModel<Roles> listarRoles) {
         this.listarRoles = listarRoles;
     }
 

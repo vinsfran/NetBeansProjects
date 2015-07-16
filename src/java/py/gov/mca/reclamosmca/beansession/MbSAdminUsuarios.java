@@ -7,8 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import py.gov.mca.reclamosmca.entitys.Dependencias;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.Personas;
@@ -31,21 +29,20 @@ public class MbSAdminUsuarios implements Serializable {
 
     @EJB
     private AdminUsuariosSB adminUsuariosSB;
-    
+
     @EJB
     private PersonasSB personasSB;
-    
+
     @EJB
     private RolesSB rolesSB;
-    
+
     @EJB
     private DependenciasSB dependenciasSB;
-    
+
     @EJB
     private EstadosUsuariosSB estadosUsuariosSB;
 
-    private DataModel usuarios;
-    
+    private List<Usuarios> usuarios;
     private List<Personas> personas;
     private List<Roles> roles;
     private List<Dependencias> dependencias;
@@ -86,16 +83,15 @@ public class MbSAdminUsuarios implements Serializable {
     /**
      * @return the usuarios
      */
-    public DataModel getUsuarios() {
-        List<Usuarios> lista = adminUsuariosSB.listarUsuarios();
-        usuarios = new ListDataModel(lista);
+    public List<Usuarios> getUsuarios() {
+        usuarios = adminUsuariosSB.listarUsuarios();
         return usuarios;
     }
 
     /**
      * @param usuarios the usuarios to set
      */
-    public void setUsuarios(DataModel usuarios) {
+    public void setUsuarios(List<Usuarios> usuarios) {
         this.usuarios = usuarios;
     }
 
@@ -130,7 +126,7 @@ public class MbSAdminUsuarios implements Serializable {
     /**
      * @return the roles
      */
-    public List<Roles> getRoles() {        
+    public List<Roles> getRoles() {
         roles = rolesSB.listarRoles();
         return roles;
     }

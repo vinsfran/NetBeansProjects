@@ -46,7 +46,7 @@ public class ReclamosWebMB implements Serializable {
     private Boolean enProceso;
     private Boolean finalizados;
     private Reclamos reclamos;
-    private DataModel listarReclamos;
+    private DataModel<Reclamos> listarReclamos;
     private int currentTab;
     private String redireccion;
     private LatLng latituteLongitude;
@@ -212,7 +212,7 @@ public class ReclamosWebMB implements Serializable {
             setFinalizados(true);
         }
         List<Reclamos> lista = reclamosSB.listarPorUsuarioEstado(recuperarUsuarioSession().getCodUsuario(), codEstadoReclamo);
-        listarReclamos = new ListDataModel(lista);
+        listarReclamos = new ListDataModel<>(lista);
         return "listarreclamosusarios?faces-redirect=true";
     }
 
@@ -351,7 +351,7 @@ public class ReclamosWebMB implements Serializable {
     /**
      * @param listarReclamos the listarReclamos to set
      */
-    public void setListarReclamos(DataModel listarReclamos) {
+    public void setListarReclamos(DataModel<Reclamos> listarReclamos) {
         this.listarReclamos = listarReclamos;
     }
 

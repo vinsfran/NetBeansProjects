@@ -7,8 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import py.gov.mca.reclamosmca.entitys.ElementosWeb;
 import py.gov.mca.reclamosmca.entitys.PermisosElementosWeb;
 import py.gov.mca.reclamosmca.entitys.Roles;
@@ -33,7 +31,7 @@ public class MbSRoles implements Serializable {
     @EJB
     private PermisosElementosWebSB permisosElementosWebSB;
 
-    private DataModel roles;
+    private List<Roles> roles;
 
     private List<ElementosWeb> elementosWeb;
 
@@ -150,16 +148,15 @@ public class MbSRoles implements Serializable {
     /**
      * @return the roles
      */
-    public DataModel getRoles() {
-        List<Roles> lista = rolesSB.listarRoles();
-        roles = new ListDataModel(lista);
+    public List<Roles> getRoles() {
+        roles = rolesSB.listarRoles();
         return roles;
     }
 
     /**
      * @param roles the roles to set
      */
-    public void setRoles(DataModel roles) {
+    public void setRoles(List<Roles> roles) {
         this.roles = roles;
     }
 

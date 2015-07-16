@@ -7,8 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 
@@ -23,7 +21,7 @@ public class MbSAdminReclamos implements Serializable {
     @EJB
     private ReclamosSB reclamosSB;
 
-    private DataModel reclamos;
+    private List<Reclamos> reclamos;
 
     private Reclamos reclamo;
 
@@ -85,16 +83,15 @@ public class MbSAdminReclamos implements Serializable {
     /**
      * @return the reclamos
      */
-    public DataModel getReclamos() {
-        List<Reclamos> lista = reclamosSB.listarReclamos();
-        reclamos = new ListDataModel(lista);
+    public List<Reclamos> getReclamos() {
+        reclamos = reclamosSB.listarReclamos();
         return reclamos;
     }
 
     /**
      * @param reclamos the reclamos to set
      */
-    public void setReclamos(DataModel reclamos) {
+    public void setReclamos(List<Reclamos> reclamos) {
         this.reclamos = reclamos;
     }
 

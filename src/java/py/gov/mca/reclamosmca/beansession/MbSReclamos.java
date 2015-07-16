@@ -33,8 +33,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.validator.ValidatorException;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -85,12 +83,11 @@ public class MbSReclamos implements Serializable {
     @EJB
     private TiposFinalizacionReclamosSB tiposFinalizacionReclamosSB;
 
-    private DataModel misReclamos;
-    private DataModel reclamosPendientes;
-    private DataModel reclamosAtendidos;
-    private DataModel reclamosFinalizados;
-    private DataModel reclamosPorZona;
-
+    private List<Reclamos> misReclamos;
+    private List<Reclamos> reclamosPendientes;
+    private List<Reclamos> reclamosAtendidos;
+    private List<Reclamos> reclamosFinalizados;
+    private List<Reclamos> reclamosPorZona;
     private List<TiposReclamos> tiposDeReclamos;
     private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
 
@@ -220,7 +217,7 @@ public class MbSReclamos implements Serializable {
     }
 
     public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
-        List<FacesMessage> msgs = new ArrayList<FacesMessage>();
+        List<FacesMessage> msgs = new ArrayList<>();
         Part file = (Part) value;
         if (file.getSize() > 1024) {
             msgs.add(new FacesMessage("file too big"));
@@ -370,7 +367,7 @@ public class MbSReclamos implements Serializable {
         System.out.println("exportarPDF CodReclamo: " + codReclamo);
         Reclamos reclamoSeleccionadoPDF = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
-        Map parametros = new HashMap();
+        Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
@@ -481,7 +478,7 @@ public class MbSReclamos implements Serializable {
                 }
             }
         }
-        reclamosPorZona = new ListDataModel(lista2);
+        reclamosPorZona = lista2;
         return "admin_gestion_reclamos_zona";
     }
 
@@ -622,16 +619,15 @@ public class MbSReclamos implements Serializable {
     /**
      * @return the misReclamos
      */
-    public DataModel getMisReclamos() {
-        List<Reclamos> lista = reclamosSB.listarPorUsuario(recuperarUsuarioSession().getLoginUsuario());
-        misReclamos = new ListDataModel(lista);
+    public List<Reclamos> getMisReclamos() {
+        misReclamos = reclamosSB.listarPorUsuario(recuperarUsuarioSession().getLoginUsuario());
         return misReclamos;
     }
 
     /**
      * @param misReclamos the misReclamos to set
      */
-    public void setMisReclamos(DataModel misReclamos) {
+    public void setMisReclamos(List<Reclamos> misReclamos) {
         this.misReclamos = misReclamos;
     }
 
@@ -793,48 +789,45 @@ public class MbSReclamos implements Serializable {
     /**
      * @return the reclamosPendientes
      */
-    public DataModel getReclamosPendientes() {
-        List<Reclamos> lista = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 1);
-        reclamosPendientes = new ListDataModel(lista);
+    public List<Reclamos> getReclamosPendientes() {
+        reclamosPendientes = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 1);
         return reclamosPendientes;
     }
 
     /**
      * @param reclamosPendientes the reclamosPendientes to set
      */
-    public void setReclamosPendientes(DataModel reclamosPendientes) {
+    public void setReclamosPendientes(List<Reclamos> reclamosPendientes) {
         this.reclamosPendientes = reclamosPendientes;
     }
 
     /**
      * @return the reclamosAtendidos
      */
-    public DataModel getReclamosAtendidos() {
-        List<Reclamos> lista = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 2);
-        reclamosAtendidos = new ListDataModel(lista);
+    public List<Reclamos> getReclamosAtendidos() {
+        reclamosAtendidos = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 2);
         return reclamosAtendidos;
     }
 
     /**
      * @param reclamosAtendidos the reclamosAtendidos to set
      */
-    public void setReclamosAtendidos(DataModel reclamosAtendidos) {
+    public void setReclamosAtendidos(List<Reclamos> reclamosAtendidos) {
         this.reclamosAtendidos = reclamosAtendidos;
     }
 
     /**
      * @return the reclamosFinalizados
      */
-    public DataModel getReclamosFinalizados() {
-        List<Reclamos> lista = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 3);
-        reclamosFinalizados = new ListDataModel(lista);
+    public List<Reclamos> getReclamosFinalizados() {
+        reclamosFinalizados = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 3);
         return reclamosFinalizados;
     }
 
     /**
      * @param reclamosFinalizados the reclamosFinalizados to set
      */
-    public void setReclamosFinalizados(DataModel reclamosFinalizados) {
+    public void setReclamosFinalizados(List<Reclamos> reclamosFinalizados) {
         this.reclamosFinalizados = reclamosFinalizados;
     }
 
@@ -855,14 +848,14 @@ public class MbSReclamos implements Serializable {
     /**
      * @return the reclamosPorZona
      */
-    public DataModel getReclamosPorZona() {
+    public List<Reclamos> getReclamosPorZona() {
         return reclamosPorZona;
     }
 
     /**
      * @param reclamosPorZona the reclamosPorZona to set
      */
-    public void setReclamosPorZona(DataModel reclamosPorZona) {
+    public void setReclamosPorZona(List<Reclamos> reclamosPorZona) {
         this.reclamosPorZona = reclamosPorZona;
     }
 
