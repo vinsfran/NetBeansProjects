@@ -280,7 +280,7 @@ public class ReclamosMB implements Serializable {
     public void consultarPorRangoDeFecha() throws JRException, IOException {
         JasperReport jasper;
         Usuarios usu = recuperarUsuarioSession();
-        List<Reclamos> lista = reclamosSB.listarPorRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
+        List<Reclamos> lista = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
         String depen = usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia();
         int cantidadReclamos = lista.size();
         int cantidadSinAtender = 0;

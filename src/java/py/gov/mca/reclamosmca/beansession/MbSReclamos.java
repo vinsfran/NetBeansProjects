@@ -100,6 +100,9 @@ public class MbSReclamos implements Serializable {
 
     private String dirReclamo;
     private String imagenSemaforo;
+    
+    private Date fechaInicio;
+    private Date fechaFin;
 
     private MapModel emptyModel;
 
@@ -450,6 +453,61 @@ public class MbSReclamos implements Serializable {
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
 
+    }
+    
+    public void exportarPDFporRangoFechaDependencia() throws JRException, IOException {
+        JasperReport jasper;
+        Usuarios usu = recuperarUsuarioSession();
+        List<Reclamos> lista = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
+        int cantidadReclamos = lista.size();
+        int cantidadSinAtender = 0;
+        int cantidadAtendidos = 0;
+        int cantidadFinalizados = 0;
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getFkCodEstadoReclamo().getCodEstadoReclamo() == 1) {
+                cantidadSinAtender = cantidadSinAtender + 1;
+            } else if (lista.get(i).getFkCodEstadoReclamo().getCodEstadoReclamo() == 2) {
+                cantidadAtendidos = cantidadAtendidos + 1;
+            } else if (lista.get(i).getFkCodEstadoReclamo().getCodEstadoReclamo() == 3) {
+                cantidadFinalizados = cantidadFinalizados + 1;
+            }
+        }
+
+        Map<String, Object> parametros = new HashMap<>();
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+
+        parametros.put("urlImagen", urlImagen);
+        parametros.put("urlImagen2", urlImagen2);
+        parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
+        parametros.put("fechaDesde", getFechaInicio());
+        parametros.put("fechaHasta", getFechaFin());
+        parametros.put("fechaGeneracion", new Date());
+        parametros.put("totalReclamos", cantidadReclamos);
+        parametros.put("totalReclamosSinAtender", cantidadSinAtender);
+        parametros.put("totalReclamosAtendidos", cantidadAtendidos);
+        parametros.put("totalReclamosFinalizados", cantidadFinalizados);
+        parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
+
+        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaDependenciaReporte.jasper"));
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JREmptyDataSource());
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("application/pdf");
+        response.addHeader("Content-disposition", "attachment; filename=RECLAMOS_" + usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia() + ".pdf");
+        //response.
+        //Response.Write("<script>window.print();</script>"); 
+
+        ServletOutputStream stream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+        stream.flush();
+        stream.close();
+        FacesContext.getCurrentInstance().responseComplete();
     }
 
     public Integer cantidadReclamosPorZona(Reclamos reclamo) {
@@ -873,6 +931,34 @@ public class MbSReclamos implements Serializable {
      */
     public void setListTiposFinalizacionReclamos(List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos) {
         this.listTiposFinalizacionReclamos = listTiposFinalizacionReclamos;
+    }
+
+    /**
+     * @return the fechaInicio
+     */
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    /**
+     * @param fechaInicio the fechaInicio to set
+     */
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    /**
+     * @return the fechaFin
+     */
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    /**
+     * @param fechaFin the fechaFin to set
+     */
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
 }

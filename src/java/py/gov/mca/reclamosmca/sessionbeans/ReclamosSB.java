@@ -300,7 +300,7 @@ public class ReclamosSB {
         return q.getResultList();
     }
 
-    public List<Reclamos> listarPorRangoDeFecha(Integer codDependencia, Date fechaInicio, Date fechaFin) {
+    public List<Reclamos> listarPorDependenciaRangoDeFecha(Integer codDependencia, Date fechaInicio, Date fechaFin) {
         StringBuilder jpql = new StringBuilder();
 
         jpql.append("SELECT e ");
