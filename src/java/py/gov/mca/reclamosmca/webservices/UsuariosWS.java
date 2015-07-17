@@ -54,6 +54,7 @@ public class UsuariosWS {
         usuario.getFkCodPersona().setDireccionPersona(jsonObjectPersona.getString("direccionPersona"));
         usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
         usuario.getFkCodPersona().setCtaCtePersona(jsonObjectPersona.getString("ctaCtePersona"));
+        usuario.getFkCodPersona().setOrigenRegistro("appAndroid");
         usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
         usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
         usuario.setFkCodRol(new Roles());

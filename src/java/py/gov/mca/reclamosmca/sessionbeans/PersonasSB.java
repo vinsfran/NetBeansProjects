@@ -45,10 +45,11 @@ public class PersonasSB {
     public String eliminarPersonas(Personas objeto) {
         mensajes = "";
         try {
-            em.remove(objeto);
-            mensajes = objeto.getNombrePersona() + " se elimino con exito!";
+            Personas personaEliminar = em.find(Personas.class, objeto.getCodPersona());
+            em.remove(personaEliminar);
+            mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getNombrePersona() + " no se pudo eliminar. (" + ex.getMessage() + ")";
+            mensajes = "(" + ex.getMessage() + ")";
         }
         return mensajes;
     }

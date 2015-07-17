@@ -56,7 +56,7 @@ public class RegistroUsuarioMB implements Serializable {
         FacesMessage message = new FacesMessage();
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getFlash().setKeepMessages(true);
-       
+
         if (nombre.equals("") || apellido.equals("") || correo.equals("") || contrasena1.equals("") || contrasena2.equals("")) {
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary(mensaje1);
@@ -83,6 +83,7 @@ public class RegistroUsuarioMB implements Serializable {
                     usuario.getFkCodPersona().setDireccionPersona(direccion);
                     usuario.getFkCodPersona().setTelefonoPersona(telefono);
                     usuario.getFkCodPersona().setCtaCtePersona(cuentaCorriente);
+                    usuario.getFkCodPersona().setOrigenRegistro("appWeb");
                     usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
                     usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
                     usuario.setFkCodRol(new Roles());
@@ -90,7 +91,7 @@ public class RegistroUsuarioMB implements Serializable {
                     String resultado = usuariosSB.crearUsuariosWeb(usuario);
                     System.out.println("RESU " + resultado);
                     if (resultado.equals("OK")) {
-                         System.out.println("ENTRO" + nombre);
+                        System.out.println("ENTRO" + nombre);
                         pagina = "mensajeRegistro" + redireccion;
                     } else {
                         message.setSeverity(FacesMessage.SEVERITY_ERROR);

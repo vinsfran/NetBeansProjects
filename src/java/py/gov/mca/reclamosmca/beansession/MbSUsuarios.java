@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.PermisosElementosWeb;
 import py.gov.mca.reclamosmca.entitys.Personas;
+import py.gov.mca.reclamosmca.entitys.Roles;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.UsuariosSB;
@@ -33,6 +34,14 @@ public class MbSUsuarios implements Serializable {
     @EJB
     private PersonasSB personasSB;
 
+    private String cedula;
+    private String nombre;
+    private String apellido;
+    private String correo;
+    private String direccion;
+    private String telefono;
+    private String cuentaCorriente;
+
     private String loginUsuario;
     private String claveUsuario;
     private String contrasenaActual;
@@ -46,6 +55,90 @@ public class MbSUsuarios implements Serializable {
         //Control de tiempo de session de usuario, en segundos seteado en 300 segundos equivalentes a 5 minutos
         HttpSession sessionUsuario = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         sessionUsuario.setMaxInactiveInterval(300);
+    }
+
+    public String prepararRegistro() {
+        this.cedula = "";
+        this.nombre = "";
+        this.apellido = "";
+        this.correo = "";
+        this.direccion = "";
+        this.telefono = "";
+        this.cuentaCorriente = "";
+        this.loginUsuario = "";
+        this.claveUsuario = "";
+        this.contrasenaActual = "";
+        this.contrasena1 = "";
+        this.contrasena2 = "";
+        this.linkExpediente = "";
+        return "/registro";
+    }
+
+    public String btnRegistrar() {
+        if (getNombre().equals("") || getApellido().equals("") || getCorreo().equals("") || contrasena1.equals("") || contrasena2.equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
+            return "/registro";
+        } else {
+            if (contrasena1.equals(contrasena2)) {
+                Converciones c = new Converciones();
+                String contrasenaMD5 = c.getMD5(contrasena1);
+                if (contrasenaMD5 == null) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro, intente de nuevo", ""));
+                    return "/registro";
+                } else {
+                    usuario = new Usuarios();
+                    usuario.setLoginUsuario(getCorreo());
+                    usuario.setClaveUsuario(contrasenaMD5);
+                    usuario.setFkCodPersona(new Personas());
+                    usuario.getFkCodPersona().setCedulaPersona(getCedula());
+                    usuario.getFkCodPersona().setNombrePersona(getNombre());
+                    usuario.getFkCodPersona().setApellidoPersona(getApellido());
+                    usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
+                    usuario.getFkCodPersona().setDireccionPersona(getDireccion());
+                    usuario.getFkCodPersona().setTelefonoPersona(getTelefono());
+                    usuario.getFkCodPersona().setCtaCtePersona(getCuentaCorriente());
+                    usuario.getFkCodPersona().setOrigenRegistro("appWeb");
+                    usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+                    usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
+                    usuario.setFkCodRol(new Roles());
+                    usuario.getFkCodRol().setCodRol(6);
+                    String resultado = usuariosSB.crearUsuariosWeb(usuario);
+                    if (resultado.equals("OK")) {
+                        FacesMessage message = new FacesMessage();
+                        message.setSeverity(FacesMessage.SEVERITY_INFO);
+                        message.setSummary("Gracias por registrarte.");
+                        message.setDetail("Para activar tu cuenta te enviamos un correo electrónico a " + this.correo + "."
+                                + "\n Tienes 48 hrs. para verificar tu correo, de lo contrario tus datos seran borrados de nuestro sistema.");
+                        FacesContext.getCurrentInstance().addMessage(null, message);
+                        return "/login";
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro en BD, intente de nuevo", ""));
+                        return "/registro";
+                    }
+                }
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Las contraseñas no son iguales.", ""));
+                return "/registro";
+            }
+
+        }
+    }
+    
+    public String prepararIngreso() {
+        this.cedula = "";
+        this.nombre = "";
+        this.apellido = "";
+        this.correo = "";
+        this.direccion = "";
+        this.telefono = "";
+        this.cuentaCorriente = "";
+        this.loginUsuario = "";
+        this.claveUsuario = "";
+        this.contrasenaActual = "";
+        this.contrasena1 = "";
+        this.contrasena2 = "";
+        this.linkExpediente = "";
+        return "/login";
     }
 
     public String btnIngresar() {
@@ -369,6 +462,104 @@ public class MbSUsuarios implements Serializable {
      */
     public void setLinkExpediente(String linkExpediente) {
         this.linkExpediente = linkExpediente;
+    }
+
+    /**
+     * @return the cedula
+     */
+    public String getCedula() {
+        return cedula;
+    }
+
+    /**
+     * @param cedula the cedula to set
+     */
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    /**
+     * @return the nombre
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * @param nombre the nombre to set
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * @return the apellido
+     */
+    public String getApellido() {
+        return apellido;
+    }
+
+    /**
+     * @param apellido the apellido to set
+     */
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    /**
+     * @return the correo
+     */
+    public String getCorreo() {
+        return correo;
+    }
+
+    /**
+     * @param correo the correo to set
+     */
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    /**
+     * @return the direccion
+     */
+    public String getDireccion() {
+        return direccion;
+    }
+
+    /**
+     * @param direccion the direccion to set
+     */
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    /**
+     * @return the telefono
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * @param telefono the telefono to set
+     */
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    /**
+     * @return the cuentaCorriente
+     */
+    public String getCuentaCorriente() {
+        return cuentaCorriente;
+    }
+
+    /**
+     * @param cuentaCorriente the cuentaCorriente to set
+     */
+    public void setCuentaCorriente(String cuentaCorriente) {
+        this.cuentaCorriente = cuentaCorriente;
     }
 
 }

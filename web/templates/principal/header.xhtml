@@ -9,7 +9,7 @@
                     <div class="col-sm-6 col-xs-4">
                         <div class="top-number">
                             <p>
-                                Reclamos Online
+                                Servicios Online
                             </p>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             </ui:fragment>
                             <ui:fragment >
                                 <li class="#{direccionMB.registro}">
-                                    <h:commandLink action="registro" actionListener="#{direccionMB.asignarEstilo('Registro')}">
+                                    <h:commandLink action="#{mbSUsuarios.prepararRegistro()}" actionListener="#{direccionMB.asignarEstilo('Registro')}">
                                         <i class="fa fa-edit"></i> Registrarse
                                     </h:commandLink>
 
@@ -62,7 +62,7 @@
                             </ui:fragment>
                             <ui:fragment >
                                 <li class="#{direccionMB.sesion}">
-                                    <h:commandLink action="login" actionListener="#{direccionMB.asignarEstilo('Sesion')}">
+                                    <h:commandLink action="#{mbSUsuarios.prepararIngreso()}" actionListener="#{direccionMB.asignarEstilo('Sesion')}">
                                         <i class="fa fa-sign-in"></i> Iniciar Sesión
                                     </h:commandLink>
 

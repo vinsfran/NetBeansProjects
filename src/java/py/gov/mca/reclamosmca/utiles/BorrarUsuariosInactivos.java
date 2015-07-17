@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 import javax.ejb.EJB;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
+import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.UsuariosSB;
 
 /**
@@ -21,12 +22,14 @@ public class BorrarUsuariosInactivos extends TimerTask implements ServletContext
     private Timer timer;
     @EJB
     private UsuariosSB usuariosSB;
+    @EJB
+    private PersonasSB personasSB;
 
     public void contextInitialized(ServletContextEvent evt) {
         // Iniciamos el timer
         timer = new Timer() {
         };
-        // timer.schedule(this, 0, 10*60*1000);  // Ejemplo: Cada 10 minutos
+        //timer.schedule(this, 0, 10*60*1000);  // Ejemplo: Cada 10 minutos
         timer.schedule(this, 0, 60 * 60 * 1000);  // Ejemplo: Cada 60 minutos
     }
 
@@ -47,29 +50,41 @@ public class BorrarUsuariosInactivos extends TimerTask implements ServletContext
         int hora = fecha.get(Calendar.HOUR_OF_DAY);
         int minuto = fecha.get(Calendar.MINUTE);
         int segundo = fecha.get(Calendar.SECOND);
-        System.out.println("Fecha Actual: "
-                + dia + "/" + (mes + 1) + "/" + año);
-        System.out.printf("Hora Actual: %02d:%02d:%02d %n",
-                hora, minuto, segundo);
-        if (hora == 03) {
+
+        //Se configura para ejecutar a las 3 AM
+        if (hora == 3) {
+            System.out.println("----------------------- INICIO DE BORRAR USUARIOS SE ACTIVO ---------------------------");
+            System.out.println("FECHA: " + dia + "/" + (mes + 1) + "/" + año);
+            System.out.printf("HORA: %02d:%02d:%02d %n", hora, minuto, segundo);
             List<Usuarios> usuariosWebInactivos = usuariosSB.listarUsuariosInactivos(2);
             if (usuariosWebInactivos != null) {
+                System.out.println("HAY USUARIOS INACTIVOS");
+                System.out.println("CANTIDAD: " + usuariosWebInactivos.size());
+                System.out.println("---------------------------------------------------------------------------------------");
                 Date fechaMayor = new Date();
                 long diferenciaEn_ms;
                 for (int i = 0; usuariosWebInactivos.size() > i; i++) {
-                    System.out.println("Hay INACTIVOS");
-                    System.out.println("Cantdad INACTIVOS: " + usuariosWebInactivos.size());
                     diferenciaEn_ms = fechaMayor.getTime() - usuariosWebInactivos.get(i).getFkCodPersona().getFechaRegistroPersona().getTime();
                     long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
-                    System.out.println("DIAS: " + dias);
-                    if (dias == 2) {
-                        System.out.println("Eliminado");
-                        usuariosSB.eliminarUsuarios(usuariosWebInactivos.get(i));
+                    String usuario = usuariosWebInactivos.get(i).getLoginUsuario();
+                    System.out.println("USUARIO: " + usuario);
+                    System.out.println("DIAS SIN ACTIVAR CUENTA: " + dias);
+                    if (dias > 2) {
+                        //System.out.println("Eliminado " + usuariosSB.eliminarUsuarios(usuariosWebInactivos.get(i)));
+                        String mensaje = personasSB.eliminarPersonas(usuariosWebInactivos.get(i).getFkCodPersona());
+                        if (mensaje.equals("OK")) {
+                            System.out.println("USUARIO: " + usuario + " ELIMINADO CORRECTAMENTE.");
+                        } else {
+                            System.out.println("ERROR AL ELIMINAR: " + mensaje);
+                        }
                     }
+                    System.out.println("---------------------------------------------------------------------------------------");
                 }
             } else {
-                System.out.println("No hay INACTIVOS");
+                System.out.println("NO HAY USUARIOS INACTIVOS.");
             }
+            System.out.println("----------------------- FIN DE BORRAR USUARIOS SE ACTIVO ------------------------------");
         }
+
     }
 }

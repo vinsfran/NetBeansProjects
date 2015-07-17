@@ -47,7 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Personas.findByDireccionPersona", query = "SELECT p FROM Personas p WHERE p.direccionPersona = :direccionPersona"),
     @NamedQuery(name = "Personas.findByTelefonoPersona", query = "SELECT p FROM Personas p WHERE p.telefonoPersona = :telefonoPersona"),
     @NamedQuery(name = "Personas.findByCelularPersona", query = "SELECT p FROM Personas p WHERE p.celularPersona = :celularPersona"),
-    @NamedQuery(name = "Personas.findByCtaCtePersona", query = "SELECT p FROM Personas p WHERE p.ctaCtePersona = :ctaCtePersona")})
+    @NamedQuery(name = "Personas.findByCtaCtePersona", query = "SELECT p FROM Personas p WHERE p.ctaCtePersona = :ctaCtePersona"),
+    @NamedQuery(name = "Personas.findByOrigenRegistro", query = "SELECT p FROM Personas p WHERE p.origenRegistro = :origenRegistro")})
 public class Personas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -91,6 +92,9 @@ public class Personas implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "cta_cte_persona")
     private String ctaCtePersona;
+    @Size(max = 2147483647)
+    @Column(name = "origen_registro")
+    private String origenRegistro;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkCodPersona")
     private List<Usuarios> usuariosList;
     @JoinColumn(name = "fk_cod_dependencia", referencedColumnName = "cod_dependencia")
@@ -203,6 +207,14 @@ public class Personas implements Serializable {
 
     public void setCtaCtePersona(String ctaCtePersona) {
         this.ctaCtePersona = ctaCtePersona;
+    }
+
+    public String getOrigenRegistro() {
+        return origenRegistro;
+    }
+
+    public void setOrigenRegistro(String origenRegistro) {
+        this.origenRegistro = origenRegistro;
     }
 
     @XmlTransient
