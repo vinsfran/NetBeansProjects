@@ -1,6 +1,8 @@
 package py.gov.mca.reclamosmca.beansession;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -77,6 +79,17 @@ public class MbSAdminUsuarios implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo reestablecida.", mensaje));
             return "/admin_matenimiento_usuarios";
+        }
+    }
+    
+     public String formatearFecha(Date fecha) {
+        // formateo de fechas
+        String patron = "dd-MM-yyyy";
+        SimpleDateFormat formato = new SimpleDateFormat(patron);
+        if (fecha == null) {
+            return "";
+        } else {
+            return formato.format(fecha);
         }
     }
 

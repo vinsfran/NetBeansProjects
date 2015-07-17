@@ -40,6 +40,10 @@
                                             <h:outputText value="#{usuarios.loginUsuario}"/>
                                         </h:column>
                                         <h:column>
+                                            <f:facet name="header">Fecha de registro</f:facet>
+                                            <h:outputText value="#{mbSAdminUsuarios.formatearFecha(usuarios.fkCodPersona.fechaRegistroPersona) }"/>
+                                        </h:column>
+                                        <h:column>
                                             <f:facet name="header">Rol</f:facet>
                                             <h:outputText value="#{usuarios.fkCodRol.nombreRol}"/>
                                         </h:column>
