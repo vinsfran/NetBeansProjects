@@ -18,7 +18,7 @@
 
                     <div class="item active" style="background-image: url(resources/corlate/images/slider/bg_asu_1.jpg)">
                         <div class="container">
-                            <div class="row slide-margin">
+                            <div class="row ">
                                 <div class="col-sm-12">
                                     <div class="carousel-content">
                                         <h1 class="animation animated-item-1">Servicio de reclamos Online</h1>
@@ -36,15 +36,23 @@
                                             <h:commandLink class="btn-slide animation animated-item-3" action="login?faces-redirect=true" actionListener="#{direccionMB.asignarEstilo('Sesion')}">
                                                 <i class="fa fa-sign-in"></i> Iniciar Sesión
                                             </h:commandLink>
+                                            <h:outputLink class="btn animation animated-item-3" 
+                                                          value="https://play.google.com/store/apps/details?id=py.gov.mca.reclamosmca"
+                                                          style="float: right;">
+                                                <img src="resources/images/boton_disponible_google_play.png" 
+                                                     width="150"
+                                                     height="100"
+                                                     class="img-responsive"/>
+                                            </h:outputLink>
                                         </h:form>
                                     </div>
                                 </div>
 
-                                <!--                                <div class="col-sm-6 hidden-xs animation animated-item-4">
-                                                                    <div class="slider-img">
-                                                                        <img src="resources/corlate/images/slider/img1.png" class="img-responsive"/>
-                                                                    </div>
-                                                                </div>-->
+<!--                                <div class="col-sm-6 hidden-xs animation animated-item-4">
+                                    <div class="slider-img">
+                                        <img src="resources/images/boton_disponible_google_play.png" class="img-responsive"/>
+                                    </div>
+                                </div>-->
 
                             </div>
                         </div>
