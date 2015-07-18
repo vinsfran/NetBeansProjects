@@ -43,7 +43,7 @@ public class EnviarCorreos {
     //par06=mail_smtp_ssl_trust, smtpserver
     //par07=mail_smtp_starttls_enable, true
     //par08=nombre_proveedor, GMAIL
-    //par09=password, dos123456
+    //par09=password, dos123456_789
     //par10=usuario, reclamosmca@gmail.com 
         
         setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(1));

@@ -24,6 +24,8 @@ public class BorrarUsuariosInactivos extends TimerTask implements ServletContext
     private UsuariosSB usuariosSB;
     @EJB
     private PersonasSB personasSB;
+    @EJB
+    private EnviarCorreos enviarCorreos;
 
     public void contextInitialized(ServletContextEvent evt) {
         // Iniciamos el timer
@@ -53,38 +55,51 @@ public class BorrarUsuariosInactivos extends TimerTask implements ServletContext
 
         //Se configura para ejecutar a las 3 AM
         if (hora == 3) {
-            System.out.println("----------------------- INICIO DE BORRAR USUARIOS SE ACTIVO ---------------------------");
-            System.out.println("FECHA: " + dia + "/" + (mes + 1) + "/" + año);
-            System.out.printf("HORA: %02d:%02d:%02d %n", hora, minuto, segundo);
+            String mensajeCorreo = "<html>"
+                    + "     <head>"
+                    + "         <meta charset=\"UTF-8\">"
+                    + "         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                    + "     </head>"
+                    + "     <body style='background-color: #ffffff'>"
+                    + "       <div style='text-align: center;'>"
+                    + "            <h3>REPORTE DE SOBRE BORRAR USUARIOS INACTIVO</h3> "
+                    + "       </div> "
+                    + "       <div> "
+                    + "             <p>FECHA: " + dia + "/" + (mes + 1) + "/" + año + "</p>"
+                    + "             <p>HORA: " + hora + ":" + minuto + ":" + segundo + "</p>";
+            //System.out.printf("HORA: %02d:%02d:%02d %n", hora, minuto, segundo);
             List<Usuarios> usuariosWebInactivos = usuariosSB.listarUsuariosInactivos(2);
             if (usuariosWebInactivos != null) {
-                System.out.println("HAY USUARIOS INACTIVOS");
-                System.out.println("CANTIDAD: " + usuariosWebInactivos.size());
-                System.out.println("---------------------------------------------------------------------------------------");
+                mensajeCorreo = mensajeCorreo + "<p>HAY USUARIOS INACTIVOS</p>"
+                        + "<p>CANTIDAD: " + usuariosWebInactivos.size() + "</p>"
+                        + "<p>----------------------------</p>";
                 Date fechaMayor = new Date();
                 long diferenciaEn_ms;
                 for (int i = 0; usuariosWebInactivos.size() > i; i++) {
                     diferenciaEn_ms = fechaMayor.getTime() - usuariosWebInactivos.get(i).getFkCodPersona().getFechaRegistroPersona().getTime();
                     long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
                     String usuario = usuariosWebInactivos.get(i).getLoginUsuario();
-                    System.out.println("USUARIO: " + usuario);
-                    System.out.println("DIAS SIN ACTIVAR CUENTA: " + dias);
+                    mensajeCorreo = mensajeCorreo + "<p>USUARIO: " + usuario + "</p>"
+                            + "<p>DIAS SIN ACTIVAR CUENTA: " + dias + "</p>";
+
                     if (dias > 2) {
                         //System.out.println("Eliminado " + usuariosSB.eliminarUsuarios(usuariosWebInactivos.get(i)));
                         String mensaje = personasSB.eliminarPersonas(usuariosWebInactivos.get(i).getFkCodPersona());
                         if (mensaje.equals("OK")) {
-                            System.out.println("USUARIO: " + usuario + " ELIMINADO CORRECTAMENTE.");
+                            mensajeCorreo = mensajeCorreo + "<p>USUARIO: " + usuario + " ELIMINADO CORRECTAMENTE.</p>";
                         } else {
-                            System.out.println("ERROR AL ELIMINAR: " + mensaje);
+                            mensajeCorreo = mensajeCorreo + "<p>ERROR AL ELIMINAR USUARIO: " + usuario + ", " + mensaje + "</p>";
                         }
                     }
-                    System.out.println("---------------------------------------------------------------------------------------");
+                    mensajeCorreo = mensajeCorreo + "<p>----------------------------</p>";
                 }
             } else {
-                System.out.println("NO HAY USUARIOS INACTIVOS.");
+                mensajeCorreo = mensajeCorreo + "<p>NO HAY USUARIOS INACTIVOS.</p>";
             }
-            System.out.println("----------------------- FIN DE BORRAR USUARIOS SE ACTIVO ------------------------------");
+            mensajeCorreo = mensajeCorreo + "<p>FIN REPORTE</p></div>"
+                    + "     </body>"
+                    + "</html>";
+            enviarCorreos.enviarMail("vinsfran@gmail.com", "Usuarios Inactivos Reporte", mensajeCorreo);
         }
-
     }
 }
