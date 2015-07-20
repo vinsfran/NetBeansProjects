@@ -41,19 +41,23 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Descripción</f:facet>
-                                            <h:outputText value="#{reclamos.descripcionReclamoContribuyente}"/>
+                                            <h:outputText value="#{reclamos.descripcionReclamoContribuyente.trim()}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Direccion</f:facet>
                                             <h:outputText value="#{reclamos.direccionReclamo}"/>
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">origenReclamo</f:facet>
+                                            <f:facet name="header">App utilizada</f:facet>
                                             <h:outputText value="#{reclamos.origenReclamo}"/>
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">fechaReclamo</f:facet>
+                                            <f:facet name="header">Fecha</f:facet>
                                             <h:outputText value="#{reclamos.fechaReclamo}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Dependencia</f:facet>
+                                            <h:outputText value="#{reclamos.fkCodTipoReclamo.fkCodDependencia.nombreDependencia}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Acciones</f:facet>

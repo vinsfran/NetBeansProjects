@@ -1,7 +1,6 @@
 package py.gov.mca.reclamosmca.filtros;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import py.gov.mca.reclamosmca.beansession.MbSUsuarios;
-import py.gov.mca.reclamosmca.entitys.PermisosElementosWeb;
-import py.gov.mca.reclamosmca.entitys.Usuarios;
 
 /**
  *
@@ -42,10 +39,11 @@ public class SessionUrlFilter implements Filter {
         MbSUsuarios mbSUsuarios = (MbSUsuarios) session.getAttribute("mbSUsuarios");
 
         if (session.getAttribute("loginUsuario") == null && !requestUrl.contains("index.xhtml")) {
-            System.out.println("ENNTRAAA: " + session.getAttribute("loginUsuario"));
             if (requestUrl.contains("registro.xhtml")) {
                 chain.doFilter(request, response);
             } else if (requestUrl.contains("login.xhtml")) {
+                chain.doFilter(request, response);
+            } else if (requestUrl.contains("recuperarContrasenia.xhtml")) {
                 chain.doFilter(request, response);
             } else if (requestUrl.contains("contacto.xhtml")) {
                 chain.doFilter(request, response);
@@ -77,7 +75,6 @@ public class SessionUrlFilter implements Filter {
 //            }
 
             chain.doFilter(request, response);
-            
 
         }
     }
