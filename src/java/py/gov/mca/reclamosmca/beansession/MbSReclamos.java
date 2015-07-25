@@ -50,6 +50,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.event.map.StateChangeEvent;
@@ -237,26 +238,26 @@ public class MbSReclamos implements Serializable {
 
     public void cargarImagen(FileUploadEvent event) throws IOException {
         UploadedFile file = event.getFile();
-        BufferedImage src = ImageIO.read(file.getInputstream());
-        int valor1 = 1024;
-        int valor2 = 768;
-        int nAlto;
-        int nAncho;
-        if (src.getHeight() > src.getWidth()) {
-            nAlto = valor1;
-            nAncho = valor2;
-        } else if (src.getHeight() < src.getWidth()) {
-            nAlto = valor2;
-            nAncho = valor1;
-        } else {
-            nAlto = valor2;
-            nAncho = valor2;
-        }
+//        BufferedImage src = ImageIO.read(file.getInputstream());
+//        int valor1 = 1024;
+//        int valor2 = 768;
+//        int nAlto;
+//        int nAncho;
+//        if (src.getHeight() > src.getWidth()) {
+//            nAlto = valor1;
+//            nAncho = valor2;
+//        } else if (src.getHeight() < src.getWidth()) {
+//            nAlto = valor2;
+//            nAncho = valor1;
+//        } else {
+//            nAlto = valor2;
+//            nAncho = valor2;
+//        }
         try {
             //Se obtine la imagen que se va a guardar en la Base de datos
             this.imagenParaGuardar = new Imagenes();
             //this.imagenParaGuardar.setArchivoImagen(resize(file.getInputstream(), nAncho, nAlto));
-            this.imagenParaGuardar.setArchivoImagen(ajustarImagen(file.getInputstream(), nAncho, nAlto, file.getContentType()));
+            this.imagenParaGuardar.setArchivoImagen(IOUtils.toByteArray(file.getInputstream()));
             this.imagenParaGuardar.setTipoImagen(file.getContentType());
             this.imagenParaGuardar.setNombreImagen(file.getFileName());
             //Se convierte la imagen obtenida para mostrar como previa

@@ -1,10 +1,18 @@
 package py.gov.mca.reclamosmca.webservices;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,7 +21,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.Base64;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
+import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
@@ -46,10 +56,25 @@ public class ReclamosWS {
     @Path("/crearReclamosWeb")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String crearReclamosWeb(String json) throws JSONException, ParseException {
+    public String crearReclamosWeb(String json) throws JSONException, ParseException, Exception {
         //System.out.println("JSON: " + json);
         JSONObject jsonObjectReclamo = new JSONObject(json);
         Reclamos reclamos = new Reclamos();
+
+        if (!jsonObjectReclamo.getString("nombreImagen").equals("NULL")) {
+            reclamos.setFkImagen(new Imagenes());
+            reclamos.getFkImagen().setTipoImagen(jsonObjectReclamo.getString("tipoImagen"));
+            reclamos.getFkImagen().setNombreImagen(jsonObjectReclamo.getString("nombreImagen"));
+
+//            String s = new BASE64Encoder().encode(jsonObjectReclamo.getString("imagenCodificadaBase64").getBytes("UTF-8"));
+//            byte[] imagenDecodificadaBase64 = new BASE64Decoder().decodeBuffer(s);
+            byte[] imagenDecodificadaBase64 = Base64.decode(jsonObjectReclamo.getString("imagenCodificadaBase64").getBytes("UTF-8"));
+
+            reclamos.getFkImagen().setArchivoImagen(imagenDecodificadaBase64);
+
+        } else {
+            reclamos.setFkImagen(null);
+        }
 
         reclamos.setDescripcionReclamoContribuyente(jsonObjectReclamo.getString("descripcionReclamoContribuyente"));
         reclamos.setDireccionReclamo(jsonObjectReclamo.getString("direccionReclamo"));
@@ -75,6 +100,42 @@ public class ReclamosWS {
         } else {
             return "{\"status\":\"ERROR\", \"mensaje\":\"" + respuesta + "\"}";
         }
+    }
+
+    private byte[] ajustarImagen(byte[] imagen, String tipoImagen) throws Exception {
+        String tipo = tipoImagen.substring(6, tipoImagen.length());
+        InputStream inputStream = new ByteArrayInputStream(imagen);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            BufferedImage originalImage = ImageIO.read(inputStream);
+            int valor1 = 1024;
+            int valor2 = 768;
+            int nAlto;
+            int nAncho;
+            if (originalImage.getHeight() > originalImage.getWidth()) {
+                nAlto = valor1;
+                nAncho = valor2;
+            } else if (originalImage.getHeight() < originalImage.getWidth()) {
+                nAlto = valor2;
+                nAncho = valor1;
+            } else {
+                nAlto = valor2;
+                nAncho = valor2;
+            }
+            int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+            BufferedImage resizedImage = new BufferedImage(nAncho, nAlto, type);
+            Graphics2D g = resizedImage.createGraphics();
+            g.drawImage(originalImage, 0, 0, nAncho, nAlto, null);
+            g.dispose();
+            g.setComposite(AlphaComposite.Src);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            ImageIO.write(resizedImage, tipo, baos);
+        } catch (Throwable ex) {
+            throw new Exception("Error proceso Tamaño Imagen " + ex.toString(), ex);
+        }
+        return baos.toByteArray();
     }
 
     @POST
@@ -128,10 +189,10 @@ public class ReclamosWS {
         JSONObject jsonObject = new JSONObject(json);
         List<Reclamos> lista = reclamosSB.listarPorLoginUsuarioEstadoReclamo(jsonObject.getString("loginUsuario"), jsonObject.getInt("codEstadoReclamo"));
         //Verificar para el momento en que se necesite enviar la imagen
-        for (int i=0; lista.size()> i; i++) {
-            lista.get(i).setFkImagen(null);            
+        for (int i = 0; lista.size() > i; i++) {
+            lista.get(i).setFkImagen(null);
         }
-        
+
         return lista;
     }
 

@@ -1,10 +1,18 @@
 package py.gov.mca.reclamosmca.sessionbeans;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -38,7 +46,9 @@ public class ReclamosSB {
             }
             if (objeto.getFkImagen() != null) {
                 Imagenes imagen = new Imagenes();
-                imagen = objeto.getFkImagen();
+                imagen.setArchivoImagen(ajustarImagen(objeto.getFkImagen().getArchivoImagen(), objeto.getFkImagen().getTipoImagen()));
+                imagen.setNombreImagen(objeto.getFkImagen().getNombreImagen());
+                imagen.setTipoImagen(objeto.getFkImagen().getTipoImagen());
                 em.persist(imagen);
                 objeto.setFkImagen(imagen);
                 //  em.persist(objeto.getFkCodPersona());
@@ -89,6 +99,42 @@ public class ReclamosSB {
             mensajes = "No se pudo crear. (" + ex.getMessage() + ")";
         }
         return mensajes;
+    }
+
+    private byte[] ajustarImagen(byte[] imagen, String tipoImagen) throws Exception {
+        String tipo = tipoImagen.substring(6, tipoImagen.length());
+        InputStream inputStream = new ByteArrayInputStream(imagen);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            BufferedImage originalImage = ImageIO.read(inputStream);
+            int valor1 = 1024;
+            int valor2 = 768;
+            int nAlto;
+            int nAncho;
+            if (originalImage.getHeight() > originalImage.getWidth()) {
+                nAlto = valor1;
+                nAncho = valor2;
+            } else if (originalImage.getHeight() < originalImage.getWidth()) {
+                nAlto = valor2;
+                nAncho = valor1;
+            } else {
+                nAlto = valor2;
+                nAncho = valor2;
+            }
+            int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+            BufferedImage resizedImage = new BufferedImage(nAncho, nAlto, type);
+            Graphics2D g = resizedImage.createGraphics();
+            g.drawImage(originalImage, 0, 0, nAncho, nAlto, null);
+            g.dispose();
+            g.setComposite(AlphaComposite.Src);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            ImageIO.write(resizedImage, tipo, baos);
+        } catch (Throwable ex) {
+            throw new Exception("Error proceso Tamaño Imagen " + ex.toString(), ex);
+        }
+        return baos.toByteArray();
     }
 
     public String actualizarReclamos(Reclamos objeto) {
