@@ -549,7 +549,7 @@ public class MbSReclamos implements Serializable {
         jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaDependenciaTiposReclamosReporte.jasper"));
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
-        
+
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
@@ -572,10 +572,14 @@ public class MbSReclamos implements Serializable {
         List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
         List<Reclamos> lista2 = new ArrayList<>();
         for (Reclamos reclamoAux : lista1) {
+
             if (!reclamoAux.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamo.getCodReclamo().equals(reclamoAux.getCodReclamo())) {
-                double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
-                if (distancia < 20) {
-                    lista2.add(reclamoAux);
+                //CONTROL PARA TIEMPO DE RECLAMOS SIMILARES
+                if (cantidadDias(reclamoAux.getFechaReclamo()) < 31) {
+                    double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
+                    if (distancia < 20) {
+                        lista2.add(reclamoAux);
+                    }
                 }
             }
         }
@@ -588,9 +592,12 @@ public class MbSReclamos implements Serializable {
         List<Reclamos> lista2 = new ArrayList<>();
         for (Reclamos reclamoAux : lista1) {
             if (!reclamoAux.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamo.getCodReclamo().equals(reclamoAux.getCodReclamo())) {
-                double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
-                if (distancia < 20) {
-                    lista2.add(reclamoAux);
+                //CONTROL PARA TIEMPO DE RECLAMOS SIMILARES
+                if (cantidadDias(reclamoAux.getFechaReclamo()) < 31) {
+                    double distancia = distanciaEntrePuntos(reclamo.getLatitud(), reclamo.getLongitud(), reclamoAux.getLatitud(), reclamoAux.getLongitud());
+                    if (distancia < 20) {
+                        lista2.add(reclamoAux);
+                    }
                 }
             }
         }
@@ -718,6 +725,7 @@ public class MbSReclamos implements Serializable {
         }
     }
 
+    //METODO PARA CALCULAR LA CANTIDAD DE DIAS ENTRE FECHA ACTUAL Y FECHA PASADA
     public int cantidadDias(Date fecha) {
         Calendar c = Calendar.getInstance();
         //Se crea un objeto calendario con la fecha del inicio del reclamo

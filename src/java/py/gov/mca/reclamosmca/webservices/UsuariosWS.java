@@ -41,23 +41,35 @@ public class UsuariosWS {
     public String registrarUsuariosWeb(String json) throws JSONException, ParseException {
         //System.out.println("JSON: " + json);
         SimpleDateFormat diaMesAnio = new SimpleDateFormat("dd-MM-yyyy");
-        JSONObject jsonObjectUsuario = new JSONObject(json);
+
         Usuarios usuario = new Usuarios();
+        usuario.setFkCodPersona(new Personas());
+        usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+        usuario.setFkCodRol(new Roles());
+        
+        usuario.setLoginUsuario("");
+        usuario.setClaveUsuario("");
+        usuario.getFkCodPersona().setCedulaPersona("");
+        usuario.getFkCodPersona().setNombrePersona("");
+        usuario.getFkCodPersona().setApellidoPersona("");
+        usuario.getFkCodPersona().setDireccionPersona("");
+        usuario.getFkCodPersona().setCtaCtePersona("");
+        usuario.getFkCodPersona().setTelefonoPersona("");
+        
+        JSONObject jsonObjectUsuario = new JSONObject(json);
+        JSONObject jsonObjectPersona = new JSONObject(jsonObjectUsuario.getString("fkCodPersona"));
+        
         usuario.setLoginUsuario(jsonObjectUsuario.getString("loginUsuario"));
         usuario.setClaveUsuario(jsonObjectUsuario.getString("claveUsuario"));
-        usuario.setFkCodPersona(new Personas());
-        JSONObject jsonObjectPersona = new JSONObject(jsonObjectUsuario.getString("fkCodPersona"));
         usuario.getFkCodPersona().setCedulaPersona(jsonObjectPersona.getString("cedulaPersona"));
         usuario.getFkCodPersona().setNombrePersona(jsonObjectPersona.getString("nombrePersona"));
         usuario.getFkCodPersona().setApellidoPersona(jsonObjectPersona.getString("apellidoPersona"));
         usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
         usuario.getFkCodPersona().setDireccionPersona(jsonObjectPersona.getString("direccionPersona"));
-        usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
         usuario.getFkCodPersona().setCtaCtePersona(jsonObjectPersona.getString("ctaCtePersona"));
+        usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
         usuario.getFkCodPersona().setOrigenRegistro("appAndroid");
-        usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
         usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
-        usuario.setFkCodRol(new Roles());
         usuario.getFkCodRol().setCodRol(6);
 
         Converciones c = new Converciones();
@@ -227,6 +239,16 @@ public class UsuariosWS {
     public Usuarios consultarUsuarioWebPorLoginUsuario(String json) throws JSONException, ParseException {
         JSONObject jsonObject = new JSONObject(json);
         Usuarios usuario = usuariosSB.consultarUsuarios(jsonObject.get("loginUsuario").toString());
+
+        if (usuario.getFkCodPersona().getDireccionPersona().equals("") || usuario.getFkCodPersona().getDireccionPersona() == null) {
+            usuario.getFkCodPersona().setDireccionPersona(" ");
+        }
+        if (usuario.getFkCodPersona().getCtaCtePersona().equals("") || usuario.getFkCodPersona().getCtaCtePersona() == null) {
+            usuario.getFkCodPersona().setCtaCtePersona(" ");
+        }
+        if (usuario.getFkCodPersona().getTelefonoPersona().equals("") || usuario.getFkCodPersona().getTelefonoPersona() == null) {
+            usuario.getFkCodPersona().setTelefonoPersona(" ");
+        }
 //        SimpleDateFormat aaaammdd = new SimpleDateFormat("yyyy-MM-dd");
 //        String amd = aaaammdd.format(usuariosWeb.getFechaRegistroWeb());
 //        System.out.println("FECHA: " + amd);
@@ -244,15 +266,15 @@ public class UsuariosWS {
         Usuarios usuario = usuariosSB.consultarUsuariosPorCodigo(jsonObjectUsuario.getInt("codUsuario"));
         usuario.setClaveUsuario(jsonObjectUsuario.getString("claveUsuario"));
         JSONObject jsonObjectPersona = new JSONObject(jsonObjectUsuario.getString("fkCodPersona"));
-     //   usuario.setFkCodPersona(new Personas());
+        //   usuario.setFkCodPersona(new Personas());
         usuario.getFkCodPersona().setCedulaPersona(jsonObjectPersona.getString("cedulaPersona"));
         usuario.getFkCodPersona().setNombrePersona(jsonObjectPersona.getString("nombrePersona"));
         usuario.getFkCodPersona().setApellidoPersona(jsonObjectPersona.getString("apellidoPersona"));
         usuario.getFkCodPersona().setDireccionPersona(jsonObjectPersona.getString("direccionPersona"));
-        usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
         usuario.getFkCodPersona().setCtaCtePersona(jsonObjectPersona.getString("ctaCtePersona"));
+        usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
       // JSONObject jsonObjectEstaso = new JSONObject(jsonObjectUsuario.getString("fkCodEstadoUsuario"));
-      //  usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(jsonObjectEstaso.getInt("codEstadoUsuario"));
+        //  usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(jsonObjectEstaso.getInt("codEstadoUsuario"));
 
         String respuesta = usuariosSB.actualizarUsuariosWeb(usuario);
         if (respuesta.equals("OK")) {
