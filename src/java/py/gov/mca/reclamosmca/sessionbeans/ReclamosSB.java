@@ -308,6 +308,8 @@ public class ReclamosSB {
         jpql.append("FROM Reclamos e ");
         jpql.append("WHERE e.fkCodUsuario.codUsuario = :paramCodUsuario ");
         jpql.append("AND e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
+        
+        jpql.append("ORDER BY e.fechaReclamo DESC");
 
         //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
         Query q = em.createQuery(jpql.toString());
@@ -323,6 +325,8 @@ public class ReclamosSB {
         jpql.append("FROM Reclamos e ");
         jpql.append("WHERE e.fkCodUsuario.loginUsuario = :paramLoginUsuario ");
         jpql.append("AND e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
+        
+        jpql.append("ORDER BY e.fechaReclamo DESC");
 
         //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
         Query q = em.createQuery(jpql.toString());
