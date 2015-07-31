@@ -1,0 +1,177 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Nuevo reclamo externo</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Formulario de reclamo
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form enctype="multipart/form-data">
+                                        
+                                        <div class="login-wrap">
+                                            <div class="center">
+                                                <p class="login-img">
+                                                    <i class="fa fa-edit"></i>                        
+                                                </p>
+                                                <span >Por favor complete el formulario y tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                                            </div>
+                                            <h2 class="form-signin-heading">Datos Personales</h2> 
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Documento de identidad" 
+                                                             value="#{mbSUsuarios.cedula}" 
+                                                             a:placeholder=" Documento de identidad"/>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Nombre" 
+                                                             value="#{mbSUsuarios.nombre}" 
+                                                             a:placeholder=" Nombre(s)"/>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Apellido(s)" 
+                                                             value="#{mbSUsuarios.apellido}" 
+                                                             a:placeholder=" Apellido(s)"/>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Dirección" 
+                                                             value="#{mbSUsuarios.direccion}" 
+                                                             a:placeholder=" Dirección"/>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Cta. Cte. Ctral." 
+                                                             value="#{mbSUsuarios.cuentaCorriente}" 
+                                                             a:placeholder=" Cta. Cte. Ctral."/>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-square-o"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Teléfono" 
+                                                             value="#{mbSUsuarios.telefono}" 
+                                                             a:placeholder=" Teléfono"/>
+                                            </div>
+                                            <h2 class="form-signin-heading">Información de Acceso</h2>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                                <h:inputText class="form-control" 
+                                                             label="Correo electrónico" 
+                                                             value="#{mbSUsuarios.correo}" 
+                                                             a:placeholder=" Correo Electrónico">
+                                                    <f:validator validatorId="emailValidator"/>
+                                                </h:inputText>
+                                            </div>                                            
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Tipo de reclamo</label>
+
+                                                <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodTipoReclamo.codTipoReclamo}" 
+                                                                 class="form-control">
+                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"/>
+                                                    <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
+                                                                   var="tiposReclamos"
+                                                                   itemValue="#{tiposReclamos.codTipoReclamo}" 
+                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
+                                                    <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
+                                                </h:selectOneMenu>
+
+                                            </div>                                            
+                                            <div class="form-group">
+                                                <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
+                                                <div class="gmap">
+                                                    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+                                                    <p:gmap id="gmap"
+                                                            center="#{mbSReclamos.nuevoReclamo.latitud}, #{mbSReclamos.nuevoReclamo.longitud}" 
+                                                            zoom="#{mbSReclamos.zoom}" type="HYBRID"  
+                                                            style="width:100%;height:400px"
+                                                            model="#{mbSReclamos.emptyModel}">
+
+                                                        <p:ajax event="stateChange" listener="#{mbSReclamos.onStateChange}"/>
+                                                        <p:ajax event="pointSelect" listener="#{mbSReclamos.puntoSelecionado}" update="gmap" />
+                                                    </p:gmap>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Describa su reclamo.</label>
+                                                <p:inputTextarea required="false" 
+                                                                 id="descri" 
+                                                                 value="#{mbSReclamos.nuevoReclamo.descripcionReclamoContribuyente}"
+                                                                 title="Descripción del reclamo"
+                                                                 class="form-control"
+                                                                 autoResize="true"
+                                                                 maxlength="500"
+                                                                 counter="display"
+                                                                 counterTemplate="{0} caracteres disponibles."/>
+                                                <h:outputText id="display" />
+                                            </div>
+                                            <div class="form-group">
+                                                <h:panelGroup id="panelGroup">
+                                                    <p:fileUpload fileUploadListener="#{mbSReclamos.cargarImagen}" 
+                                                                  mode="advanced" 
+                                                                  dragDropSupport="false"
+                                                                  multiple="false" 
+                                                                  auto="true"
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                                  update="panelGroup" 
+                                                                  rendered="#{!mbSReclamos.mostrarGraphicImage}"
+                                                                  label="Subir Imagen"
+                                                                  style="float: left;"/>
+                                                    <h:outputLabel value="Imagen del reclamo" rendered="#{mbSReclamos.mostrarGraphicImage}"/>
+                                                    <p:graphicImage id="imagen" 
+                                                                    class="img-responsive"
+                                                                    value="#{mbSReclamos.imagenCargada}" cache="false"
+                                                                    rendered="#{mbSReclamos.mostrarGraphicImage}"/>
+                                                    <br/>
+                                                    <p:commandLink actionListener="#{mbSReclamos.cancelarImagenCargada()}" 
+                                                                   value="Eliminar imagen"  
+                                                                   update="panelGroup"
+                                                                   rendered="#{mbSReclamos.mostrarGraphicImage}"
+                                                                   class="btn btn-danger btn-sm"/>
+                                                </h:panelGroup>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandButton class="btn btn-default" action="admin_mis_reclamos" value="Cancelar"/>
+                                                <p:commandButton class="btn btn-primary" action="#{mbSReclamos.enviarReclamo()}" value="Enviar reclamo" ajax="false"/>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   
