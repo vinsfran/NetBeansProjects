@@ -61,8 +61,18 @@ public class TiposReclamosSB {
     }
 
     @SuppressWarnings("unchecked")
-    public List<TiposReclamos> listarTiposReclamos() {
+    public List<TiposReclamos> listarTiposReclamosTodos() {
         Query q = em.createNamedQuery("TiposReclamos.findAll");
+        return q.getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<TiposReclamos> listarTiposReclamos() {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM TiposReclamos e ");
+         jpql.append("ORDER BY e.topTipoReclamo DESC");
+        Query q = em.createQuery(jpql.toString());
         return q.getResultList();
     }
     

@@ -14,10 +14,12 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
+import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
 
 /**
@@ -31,12 +33,18 @@ public class ReclamosSB {
     @EJB
     private EnviarCorreos enviarCorreos;
 
+    @EJB
+    private TiposReclamosSB tiposReclamosSB;
+
     @PersistenceContext(unitName = "reclamosmcaPU")
     private EntityManager em;
     private String mensajes = "";
 
     public String crearReclamos(Reclamos objeto) {
         mensajes = "";
+    //    EntityTransaction tx = em.getTransaction();
+
+    //    tx.begin();
         try {
             if (objeto.getDescripcionReclamoContribuyente() == null) {
                 objeto.setDescripcionReclamoContribuyente("NULL");
@@ -55,10 +63,14 @@ public class ReclamosSB {
                 em.merge(objeto);
                 em.flush();
             } else {
-
                 em.persist(objeto);
                 em.flush();
             }
+
+            TiposReclamos tipoReclamo = tiposReclamosSB.consultarTipoReclamo(objeto.getFkCodTipoReclamo().getCodTipoReclamo());
+            tipoReclamo.setTopTipoReclamo(tipoReclamo.getTopTipoReclamo() + 1);
+
+            em.merge(tipoReclamo);
 
             System.out.println("CODIGO DE ROL: " + objeto.getFkCodUsuario().getFkCodRol().getCodRol());
             if (objeto.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {
@@ -94,10 +106,13 @@ public class ReclamosSB {
 
                 enviarCorreos.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
             }
+    //        tx.commit();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = "No se pudo crear. (" + ex.getMessage() + ")";
+     //       tx.rollback();
         }
+    //    em.close();
         return mensajes;
     }
 
@@ -282,7 +297,6 @@ public class ReclamosSB {
     }
 
     public List<Reclamos> listarReclamos() {
-        System.out.println("LISTA RECLAMOS");
         Query q = em.createNamedQuery("Reclamos.findAll");
         return q.getResultList();
     }
@@ -308,7 +322,7 @@ public class ReclamosSB {
         jpql.append("FROM Reclamos e ");
         jpql.append("WHERE e.fkCodUsuario.codUsuario = :paramCodUsuario ");
         jpql.append("AND e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
-        
+
         jpql.append("ORDER BY e.fechaReclamo DESC");
 
         //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
@@ -325,7 +339,7 @@ public class ReclamosSB {
         jpql.append("FROM Reclamos e ");
         jpql.append("WHERE e.fkCodUsuario.loginUsuario = :paramLoginUsuario ");
         jpql.append("AND e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
-        
+
         jpql.append("ORDER BY e.fechaReclamo DESC");
 
         //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");

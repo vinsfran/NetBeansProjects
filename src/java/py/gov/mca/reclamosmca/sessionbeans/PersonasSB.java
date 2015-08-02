@@ -60,6 +60,19 @@ public class PersonasSB {
         q.setParameter("codPersona", codPersona);
         return (Personas) q.getResultList().get(0);
     }
+    
+    @SuppressWarnings("unchecked")
+    public Personas consultarPersonaCedula(String cedulaPersona) {
+        Query q = em.createNamedQuery("Personas.findByCedulaPersona");
+        q.setParameter("cedulaPersona", cedulaPersona);
+        if(q.getResultList().isEmpty()){
+            return null;
+        }else{
+            return (Personas) q.getResultList().get(0);
+        }
+        
+        
+    }
 
     @SuppressWarnings("unchecked")
     public List<Personas> listarPersonas() {

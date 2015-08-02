@@ -49,64 +49,85 @@ public class UsuariosSB {
             objeto.getFkCodPersona().setCedulaPersona("");
         }
         mensajes = "";
-        Usuarios consultaExistenciaUsuario = consultarUsuarios(objeto.getLoginUsuario());
-        if (consultaExistenciaUsuario == null) {
-            try {
-                Personas persona = new Personas();
-                persona = objeto.getFkCodPersona();
-                em.persist(persona);
-                objeto.setFkCodPersona(persona);
-                //  em.persist(objeto.getFkCodPersona());
-                em.merge(objeto);
-                em.flush();
-                if (objeto.getFkCodRol().getCodRol().equals(6)) {
-                    System.out.println("ENTRA EN ENVIO");
-                    String asunto = "DATOS DE ACCESO";
-                    String mensaje = "<html>"
-                            + "     <head>"
-                            + "         <meta charset=\"UTF-8\">"
-                            + "         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                            + "     </head>"
-                            + "     <body style='background-color: #ffffff'>"
-                            + "       <div style='text-align: center;'>"
-                            + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
-                            + "       </div> "
-                            + "       <div> "
-                            + "             <p>"
-                            + "                Estimado/a: <i>" + objeto.getFkCodPersona().getNombrePersona() + " " + objeto.getFkCodPersona().getApellidoPersona() + "</i>"
-                            + "             </p> "
-                            + "             <p>"
-                            + "                Le informamos que para poder acceder al sistema por primera vez, deberá hacerlo con las siguiente credenciales:"
-                            + "             </p>   "
-                            + "             <p>"
-                            + "                 <table border='0'> "
-                            + "                     <tr>"
-                            + "                         <td><strong>Correo Electrónico:</strong></td>"
-                            + "                         <td>" + objeto.getLoginUsuario() + "</td>"
-                            + "                     </tr>"
-                            + "                     <tr>"
-                            + "                         <td><strong>Contraseña:</strong></td>"
-                            + "                         <td>" + objeto.getClaveUsuario().substring(0, 6) + "</td>"
-                            + "                     </tr>"
-                            + "                 </table>"
-                            + "             </p>"
-                            + "             <p>"
-                            + "                Gracias por registrarse al Sistema de Reclamos de la Municipalidad de Asunción."
-                            + "             </p>"
-                            + "        </div>"
-                            + "     </body>"
-                            + "</html>";
-
-                    System.out.println("SALE EN ENVIO " + mensaje);
-                    enviarCorreos.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
-                }
-                System.out.println("SALE EN ENVIO 222");
-                mensajes = "OK";
-            } catch (Exception ex) {
-                mensajes = "Ocurrio una excepcion " + ex.getMessage();
+        try {
+            Personas persona = new Personas();
+            persona = objeto.getFkCodPersona();
+            em.persist(persona);
+            objeto.setFkCodPersona(persona);
+            //  em.persist(objeto.getFkCodPersona());
+            em.merge(objeto);
+            em.flush();
+            if (objeto.getFkCodRol().getCodRol().equals(6)) {
+                String asunto = "DATOS DE ACCESO";
+                String mensaje = "<html>"
+                        + "     <head>"
+                        + "         <meta charset=\"UTF-8\">"
+                        + "         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                        + "     </head>"
+                        + "     <body style='background-color: #ffffff'>"
+                        + "       <div style='text-align: center;'>"
+                        + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
+                        + "       </div> "
+                        + "       <div> "
+                        + "             <p>"
+                        + "                Estimado/a: <i>" + objeto.getFkCodPersona().getNombrePersona() + " " + objeto.getFkCodPersona().getApellidoPersona() + "</i>"
+                        + "             </p> "
+                        + "             <p>"
+                        + "                Le informamos que para poder acceder al sistema por primera vez, deberá hacerlo con las siguiente credenciales:"
+                        + "             </p>   "
+                        + "             <p>"
+                        + "                 <table border='0'> "
+                        + "                     <tr>"
+                        + "                         <td><strong>Correo Electrónico:</strong></td>"
+                        + "                         <td>" + objeto.getLoginUsuario() + "</td>"
+                        + "                     </tr>"
+                        + "                     <tr>"
+                        + "                         <td><strong>Contraseña:</strong></td>"
+                        + "                         <td>" + objeto.getClaveUsuario().substring(0, 6) + "</td>"
+                        + "                     </tr>"
+                        + "                 </table>"
+                        + "             </p>"
+                        + "             <p>"
+                        + "                Gracias por registrarse al Sistema de Reclamos de la Municipalidad de Asunción."
+                        + "             </p>"
+                        + "        </div>"
+                        + "     </body>"
+                        + "</html>";
+                enviarCorreos.enviarMail(objeto.getLoginUsuario(), asunto, mensaje);
             }
-        } else {
-            mensajes = "Correo electrónico: " + objeto.getLoginUsuario() + " ya esta registrado.";
+            mensajes = "OK";
+        } catch (Exception ex) {
+            mensajes = "Ocurrio una excepcion " + ex.getMessage();
+        }
+        return mensajes;
+    }
+
+    public String crearUsuariosExterno(Usuarios objeto) {
+        if (objeto.getFkCodPersona().getDireccionPersona().isEmpty()) {
+            objeto.getFkCodPersona().setDireccionPersona("");
+        }
+        if (objeto.getFkCodPersona().getTelefonoPersona().isEmpty()) {
+            objeto.getFkCodPersona().setTelefonoPersona("");
+        }
+        if (objeto.getFkCodPersona().getCtaCtePersona().isEmpty()) {
+            objeto.getFkCodPersona().setCtaCtePersona("");
+        }
+        if (objeto.getFkCodPersona().getCedulaPersona().isEmpty()) {
+            objeto.getFkCodPersona().setCedulaPersona("");
+        }
+
+        mensajes = "";
+         try {
+            Personas persona = new Personas();
+            persona = objeto.getFkCodPersona();
+            em.merge(persona);
+            objeto.setFkCodPersona(persona);
+            //  em.persist(objeto.getFkCodPersona());
+            em.merge(objeto);
+            em.flush();
+            mensajes = "OK";
+        } catch (Exception ex) {
+            mensajes = "Ocurrio una excepcion " + ex.getMessage();
         }
         return mensajes;
     }

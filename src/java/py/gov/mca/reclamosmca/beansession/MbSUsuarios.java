@@ -75,7 +75,7 @@ public class MbSUsuarios implements Serializable {
     }
 
     public String btnRegistrar() {
-        if (getNombre().equals("") || getApellido().equals("") || getCorreo().equals("") || contrasena1.equals("") || contrasena2.equals("")) {
+        if (getCedula().equals("") || getNombre().equals("") || getApellido().equals("") || getCorreo().equals("") || contrasena1.equals("") || contrasena2.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/registro";
         } else {
@@ -86,34 +86,76 @@ public class MbSUsuarios implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro, intente de nuevo", ""));
                     return "/registro";
                 } else {
-                    usuario = new Usuarios();
-                    usuario.setLoginUsuario(getCorreo());
-                    usuario.setClaveUsuario(contrasenaMD5);
-                    usuario.setFkCodPersona(new Personas());
-                    usuario.getFkCodPersona().setCedulaPersona(getCedula());
-                    usuario.getFkCodPersona().setNombrePersona(getNombre());
-                    usuario.getFkCodPersona().setApellidoPersona(getApellido());
-                    usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
-                    usuario.getFkCodPersona().setDireccionPersona(getDireccion());
-                    usuario.getFkCodPersona().setTelefonoPersona(getTelefono());
-                    usuario.getFkCodPersona().setCtaCtePersona(getCuentaCorriente());
-                    usuario.getFkCodPersona().setOrigenRegistro("appWeb");
-                    usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
-                    usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
-                    usuario.setFkCodRol(new Roles());
-                    usuario.getFkCodRol().setCodRol(6);
-                    String resultado = usuariosSB.crearUsuariosWeb(usuario);
-                    if (resultado.equals("OK")) {
-                        FacesMessage message = new FacesMessage();
-                        message.setSeverity(FacesMessage.SEVERITY_INFO);
-                        message.setSummary("Gracias por registrarte.");
-                        message.setDetail("Para activar tu cuenta te enviamos un correo electrónico a " + this.correo + "."
-                                + "\n Tienes 48 hrs. para verificar tu correo, de lo contrario tus datos seran borrados de nuestro sistema.");
-                        FacesContext.getCurrentInstance().addMessage(null, message);
-                        return "/login";
+                    int banderaRegistro = 0;
+                    //Consultar por cedula
+                    Personas personaExistente = personasSB.consultarPersonaCedula(getCedula());
+                    //Consultar por login
+                    Usuarios usuarioExistente = usuariosSB.consultarUsuarios(loginUsuario);
+
+                    if (personaExistente == null) {
+                        if (usuarioExistente == null) {
+                            banderaRegistro = 1;
+                        } else {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo ya esta registrado.", ""));
+                            return "/registro";
+                        }
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro en BD, intente de nuevo", ""));
+                        if (personaExistente.getUsuariosList().isEmpty()) {
+                            if (usuarioExistente == null) {
+                                banderaRegistro = 1;
+                            } else {
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo ya esta registrado.", ""));
+                                return "/registro";
+                            }
+                        } else {
+                            int banderaUsuarioWeb = 0;
+                            for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
+                                if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
+                                    banderaUsuarioWeb = 1;
+                                }
+                            }
+                            if (banderaUsuarioWeb == 1) {
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo ya esta registrado.", ""));
+                                return "/registro";
+                            } else {
+                                banderaRegistro = 1;
+                            }
+                        }
+                    }
+
+                    if (banderaRegistro == 0) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cedula ya existe.", ""));
                         return "/registro";
+                    } else {
+                        usuario = new Usuarios();
+                        usuario.setLoginUsuario(getCorreo());
+                        usuario.setClaveUsuario(contrasenaMD5);
+                        usuario.setFkCodPersona(new Personas());
+                        usuario.getFkCodPersona().setCedulaPersona(getCedula());
+                        usuario.getFkCodPersona().setNombrePersona(getNombre());
+                        usuario.getFkCodPersona().setApellidoPersona(getApellido());
+                        usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
+                        usuario.getFkCodPersona().setDireccionPersona(getDireccion());
+                        usuario.getFkCodPersona().setTelefonoPersona(getTelefono());
+                        usuario.getFkCodPersona().setCtaCtePersona(getCuentaCorriente());
+                        usuario.getFkCodPersona().setOrigenRegistro("appWeb");
+                        usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+                        usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
+                        usuario.setFkCodRol(new Roles());
+                        usuario.getFkCodRol().setCodRol(6);
+                        String resultado = usuariosSB.crearUsuariosWeb(usuario);
+                        if (resultado.equals("OK")) {
+                            FacesMessage message = new FacesMessage();
+                            message.setSeverity(FacesMessage.SEVERITY_INFO);
+                            message.setSummary("Gracias por registrarte.");
+                            message.setDetail("Para activar tu cuenta te enviamos un correo electrónico a " + this.correo + "."
+                                    + "\n Tienes 48 hrs. para verificar tu correo, de lo contrario tus datos seran borrados de nuestro sistema.");
+                            FacesContext.getCurrentInstance().addMessage(null, message);
+                            return "/login";
+                        } else {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro en BD, intente de nuevo", resultado));
+                            return "/registro";
+                        }
                     }
                 }
             } else {
@@ -123,7 +165,7 @@ public class MbSUsuarios implements Serializable {
 
         }
     }
-    
+
     public String prepararIngreso() {
         this.cedula = "";
         this.nombre = "";

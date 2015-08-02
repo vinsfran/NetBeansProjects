@@ -19,6 +19,7 @@ import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.Personas;
 import py.gov.mca.reclamosmca.entitys.Roles;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
+import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.UsuariosSB;
 import py.gov.mca.reclamosmca.utiles.Converciones;
 
@@ -34,6 +35,9 @@ public class UsuariosWS {
     @EJB
     private UsuariosSB usuariosSB;
 
+    @EJB
+    private PersonasSB personasSB;
+
     @POST
     @Path("/registrarUsuariosWeb")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -46,7 +50,7 @@ public class UsuariosWS {
         usuario.setFkCodPersona(new Personas());
         usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
         usuario.setFkCodRol(new Roles());
-        
+
         usuario.setLoginUsuario("");
         usuario.setClaveUsuario("");
         usuario.getFkCodPersona().setCedulaPersona("");
@@ -55,10 +59,10 @@ public class UsuariosWS {
         usuario.getFkCodPersona().setDireccionPersona("");
         usuario.getFkCodPersona().setCtaCtePersona("");
         usuario.getFkCodPersona().setTelefonoPersona("");
-        
+
         JSONObject jsonObjectUsuario = new JSONObject(json);
         JSONObject jsonObjectPersona = new JSONObject(jsonObjectUsuario.getString("fkCodPersona"));
-        
+
         usuario.setLoginUsuario(jsonObjectUsuario.getString("loginUsuario"));
         usuario.setClaveUsuario(jsonObjectUsuario.getString("claveUsuario"));
         usuario.getFkCodPersona().setCedulaPersona(jsonObjectPersona.getString("cedulaPersona"));
@@ -78,17 +82,56 @@ public class UsuariosWS {
         if (contrasenaMD5 == null) {
             //Se controla si fue exitosa la conversion
             return "{\"status\":\"ERROR\", \"mensaje\":\"No se pudo crear. (MD5)\"}";
-        } else if (usuariosSB.consultarUsuariosPorCedula(usuario.getFkCodPersona().getCedulaPersona()).equals("true")) {
-            //Verificamos si existe la Cedula de la Persona
-            return "{\"status\":\"ERROR\", \"mensaje\":\"Cedula ya existe\"}";
         } else {
             // Se reeplaza la clave enviada por la clave en md5
             usuario.setClaveUsuario(contrasenaMD5);
-            String respuesta = usuariosSB.crearUsuariosWeb(usuario);
-            if (respuesta.equals("OK")) {
-                return "{\"status\":\"OK\", \"mensaje\":\"Cuenta registrada.\"}";
+
+            int banderaRegistro = 0;
+            //Consultar por cedula
+            Personas personaExistente = personasSB.consultarPersonaCedula(usuario.getFkCodPersona().getCedulaPersona());
+            //Consultar por login
+            Usuarios usuarioExistente = usuariosSB.consultarUsuarios(usuario.getLoginUsuario());
+
+            if (personaExistente == null) {
+                if (usuarioExistente == null) {
+                    banderaRegistro = 1;
+                } else {
+                    //Verificamos si existe el correo
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                }
             } else {
-                return "{\"status\":\"ERROR\", \"mensaje\":\"" + respuesta + "\"}";
+                if (personaExistente.getUsuariosList().isEmpty()) {
+                    if (usuarioExistente == null) {
+                        banderaRegistro = 1;
+                    } else {
+                        //Verificamos si existe el correo
+                        return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                    }
+                } else {
+                    int banderaUsuarioWeb = 0;
+                    for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
+                        if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
+                            banderaUsuarioWeb = 1;
+                        }
+                    }
+                    if (banderaUsuarioWeb == 1) {
+                        //Verificamos si existe el correo
+                        return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                    } else {
+                        banderaRegistro = 1;
+                    }
+                }
+            }
+
+            if (banderaRegistro == 0) {
+                return "{\"status\":\"ERROR\", \"mensaje\":\"Cedula ya existe.\"}";
+            } else {
+                String resultado = usuariosSB.crearUsuariosWeb(usuario);
+                if (resultado.equals("OK")) {
+                    return "{\"status\":\"OK\", \"mensaje\":\"Cuenta registrada.\"}";
+                } else {
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"" + resultado + "\"}";
+                }
             }
         }
     }
@@ -273,7 +316,7 @@ public class UsuariosWS {
         usuario.getFkCodPersona().setDireccionPersona(jsonObjectPersona.getString("direccionPersona"));
         usuario.getFkCodPersona().setCtaCtePersona(jsonObjectPersona.getString("ctaCtePersona"));
         usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
-      // JSONObject jsonObjectEstaso = new JSONObject(jsonObjectUsuario.getString("fkCodEstadoUsuario"));
+        // JSONObject jsonObjectEstaso = new JSONObject(jsonObjectUsuario.getString("fkCodEstadoUsuario"));
         //  usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(jsonObjectEstaso.getInt("codEstadoUsuario"));
 
         String respuesta = usuariosSB.actualizarUsuariosWeb(usuario);

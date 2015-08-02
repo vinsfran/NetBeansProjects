@@ -90,7 +90,7 @@
                                     <ul class="nav nav-second-level">
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_nuevo_reclamo_externo')}">
                                             <li>
-                                                <h:commandLink action="admin_nuevo_reclamo_externo">
+                                                <h:commandLink action="#{mbSReclamos.prepararNuevoReclamoExterno()}">
                                                     <i class="fa fa-edit"></i> Nuevo reclamo externo
                                                 </h:commandLink>
                                             </li>
@@ -113,6 +113,13 @@
                                             <li>
                                                 <h:commandLink action="admin_gestion_reclamos_finalizados">
                                                     <i class="fa fa-folder-o"></i> Finalizados
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_ver_todos_los_reclamos')}">
+                                            <li>
+                                                <h:commandLink action="admin_ver_todos_los_reclamos">
+                                                    <i class="fa fa-briefcase"></i> Todos los reclamos
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>

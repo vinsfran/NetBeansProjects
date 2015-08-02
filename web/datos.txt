@@ -1,3 +1,9 @@
 
 Uso de condicion IF dentro de una pagina web en JSF
 #{reclamos.fechaAtencionReclamo != null? mbSReclamos.formatearFecha(reclamos.fechaAtencionReclamo) : '' }
+
+Para consultar cantidad de reclamos por tipo
+SELECT COUNT(cod_reclamo) AS cantidad_reclamos,  fk_cod_tipo_reclamo AS tipo_reclmo
+FROM reclamos
+GROUP BY fk_cod_tipo_reclamo
+ORDER BY fk_cod_tipo_reclamo;

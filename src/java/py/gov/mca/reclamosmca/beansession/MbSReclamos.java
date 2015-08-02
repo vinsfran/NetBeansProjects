@@ -61,15 +61,21 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
+import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
+import py.gov.mca.reclamosmca.entitys.Personas;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
+import py.gov.mca.reclamosmca.entitys.Roles;
 import py.gov.mca.reclamosmca.entitys.TiposFinalizacionReclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosCantidad;
+import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposFinalizacionReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
+import py.gov.mca.reclamosmca.sessionbeans.UsuariosSB;
+import py.gov.mca.reclamosmca.utiles.Converciones;
 
 /**
  *
@@ -86,11 +92,18 @@ public class MbSReclamos implements Serializable {
     @EJB
     private TiposFinalizacionReclamosSB tiposFinalizacionReclamosSB;
 
+    @EJB
+    private UsuariosSB usuariosSB;
+
+    @EJB
+    private PersonasSB personasSB;
+
     private List<Reclamos> misReclamos;
     private List<Reclamos> reclamosPendientes;
     private List<Reclamos> reclamosAtendidos;
     private List<Reclamos> reclamosFinalizados;
     private List<Reclamos> reclamosPorZona;
+    private List<Reclamos> reclamos;    
     private List<TiposReclamos> tiposDeReclamos;
     private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
 
@@ -99,10 +112,13 @@ public class MbSReclamos implements Serializable {
     private Reclamos nuevoReclamo;
     private Reclamos reclamoSeleccionado;
 
+    private Usuarios nuevoUsuario;
+
     private Imagenes imagenParaGuardar;
 
     private String dirReclamo;
     private String imagenSemaforo;
+    private String mensajeCorreo;
 
     private Date fechaInicio;
     private Date fechaFin;
@@ -114,6 +130,12 @@ public class MbSReclamos implements Serializable {
     private LatLng latituteLongitude;
 
     private boolean mostrarGraphicImage;
+    private boolean activarCamposNuevoUsuario;
+    private boolean activarCampoCorreo;
+    private boolean activarCampoDireccion;
+    private boolean activarCamposCuenta;
+    private boolean activarCamposTelefono;
+    private boolean marcaParaNuevoUsuario;
 
     private DefaultStreamedContent imagenCargada;
 
@@ -190,6 +212,9 @@ public class MbSReclamos implements Serializable {
         } else if (dirReclamo.equals("DIR_FALSE")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
             return "admin_nuevo_reclamo";
+        } else if (nuevoReclamo.getDescripcionReclamoContribuyente().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
+            return "admin_nuevo_reclamo";
         } else {
             System.out.println("Des: " + nuevoReclamo.getDescripcionReclamoContribuyente());
             nuevoReclamo.setFkCodUsuario(usu);
@@ -210,6 +235,145 @@ public class MbSReclamos implements Serializable {
                 return "admin_nuevo_reclamo";
             }
         }
+    }
+
+    public String prepararNuevoReclamoExterno() {
+        this.activarCamposNuevoUsuario = false;
+        this.activarCampoCorreo = false;
+        this.activarCampoDireccion = false;
+        this.activarCamposCuenta = false;
+        this.activarCamposTelefono = false;
+        this.marcaParaNuevoUsuario = false;
+        this.mensajeCorreo = "";
+        this.setNuevoUsuario(new Usuarios());
+        this.getNuevoUsuario().setFkCodPersona(new Personas());
+        this.emptyModel = null;
+        this.emptyModel = new DefaultMapModel();
+        this.nuevoReclamo = null;
+        this.nuevoReclamo = new Reclamos();
+        this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
+        this.nuevoReclamo.setLatitud(-25.3041049263554);
+        this.nuevoReclamo.setLongitud(-57.5597266852856);
+        this.tipoDeReclamosSeleccionado = null;
+        this.setMostrarGraphicImage(false);
+        this.setZoom(15);
+        this.imagenParaGuardar = null;
+        this.imagenCargada = null;
+        return "admin_nuevo_reclamo_externo";
+    }
+
+    public void buscarPorCedula() {
+        Personas personaBuscada = personasSB.consultarPersonaCedula(nuevoUsuario.getFkCodPersona().getCedulaPersona());
+        Usuarios usuarioBuscado = new Usuarios();
+        if (personaBuscada != null) {
+            this.activarCamposNuevoUsuario = true;
+            int banderaUsuarioBuscado = 0;
+            for (int i = 0; personaBuscada.getUsuariosList().size() > i; i++) {
+                if (personaBuscada.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
+                    banderaUsuarioBuscado = 1;
+                    usuarioBuscado = personaBuscada.getUsuariosList().get(i);
+                }
+            }
+            if (banderaUsuarioBuscado == 1) {
+                this.activarCampoCorreo = true;
+                this.marcaParaNuevoUsuario = false;
+            } else {
+                this.activarCampoCorreo = false;
+                this.marcaParaNuevoUsuario = true;
+            }
+            nuevoUsuario = usuarioBuscado;
+            nuevoUsuario.setFkCodPersona(personaBuscada);
+            if (personaBuscada.getDireccionPersona() == null || personaBuscada.getDireccionPersona().isEmpty()) {
+                this.activarCampoDireccion = false;
+            } else {
+                this.activarCampoDireccion = true;
+            }
+            if (personaBuscada.getCtaCtePersona() == null || personaBuscada.getCtaCtePersona().isEmpty()) {
+                this.activarCamposCuenta = false;
+            } else {
+                this.activarCamposCuenta = true;
+            }
+            if (personaBuscada.getTelefonoPersona() == null || personaBuscada.getTelefonoPersona().isEmpty()) {
+                this.activarCamposTelefono = false;
+            } else {
+                this.activarCamposTelefono = true;
+            }
+
+        } else {
+            this.activarCamposNuevoUsuario = false;
+            this.activarCampoDireccion = false;
+            this.activarCamposCuenta = false;
+            this.activarCamposTelefono = false;
+            nuevoUsuario = usuarioBuscado;
+            nuevoUsuario.setFkCodPersona(new Personas());
+        }
+    }
+
+    public void bucarPorCorreo() {
+        Usuarios usuarioBuscado = usuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
+        if (usuarioBuscado != null) {
+            this.mensajeCorreo = "Correo electrónico ya existe, por favor escriba otro.";
+        } else {
+            this.mensajeCorreo = "";
+        }
+    }
+
+    public String enviarReclamoExterno() throws Exception {
+        System.out.println("Des: " + nuevoReclamo.getDescripcionReclamoContribuyente());
+        if (marcaParaNuevoUsuario) {
+            Converciones c = new Converciones();
+            String contrasenaMD5 = c.getMD5(nuevoUsuario.getFkCodPersona().getCedulaPersona());
+            nuevoUsuario.setClaveUsuario(contrasenaMD5);
+            nuevoUsuario.getFkCodPersona().setOrigenRegistro("appWeb_" + recuperarUsuarioSession().getFkCodRol().getNombreRol());
+            nuevoUsuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+            nuevoUsuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
+            nuevoUsuario.setFkCodRol(new Roles());
+            nuevoUsuario.getFkCodRol().setCodRol(6);
+        }
+
+        String resultado = usuariosSB.crearUsuariosExterno(nuevoUsuario);
+        if (resultado.equals("OK")) {
+            Usuarios usu = usuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
+            if (this.imagenParaGuardar != null) {
+                this.nuevoReclamo.setFkImagen(new Imagenes());
+                this.nuevoReclamo.setFkImagen(this.imagenParaGuardar);
+            }
+            if (this.tipoDeReclamosSeleccionado == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (emptyModel.getMarkers().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione la ubicación de su reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (dirReclamo.equals("DIR_FALSE")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (nuevoReclamo.getDescripcionReclamoContribuyente().equals("")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else {
+                nuevoReclamo.setFkCodUsuario(usu);
+                nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
+                nuevoReclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(1);
+                nuevoReclamo.setFechaReclamo(new Date());
+                nuevoReclamo.setLatitud(latituteLongitude.getLat());
+                nuevoReclamo.setLongitud(latituteLongitude.getLng());
+                nuevoReclamo.setDireccionReclamo(dirReclamo);
+                nuevoReclamo.setFkCodTipoReclamo(tipoDeReclamosSeleccionado);
+                nuevoReclamo.setOrigenReclamo("appWeb_" + recuperarUsuarioSession().getFkCodRol().getNombreRol());
+                String mensajeReclamo = reclamosSB.crearReclamos(nuevoReclamo);
+                if (mensajeReclamo.equals("OK")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Gracias!", "Su reclamo fue enviado."));
+                    return "admin_mis_reclamos";
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurrio un problema al enviar su reclamo, intente de nuevo.", mensajeReclamo));
+                    return "admin_nuevo_reclamo_externo";
+                }
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro de Usuario, intente de nuevo", resultado));
+            return "/admin_nuevo_reclamo_externo";
+        }
+
     }
 
     public void onStateChange(StateChangeEvent event) {
@@ -1024,6 +1188,133 @@ public class MbSReclamos implements Serializable {
      */
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    /**
+     * @return the nuevoUsuario
+     */
+    public Usuarios getNuevoUsuario() {
+        return nuevoUsuario;
+    }
+
+    /**
+     * @param nuevoUsuario the nuevoUsuario to set
+     */
+    public void setNuevoUsuario(Usuarios nuevoUsuario) {
+        this.nuevoUsuario = nuevoUsuario;
+    }
+
+    /**
+     * @return the activarCamposNuevoUsuario
+     */
+    public boolean isActivarCamposNuevoUsuario() {
+        return activarCamposNuevoUsuario;
+    }
+
+    /**
+     * @param activarCamposNuevoUsuario the activarCamposNuevoUsuario to set
+     */
+    public void setActivarCamposNuevoUsuario(boolean activarCamposNuevoUsuario) {
+        this.activarCamposNuevoUsuario = activarCamposNuevoUsuario;
+    }
+
+    /**
+     * @return the activarCampoDireccion
+     */
+    public boolean isActivarCampoDireccion() {
+        return activarCampoDireccion;
+    }
+
+    /**
+     * @param activarCampoDireccion the activarCampoDireccion to set
+     */
+    public void setActivarCampoDireccion(boolean activarCampoDireccion) {
+        this.activarCampoDireccion = activarCampoDireccion;
+    }
+
+    /**
+     * @return the activarCamposCuenta
+     */
+    public boolean isActivarCamposCuenta() {
+        return activarCamposCuenta;
+    }
+
+    /**
+     * @param activarCamposCuenta the activarCamposCuenta to set
+     */
+    public void setActivarCamposCuenta(boolean activarCamposCuenta) {
+        this.activarCamposCuenta = activarCamposCuenta;
+    }
+
+    /**
+     * @return the activarCamposTelefono
+     */
+    public boolean isActivarCamposTelefono() {
+        return activarCamposTelefono;
+    }
+
+    /**
+     * @param activarCamposTelefono the activarCamposTelefono to set
+     */
+    public void setActivarCamposTelefono(boolean activarCamposTelefono) {
+        this.activarCamposTelefono = activarCamposTelefono;
+    }
+
+    /**
+     * @return the mensajeCorreo
+     */
+    public String getMensajeCorreo() {
+        return mensajeCorreo;
+    }
+
+    /**
+     * @param mensajeCorreo the mensajeCorreo to set
+     */
+    public void setMensajeCorreo(String mensajeCorreo) {
+        this.mensajeCorreo = mensajeCorreo;
+    }
+
+    /**
+     * @return the marcaParaNuevoUsuario
+     */
+    public boolean isMarcaParaNuevoUsuario() {
+        return marcaParaNuevoUsuario;
+    }
+
+    /**
+     * @param marcaParaNuevoUsuario the marcaParaNuevoUsuario to set
+     */
+    public void setMarcaParaNuevoUsuario(boolean marcaParaNuevoUsuario) {
+        this.marcaParaNuevoUsuario = marcaParaNuevoUsuario;
+    }
+
+    /**
+     * @return the activarCampoCorreo
+     */
+    public boolean isActivarCampoCorreo() {
+        return activarCampoCorreo;
+    }
+
+    /**
+     * @param activarCampoCorreo the activarCampoCorreo to set
+     */
+    public void setActivarCampoCorreo(boolean activarCampoCorreo) {
+        this.activarCampoCorreo = activarCampoCorreo;
+    }
+
+    /**
+     * @return the reclamos
+     */
+    public List<Reclamos> getReclamos() {
+        reclamos = reclamosSB.listarReclamos();
+        return reclamos;
+    }
+
+    /**
+     * @param reclamos the reclamos to set
+     */
+    public void setReclamos(List<Reclamos> reclamos) {
+        this.reclamos = reclamos;
     }
 
 }
