@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>#{mbSRoles.rol.codRol > 0 ? 'Cambiar nombre':'Nuevo' } Rol</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span >Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form class="col-md-12"> 
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre del rol:</label>
+                                            <h:inputText id="nombre"
+                                                          class="form-control" 
+                                                          value="#{mbSRoles.rol.nombreRol}"/>
+                                        </div>
+                                        <br/>
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandLink class="btn btn-default" action="#{mbSRoles.btnCancelar()}" immediate="true">
+                                                    Cancelar
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" 
+                                                               action="#{mbSRoles.btnCrear()}" 
+                                                               rendered="#{mbSRoles.rol.codRol > 0 ? false : true}">
+                                                    <i class="fa fa-check-square-o"></i> Crear
+                                                </h:commandLink>
+                                                <h:commandLink id="actualizar"
+                                                               class="btn btn-primary" 
+                                                               action="#{mbSRoles.btnActualizar()}" 
+                                                               rendered="#{mbSRoles.rol.codRol > 0 ? true : false}">
+                                                    <i class="fa fa-check-square-o"></i> Actualizar
+                                                </h:commandLink>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

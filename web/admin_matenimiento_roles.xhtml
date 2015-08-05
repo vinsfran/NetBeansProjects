@@ -10,11 +10,10 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-
                         <h2>Matenimiento de Roles</h2>
                         <h:form class="modal-footer">
                             <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary" action="#{mbSRoles.btnAgregar()}">
-                                <i class="fa fa-check"></i> Agregar
+                                <i class="fa fa-check"></i> Nuevo rol
                             </h:commandLink>
                         </h:form>
                     </div>
@@ -43,7 +42,13 @@
                                         <h:column>
                                             <f:facet name="header">Acciones</f:facet>
                                             <h:form>
-                                                <h:commandLink class="btn btn-primary btn-sm" action="#{mbSRoles.btnModificar(roles)}">
+                                                <h:commandLink class="btn btn-primary btn-sm" 
+                                                               action="#{mbSRoles.btnCambiarNombre(roles)}">
+                                                    <i class="fa fa-edit"></i> Cambiar nombre
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary btn-sm" 
+                                                               action="#{mbSRoles.btnModificarPermisos(roles)}"
+                                                               style="margin-left: 5px;">
                                                     <i class="fa fa-lock"></i> Modificar permisos
                                                 </h:commandLink>
                                             </h:form>
@@ -56,7 +61,5 @@
                 </div>
             </div>
         </div>
-        <!-- /. PAGE INNER  -->
-        <!-- /. WRAPPER  -->
     </ui:define>
 </ui:composition>   

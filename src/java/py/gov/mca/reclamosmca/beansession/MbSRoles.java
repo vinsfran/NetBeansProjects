@@ -50,10 +50,16 @@ public class MbSRoles implements Serializable {
     public String btnAgregar() {
         this.rol = null;
         this.rol = new Roles();
-        return "/admin_form_roles";
+        return "/admin_form_nuevo_rol";
     }
 
-    public String btnModificar(Roles rol) {
+    public String btnCambiarNombre(Roles rol) {
+        this.rol = rol;
+        this.rol = rolesSB.consultarRol(rol.getCodRol());
+        return "/admin_form_nuevo_rol";
+    }
+
+    public String btnModificarPermisos(Roles rol) {
         this.rol = rol;
         this.rol = rolesSB.consultarRol(rol.getCodRol());
         this.elementoWeb = new ElementosWeb();
@@ -61,7 +67,6 @@ public class MbSRoles implements Serializable {
         this.elementoDesactivado = false;
         this.estadoBtnActualizar = true;
         this.permisosElementosWeb = new PermisosElementosWeb();
-
         return "/admin_form_roles";
     }
 
@@ -74,9 +79,8 @@ public class MbSRoles implements Serializable {
     public String btnCrear() {
         if (this.rol.getNombreRol() == null || this.rol.getNombreRol().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
-            return "/admin_form_roles";
+            return "/admin_form_nuevo_rol";
         } else {
-
             String mensaje = rolesSB.crearRoles(this.rol);
             if (mensaje.equals("OK")) {
                 this.rol = null;
@@ -84,7 +88,24 @@ public class MbSRoles implements Serializable {
                 return "/admin_matenimiento_roles";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo crear.", mensaje));
-                return "/admin_form_roles";
+                return "/admin_form_nuevo_rol";
+            }
+        }
+    }
+    
+    public String btnActualizar() {
+        if (this.rol.getNombreRol() == null || this.rol.getNombreRol().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
+            return "/admin_form_nuevo_rol";
+        } else {
+            String mensaje = rolesSB.actualizarRoles(this.rol);
+            if (mensaje.equals("OK")) {
+                this.rol = null;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado.", ""));
+                return "/admin_matenimiento_roles";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo actualizar.", mensaje));
+                return "/admin_form_nuevo_rol";
             }
         }
     }
@@ -94,10 +115,8 @@ public class MbSRoles implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_roles";
         } else {
-
             permisosElementosWeb.setValorVisible(elementoVisible + "");
             permisosElementosWeb.setValorDesactivado(elementoDesactivado + "");
-
             String mensaje = permisosElementosWebSB.actualizarPermisosElementosWeb(permisosElementosWeb);
             if (mensaje.equals("OK")) {
                 setElementosWeb(null);
@@ -108,14 +127,10 @@ public class MbSRoles implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo actualizar.", mensaje));
                 return "/admin_form_roles";
             }
-
         }
     }
 
     public void buscarEstadoPermisos() {
-        
-        System.out.println("MbSRoles buscarEstadoPermisos rol " + rol.getCodRol());
-        System.out.println("MbSRoles buscarEstadoPermisos elemento " + elementoWeb.getCodElementoWeb());
         this.elementoWeb = elementosWebSB.consultarElementoWeb(elementoWeb.getCodElementoWeb());
         String detalleDelPermiso = "Permiso para elemento: " + elementoWeb.getDescripcionDelElementoWeb() + " - Rol: " + this.rol.getNombreRol();
         this.elementoVisible = false;
@@ -123,21 +138,17 @@ public class MbSRoles implements Serializable {
         this.estadoBtnActualizar = false;
         permisosElementosWeb = permisosElementosWebSB.consultarCodRolCodElementoWeb(rol.getCodRol(), elementoWeb.getCodElementoWeb());
         if (permisosElementosWeb == null) {
-            System.out.println("MbSRoles buscarEstadoPermisos Null");
             permisosElementosWeb = new PermisosElementosWeb();
             permisosElementosWeb.setFkCodRol(rol);
             permisosElementosWeb.setFkCodElementoWeb(elementoWeb);
             permisosElementosWeb.setValorVisible("false");
             permisosElementosWeb.setValorDesactivado("true");
             permisosElementosWeb.setDetalleDelPermiso(detalleDelPermiso);
-
         } else {
-            System.out.println("MbSRoles buscarEstadoPermisos NO Null");
             permisosElementosWeb.setDetalleDelPermiso(detalleDelPermiso);
             if (permisosElementosWeb.getValorVisible().trim().equals("true")) {
                 this.elementoVisible = true;
             }
-
             if (permisosElementosWeb.getValorDesactivado().trim().equals("false")) {
                 this.elementoDesactivado = false;
             }

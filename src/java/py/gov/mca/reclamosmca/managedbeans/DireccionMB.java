@@ -27,7 +27,6 @@ public class DireccionMB implements Serializable {
     }
 
     public void asignarEstilo(String asignar) {
-        System.out.println("ENRTRA");
         limpiar();
         if (asignar.equals("Inicio")) {
             this.inicio = "active";
@@ -37,9 +36,7 @@ public class DireccionMB implements Serializable {
             this.setSesion("active");
         } else {
             this.contacto = "active";
-
         }
-
     }
 
     private void limpiar() {
