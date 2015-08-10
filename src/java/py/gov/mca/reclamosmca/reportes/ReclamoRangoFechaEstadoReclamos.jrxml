@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoRangoFechaEstadoReclamos" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<pen lineStyle="Double" lineColor="#040202"/>
+		<box>
+			<pen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<topPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<leftPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<bottomPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+			<rightPen lineWidth="2.0" lineStyle="Double" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="urlImagen" class="java.lang.String"/>
+	<parameter name="urlImagen2" class="java.lang.String"/>
+	<parameter name="nombreDependencia" class="java.lang.String"/>
+	<parameter name="fechaDesde" class="java.util.Date"/>
+	<parameter name="fechaHasta" class="java.util.Date"/>
+	<parameter name="fechaGeneracion" class="java.util.Date"/>
+	<parameter name="totalReclamos" class="java.lang.Integer"/>
+	<parameter name="usuarioGeneracion" class="java.lang.String"/>
+	<field name="nombreTipoReclamo" class="java.lang.String"/>
+	<field name="cantidadTipoReclamo" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="213" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="-10" width="106" height="71" uuid="1b28c69e-61f5-4411-8706-bf05d8c1769b"/>
+				<imageExpression><![CDATA[$P{urlImagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="0" width="515" height="19" uuid="93992970-279a-4480-be27-842fb8b10aa1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPALIDAD DE ASUNCION]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="24" width="515" height="20" uuid="586932da-3fbd-4c41-953d-f6578b8d162f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreDependencia}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="430" y="-22" width="101" height="92" uuid="64b0c36d-628b-4969-bfd8-b8fcb07fd84b"/>
+				<imageExpression><![CDATA[$P{urlImagen2}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="1" y="70" width="515" height="1" uuid="d7400bb6-910e-4c95-8b28-203c2cc9668e"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="71" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="d411b4f8-9cba-46c9-997d-c572201ca45c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad de reclamos por tipos de reclamos y rango de fecha ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="151" width="120" height="20" uuid="78f13dac-06eb-44ee-8dd6-084b70f99b15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha desde:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="151" width="114" height="20" uuid="1e9c8055-4a21-44f5-a6ab-bd2129b770c5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="171" width="120" height="20" uuid="7b7a4da1-e2e1-4d84-8847-1099e3558db9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha hasta:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="171" width="114" height="20" uuid="586c3843-4f4c-47dd-a7ac-78a4bb536cc3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="191" width="120" height="20" uuid="aa257426-b58c-4345-afc5-525bf57307d6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Catidad de reclamos:]]></text>
+			</staticText>
+			<textField pattern="#,##0;#,##0-">
+				<reportElement x="120" y="191" width="114" height="20" uuid="08de5275-6675-4a9a-881f-823e9f820449"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalReclamos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="116" width="395" height="20" uuid="1b4d0250-c68c-43a4-bbba-4f14c7485f1d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{usuarioGeneracion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="96" width="120" height="20" uuid="f89e73d1-4eb1-4de7-a79c-6e98dd7bb3be"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha generación:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="96" width="114" height="20" uuid="ccf4256a-7408-481a-bc05-48a925f5481f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaGeneracion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="116" width="120" height="20" uuid="c0f0d69f-8fc6-4544-bab0-4aeb545ef26d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Generado por:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="422">
+			<pie3DChart>
+				<chart>
+					<reportElement x="0" y="17" width="515" height="388" uuid="0aeb68a2-54a0-4df7-a0c0-cc9690a12147"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{nombreTipoReclamo} + ": "+ $F{cantidadTipoReclamo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{cantidadTipoReclamo}]]></valueExpression>
+					<labelExpression><![CDATA[$F{nombreTipoReclamo} + " " + new java.text.DecimalFormat("0.00").format(($F{cantidadTipoReclamo}.doubleValue()*100)/($P{totalReclamos})) + "%"]]></labelExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</summary>
+</jasperReport>

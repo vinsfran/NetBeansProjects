@@ -731,6 +731,62 @@ public class MbSReclamos implements Serializable {
         FacesContext.getCurrentInstance().responseComplete();
 
     }
+    
+    public void exportarPDFporRangoFechaEstadoReclamos() throws JRException, IOException {
+        hgfg
+        JasperReport jasper;
+        Usuarios usu = recuperarUsuarioSession();
+        List<Reclamos> listaReclamos = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
+        List<TiposReclamosCantidad> listaTiposReclamosCantidad = new ArrayList<>();
+
+        for (int i = 0; listaReclamos.size() > i; i++) {
+            TiposReclamosCantidad tiposReclamosCantidad = new TiposReclamosCantidad();
+            tiposReclamosCantidad.setNombreTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getNombreTipoReclamo());
+            tiposReclamosCantidad.setCantidadTipoReclamo(0);
+            for (int j = 0; listaReclamos.size() > j; j++) {
+                if (listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo().equals(listaReclamos.get(j).getFkCodTipoReclamo().getCodTipoReclamo())) {
+                    tiposReclamosCantidad.setCantidadTipoReclamo(tiposReclamosCantidad.getCantidadTipoReclamo() + 1);
+                }
+            }
+            listaTiposReclamosCantidad.add(tiposReclamosCantidad);
+        }
+
+        Map<String, Object> parametros = new HashMap<>();
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+
+        parametros.put("urlImagen", urlImagen);
+        parametros.put("urlImagen2", urlImagen2);
+        parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
+        parametros.put("fechaDesde", getFechaInicio());
+        parametros.put("fechaHasta", getFechaFin());
+        parametros.put("fechaGeneracion", new Date());
+        parametros.put("totalReclamos", listaReclamos.size());
+        parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
+
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaTiposReclamosCantidad);
+        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamos.jasper"));
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
+
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("application/pdf");
+        response.addHeader("Content-disposition", "attachment; filename=REPORTE_RANGO_FECHA_TIPOS_RECLAMOS.pdf");
+        //response.
+        //Response.Write("<script>window.print();</script>"); 
+
+        ServletOutputStream stream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+        stream.flush();
+        stream.close();
+        FacesContext.getCurrentInstance().responseComplete();
+
+    }
 
     public Integer cantidadReclamosPorZona(Reclamos reclamo) {
         List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
