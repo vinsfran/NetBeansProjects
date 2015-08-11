@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoRangoFechaEstadoReclamos" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="166"/>
+	<property name="ireport.y" value="394"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
 		<box>
@@ -136,7 +136,7 @@
 	<detail>
 		<band height="285">
 			<textField>
-				<reportElement mode="Opaque" x="1" y="5" width="415" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="6b5fb862-6d6f-457e-960d-68fe51e6b7ed"/>
+				<reportElement mode="Opaque" x="0" y="5" width="415" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="6b5fb862-6d6f-457e-960d-68fe51e6b7ed"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -176,6 +176,9 @@
 					<itemLabel/>
 				</pie3DPlot>
 			</pie3DChart>
+			<break>
+				<reportElement x="0" y="4" width="100" height="1" uuid="b3586953-e55a-4f2b-a98e-df3da7e404a0"/>
+			</break>
 		</band>
 	</summary>
 </jasperReport>

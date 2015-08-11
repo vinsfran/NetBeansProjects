@@ -8,8 +8,9 @@ import py.gov.mca.reclamosmca.entitys.Reclamos;
  * @author vinsfran
  */
 public class TiposReclamosReporte {
-    
+
     private Integer codTipoReclamo;
+    private Integer catidadReclamosTipos;
     private String nombreTipoReclamo;
     private List<Reclamos> reclamos;
 
@@ -54,5 +55,19 @@ public class TiposReclamosReporte {
     public void setReclamos(List<Reclamos> reclamos) {
         this.reclamos = reclamos;
     }
-    
+
+    /**
+     * @return the catidadReclamosTipos
+     */
+    public Integer getCatidadReclamosTipos() {
+        return catidadReclamosTipos;
+    }
+
+    /**
+     * @param catidadReclamosTipos the catidadReclamosTipos to set
+     */
+    public void setCatidadReclamosTipos(Integer catidadReclamosTipos) {
+        this.catidadReclamosTipos = catidadReclamosTipos;
+    }
+
 }
