@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoRangoFechaEstadoReclamos" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="166"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
 		<box>
@@ -21,8 +21,13 @@
 	<parameter name="fechaGeneracion" class="java.util.Date"/>
 	<parameter name="totalReclamos" class="java.lang.Integer"/>
 	<parameter name="usuarioGeneracion" class="java.lang.String"/>
-	<field name="nombreTipoReclamo" class="java.lang.String"/>
-	<field name="cantidadTipoReclamo" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/vinsfran/NetBeansProjects/reclamosmca/src/java/py/gov/mca/reclamosmca/reportes/"]]></defaultValueExpression>
+	</parameter>
+	<field name="codDependencia" class="java.lang.Integer"/>
+	<field name="nombreDependencia" class="java.lang.String"/>
+	<field name="cantidadReclamosDependencia" class="java.lang.Integer"/>
+	<field name="tiposReclamosReporte" class="java.util.List"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -128,6 +133,30 @@
 			</staticText>
 		</band>
 	</title>
+	<detail>
+		<band height="285">
+			<textField>
+				<reportElement mode="Opaque" x="1" y="5" width="415" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="6b5fb862-6d6f-457e-960d-68fe51e6b7ed"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreDependencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="5" width="100" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="fc5ef3d4-8566-4199-861b-081fd88dde47"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadReclamosDependencia}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="25" width="515" height="260" uuid="b6652b85-a430-4d14-84ab-12c10f8592c0"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tiposReclamosReporte})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReclamoRangoFechaEstadoReclamos_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
 	<summary>
 		<band height="422">
 			<pie3DChart>
@@ -138,9 +167,9 @@
 					<chartLegend/>
 				</chart>
 				<pieDataset>
-					<keyExpression><![CDATA[$F{nombreTipoReclamo} + ": "+ $F{cantidadTipoReclamo}]]></keyExpression>
-					<valueExpression><![CDATA[$F{cantidadTipoReclamo}]]></valueExpression>
-					<labelExpression><![CDATA[$F{nombreTipoReclamo} + " " + new java.text.DecimalFormat("0.00").format(($F{cantidadTipoReclamo}.doubleValue()*100)/($P{totalReclamos})) + "%"]]></labelExpression>
+					<keyExpression><![CDATA[$F{nombreDependencia}]]></keyExpression>
+					<valueExpression><![CDATA[$F{cantidadReclamosDependencia}]]></valueExpression>
+					<labelExpression><![CDATA[new java.text.DecimalFormat("0.00").format(($F{cantidadReclamosDependencia}.doubleValue()*100)/($P{totalReclamos})) + "%"]]></labelExpression>
 				</pieDataset>
 				<pie3DPlot>
 					<plot/>

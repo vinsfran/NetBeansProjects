@@ -151,10 +151,10 @@
                                                 <i class="fa fa-folder-o"></i> Rango de fecha por dependencia y tipos de reclamos 
                                             </h:commandLink>
                                         </li>
-                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_listado_de_reclamos_por_estado')}">
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_reporte_de_reclamos_por_estado')}">
                                             <li>
-                                                <h:commandLink action="admin_ver_todos_los_reclamos">
-                                                    <i class="fa fa-briefcase"></i> Listado de reclamos por estado
+                                                <h:commandLink action="#{mbSReclamos.prepararReportePorEstadoRangoFecha()}">
+                                                    <i class="fa fa-briefcase"></i> Reclamos por estado y rango de fecha
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>

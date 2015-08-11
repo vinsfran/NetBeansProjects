@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,7 +70,9 @@ import py.gov.mca.reclamosmca.entitys.Roles;
 import py.gov.mca.reclamosmca.entitys.TiposFinalizacionReclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
+import py.gov.mca.reclamosmca.reportes.DependenciasReporte;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosCantidad;
+import py.gov.mca.reclamosmca.reportes.TiposReclamosReporte;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposFinalizacionReclamosSB;
@@ -103,7 +106,7 @@ public class MbSReclamos implements Serializable {
     private List<Reclamos> reclamosAtendidos;
     private List<Reclamos> reclamosFinalizados;
     private List<Reclamos> reclamosPorZona;
-    private List<Reclamos> reclamos;    
+    private List<Reclamos> reclamos;
     private List<TiposReclamos> tiposDeReclamos;
     private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
 
@@ -126,6 +129,7 @@ public class MbSReclamos implements Serializable {
     private MapModel emptyModel;
 
     private int zoom;
+    private int codigoEstadoReclamo;
 
     private LatLng latituteLongitude;
 
@@ -162,6 +166,14 @@ public class MbSReclamos implements Serializable {
         this.imagenParaGuardar = null;
         this.imagenCargada = null;
         return "admin_nuevo_reclamo";
+    }
+
+    public String prepararReportePorEstadoRangoFecha() {
+        this.codigoEstadoReclamo = 0;
+        this.fechaInicio = new Date();
+        this.fechaFin = new Date();
+
+        return "admin_form_reporte_rango_fecha_estado_reclamo";
     }
 
     public void seleccionarTipoDeReclamo(AjaxBehaviorEvent event) {
@@ -731,24 +743,70 @@ public class MbSReclamos implements Serializable {
         FacesContext.getCurrentInstance().responseComplete();
 
     }
-    
+
     public void exportarPDFporRangoFechaEstadoReclamos() throws JRException, IOException {
-        hgfg
         JasperReport jasper;
         Usuarios usu = recuperarUsuarioSession();
-        List<Reclamos> listaReclamos = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
-        List<TiposReclamosCantidad> listaTiposReclamosCantidad = new ArrayList<>();
+        List<Reclamos> listaReclamos = reclamosSB.listarDependenciaTipoReclamosEstadoReclamoRangoFecha(this.codigoEstadoReclamo, this.fechaInicio, this.fechaFin);
 
+        List<DependenciasReporte> listaDependenciasReporte = new ArrayList<>();
+
+        DependenciasReporte dependenciasReporte = new DependenciasReporte();
+        dependenciasReporte.setCodDependencia(0);
+        //Se buscan las dependencias
         for (int i = 0; listaReclamos.size() > i; i++) {
-            TiposReclamosCantidad tiposReclamosCantidad = new TiposReclamosCantidad();
-            tiposReclamosCantidad.setNombreTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getNombreTipoReclamo());
-            tiposReclamosCantidad.setCantidadTipoReclamo(0);
-            for (int j = 0; listaReclamos.size() > j; j++) {
-                if (listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo().equals(listaReclamos.get(j).getFkCodTipoReclamo().getCodTipoReclamo())) {
-                    tiposReclamosCantidad.setCantidadTipoReclamo(tiposReclamosCantidad.getCantidadTipoReclamo() + 1);
+            if (!dependenciasReporte.getCodDependencia().equals(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia())) {
+                dependenciasReporte = new DependenciasReporte();
+                dependenciasReporte.setCodDependencia(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia());
+                dependenciasReporte.setNombreDependencia(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
+                dependenciasReporte.setCantidadReclamosDependencia(0);
+                dependenciasReporte.setTiposReclamosReporte(new ArrayList<>());
+                listaDependenciasReporte.add(dependenciasReporte);
+            }
+        }
+        //Se buscan los tipos de reclamos
+        int ban = 0;
+        for (int i = 0; listaReclamos.size() > i; i++) {
+            for (int j = 0; listaDependenciasReporte.size() > j; j++) {
+                if (listaDependenciasReporte.get(j).getCodDependencia().equals(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia())) {
+                    if (ban != listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo()) {
+                        TiposReclamosReporte tiposReclamosReporte;
+                        tiposReclamosReporte = new TiposReclamosReporte();
+                        tiposReclamosReporte.setCodTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo());
+                        tiposReclamosReporte.setNombreTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getNombreTipoReclamo());
+                        tiposReclamosReporte.setReclamos(new ArrayList<>());
+                        listaDependenciasReporte.get(j).getTiposReclamosReporte().add(tiposReclamosReporte);
+                        ban = listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo();
+                    }
                 }
             }
-            listaTiposReclamosCantidad.add(tiposReclamosCantidad);
+        }
+        //Se buscan los reclamos
+        for (int i = 0; listaReclamos.size() > i; i++) {
+            for (int j = 0; listaDependenciasReporte.size() > j; j++) {
+                if (listaDependenciasReporte.get(j).getCodDependencia().equals(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia())) {
+                    for (int k = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().size() > k; k++) {
+                        if (listaDependenciasReporte.get(j).getTiposReclamosReporte().get(k).getCodTipoReclamo().equals(listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo())) {
+                            listaDependenciasReporte.get(j).getTiposReclamosReporte().get(k).getReclamos().add(listaReclamos.get(i));
+                            listaDependenciasReporte.get(j).setCantidadReclamosDependencia(listaDependenciasReporte.get(j).getCantidadReclamosDependencia() + 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("TAMA: " + listaDependenciasReporte.size());
+
+        for (int j = 0; listaDependenciasReporte.size() > j; j++) {
+            System.out.println("DEPE: " + listaDependenciasReporte.get(j).getNombreDependencia());
+
+            for (int h = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().size() > h; h++) {
+                System.out.println("-TIPO: " + listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getNombreTipoReclamo());
+
+                for (int m = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getReclamos().size() > m; m++) {
+                    System.out.println("--RECLA: " + listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getReclamos().get(m).getCodReclamo());
+                }
+            }
         }
 
         Map<String, Object> parametros = new HashMap<>();
@@ -764,8 +822,9 @@ public class MbSReclamos implements Serializable {
         parametros.put("fechaGeneracion", new Date());
         parametros.put("totalReclamos", listaReclamos.size());
         parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
+        parametros.put("SUBREPORT_DIR", "py/gov/mca/reclamosmca/reportes/");
 
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaTiposReclamosCantidad);
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaDependenciasReporte);
         jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamos.jasper"));
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
@@ -785,7 +844,6 @@ public class MbSReclamos implements Serializable {
         stream.flush();
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
-
     }
 
     public Integer cantidadReclamosPorZona(Reclamos reclamo) {
@@ -1371,6 +1429,20 @@ public class MbSReclamos implements Serializable {
      */
     public void setReclamos(List<Reclamos> reclamos) {
         this.reclamos = reclamos;
+    }
+
+    /**
+     * @return the codigoEstadoReclamo
+     */
+    public int getCodigoEstadoReclamo() {
+        return codigoEstadoReclamo;
+    }
+
+    /**
+     * @param codigoEstadoReclamo the codigoEstadoReclamo to set
+     */
+    public void setCodigoEstadoReclamo(int codigoEstadoReclamo) {
+        this.codigoEstadoReclamo = codigoEstadoReclamo;
     }
 
 }

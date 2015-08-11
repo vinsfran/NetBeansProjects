@@ -406,6 +406,48 @@ public class ReclamosSB {
         q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
         return q.getResultList();
     }
+    
+      public List<Reclamos> listarDependenciaTipoReclamosEstadoReclamoRangoFecha(Integer codEstadoReclamo, Date fechaInicio, Date fechaFin) {
+        StringBuilder jpql = new StringBuilder();
+        
+//        SELECT r.fkCodTipoReclamo.fkCodDependencia.codDependencia, r.fkCodTipoReclamo.fkCodDependencia.nombreDependencia, 
+//       r.fkCodTipoReclamo.codTipoReclamo, r.fkCodTipoReclamo.nombreTipoReclamo, r.codReclamo, r.fkCodEstadoReclamo.codEstadoReclamo
+//FROM Reclamos r
+//WHERE r.fkCodEstadoReclamo.codEstadoReclamo = 1
+//AND r.fechaReclamo BETWEEN '2015-07-01' AND '2015-08-10'
+//ORDER BY r.fkCodTipoReclamo.fkCodDependencia.codDependencia, r.fkCodTipoReclamo.codTipoReclamo, r.codReclamo
+
+        jpql.append("SELECT r ");
+        jpql.append("FROM Reclamos r ");
+        jpql.append("WHERE r.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
+        jpql.append("AND r.fechaReclamo BETWEEN :paramFechaInicio AND :paramFechaFin ");
+        jpql.append("ORDER BY r.fkCodTipoReclamo.fkCodDependencia.codDependencia, r.fkCodTipoReclamo.codTipoReclamo, r.codReclamo");
+
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
+        q.setParameter("paramFechaInicio", fechaInicio);
+        q.setParameter("paramFechaFin", fechaFin);
+        return q.getResultList();
+    }
+    
+    public List<Reclamos> listarPorEstadoReclamoRangoDeFecha(Integer codEstadoReclamo, Date fechaInicio, Date fechaFin) {
+        StringBuilder jpql = new StringBuilder();
+
+        jpql.append("SELECT e ");
+        jpql.append("FROM Reclamos e ");
+        jpql.append("WHERE e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
+        jpql.append("AND e.fechaReclamo BETWEEN :paramFechaInicio AND :paramFechaFin ");
+        jpql.append("ORDER BY e.fkCodTipoReclamo.fkCodDependencia.codDependencia ");
+
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
+        q.setParameter("paramFechaInicio", fechaInicio);
+        q.setParameter("paramFechaFin", fechaFin);
+        return q.getResultList();
+    }
+    
 
     public List<Reclamos> burcarPorDependencia(Integer codDependencia, String expresion) {
         StringBuilder jpql = new StringBuilder();
