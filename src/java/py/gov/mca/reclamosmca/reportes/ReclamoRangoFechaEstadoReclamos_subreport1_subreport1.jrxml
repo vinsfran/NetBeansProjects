@@ -23,25 +23,24 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="Table Dataset 1" uuid="61d79194-7705-4e51-a453-12ce8f9713d3"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<field name="codReclamo" class="java.lang.Integer"/>
 	<field name="descripcionReclamoContribuyente" class="java.lang.String"/>
 	<field name="direccionReclamo" class="java.lang.String"/>
 	<field name="origenReclamo" class="java.lang.String"/>
 	<field name="fechaReclamo" class="java.util.Date"/>
-	<field name="fkCodTipoReclamo.nombreTipoReclamo" class="java.lang.String"/>
 	<columnHeader>
 		<band height="22">
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="20" uuid="3a1e8f67-61c9-4903-8fe4-cbae6eb5f256"/>
+				<reportElement x="0" y="0" width="49" height="20" uuid="3a1e8f67-61c9-4903-8fe4-cbae6eb5f256"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
+					<paragraph leftIndent="5"/>
 				</textElement>
-				<text><![CDATA[Nro. de reclamo]]></text>
+				<text><![CDATA[Número]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="20" uuid="c3a2878f-a1c1-44a1-8ec5-9bf595bda423"/>
+				<reportElement x="49" y="0" width="70" height="20" uuid="c3a2878f-a1c1-44a1-8ec5-9bf595bda423"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -51,35 +50,43 @@
 				<reportElement x="0" y="20" width="515" height="1" uuid="1b57baf9-0511-4679-a06a-d6c8b2103aa8"/>
 			</line>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="20" uuid="03bb75d3-38d1-4b89-9796-58f6cda79d3a"/>
+				<reportElement x="119" y="0" width="100" height="20" uuid="03bb75d3-38d1-4b89-9796-58f6cda79d3a"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Dirección]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="358" y="0" width="110" height="20" uuid="30532cd7-94a7-4789-b006-b4128030d6a6"/>
-				<text><![CDATA[fkCodTipoReclamo.nombreTipoReclamo]]></text>
+				<reportElement x="295" y="2" width="100" height="20" uuid="2ee86cd9-1c14-4af4-9804-9388def05f99"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="100" height="20" uuid="7906b3dd-2f4d-42c5-a19c-cfd528763dc3"/>
+				<reportElement x="0" y="0" width="49" height="20" uuid="7906b3dd-2f4d-42c5-a19c-cfd528763dc3"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="5"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{codReclamo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MM/dd/yyyy">
-				<reportElement x="100" y="0" width="100" height="20" uuid="f846cba2-2875-4ba6-a062-4d9a34a817ed"/>
+				<reportElement x="49" y="0" width="70" height="20" uuid="f846cba2-2875-4ba6-a062-4d9a34a817ed"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fechaReclamo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="200" y="0" width="158" height="20" uuid="f39eba4c-2cb0-40ef-9982-fb618ad50b9f"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="119" y="0" width="176" height="20" uuid="f39eba4c-2cb0-40ef-9982-fb618ad50b9f"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{direccionReclamo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="358" y="0" width="157" height="20" uuid="ccca19cd-6459-4228-ae12-4508565914e7"/>
-				<textFieldExpression><![CDATA[$F{fkCodTipoReclamo.nombreTipoReclamo}]]></textFieldExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="295" y="0" width="220" height="20" uuid="dd354988-e8ef-4f24-bc83-c8ad5482944e"/>
+				<textFieldExpression><![CDATA[$F{descripcionReclamoContribuyente}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoRangoFechaEstadoReclamos" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="394"/>
+	<property name="ireport.y" value="64"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
 		<box>
@@ -28,11 +28,14 @@
 	<field name="nombreDependencia" class="java.lang.String"/>
 	<field name="cantidadReclamosDependencia" class="java.lang.Integer"/>
 	<field name="tiposReclamosReporte" class="java.util.List"/>
+	<variable name="vTituloDependencia" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("0.00").format(($F{cantidadReclamosDependencia}.doubleValue()*100)/($P{totalReclamos})) + "%"]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="213" splitType="Stretch">
+		<band height="143" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="-10" width="106" height="71" uuid="1b28c69e-61f5-4411-8706-bf05d8c1769b"/>
 				<imageExpression><![CDATA[$P{urlImagen}]]></imageExpression>
@@ -66,66 +69,58 @@
 				<text><![CDATA[Cantidad de reclamos por tipos de reclamos y rango de fecha ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="151" width="120" height="20" uuid="78f13dac-06eb-44ee-8dd6-084b70f99b15"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="161" y="96" width="71" height="20" uuid="78f13dac-06eb-44ee-8dd6-084b70f99b15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Fecha desde:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="120" y="151" width="114" height="20" uuid="1e9c8055-4a21-44f5-a6ab-bd2129b770c5"/>
+				<reportElement x="232" y="96" width="65" height="20" uuid="1e9c8055-4a21-44f5-a6ab-bd2129b770c5"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="171" width="120" height="20" uuid="7b7a4da1-e2e1-4d84-8847-1099e3558db9"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="297" y="96" width="71" height="20" uuid="7b7a4da1-e2e1-4d84-8847-1099e3558db9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Fecha hasta:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="120" y="171" width="114" height="20" uuid="586c3843-4f4c-47dd-a7ac-78a4bb536cc3"/>
+				<reportElement x="368" y="96" width="65" height="20" uuid="586c3843-4f4c-47dd-a7ac-78a4bb536cc3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="191" width="120" height="20" uuid="aa257426-b58c-4345-afc5-525bf57307d6"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Catidad de reclamos:]]></text>
-			</staticText>
-			<textField pattern="#,##0;#,##0-">
-				<reportElement x="120" y="191" width="114" height="20" uuid="08de5275-6675-4a9a-881f-823e9f820449"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{totalReclamos}]]></textFieldExpression>
-			</textField>
 			<textField>
-				<reportElement x="120" y="116" width="395" height="20" uuid="1b4d0250-c68c-43a4-bbba-4f14c7485f1d"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="96" y="116" width="395" height="20" uuid="1b4d0250-c68c-43a4-bbba-4f14c7485f1d"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{usuarioGeneracion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="96" width="120" height="20" uuid="f89e73d1-4eb1-4de7-a79c-6e98dd7bb3be"/>
+				<reportElement x="0" y="96" width="96" height="20" uuid="f89e73d1-4eb1-4de7-a79c-6e98dd7bb3be"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Fecha generación:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="120" y="96" width="114" height="20" uuid="ccf4256a-7408-481a-bc05-48a925f5481f"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="96" y="96" width="65" height="20" uuid="ccf4256a-7408-481a-bc05-48a925f5481f"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaGeneracion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="116" width="120" height="20" uuid="c0f0d69f-8fc6-4544-bab0-4aeb545ef26d"/>
+				<reportElement x="0" y="116" width="96" height="20" uuid="c0f0d69f-8fc6-4544-bab0-4aeb545ef26d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true" isItalic="true"/>
 				</textElement>
@@ -135,50 +130,104 @@
 	</title>
 	<detail>
 		<band height="285">
+			<subreport>
+				<reportElement x="0" y="25" width="515" height="68" uuid="b6652b85-a430-4d14-84ab-12c10f8592c0"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tiposReclamosReporte})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReclamoRangoFechaEstadoReclamos_subreport1.jasper"]]></subreportExpression>
+			</subreport>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="5" width="415" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="6b5fb862-6d6f-457e-960d-68fe51e6b7ed"/>
+				<reportElement mode="Opaque" x="381" y="5" width="134" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="7724751a-b85e-47e8-89ff-6256d61c3eb8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vTituloDependencia}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="104" width="514" height="1" uuid="bc76ff33-9bfb-447e-ba9b-3ba9adc3484d"/>
+			</break>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="5" width="381" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="a5900d7e-c124-4920-8b79-942fbc86a88e"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombreDependencia}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="415" y="5" width="100" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="fc5ef3d4-8566-4199-861b-081fd88dde47"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cantidadReclamosDependencia}]]></textFieldExpression>
-			</textField>
-			<subreport>
-				<reportElement x="0" y="25" width="515" height="260" uuid="b6652b85-a430-4d14-84ab-12c10f8592c0"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tiposReclamosReporte})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReclamoRangoFechaEstadoReclamos_subreport1.jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="22">
+			<textField>
+				<reportElement x="414" y="2" width="100" height="20" uuid="888dd3f4-92aa-4371-a67b-75f4b6fe2f10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="2" width="41" height="20" uuid="e7c77128-94cc-4b86-988d-79a65ae0788b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="41" y="2" width="65" height="20" uuid="65d61a1b-5671-459b-aef7-42125804ecd6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaGeneracion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="106" y="2" width="42" height="20" uuid="eda02a21-e3dd-45e4-9a7c-6de6401f8874"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Rango:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="2" width="5" height="20" uuid="35ecd24c-6a7a-4f97-b5e9-fbef42a9b911"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="148" y="2" width="65" height="20" uuid="f33bff01-7ab6-4371-beab-00753c11db7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="218" y="2" width="65" height="20" uuid="f4b54527-b1f3-48cd-844b-6aa74b0e8e9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 	<summary>
 		<band height="422">
 			<pie3DChart>
-				<chart>
-					<reportElement x="0" y="17" width="515" height="388" uuid="0aeb68a2-54a0-4df7-a0c0-cc9690a12147"/>
-					<chartTitle/>
+				<chart isShowLegend="true" theme="default">
+					<reportElement x="0" y="17" width="515" height="405" uuid="0aeb68a2-54a0-4df7-a0c0-cc9690a12147"/>
+					<chartTitle position="Top">
+						<font size="14" isBold="true"/>
+					</chartTitle>
 					<chartSubtitle/>
-					<chartLegend/>
+					<chartLegend position="Bottom">
+						<font size="10" isUnderline="true"/>
+					</chartLegend>
 				</chart>
 				<pieDataset>
 					<keyExpression><![CDATA[$F{nombreDependencia}]]></keyExpression>
 					<valueExpression><![CDATA[$F{cantidadReclamosDependencia}]]></valueExpression>
 					<labelExpression><![CDATA[new java.text.DecimalFormat("0.00").format(($F{cantidadReclamosDependencia}.doubleValue()*100)/($P{totalReclamos})) + "%"]]></labelExpression>
 				</pieDataset>
-				<pie3DPlot>
+				<pie3DPlot isShowLabels="true" isCircular="true">
 					<plot/>
 					<itemLabel/>
 				</pie3DPlot>
 			</pie3DChart>
-			<break>
-				<reportElement x="0" y="4" width="100" height="1" uuid="b3586953-e55a-4f2b-a98e-df3da7e404a0"/>
-			</break>
 		</band>
 	</summary>
 </jasperReport>
