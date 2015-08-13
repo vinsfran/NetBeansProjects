@@ -29,6 +29,7 @@
 	<field name="direccionReclamo" class="java.lang.String"/>
 	<field name="origenReclamo" class="java.lang.String"/>
 	<field name="fechaReclamo" class="java.util.Date"/>
+	<field name="fkCodEstadoReclamo.nombreEstadoReclamo" class="java.lang.String"/>
 	<columnHeader>
 		<band height="22">
 			<staticText>
@@ -63,6 +64,13 @@
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="395" y="2" width="120" height="20" uuid="7a01a874-616e-4a39-8a16-681a622bde02"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fkCodEstadoReclamo.nombreEstadoReclamo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

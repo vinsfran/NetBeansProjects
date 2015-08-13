@@ -12,7 +12,7 @@
 	<field name="reclamos" class="java.util.List"/>
 	<detail>
 		<band height="88" splitType="Stretch">
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement mode="Opaque" x="0" y="0" width="432" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="7bd167db-7f03-4f5a-be17-682691c78550"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
