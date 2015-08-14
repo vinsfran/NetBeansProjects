@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
