@@ -62,7 +62,7 @@ public class BorrarUsuariosInactivos extends TimerTask implements ServletContext
                     + "     </head>"
                     + "     <body style='background-color: #ffffff'>"
                     + "       <div style='text-align: center;'>"
-                    + "            <h3>REPORTE DE SOBRE BORRAR USUARIOS INACTIVO</h3> "
+                    + "            <h3>REPORTE DE SOBRE USUARIOS INACTIVOS</h3> "
                     + "       </div> "
                     + "       <div> "
                     + "             <p>FECHA: " + dia + "/" + (mes + 1) + "/" + año + "</p>"
