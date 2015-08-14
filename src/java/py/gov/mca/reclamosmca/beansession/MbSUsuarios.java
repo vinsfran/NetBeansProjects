@@ -192,7 +192,9 @@ public class MbSUsuarios implements Serializable {
             usuario = usuariosSB.consultarUsuarios(loginUsuario.trim());
             if (usuario != null) {
                 if (usuario.getClaveUsuario().substring(0, 6).equals(claveUsuario) && usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(2)) {
-                    usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
+                    EstadosUsuarios estadoUsuario = new EstadosUsuarios();
+                    estadoUsuario.setCodEstadoUsuario(1);
+                    usuario.setFkCodEstadoUsuario(estadoUsuario);
                     if (usuariosSB.actualizarUsuarios(usuario).equals("OK")) {
 
                         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -318,9 +320,9 @@ public class MbSUsuarios implements Serializable {
                             //Si cumple la condicion setea la contraseña de session por la contraseña nueva en md5 y se setea el estado a ACTIVO
                             usuario.setClaveUsuario(contrasenaMD5Nueva);
                             //Cambia a estado ACTIVO
-                            EstadosUsuarios estado = new EstadosUsuarios();
-                            estado.setCodEstadoUsuario(1);
-                            usuario.setFkCodEstadoUsuario(estado);
+                            EstadosUsuarios estadoUsuario = new EstadosUsuarios();
+                            estadoUsuario.setCodEstadoUsuario(1);
+                            usuario.setFkCodEstadoUsuario(estadoUsuario);
 
                         } else {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contraseña Actual no es valida.", ""));
@@ -364,9 +366,9 @@ public class MbSUsuarios implements Serializable {
             usuario = usuariosSB.consultarUsuarios(loginUsuario);
             if (usuario != null) {
                 //Cambia a estado RESETCLAVE
-                EstadosUsuarios estado = new EstadosUsuarios();
-                estado.setCodEstadoUsuario(3);
-                usuario.setFkCodEstadoUsuario(estado);
+                EstadosUsuarios estadoUsuario = new EstadosUsuarios();
+                estadoUsuario.setCodEstadoUsuario(3);
+                usuario.setFkCodEstadoUsuario(estadoUsuario);
                 String mensaje = usuariosSB.actualizarUsuarios(usuario);
                 if (mensaje.equals("OK")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Su nueva contraseña ha sido enviada a " + loginUsuario, ""));
