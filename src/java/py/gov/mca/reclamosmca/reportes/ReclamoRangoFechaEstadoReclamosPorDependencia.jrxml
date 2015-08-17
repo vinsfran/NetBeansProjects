@@ -132,6 +132,9 @@
 		<band height="285">
 			<subreport>
 				<reportElement x="0" y="0" width="515" height="68" uuid="b6652b85-a430-4d14-84ab-12c10f8592c0"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="totalReclamos">
 					<subreportParameterExpression><![CDATA[$P{totalReclamos}]]></subreportParameterExpression>
 				</subreportParameter>

@@ -132,6 +132,9 @@
 		<band height="285">
 			<subreport>
 				<reportElement x="0" y="25" width="515" height="68" uuid="b6652b85-a430-4d14-84ab-12c10f8592c0"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tiposReclamosReporte})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReclamoRangoFechaEstadoReclamos_subreport1.jasper"]]></subreportExpression>
 			</subreport>
@@ -228,6 +231,13 @@
 					<itemLabel/>
 				</pie3DPlot>
 			</pie3DChart>
+			<staticText>
+				<reportElement mode="Opaque" x="-1" y="0" width="515" height="20" forecolor="#FFFFFF" backcolor="#6699FF" uuid="7759110b-a919-412b-b9d1-768cf0b06f43"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Gráfico estadístico]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

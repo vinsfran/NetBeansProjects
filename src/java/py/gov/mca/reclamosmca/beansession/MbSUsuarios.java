@@ -52,9 +52,9 @@ public class MbSUsuarios implements Serializable {
     private Usuarios usuario;
 
     public MbSUsuarios() {
-        //Control de tiempo de session de usuario, en segundos seteado en 300 segundos equivalentes a 5 minutos
+        //Control de tiempo de session de usuario, en segundos seteado en 1200 segundos equivalentes a 20 minutos
         HttpSession sessionUsuario = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        sessionUsuario.setMaxInactiveInterval(300);
+        sessionUsuario.setMaxInactiveInterval(1200);
     }
 
     public String prepararRegistro() {
