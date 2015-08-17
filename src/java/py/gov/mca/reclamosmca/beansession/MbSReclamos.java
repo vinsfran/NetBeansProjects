@@ -175,6 +175,13 @@ public class MbSReclamos implements Serializable {
         return "admin_form_reporte_rango_fecha_estado_reclamo";
     }
     
+    public String prepararReportePorEstadoRangoFechaTipo() {
+        this.fechaInicio = new Date();
+        this.fechaFin = new Date();
+        
+        return "admin_form_reporte_rango_fecha_dependencia_tipos_reclamos_estado";
+    }
+    
     public void seleccionarTipoDeReclamo(AjaxBehaviorEvent event) {
         this.tipoDeReclamosSeleccionado = tiposReclamosSB.consultarTipoReclamo(getNuevoReclamo().getFkCodTipoReclamo().getCodTipoReclamo());
         //tipoReclamo = tiposReclamosSB.consultarTipoReclamo(getReclamos().getFkCodTipoReclamo().getCodTipoReclamo());
@@ -796,6 +803,96 @@ public class MbSReclamos implements Serializable {
             }
         }
         
+        Map<String, Object> parametros = new HashMap<>();
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        
+        parametros.put("urlImagen", urlImagen);
+        parametros.put("urlImagen2", urlImagen2);
+        parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
+        parametros.put("fechaDesde", getFechaInicio());
+        parametros.put("fechaHasta", getFechaFin());
+        parametros.put("fechaGeneracion", new Date());
+        parametros.put("totalReclamos", listaReclamos.size());
+        parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
+        parametros.put("SUBREPORT_DIR", "py/gov/mca/reclamosmca/reportes/");
+        
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaDependenciasReporte);
+        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamos.jasper"));
+        
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
+        
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("application/pdf");
+        response.addHeader("Content-disposition", "attachment; filename=REPORTE_RANGO_FECHA_TIPOS_RECLAMOS.pdf");
+        //response.
+        //Response.Write("<script>window.print();</script>"); 
+
+        ServletOutputStream stream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+        
+        stream.flush();
+        stream.close();
+        FacesContext.getCurrentInstance().responseComplete();
+    }
+    
+    public void exportarPDFporDependenciaRangoFechaEstadoReclamos() throws JRException, IOException {
+        JasperReport jasper;
+        Usuarios usu = recuperarUsuarioSession();
+        List<Reclamos> listaReclamos = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
+        
+        List<DependenciasReporte> listaDependenciasReporte = new ArrayList<>();
+        
+        DependenciasReporte dependenciasReporte = new DependenciasReporte();
+        dependenciasReporte.setCodDependencia(0);
+        //Se buscan las dependencias
+        for (int i = 0; listaReclamos.size() > i; i++) {
+            if (!dependenciasReporte.getCodDependencia().equals(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia())) {
+                dependenciasReporte = new DependenciasReporte();
+                dependenciasReporte.setCodDependencia(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia());
+                dependenciasReporte.setNombreDependencia(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
+                dependenciasReporte.setCantidadReclamosDependencia(0);
+                dependenciasReporte.setTiposReclamosReporte(new ArrayList<>());
+                listaDependenciasReporte.add(dependenciasReporte);
+            }
+        }
+        //Se buscan los tipos de reclamos
+        int ban = 0;
+        for (int i = 0; listaReclamos.size() > i; i++) {
+            for (int j = 0; listaDependenciasReporte.size() > j; j++) {
+                if (listaDependenciasReporte.get(j).getCodDependencia().equals(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia())) {
+                    if (ban != listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo()) {
+                        TiposReclamosReporte tiposReclamosReporte;
+                        tiposReclamosReporte = new TiposReclamosReporte();
+                        tiposReclamosReporte.setCodTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo());
+                        tiposReclamosReporte.setNombreTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getNombreTipoReclamo());
+                        tiposReclamosReporte.setCatidadReclamosTipos(0);
+                        tiposReclamosReporte.setReclamos(new ArrayList<>());
+                        listaDependenciasReporte.get(j).getTiposReclamosReporte().add(tiposReclamosReporte);
+                        ban = listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo();
+                    }
+                }
+            }
+        }
+        //Se buscan los reclamos
+        for (int i = 0; listaReclamos.size() > i; i++) {
+            for (int j = 0; listaDependenciasReporte.size() > j; j++) {
+                if (listaDependenciasReporte.get(j).getCodDependencia().equals(listaReclamos.get(i).getFkCodTipoReclamo().getFkCodDependencia().getCodDependencia())) {
+                    for (int k = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().size() > k; k++) {
+                        if (listaDependenciasReporte.get(j).getTiposReclamosReporte().get(k).getCodTipoReclamo().equals(listaReclamos.get(i).getFkCodTipoReclamo().getCodTipoReclamo())) {
+                            listaDependenciasReporte.get(j).getTiposReclamosReporte().get(k).getReclamos().add(listaReclamos.get(i));
+                            listaDependenciasReporte.get(j).getTiposReclamosReporte().get(k).setCatidadReclamosTipos(listaDependenciasReporte.get(j).getTiposReclamosReporte().get(k).getCatidadReclamosTipos() + 1);
+                            listaDependenciasReporte.get(j).setCantidadReclamosDependencia(listaDependenciasReporte.get(j).getCantidadReclamosDependencia() + 1);
+                        }
+                    }
+                }
+            }
+        }
+        
         System.out.println("TAMA: " + listaDependenciasReporte.size());
         
         for (int j = 0; listaDependenciasReporte.size() > j; j++) {
@@ -826,7 +923,7 @@ public class MbSReclamos implements Serializable {
         parametros.put("SUBREPORT_DIR", "py/gov/mca/reclamosmca/reportes/");
         
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaDependenciasReporte);
-        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamos.jasper"));
+        jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamosPorDependencia.jasper"));
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
         
@@ -835,7 +932,7 @@ public class MbSReclamos implements Serializable {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
         response.setContentType("application/pdf");
-        response.addHeader("Content-disposition", "attachment; filename=REPORTE_RANGO_FECHA_TIPOS_RECLAMOS.pdf");
+        response.addHeader("Content-disposition", "attachment; filename=REPORTE_TIPOS_RECLAMOS_ESTADO_RANGO_FECHA.pdf");
         //response.
         //Response.Write("<script>window.print();</script>"); 
 
@@ -885,7 +982,8 @@ public class MbSReclamos implements Serializable {
     }
     
     private double distanciaEntrePuntos(double lat1, double lon1, double lat2, double lon2) {
-        // Formula de Haversine para obtener la distancia entre dos puntos geográficos (longitud y latitud)
+        // Formula de Haversine para obtener la distancia entre 
+        // dos puntos geográficos (longitud y latitud)
         // Radio de la Tierra: 6378 km.
         // R = earth’s radius (mean radius = 6,378km)
         // Δlat = lat2− lat1
