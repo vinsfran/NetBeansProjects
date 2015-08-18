@@ -60,7 +60,7 @@ public class ReclamosSB {
                 em.persist(imagen);
                 objeto.setFkImagen(imagen);
                 //  em.persist(objeto.getFkCodPersona());
-                em.merge(objeto);
+                em.persist(objeto);
                 em.flush();
             } else {
                 em.persist(objeto);
