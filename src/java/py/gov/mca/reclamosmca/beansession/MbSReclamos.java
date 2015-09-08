@@ -86,20 +86,20 @@ import py.gov.mca.reclamosmca.utiles.Converciones;
 @ManagedBean(name = "mbSReclamos")
 @SessionScoped
 public class MbSReclamos implements Serializable {
-    
+
     @EJB
     private ReclamosSB reclamosSB;
     @EJB
     private TiposReclamosSB tiposReclamosSB;
     @EJB
     private TiposFinalizacionReclamosSB tiposFinalizacionReclamosSB;
-    
+
     @EJB
     private UsuariosSB usuariosSB;
-    
+
     @EJB
     private PersonasSB personasSB;
-    
+
     private List<Reclamos> misReclamos;
     private List<Reclamos> reclamosPendientes;
     private List<Reclamos> reclamosAtendidos;
@@ -108,30 +108,31 @@ public class MbSReclamos implements Serializable {
     private List<Reclamos> reclamos;
     private List<TiposReclamos> tiposDeReclamos;
     private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
-    
+
     private TiposReclamos tipoDeReclamosSeleccionado;
-    
+    private TiposReclamos tipoDeReclamosAnterior;
+
     private Reclamos nuevoReclamo;
     private Reclamos reclamoSeleccionado;
-    
+
     private Usuarios nuevoUsuario;
-    
+
     private Imagenes imagenParaGuardar;
-    
+
     private String dirReclamo;
     private String imagenSemaforo;
     private String mensajeCorreo;
-    
+
     private Date fechaInicio;
     private Date fechaFin;
-    
+
     private MapModel emptyModel;
-    
+
     private int zoom;
     private int codigoEstadoReclamo;
-    
+
     private LatLng latituteLongitude;
-    
+
     private boolean mostrarGraphicImage;
     private boolean activarCamposNuevoUsuario;
     private boolean activarCampoCorreo;
@@ -139,18 +140,18 @@ public class MbSReclamos implements Serializable {
     private boolean activarCamposCuenta;
     private boolean activarCamposTelefono;
     private boolean marcaParaNuevoUsuario;
-    
+
     private DefaultStreamedContent imagenCargada;
-    
+
     public MbSReclamos() {
-        
+
     }
-    
+
     @PostConstruct
     public void init() {
         emptyModel = new DefaultMapModel();
     }
-    
+
     public String prepararNuevoReclamo() {
         this.emptyModel = null;
         this.emptyModel = new DefaultMapModel();
@@ -166,22 +167,22 @@ public class MbSReclamos implements Serializable {
         this.imagenCargada = null;
         return "admin_nuevo_reclamo";
     }
-    
+
     public String prepararReportePorEstadoRangoFecha() {
         this.codigoEstadoReclamo = 0;
         this.fechaInicio = new Date();
         this.fechaFin = new Date();
-        
+
         return "admin_form_reporte_rango_fecha_estado_reclamo";
     }
-    
+
     public String prepararReportePorEstadoRangoFechaTipo() {
         this.fechaInicio = new Date();
         this.fechaFin = new Date();
-        
+
         return "admin_form_reporte_rango_fecha_dependencia_tipos_reclamos_estado";
     }
-    
+
     public void seleccionarTipoDeReclamo(AjaxBehaviorEvent event) {
         this.tipoDeReclamosSeleccionado = tiposReclamosSB.consultarTipoReclamo(getNuevoReclamo().getFkCodTipoReclamo().getCodTipoReclamo());
         //tipoReclamo = tiposReclamosSB.consultarTipoReclamo(getReclamos().getFkCodTipoReclamo().getCodTipoReclamo());
@@ -190,7 +191,7 @@ public class MbSReclamos implements Serializable {
             emptyModel.getMarkers().get(0).setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
         }
     }
-    
+
     public void puntoSelecionado(PointSelectEvent event) throws UnsupportedEncodingException, MalformedURLException {
         if (this.tipoDeReclamosSeleccionado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
@@ -214,7 +215,7 @@ public class MbSReclamos implements Serializable {
             }
         }
     }
-    
+
     public String enviarReclamo() throws Exception {
         Usuarios usu = recuperarUsuarioSession();
         if (this.imagenParaGuardar != null) {
@@ -254,7 +255,7 @@ public class MbSReclamos implements Serializable {
             }
         }
     }
-    
+
     public String prepararNuevoReclamoExterno() {
         this.activarCamposNuevoUsuario = false;
         this.activarCampoCorreo = false;
@@ -279,7 +280,7 @@ public class MbSReclamos implements Serializable {
         this.imagenCargada = null;
         return "admin_nuevo_reclamo_externo";
     }
-    
+
     public void buscarPorCedula() {
         Personas personaBuscada = personasSB.consultarPersonaCedula(nuevoUsuario.getFkCodPersona().getCedulaPersona());
         Usuarios usuarioBuscado = new Usuarios();
@@ -316,7 +317,7 @@ public class MbSReclamos implements Serializable {
             } else {
                 this.activarCamposTelefono = true;
             }
-            
+
         } else {
             this.activarCamposNuevoUsuario = false;
             this.activarCampoDireccion = false;
@@ -326,7 +327,7 @@ public class MbSReclamos implements Serializable {
             nuevoUsuario.setFkCodPersona(new Personas());
         }
     }
-    
+
     public void bucarPorCorreo() {
         Usuarios usuarioBuscado = usuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
         if (usuarioBuscado != null) {
@@ -335,7 +336,7 @@ public class MbSReclamos implements Serializable {
             this.mensajeCorreo = "";
         }
     }
-    
+
     public String enviarReclamoExterno() throws Exception {
         System.out.println("Des: " + nuevoReclamo.getDescripcionReclamoContribuyente());
         if (marcaParaNuevoUsuario) {
@@ -348,7 +349,7 @@ public class MbSReclamos implements Serializable {
             nuevoUsuario.setFkCodRol(new Roles());
             nuevoUsuario.getFkCodRol().setCodRol(6);
         }
-        
+
         String resultado = usuariosSB.crearUsuariosExterno(nuevoUsuario);
         if (resultado.equals("OK")) {
             Usuarios usu = usuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
@@ -391,19 +392,40 @@ public class MbSReclamos implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro de Usuario, intente de nuevo", resultado));
             return "/admin_nuevo_reclamo_externo";
         }
-        
+
     }
-    
+
+    public String prepararCambiarTipoReclamo(Integer codReclamo) {
+        reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
+        tipoDeReclamosAnterior = reclamoSeleccionado.getFkCodTipoReclamo();
+        return "admin_cambiar_tipo_reclamo";
+    }
+
+    public String derivarReclamo() {
+
+        reclamoSeleccionado.setFkCodUsuarioDerivacion(recuperarUsuarioSession());
+        if (reclamosSB.actualizarReclamosDerivacion(reclamoSeleccionado, tipoDeReclamosAnterior).equals("OK")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo derivado.", ""));
+            //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
+            return "/admin_gestion_reclamos_pendientes";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurrio un error al derivar el reclamo.", ""));
+            //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
+            return "/admin_cambiar_tipo_reclamo";
+        }
+
+    }
+
     public void onStateChange(StateChangeEvent event) {
         setZoom(event.getZoomLevel());
     }
-    
+
     public Usuarios recuperarUsuarioSession() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         MbSUsuarios usuario = (MbSUsuarios) session.getAttribute("mbSUsuarios");
         return usuario.getUsuario();
     }
-    
+
     public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
         List<FacesMessage> msgs = new ArrayList<>();
         Part file = (Part) value;
@@ -417,7 +439,7 @@ public class MbSReclamos implements Serializable {
             throw new ValidatorException(msgs);
         }
     }
-    
+
     public void cargarImagen(FileUploadEvent event) throws IOException {
         UploadedFile file = event.getFile();
 //        BufferedImage src = ImageIO.read(file.getInputstream());
@@ -452,13 +474,13 @@ public class MbSReclamos implements Serializable {
             Logger.getLogger(MbSReclamos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void cancelarImagenCargada() {
         this.setMostrarGraphicImage(false);
         this.imagenParaGuardar = null;
         this.imagenCargada = null;
     }
-    
+
     private byte[] ajustarImagen(InputStream imagen, int IMG_WIDTH, int IMG_HEIGHT, String tipoImagen) throws Exception {
         String tipo = tipoImagen.substring(6, tipoImagen.length());
         // InputStream inputStream = new ByteArrayInputStream(imagen);
@@ -480,7 +502,7 @@ public class MbSReclamos implements Serializable {
         }
         return baos.toByteArray();
     }
-    
+
     public byte[] resize(InputStream input, int width, int height) throws Exception {
         BufferedImage src = ImageIO.read(input);
         BufferedImage dest = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -491,7 +513,7 @@ public class MbSReclamos implements Serializable {
         ImageIO.write(dest, "JPG", output);
         return output.toByteArray();
     }
-    
+
     public String formatearFecha(Date fecha) {
         // formateo de fechas
         String patron = "dd-MM-yyyy";
@@ -502,7 +524,7 @@ public class MbSReclamos implements Serializable {
             return formato.format(fecha);
         }
     }
-    
+
     public int tiempoTranscurrido(Reclamos reclamo) {
         //Se crean objetos calendario con la fecha actual
         Calendar hoy = Calendar.getInstance();
@@ -530,7 +552,7 @@ public class MbSReclamos implements Serializable {
             //Obtiene el dia
             c.setTimeInMillis(hoy.getTime().getTime() - fechaInicio.getTime().getTime());
             dias = c.get(Calendar.DAY_OF_YEAR);
-            
+
         }
         mostrarSemaforo(dias, diasMaximo);
         if (ban == 0) {
@@ -538,7 +560,7 @@ public class MbSReclamos implements Serializable {
         }
         return dias;
     }
-    
+
     public void mostrarSemaforo(Integer dias, Integer diasMaximo) {
         if (dias == 0) {
             setImagenSemaforo(null);
@@ -550,7 +572,7 @@ public class MbSReclamos implements Serializable {
             setImagenSemaforo("rojo20.gif");
         }
     }
-    
+
     public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
         System.out.println("exportarPDF CodReclamo: " + codReclamo);
         Reclamos reclamoSeleccionadoPDF = reclamosSB.consultarReclamo(codReclamo);
@@ -559,7 +581,7 @@ public class MbSReclamos implements Serializable {
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
-        
+
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
         parametros.put("nombreDependencia", reclamoSeleccionadoPDF.getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia());
@@ -569,7 +591,7 @@ public class MbSReclamos implements Serializable {
         parametros.put("apellidoPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getApellidoPersona());
         parametros.put("direccionPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getDireccionPersona());
         parametros.put("telefonoPersona", reclamoSeleccionadoPDF.getFkCodUsuario().getFkCodPersona().getTelefonoPersona());
-        
+
         parametros.put("codReclamo", reclamoSeleccionadoPDF.getCodReclamo());
         parametros.put("fechaReclamo", reclamoSeleccionadoPDF.getFechaReclamo());
         parametros.put("direccionReclamo", reclamoSeleccionadoPDF.getDireccionReclamo());
@@ -578,7 +600,7 @@ public class MbSReclamos implements Serializable {
         parametros.put("direccionReclamo", reclamoSeleccionadoPDF.getDireccionReclamo());
         parametros.put("descripcionReclamoContribuyente", reclamoSeleccionadoPDF.getDescripcionReclamoContribuyente());
         parametros.put("estadoReclamo", reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getNombreEstadoReclamo());
-        
+
         if (reclamoSeleccionadoPDF.getFkImagen() == null) {
             String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
             File imageFile = new File(urlImagen3);
@@ -633,13 +655,13 @@ public class MbSReclamos implements Serializable {
 
         ServletOutputStream stream = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-        
+
         stream.flush();
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
-        
+
     }
-    
+
     public void exportarPDFporRangoFechaDependencia() throws JRException, IOException {
         JasperReport jasper;
         Usuarios usu = recuperarUsuarioSession();
@@ -657,12 +679,12 @@ public class MbSReclamos implements Serializable {
                 cantidadFinalizados = cantidadFinalizados + 1;
             }
         }
-        
+
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
-        
+
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
         parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
@@ -674,9 +696,9 @@ public class MbSReclamos implements Serializable {
         parametros.put("totalReclamosAtendidos", cantidadAtendidos);
         parametros.put("totalReclamosFinalizados", cantidadFinalizados);
         parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
-        
+
         jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaDependenciaReporte.jasper"));
-        
+
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JREmptyDataSource());
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         response.setHeader("Cache-Control", "no-cache");
@@ -689,18 +711,18 @@ public class MbSReclamos implements Serializable {
 
         ServletOutputStream stream = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-        
+
         stream.flush();
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
     }
-    
+
     public void exportarPDFporRangoFechaDependenciaTiposReclamos() throws JRException, IOException {
         JasperReport jasper;
         Usuarios usu = recuperarUsuarioSession();
         List<Reclamos> listaReclamos = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
         List<TiposReclamosCantidad> listaTiposReclamosCantidad = new ArrayList<>();
-        
+
         for (int i = 0; listaReclamos.size() > i; i++) {
             TiposReclamosCantidad tiposReclamosCantidad = new TiposReclamosCantidad();
             tiposReclamosCantidad.setNombreTipoReclamo(listaReclamos.get(i).getFkCodTipoReclamo().getNombreTipoReclamo());
@@ -712,12 +734,12 @@ public class MbSReclamos implements Serializable {
             }
             listaTiposReclamosCantidad.add(tiposReclamosCantidad);
         }
-        
+
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
-        
+
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
         parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
@@ -726,12 +748,12 @@ public class MbSReclamos implements Serializable {
         parametros.put("fechaGeneracion", new Date());
         parametros.put("totalReclamos", listaReclamos.size());
         parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
-        
+
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaTiposReclamosCantidad);
         jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaDependenciaTiposReclamosReporte.jasper"));
-        
+
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
-        
+
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
@@ -743,20 +765,20 @@ public class MbSReclamos implements Serializable {
 
         ServletOutputStream stream = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-        
+
         stream.flush();
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
-        
+
     }
-    
+
     public void exportarPDFporRangoFechaEstadoReclamos() throws JRException, IOException {
         JasperReport jasper;
         Usuarios usu = recuperarUsuarioSession();
         List<Reclamos> listaReclamos = reclamosSB.listarDependenciaTipoReclamosEstadoReclamoRangoFecha(this.codigoEstadoReclamo, this.fechaInicio, this.fechaFin);
-        
+
         List<DependenciasReporte> listaDependenciasReporte = new ArrayList<>();
-        
+
         DependenciasReporte dependenciasReporte = new DependenciasReporte();
         dependenciasReporte.setCodDependencia(0);
         //Se buscan las dependencias
@@ -802,12 +824,12 @@ public class MbSReclamos implements Serializable {
                 }
             }
         }
-        
+
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
-        
+
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
         parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
@@ -817,12 +839,12 @@ public class MbSReclamos implements Serializable {
         parametros.put("totalReclamos", listaReclamos.size());
         parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
         parametros.put("SUBREPORT_DIR", "py/gov/mca/reclamosmca/reportes/");
-        
+
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaDependenciasReporte);
         jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamos.jasper"));
-        
+
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
-        
+
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
@@ -834,19 +856,19 @@ public class MbSReclamos implements Serializable {
 
         ServletOutputStream stream = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-        
+
         stream.flush();
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
     }
-    
+
     public void exportarPDFporDependenciaRangoFechaEstadoReclamos() throws JRException, IOException {
         JasperReport jasper;
         Usuarios usu = recuperarUsuarioSession();
         List<Reclamos> listaReclamos = reclamosSB.listarPorDependenciaRangoDeFecha(usu.getFkCodPersona().getFkCodDependencia().getCodDependencia(), getFechaInicio(), getFechaFin());
-        
+
         List<DependenciasReporte> listaDependenciasReporte = new ArrayList<>();
-        
+
         DependenciasReporte dependenciasReporte = new DependenciasReporte();
         dependenciasReporte.setCodDependencia(0);
         //Se buscan las dependencias
@@ -892,26 +914,26 @@ public class MbSReclamos implements Serializable {
                 }
             }
         }
-        
+
         System.out.println("TAMA: " + listaDependenciasReporte.size());
-        
+
         for (int j = 0; listaDependenciasReporte.size() > j; j++) {
             System.out.println("DEPE: " + listaDependenciasReporte.get(j).getNombreDependencia());
-            
+
             for (int h = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().size() > h; h++) {
                 System.out.println("-TIPO: " + listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getNombreTipoReclamo());
-                
+
                 for (int m = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getReclamos().size() > m; m++) {
                     System.out.println("--RECLA: " + listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getReclamos().get(m).getCodReclamo());
                 }
             }
         }
-        
+
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
         String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
-        
+
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
         parametros.put("nombreDependencia", usu.getFkCodPersona().getFkCodDependencia().getNombreDependencia());
@@ -921,12 +943,12 @@ public class MbSReclamos implements Serializable {
         parametros.put("totalReclamos", listaReclamos.size());
         parametros.put("usuarioGeneracion", usu.getFkCodPersona().getNombrePersona() + " " + usu.getFkCodPersona().getApellidoPersona());
         parametros.put("SUBREPORT_DIR", "py/gov/mca/reclamosmca/reportes/");
-        
+
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listaDependenciasReporte);
         jasper = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("py/gov/mca/reclamosmca/reportes/ReclamoRangoFechaEstadoReclamosPorDependencia.jasper"));
-        
+
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, beanCollectionDataSource);
-        
+
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
@@ -938,17 +960,17 @@ public class MbSReclamos implements Serializable {
 
         ServletOutputStream stream = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-        
+
         stream.flush();
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
     }
-    
+
     public Integer cantidadReclamosPorZona(Reclamos reclamo) {
         List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
         List<Reclamos> lista2 = new ArrayList<>();
         for (Reclamos reclamoAux : lista1) {
-            
+
             if (!reclamoAux.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(3) && !reclamo.getCodReclamo().equals(reclamoAux.getCodReclamo())) {
                 //CONTROL PARA TIEMPO DE RECLAMOS SIMILARES
                 if (cantidadDias(reclamoAux.getFechaReclamo()) < 31) {
@@ -962,7 +984,7 @@ public class MbSReclamos implements Serializable {
         return lista2.size();
         //listarReclamosPorZona = new ListDataModel(lista2);
     }
-    
+
     public String verReclamosPorZona(Reclamos reclamo) {
         List<Reclamos> lista1 = reclamosSB.listarPorTiposReclamos(reclamo.getFkCodTipoReclamo().getCodTipoReclamo());
         List<Reclamos> lista2 = new ArrayList<>();
@@ -980,7 +1002,7 @@ public class MbSReclamos implements Serializable {
         reclamosPorZona = lista2;
         return "admin_gestion_reclamos_zona";
     }
-    
+
     private double distanciaEntrePuntos(double lat1, double lon1, double lat2, double lon2) {
         // Formula de Haversine para obtener la distancia entre 
         // dos puntos geográficos (longitud y latitud)
@@ -999,7 +1021,7 @@ public class MbSReclamos implements Serializable {
         double d = R * c * 1000;
         return d;
     }
-    
+
     public void verMapa(Reclamos reclamo) {
         System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
         emptyModel = new DefaultMapModel();
@@ -1011,7 +1033,7 @@ public class MbSReclamos implements Serializable {
         emptyModel.addOverlay(marca);
         this.nuevoReclamo = reclamo;
     }
-    
+
     public void verImagen(Reclamos reclamo) {
         reclamoSeleccionado = reclamo;
         //System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
@@ -1024,7 +1046,7 @@ public class MbSReclamos implements Serializable {
             this.imagenCargada.setContentType(reclamoSeleccionado.getFkImagen().getTipoImagen());
         }
     }
-    
+
     public String recuperarReclamo(Integer codReclamo) {
         System.out.println("MbSReclamos recuperarReclamo ENTRO " + codReclamo);
         reclamoSeleccionado = null;
@@ -1041,7 +1063,7 @@ public class MbSReclamos implements Serializable {
         }
         return pagina;
     }
-    
+
     public String actualizarReclamoPendiente() {
         System.out.println("MbSReclamos actualizarReclamoPendiente ENTRO");
         if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
@@ -1072,7 +1094,7 @@ public class MbSReclamos implements Serializable {
     //METODO PARA PROCESAR RECLAMOS ATENDIDOS
     public String actualizarReclamoAtendido() {
         System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO");
-        
+
         if (reclamoSeleccionado.getFkCodTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un Motivo de finalización.", ""));
             return "/admin_procesar_reclamo_atendido";
@@ -1088,7 +1110,7 @@ public class MbSReclamos implements Serializable {
             reclamoSeleccionado.setFkCodUsuarioCulminacion(recuperarUsuarioSession());
             reclamoSeleccionado.setFechaCulminacionReclamo(new Date());
             reclamoSeleccionado.setCantidadDiasProceso(cantidadDias(reclamoSeleccionado.getFechaAtencionReclamo()));
-            
+
             String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
                 System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO EN OK ");
@@ -1543,5 +1565,5 @@ public class MbSReclamos implements Serializable {
     public void setCodigoEstadoReclamo(int codigoEstadoReclamo) {
         this.codigoEstadoReclamo = codigoEstadoReclamo;
     }
-    
+
 }

@@ -101,6 +101,9 @@ public class Reclamos implements Serializable {
     @JoinColumn(name = "fk_cod_tipo_reclamo", referencedColumnName = "cod_tipo_reclamo")
     @ManyToOne(optional = false)
     private TiposReclamos fkCodTipoReclamo;
+    @JoinColumn(name = "fk_cod_usuario_derivacion", referencedColumnName = "cod_usuario")
+    @ManyToOne
+    private Usuarios fkCodUsuarioDerivacion;
     @JoinColumn(name = "fk_cod_usuario_atencion", referencedColumnName = "cod_usuario")
     @ManyToOne
     private Usuarios fkCodUsuarioAtencion;
@@ -257,6 +260,14 @@ public class Reclamos implements Serializable {
 
     public void setFkCodTipoReclamo(TiposReclamos fkCodTipoReclamo) {
         this.fkCodTipoReclamo = fkCodTipoReclamo;
+    }
+
+    public Usuarios getFkCodUsuarioDerivacion() {
+        return fkCodUsuarioDerivacion;
+    }
+
+    public void setFkCodUsuarioDerivacion(Usuarios fkCodUsuarioDerivacion) {
+        this.fkCodUsuarioDerivacion = fkCodUsuarioDerivacion;
     }
 
     public Usuarios getFkCodUsuarioAtencion() {

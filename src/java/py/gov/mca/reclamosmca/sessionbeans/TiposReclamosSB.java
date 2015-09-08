@@ -59,6 +59,13 @@ public class TiposReclamosSB {
         q.setParameter("codTipoReclamo", codTipoReclamo);
         return (TiposReclamos) q.getResultList().get(0);
     }
+    
+    @SuppressWarnings("unchecked")
+    public TiposReclamos consultarTipoReclamoPorNombre(String nombreTipoReclamo) {
+        Query q = em.createNamedQuery("TiposReclamos.findByNombreTipoReclamo");
+        q.setParameter("nombreTipoReclamo", nombreTipoReclamo);
+        return (TiposReclamos) q.getResultList().get(0);
+    }
 
     @SuppressWarnings("unchecked")
     public List<TiposReclamos> listarTiposReclamosTodos() {

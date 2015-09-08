@@ -53,12 +53,14 @@ public class Usuarios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "clave_usuario")
     private String claveUsuario;
-    @OneToMany(mappedBy = "fkCodUsuarioAtencion")
+    @OneToMany(mappedBy = "fkCodUsuarioDerivacion")
     private List<Reclamos> reclamosList;
-    @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
+    @OneToMany(mappedBy = "fkCodUsuarioAtencion")
     private List<Reclamos> reclamosList1;
-    @OneToMany(mappedBy = "fkCodUsuario")
+    @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
     private List<Reclamos> reclamosList2;
+    @OneToMany(mappedBy = "fkCodUsuario")
+    private List<Reclamos> reclamosList3;
     @JoinColumn(name = "fk_cod_estado_usuario", referencedColumnName = "cod_estado_usuario")
     @ManyToOne(optional = false)
     private EstadosUsuarios fkCodEstadoUsuario;
@@ -131,6 +133,15 @@ public class Usuarios implements Serializable {
 
     public void setReclamosList2(List<Reclamos> reclamosList2) {
         this.reclamosList2 = reclamosList2;
+    }
+
+    @XmlTransient
+    public List<Reclamos> getReclamosList3() {
+        return reclamosList3;
+    }
+
+    public void setReclamosList3(List<Reclamos> reclamosList3) {
+        this.reclamosList3 = reclamosList3;
     }
 
     public EstadosUsuarios getFkCodEstadoUsuario() {

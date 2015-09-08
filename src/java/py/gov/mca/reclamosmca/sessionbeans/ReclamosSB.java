@@ -44,7 +44,7 @@ public class ReclamosSB {
         mensajes = "";
     //    EntityTransaction tx = em.getTransaction();
 
-    //    tx.begin();
+        //    tx.begin();
         try {
             if (objeto.getDescripcionReclamoContribuyente() == null) {
                 objeto.setDescripcionReclamoContribuyente("NULL");
@@ -106,13 +106,13 @@ public class ReclamosSB {
 
                 enviarCorreos.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
             }
-    //        tx.commit();
+            //        tx.commit();
             mensajes = "OK";
         } catch (Exception ex) {
             mensajes = "No se pudo crear. (" + ex.getMessage() + ")";
-     //       tx.rollback();
+            //       tx.rollback();
         }
-    //    em.close();
+        //    em.close();
         return mensajes;
     }
 
@@ -155,8 +155,6 @@ public class ReclamosSB {
     public String actualizarReclamos(Reclamos objeto) {
         mensajes = "";
         try {
-            System.out.println("CODESTA: " + objeto.getFkCodEstadoReclamo().getCodEstadoReclamo());
-            System.out.println("CODROL: " + objeto.getFkCodUsuario().getFkCodRol().getCodRol());
             //em.find(Reclamos.class, objeto.getCodReclamo());
             em.merge(objeto);
             // em.flush();
@@ -167,7 +165,6 @@ public class ReclamosSB {
 
         if (mensajes.equals("OK")) {
             if (objeto.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {
-                System.out.println("CODESTA2222: ");
                 String asunto = "RESPUESTA SOBRE RECLAMO " + objeto.getFkCodTipoReclamo().getNombreTipoReclamo();
                 String mensaje = "<html>"
                         + "     <head>"
@@ -264,6 +261,62 @@ public class ReclamosSB {
             }
         }
 
+        return mensajes;
+    }
+
+    public String actualizarReclamosDerivacion(Reclamos objeto, TiposReclamos tipoDeReclamosAnterior) {
+        mensajes = "";
+        TiposReclamos tipoReclamoNuevo = tiposReclamosSB.consultarTipoReclamo(objeto.getFkCodTipoReclamo().getCodTipoReclamo());
+        TiposReclamos tipoReclamoAnte = tiposReclamosSB.consultarTipoReclamoPorNombre(tipoDeReclamosAnterior.getNombreTipoReclamo());
+        try {
+            objeto.setFkCodTipoReclamo(tipoReclamoNuevo);
+            em.merge(objeto);
+            //em.flush();
+            try {
+                tipoReclamoNuevo.setTopTipoReclamo(tipoReclamoNuevo.getTopTipoReclamo() + 1);
+                em.merge(tipoReclamoNuevo);
+                try {
+                    tipoReclamoAnte.setTopTipoReclamo(tipoReclamoAnte.getTopTipoReclamo() - 1);
+                    em.merge(tipoReclamoAnte);
+                    mensajes = "OK";
+                } catch (Exception ex) {
+                    mensajes = ex.getMessage();
+                }                
+            } catch (Exception ex) {
+                mensajes = ex.getMessage();
+            }
+        } catch (Exception ex) {
+            mensajes = ex.getMessage();
+        }
+
+        if (mensajes.equals("OK")) {
+            String asunto = "RESPUESTA SOBRE RECLAMO " + tipoReclamoAnte.getNombreTipoReclamo();
+            String mensaje = "<html>"
+                    + "     <head>"
+                    + "         <meta charset=\"UTF-8\">"
+                    + "         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                    + "     </head>"
+                    + "     <body style='background-color: #ffffff'>"
+                    + "       <div style='text-align: center;'>"
+                    + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
+                    + "       </div> "
+                    + "       <div> "
+                    + "         <p>"
+                    + "             Estimado/a: <i>" + objeto.getFkCodUsuario().getFkCodPersona().getNombrePersona() + " " + objeto.getFkCodUsuario().getFkCodPersona().getApellidoPersona() + "</i>"
+                    + "         </p> "
+                    + "         <p>"
+                    + "             Le informamos mediante este medio que su reclamo realizado en fecha " + formatearFecha(objeto.getFechaReclamo())
+                    + "             fue derivado a " + objeto.getFkCodTipoReclamo().getFkCodDependencia().getNombreDependencia()
+                    + "             y se encuentra tipificado como " + objeto.getFkCodTipoReclamo().getNombreTipoReclamo() + ", en la brevedad le estaremos informando de la situación del mismo."
+                    + "         </p> "
+                    + "         <p>"
+                    + "             Gracias por utilizar al Sistema de Reclamos de la Municipalidad de Asunción."
+                    + "         </p>"
+                    + "       </div>"
+                    + "     </body>"
+                    + "</html>";
+            enviarCorreos.enviarMail(objeto.getFkCodUsuario().getLoginUsuario(), asunto, mensaje);
+        }
         return mensajes;
     }
 
@@ -406,17 +459,16 @@ public class ReclamosSB {
         q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
         return q.getResultList();
     }
-    
-      public List<Reclamos> listarDependenciaTipoReclamosEstadoReclamoRangoFecha(Integer codEstadoReclamo, Date fechaInicio, Date fechaFin) {
+
+    public List<Reclamos> listarDependenciaTipoReclamosEstadoReclamoRangoFecha(Integer codEstadoReclamo, Date fechaInicio, Date fechaFin) {
         StringBuilder jpql = new StringBuilder();
-        
+
 //        SELECT r.fkCodTipoReclamo.fkCodDependencia.codDependencia, r.fkCodTipoReclamo.fkCodDependencia.nombreDependencia, 
 //       r.fkCodTipoReclamo.codTipoReclamo, r.fkCodTipoReclamo.nombreTipoReclamo, r.codReclamo, r.fkCodEstadoReclamo.codEstadoReclamo
 //FROM Reclamos r
 //WHERE r.fkCodEstadoReclamo.codEstadoReclamo = 1
 //AND r.fechaReclamo BETWEEN '2015-07-01' AND '2015-08-10'
 //ORDER BY r.fkCodTipoReclamo.fkCodDependencia.codDependencia, r.fkCodTipoReclamo.codTipoReclamo, r.codReclamo
-
         jpql.append("SELECT r ");
         jpql.append("FROM Reclamos r ");
         jpql.append("WHERE r.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
@@ -430,7 +482,7 @@ public class ReclamosSB {
         q.setParameter("paramFechaFin", fechaFin);
         return q.getResultList();
     }
-    
+
     public List<Reclamos> listarPorEstadoReclamoRangoDeFecha(Integer codEstadoReclamo, Date fechaInicio, Date fechaFin) {
         StringBuilder jpql = new StringBuilder();
 
@@ -447,7 +499,6 @@ public class ReclamosSB {
         q.setParameter("paramFechaFin", fechaFin);
         return q.getResultList();
     }
-    
 
     public List<Reclamos> burcarPorDependencia(Integer codDependencia, String expresion) {
         StringBuilder jpql = new StringBuilder();

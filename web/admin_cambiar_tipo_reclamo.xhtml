@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Cambiar tipo de reclamo</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Formulario de reclamo
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form class="form-horizontal">
+
+                                        <div class="center">
+                                            <span class="col-lg-10">Por favor complete el formulario y tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                                        </div>
+                                        <h4 class="col-lg-12" style="color: #0080FF">Datos del reclamo</h4> 
+                                        <div class="form-group">
+                                            <label for="cedula" class="col-lg-2 control-label">Documento de identidad(*):</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="cedula" class="form-control" 
+                                                             label="Documento de identidad" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.cedulaPersona}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nombre" class="col-lg-2 control-label">Nombre(*):</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="nombre" class="form-control" 
+                                                             label="Nombre" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.nombrePersona}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="apellido" class="col-lg-2 control-label">Apellido(*):</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="apellido" class="form-control" 
+                                                             label="Apellido" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.apellidoPersona}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="correo" class="col-lg-2 control-label">Correo electrónico(*):</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="correo" class="form-control" 
+                                                             label="Correo electrónico" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.loginUsuario}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>   
+                                        <div class="form-group">
+                                            <label for="direccion" class="col-lg-2 control-label">Dirección:</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="direccion" class="form-control" 
+                                                             label="Dirección" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.direccionPersona}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cuenta" class="col-lg-2 control-label">Cta. Cte. Ctral.:</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="cuenta" class="form-control" 
+                                                             label="Cta. Cte. Ctral." 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.ctaCtePersona}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="telefono" class="col-lg-2 control-label">Teléfono:</label>
+                                            <div class="col-lg-3">
+                                                <h:inputText id="telefono" class="form-control" 
+                                                             label="Teléfono" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.telefonoPersona}"
+                                                             disabled="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tipoReclamo" class="col-lg-2 control-label">Tipo de reclamo:</label>
+                                            <div class="col-lg-3">
+                                                <h:selectOneMenu id="tiporeclamo" value="#{mbSReclamos.reclamoSeleccionado.fkCodTipoReclamo.codTipoReclamo}" 
+                                                                 class="form-control">
+                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"/>
+                                                    <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
+                                                                   var="tiposReclamos"
+                                                                   itemValue="#{tiposReclamos.codTipoReclamo}" 
+                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descri" class="col-lg-2 control-label">Detalle del reclamo(*):</label>
+                                            <div class="col-lg-12">
+                                                
+                                                <p:inputTextarea required="false" 
+                                                                 id="descri" 
+                                                                 value="#{mbSReclamos.reclamoSeleccionado.descripcionReclamoContribuyente}"
+                                                                 title="Descripción del reclamo"
+                                                                 class="form-control"
+                                                                 autoResize="true"
+                                                                 maxlength="500"
+                                                                 counterTemplate="{0} caracteres disponibles."
+                                                                 style="width:100%;height:100px;"
+                                                                 disabled="true"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandButton class="btn btn-default" action="admin_gestion_reclamos_pendientes" value="Cancelar"/>
+                                                <p:commandButton class="btn btn-primary" action="#{mbSReclamos.derivarReclamo()}" value="Aceptar" ajax="false"/>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   
