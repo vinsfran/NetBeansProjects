@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PermisosElementosWeb.findByValorDesactivado", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorDesactivado = :valorDesactivado"),
     @NamedQuery(name = "PermisosElementosWeb.findByDetalleDelPermiso", query = "SELECT p FROM PermisosElementosWeb p WHERE p.detalleDelPermiso = :detalleDelPermiso")})
 public class PermisosElementosWeb implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

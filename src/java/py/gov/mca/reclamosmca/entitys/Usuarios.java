@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuarios.findByLoginUsuario", query = "SELECT u FROM Usuarios u WHERE u.loginUsuario = :loginUsuario"),
     @NamedQuery(name = "Usuarios.findByClaveUsuario", query = "SELECT u FROM Usuarios u WHERE u.claveUsuario = :claveUsuario")})
 public class Usuarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,13 +54,13 @@ public class Usuarios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "clave_usuario")
     private String claveUsuario;
-    @OneToMany(mappedBy = "fkCodUsuarioDerivacion")
-    private List<Reclamos> reclamosList;
-    @OneToMany(mappedBy = "fkCodUsuarioAtencion")
-    private List<Reclamos> reclamosList1;
     @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
-    private List<Reclamos> reclamosList2;
+    private List<Reclamos> reclamosList;
     @OneToMany(mappedBy = "fkCodUsuario")
+    private List<Reclamos> reclamosList1;
+    @OneToMany(mappedBy = "fkCodUsuarioAtencion")
+    private List<Reclamos> reclamosList2;
+    @OneToMany(mappedBy = "fkCodUsuarioDerivacion")
     private List<Reclamos> reclamosList3;
     @JoinColumn(name = "fk_cod_estado_usuario", referencedColumnName = "cod_estado_usuario")
     @ManyToOne(optional = false)

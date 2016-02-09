@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposReclamos.findByDiasMaximoFinalizados", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoFinalizados = :diasMaximoFinalizados"),
     @NamedQuery(name = "TiposReclamos.findByTopTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.topTipoReclamo = :topTipoReclamo")})
 public class TiposReclamos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

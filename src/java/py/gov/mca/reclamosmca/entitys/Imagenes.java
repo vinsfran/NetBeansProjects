@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Imagenes.findByNombreImagen", query = "SELECT i FROM Imagenes i WHERE i.nombreImagen = :nombreImagen"),
     @NamedQuery(name = "Imagenes.findByTipoImagen", query = "SELECT i FROM Imagenes i WHERE i.tipoImagen = :tipoImagen")})
 public class Imagenes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

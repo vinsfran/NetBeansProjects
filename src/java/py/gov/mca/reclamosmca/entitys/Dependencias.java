@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Dependencias.findByInternoDependencia", query = "SELECT d FROM Dependencias d WHERE d.internoDependencia = :internoDependencia"),
     @NamedQuery(name = "Dependencias.findByMailDependencia", query = "SELECT d FROM Dependencias d WHERE d.mailDependencia = :mailDependencia")})
 public class Dependencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

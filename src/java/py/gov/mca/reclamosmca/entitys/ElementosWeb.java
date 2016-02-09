@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ElementosWeb.findByNombreElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.nombreElementoWeb = :nombreElementoWeb"),
     @NamedQuery(name = "ElementosWeb.findByDescripcionDelElementoWeb", query = "SELECT e FROM ElementosWeb e WHERE e.descripcionDelElementoWeb = :descripcionDelElementoWeb")})
 public class ElementosWeb implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

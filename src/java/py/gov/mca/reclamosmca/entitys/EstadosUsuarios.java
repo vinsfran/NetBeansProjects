@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "EstadosUsuarios.findByCodEstadoUsuario", query = "SELECT e FROM EstadosUsuarios e WHERE e.codEstadoUsuario = :codEstadoUsuario"),
     @NamedQuery(name = "EstadosUsuarios.findByNombreEstadoUsuario", query = "SELECT e FROM EstadosUsuarios e WHERE e.nombreEstadoUsuario = :nombreEstadoUsuario")})
 public class EstadosUsuarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

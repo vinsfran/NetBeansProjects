@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CambiosEstadosUsuarios.findByDetalleCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.detalleCambioEstadoUsuario = :detalleCambioEstadoUsuario"),
     @NamedQuery(name = "CambiosEstadosUsuarios.findByFechaCambioEstado", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.fechaCambioEstado = :fechaCambioEstado")})
 public class CambiosEstadosUsuarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -206,9 +206,13 @@ public class MbSReclamos implements Serializable {
             emptyModel.addOverlay(marca);
             this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
             this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
-            Geocoding ObjGeocod = new Geocoding();
-            if (ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
-                setDirReclamo(ObjGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+            Geocoding objGeocod = new Geocoding();
+            System.out.println("ENNTRAAA1: " + getLatituteLongitude().getLat());
+            System.out.println("ENNTRAAA2: " + getLatituteLongitude().getLng());
+            System.out.println("ENNTRAAA3: " + objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()));
+            
+            if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
+                setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
             } else {
                 setDirReclamo("DIR_FALSE");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
@@ -319,6 +323,7 @@ public class MbSReclamos implements Serializable {
             }
 
         } else {
+            this.marcaParaNuevoUsuario = true;
             this.activarCamposNuevoUsuario = false;
             this.activarCampoDireccion = false;
             this.activarCamposCuenta = false;
@@ -338,7 +343,7 @@ public class MbSReclamos implements Serializable {
     }
 
     public String enviarReclamoExterno() throws Exception {
-        System.out.println("Des: " + nuevoReclamo.getDescripcionReclamoContribuyente());
+        
         if (marcaParaNuevoUsuario) {
             Converciones c = new Converciones();
             String contrasenaMD5 = c.getMD5(nuevoUsuario.getFkCodPersona().getCedulaPersona());

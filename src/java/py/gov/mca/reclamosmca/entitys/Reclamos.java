@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Reclamos.findByLatitud", query = "SELECT r FROM Reclamos r WHERE r.latitud = :latitud"),
     @NamedQuery(name = "Reclamos.findByLongitud", query = "SELECT r FROM Reclamos r WHERE r.longitud = :longitud")})
 public class Reclamos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,24 +96,27 @@ public class Reclamos implements Serializable {
     @JoinColumn(name = "fk_imagen", referencedColumnName = "cod_imagen")
     @ManyToOne
     private Imagenes fkImagen;
+    @JoinColumn(name = "fkDireccion", referencedColumnName = "codDireccion")
+    @ManyToOne
+    private Paises05Direcciones fkDireccion;
     @JoinColumn(name = "fk_cod_tipo_finalizacion_reclamo", referencedColumnName = "cod_tipo_finalizacion_reclamo")
     @ManyToOne
     private TiposFinalizacionReclamos fkCodTipoFinalizacionReclamo;
     @JoinColumn(name = "fk_cod_tipo_reclamo", referencedColumnName = "cod_tipo_reclamo")
     @ManyToOne(optional = false)
     private TiposReclamos fkCodTipoReclamo;
-    @JoinColumn(name = "fk_cod_usuario_derivacion", referencedColumnName = "cod_usuario")
-    @ManyToOne
-    private Usuarios fkCodUsuarioDerivacion;
-    @JoinColumn(name = "fk_cod_usuario_atencion", referencedColumnName = "cod_usuario")
-    @ManyToOne
-    private Usuarios fkCodUsuarioAtencion;
     @JoinColumn(name = "fk_cod_usuario_culminacion", referencedColumnName = "cod_usuario")
     @ManyToOne
     private Usuarios fkCodUsuarioCulminacion;
     @JoinColumn(name = "fk_cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne
     private Usuarios fkCodUsuario;
+    @JoinColumn(name = "fk_cod_usuario_atencion", referencedColumnName = "cod_usuario")
+    @ManyToOne
+    private Usuarios fkCodUsuarioAtencion;
+    @JoinColumn(name = "fk_cod_usuario_derivacion", referencedColumnName = "cod_usuario")
+    @ManyToOne
+    private Usuarios fkCodUsuarioDerivacion;
 
     public Reclamos() {
     }
@@ -246,6 +250,14 @@ public class Reclamos implements Serializable {
         this.fkImagen = fkImagen;
     }
 
+    public Paises05Direcciones getFkDireccion() {
+        return fkDireccion;
+    }
+
+    public void setFkDireccion(Paises05Direcciones fkDireccion) {
+        this.fkDireccion = fkDireccion;
+    }
+
     public TiposFinalizacionReclamos getFkCodTipoFinalizacionReclamo() {
         return fkCodTipoFinalizacionReclamo;
     }
@@ -262,22 +274,6 @@ public class Reclamos implements Serializable {
         this.fkCodTipoReclamo = fkCodTipoReclamo;
     }
 
-    public Usuarios getFkCodUsuarioDerivacion() {
-        return fkCodUsuarioDerivacion;
-    }
-
-    public void setFkCodUsuarioDerivacion(Usuarios fkCodUsuarioDerivacion) {
-        this.fkCodUsuarioDerivacion = fkCodUsuarioDerivacion;
-    }
-
-    public Usuarios getFkCodUsuarioAtencion() {
-        return fkCodUsuarioAtencion;
-    }
-
-    public void setFkCodUsuarioAtencion(Usuarios fkCodUsuarioAtencion) {
-        this.fkCodUsuarioAtencion = fkCodUsuarioAtencion;
-    }
-
     public Usuarios getFkCodUsuarioCulminacion() {
         return fkCodUsuarioCulminacion;
     }
@@ -292,6 +288,22 @@ public class Reclamos implements Serializable {
 
     public void setFkCodUsuario(Usuarios fkCodUsuario) {
         this.fkCodUsuario = fkCodUsuario;
+    }
+
+    public Usuarios getFkCodUsuarioAtencion() {
+        return fkCodUsuarioAtencion;
+    }
+
+    public void setFkCodUsuarioAtencion(Usuarios fkCodUsuarioAtencion) {
+        this.fkCodUsuarioAtencion = fkCodUsuarioAtencion;
+    }
+
+    public Usuarios getFkCodUsuarioDerivacion() {
+        return fkCodUsuarioDerivacion;
+    }
+
+    public void setFkCodUsuarioDerivacion(Usuarios fkCodUsuarioDerivacion) {
+        this.fkCodUsuarioDerivacion = fkCodUsuarioDerivacion;
     }
 
     @Override

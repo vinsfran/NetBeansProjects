@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Expediente.findByNroExpediente", query = "SELECT e FROM Expediente e WHERE e.nroExpediente = :nroExpediente"),
     @NamedQuery(name = "Expediente.findByNroFactura", query = "SELECT e FROM Expediente e WHERE e.nroFactura = :nroFactura")})
 public class Expediente implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

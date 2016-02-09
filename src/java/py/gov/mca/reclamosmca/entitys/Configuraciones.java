@@ -69,6 +69,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Configuraciones.findByPar39", query = "SELECT c FROM Configuraciones c WHERE c.par39 = :par39"),
     @NamedQuery(name = "Configuraciones.findByPar40", query = "SELECT c FROM Configuraciones c WHERE c.par40 = :par40")})
 public class Configuraciones implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

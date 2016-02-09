@@ -1,5 +1,6 @@
 package py.gov.mca.reclamosmca.sessionbeans;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -120,7 +121,8 @@ public class UsuariosSB {
          try {
             Personas persona = new Personas();
             persona = objeto.getFkCodPersona();
-            em.merge(persona);
+            persona.setFechaRegistroPersona(new Date());
+            em.persist(persona);
             objeto.setFkCodPersona(persona);
             //  em.persist(objeto.getFkCodPersona());
             em.merge(objeto);
@@ -286,6 +288,23 @@ public class UsuariosSB {
             return "false";
         } else {
             return "true";
+        }
+
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Personas consultarUsuariosPorCedulaPersona(String cedulaPersona) {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM Personas e ");
+        jpql.append("WHERE e.cedulaPersona = :paramCedulaPersona ");
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramCedulaPersona", cedulaPersona);
+        if (q.getResultList().isEmpty()) {
+            return null;
+        } else {            
+            return (Personas) q.getResultList().get(0);
         }
 
     }
