@@ -33,22 +33,22 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Paises03Ciudades.findAll", query = "SELECT p FROM Paises03Ciudades p"),
     @NamedQuery(name = "Paises03Ciudades.findByCodCuidad", query = "SELECT p FROM Paises03Ciudades p WHERE p.codCuidad = :codCuidad"),
-    @NamedQuery(name = "Paises03Ciudades.findByNombreCiudad", query = "SELECT p FROM Paises03Ciudades p WHERE p.nombreCiudad = :nombreCiudad")})
+    @NamedQuery(name = "Paises03Ciudades.findByCiudadNombre", query = "SELECT p FROM Paises03Ciudades p WHERE p.ciudadNombre = :ciudadNombre")})
 public class Paises03Ciudades implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "codCuidad")
+    @Column(name = "cod_cuidad")
     private Integer codCuidad;
     @Size(max = 2147483647)
-    @Column(name = "nombreCiudad")
-    private String nombreCiudad;
-    @JoinColumn(name = "fk_departamento", referencedColumnName = "codDepartamento")
+    @Column(name = "ciudad_nombre")
+    private String ciudadNombre;
+    @JoinColumn(name = "fk_cod_departamento", referencedColumnName = "cod_departamento")
     @ManyToOne
-    private Paises02Departamentos fkDepartamento;
-    @OneToMany(mappedBy = "fkCiudad")
+    private Paises02Departamentos fkCodDepartamento;
+    @OneToMany(mappedBy = "fkCodCiudad")
     private List<Paises04Barrios> paises04BarriosList;
 
     public Paises03Ciudades() {
@@ -66,20 +66,20 @@ public class Paises03Ciudades implements Serializable {
         this.codCuidad = codCuidad;
     }
 
-    public String getNombreCiudad() {
-        return nombreCiudad;
+    public String getCiudadNombre() {
+        return ciudadNombre;
     }
 
-    public void setNombreCiudad(String nombreCiudad) {
-        this.nombreCiudad = nombreCiudad;
+    public void setCiudadNombre(String ciudadNombre) {
+        this.ciudadNombre = ciudadNombre;
     }
 
-    public Paises02Departamentos getFkDepartamento() {
-        return fkDepartamento;
+    public Paises02Departamentos getFkCodDepartamento() {
+        return fkCodDepartamento;
     }
 
-    public void setFkDepartamento(Paises02Departamentos fkDepartamento) {
-        this.fkDepartamento = fkDepartamento;
+    public void setFkCodDepartamento(Paises02Departamentos fkCodDepartamento) {
+        this.fkCodDepartamento = fkCodDepartamento;
     }
 
     @XmlTransient

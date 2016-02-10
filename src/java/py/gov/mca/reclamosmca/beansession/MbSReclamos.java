@@ -63,6 +63,7 @@ import org.primefaces.model.map.Marker;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
+import py.gov.mca.reclamosmca.entitys.Paises04Barrios;
 import py.gov.mca.reclamosmca.entitys.Personas;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.Roles;
@@ -72,6 +73,7 @@ import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.reportes.DependenciasReporte;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosCantidad;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosReporte;
+import py.gov.mca.reclamosmca.sessionbeans.BarriosSB;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposFinalizacionReclamosSB;
@@ -92,6 +94,8 @@ public class MbSReclamos implements Serializable {
     @EJB
     private TiposReclamosSB tiposReclamosSB;
     @EJB
+    private BarriosSB barriosSB;
+    @EJB
     private TiposFinalizacionReclamosSB tiposFinalizacionReclamosSB;
 
     @EJB
@@ -107,6 +111,7 @@ public class MbSReclamos implements Serializable {
     private List<Reclamos> reclamosPorZona;
     private List<Reclamos> reclamos;
     private List<TiposReclamos> tiposDeReclamos;
+    private List<Paises04Barrios> barrios;
     private List<TiposFinalizacionReclamos> listTiposFinalizacionReclamos;
 
     private TiposReclamos tipoDeReclamosSeleccionado;
@@ -207,10 +212,7 @@ public class MbSReclamos implements Serializable {
             this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
             this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
             Geocoding objGeocod = new Geocoding();
-            System.out.println("ENNTRAAA1: " + getLatituteLongitude().getLat());
-            System.out.println("ENNTRAAA2: " + getLatituteLongitude().getLng());
-            System.out.println("ENNTRAAA3: " + objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()));
-            
+           
             if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
                 setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
             } else {
@@ -239,7 +241,6 @@ public class MbSReclamos implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
             return "admin_nuevo_reclamo";
         } else {
-            System.out.println("Des: " + nuevoReclamo.getDescripcionReclamoContribuyente());
             nuevoReclamo.setFkCodUsuario(usu);
             nuevoReclamo.getFkCodUsuario().setFkCodRol(usu.getFkCodRol());
             nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
@@ -1569,6 +1570,21 @@ public class MbSReclamos implements Serializable {
      */
     public void setCodigoEstadoReclamo(int codigoEstadoReclamo) {
         this.codigoEstadoReclamo = codigoEstadoReclamo;
+    }
+
+    /**
+     * @return the barrios
+     */
+    public List<Paises04Barrios> getBarrios() {
+        barrios = barriosSB.listarBarrios();
+        return barrios;
+    }
+
+    /**
+     * @param barrios the barrios to set
+     */
+    public void setBarrios(List<Paises04Barrios> barrios) {
+        this.barrios = barrios;
     }
 
 }

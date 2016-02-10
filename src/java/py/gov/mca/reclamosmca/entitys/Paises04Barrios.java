@@ -33,23 +33,23 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Paises04Barrios.findAll", query = "SELECT p FROM Paises04Barrios p"),
     @NamedQuery(name = "Paises04Barrios.findByCodBarrio", query = "SELECT p FROM Paises04Barrios p WHERE p.codBarrio = :codBarrio"),
-    @NamedQuery(name = "Paises04Barrios.findByNombreBarrio", query = "SELECT p FROM Paises04Barrios p WHERE p.nombreBarrio = :nombreBarrio")})
+    @NamedQuery(name = "Paises04Barrios.findByBarrioNombre", query = "SELECT p FROM Paises04Barrios p WHERE p.barrioNombre = :barrioNombre")})
 public class Paises04Barrios implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "codBarrio")
+    @Column(name = "cod_barrio")
     private Integer codBarrio;
     @Size(max = 2147483647)
-    @Column(name = "nombreBarrio")
-    private String nombreBarrio;
+    @Column(name = "barrio_nombre")
+    private String barrioNombre;
     @OneToMany(mappedBy = "fkCodBarrio")
     private List<Paises05Direcciones> paises05DireccionesList;
-    @JoinColumn(name = "fk_ciudad", referencedColumnName = "codCuidad")
+    @JoinColumn(name = "fk_cod_ciudad", referencedColumnName = "cod_cuidad")
     @ManyToOne
-    private Paises03Ciudades fkCiudad;
+    private Paises03Ciudades fkCodCiudad;
 
     public Paises04Barrios() {
     }
@@ -66,12 +66,12 @@ public class Paises04Barrios implements Serializable {
         this.codBarrio = codBarrio;
     }
 
-    public String getNombreBarrio() {
-        return nombreBarrio;
+    public String getBarrioNombre() {
+        return barrioNombre;
     }
 
-    public void setNombreBarrio(String nombreBarrio) {
-        this.nombreBarrio = nombreBarrio;
+    public void setBarrioNombre(String barrioNombre) {
+        this.barrioNombre = barrioNombre;
     }
 
     @XmlTransient
@@ -83,12 +83,12 @@ public class Paises04Barrios implements Serializable {
         this.paises05DireccionesList = paises05DireccionesList;
     }
 
-    public Paises03Ciudades getFkCiudad() {
-        return fkCiudad;
+    public Paises03Ciudades getFkCodCiudad() {
+        return fkCodCiudad;
     }
 
-    public void setFkCiudad(Paises03Ciudades fkCiudad) {
-        this.fkCiudad = fkCiudad;
+    public void setFkCodCiudad(Paises03Ciudades fkCodCiudad) {
+        this.fkCodCiudad = fkCodCiudad;
     }
 
     @Override

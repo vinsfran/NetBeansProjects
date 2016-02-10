@@ -31,19 +31,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Paises01.findAll", query = "SELECT p FROM Paises01 p"),
     @NamedQuery(name = "Paises01.findByCodPais", query = "SELECT p FROM Paises01 p WHERE p.codPais = :codPais"),
-    @NamedQuery(name = "Paises01.findByPaisNombre", query = "SELECT p FROM Paises01 p WHERE p.paisNombre = :paisNombre")})
+    @NamedQuery(name = "Paises01.findByNombrePais", query = "SELECT p FROM Paises01 p WHERE p.nombrePais = :nombrePais")})
 public class Paises01 implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "codPais")
+    @Column(name = "cod_pais")
     private Integer codPais;
     @Size(max = 2147483647)
-    @Column(name = "paisNombre")
-    private String paisNombre;
-    @OneToMany(mappedBy = "fkPais")
+    @Column(name = "nombre_pais")
+    private String nombrePais;
+    @OneToMany(mappedBy = "fkCodPais")
     private List<Paises02Departamentos> paises02DepartamentosList;
 
     public Paises01() {
@@ -61,12 +61,12 @@ public class Paises01 implements Serializable {
         this.codPais = codPais;
     }
 
-    public String getPaisNombre() {
-        return paisNombre;
+    public String getNombrePais() {
+        return nombrePais;
     }
 
-    public void setPaisNombre(String paisNombre) {
-        this.paisNombre = paisNombre;
+    public void setNombrePais(String nombrePais) {
+        this.nombrePais = nombrePais;
     }
 
     @XmlTransient

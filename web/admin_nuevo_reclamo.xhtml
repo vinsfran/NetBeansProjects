@@ -39,7 +39,26 @@
                                                     <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
                                                 </h:selectOneMenu>
 
-                                            </div>                                            
+                                            </div>      
+
+                                            Falta agregar barrios
+                                            <div class="form-group">
+                                                <label>Tipo de reclamo</label>
+
+                                                <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodTipoReclamo.codTipoReclamo}" 
+                                                                 class="form-control">
+                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"/>
+                                                    <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
+                                                                   var="tiposReclamos"
+                                                                   itemValue="#{tiposReclamos.codTipoReclamo}" 
+                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
+                                                    <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
+                                                </h:selectOneMenu>
+
+                                            </div> 
+
                                             <div class="form-group">
                                                 <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
                                                 <div class="gmap">

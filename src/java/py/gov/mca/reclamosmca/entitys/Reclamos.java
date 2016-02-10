@@ -96,9 +96,9 @@ public class Reclamos implements Serializable {
     @JoinColumn(name = "fk_imagen", referencedColumnName = "cod_imagen")
     @ManyToOne
     private Imagenes fkImagen;
-    @JoinColumn(name = "fkDireccion", referencedColumnName = "codDireccion")
+    @JoinColumn(name = "fk_cod_direccion", referencedColumnName = "cod_direccion")
     @ManyToOne
-    private Paises05Direcciones fkDireccion;
+    private Paises05Direcciones fkCodDireccion;
     @JoinColumn(name = "fk_cod_tipo_finalizacion_reclamo", referencedColumnName = "cod_tipo_finalizacion_reclamo")
     @ManyToOne
     private TiposFinalizacionReclamos fkCodTipoFinalizacionReclamo;
@@ -250,12 +250,12 @@ public class Reclamos implements Serializable {
         this.fkImagen = fkImagen;
     }
 
-    public Paises05Direcciones getFkDireccion() {
-        return fkDireccion;
+    public Paises05Direcciones getFkCodDireccion() {
+        return fkCodDireccion;
     }
 
-    public void setFkDireccion(Paises05Direcciones fkDireccion) {
-        this.fkDireccion = fkDireccion;
+    public void setFkCodDireccion(Paises05Direcciones fkCodDireccion) {
+        this.fkCodDireccion = fkCodDireccion;
     }
 
     public TiposFinalizacionReclamos getFkCodTipoFinalizacionReclamo() {

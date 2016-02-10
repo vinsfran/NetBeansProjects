@@ -33,22 +33,22 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Paises02Departamentos.findAll", query = "SELECT p FROM Paises02Departamentos p"),
     @NamedQuery(name = "Paises02Departamentos.findByCodDepartamento", query = "SELECT p FROM Paises02Departamentos p WHERE p.codDepartamento = :codDepartamento"),
-    @NamedQuery(name = "Paises02Departamentos.findByNombreDepartamento", query = "SELECT p FROM Paises02Departamentos p WHERE p.nombreDepartamento = :nombreDepartamento")})
+    @NamedQuery(name = "Paises02Departamentos.findByDepartamentoNombre", query = "SELECT p FROM Paises02Departamentos p WHERE p.departamentoNombre = :departamentoNombre")})
 public class Paises02Departamentos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "codDepartamento")
+    @Column(name = "cod_departamento")
     private Integer codDepartamento;
     @Size(max = 2147483647)
-    @Column(name = "nombreDepartamento")
-    private String nombreDepartamento;
-    @JoinColumn(name = "fk_pais", referencedColumnName = "codPais")
+    @Column(name = "departamento_nombre")
+    private String departamentoNombre;
+    @JoinColumn(name = "fk_cod_pais", referencedColumnName = "cod_pais")
     @ManyToOne
-    private Paises01 fkPais;
-    @OneToMany(mappedBy = "fkDepartamento")
+    private Paises01 fkCodPais;
+    @OneToMany(mappedBy = "fkCodDepartamento")
     private List<Paises03Ciudades> paises03CiudadesList;
 
     public Paises02Departamentos() {
@@ -66,20 +66,20 @@ public class Paises02Departamentos implements Serializable {
         this.codDepartamento = codDepartamento;
     }
 
-    public String getNombreDepartamento() {
-        return nombreDepartamento;
+    public String getDepartamentoNombre() {
+        return departamentoNombre;
     }
 
-    public void setNombreDepartamento(String nombreDepartamento) {
-        this.nombreDepartamento = nombreDepartamento;
+    public void setDepartamentoNombre(String departamentoNombre) {
+        this.departamentoNombre = departamentoNombre;
     }
 
-    public Paises01 getFkPais() {
-        return fkPais;
+    public Paises01 getFkCodPais() {
+        return fkCodPais;
     }
 
-    public void setFkPais(Paises01 fkPais) {
-        this.fkPais = fkPais;
+    public void setFkCodPais(Paises01 fkCodPais) {
+        this.fkCodPais = fkCodPais;
     }
 
     @XmlTransient
