@@ -64,6 +64,7 @@ import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Paises04Barrios;
+import py.gov.mca.reclamosmca.entitys.Paises05Direcciones;
 import py.gov.mca.reclamosmca.entitys.Personas;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.Roles;
@@ -74,6 +75,7 @@ import py.gov.mca.reclamosmca.reportes.DependenciasReporte;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosCantidad;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosReporte;
 import py.gov.mca.reclamosmca.sessionbeans.BarriosSB;
+import py.gov.mca.reclamosmca.sessionbeans.DireccionesSB;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposFinalizacionReclamosSB;
@@ -93,6 +95,8 @@ public class MbSReclamos implements Serializable {
     private ReclamosSB reclamosSB;
     @EJB
     private TiposReclamosSB tiposReclamosSB;
+    @EJB
+    private DireccionesSB direccionesSB;
     @EJB
     private BarriosSB barriosSB;
     @EJB
@@ -116,6 +120,8 @@ public class MbSReclamos implements Serializable {
 
     private TiposReclamos tipoDeReclamosSeleccionado;
     private TiposReclamos tipoDeReclamosAnterior;
+    private Paises05Direcciones direccionSelecionada;
+    private Paises04Barrios barrioSeleccionado;
 
     private Reclamos nuevoReclamo;
     private Reclamos reclamoSeleccionado;
@@ -165,6 +171,10 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
         this.nuevoReclamo.setLatitud(-25.3041049263554);
         this.nuevoReclamo.setLongitud(-57.5597266852856);
+        
+        this.nuevoReclamo.setFkCodDireccion(new Paises05Direcciones());
+        this.nuevoReclamo.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
+        
         this.tipoDeReclamosSeleccionado = null;
         this.setMostrarGraphicImage(false);
         this.setZoom(15);
@@ -191,10 +201,15 @@ public class MbSReclamos implements Serializable {
     public void seleccionarTipoDeReclamo(AjaxBehaviorEvent event) {
         this.tipoDeReclamosSeleccionado = tiposReclamosSB.consultarTipoReclamo(getNuevoReclamo().getFkCodTipoReclamo().getCodTipoReclamo());
         //tipoReclamo = tiposReclamosSB.consultarTipoReclamo(getReclamos().getFkCodTipoReclamo().getCodTipoReclamo());
-        System.out.println("Tipo: " + getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
         if (!emptyModel.getMarkers().isEmpty()) {
             emptyModel.getMarkers().get(0).setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
         }
+    }
+
+    public void seleccionarBarrio(AjaxBehaviorEvent event) {
+        this.barrioSeleccionado = barriosSB.consultarBarrio(getNuevoReclamo().getFkCodDireccion().getFkCodBarrio().getCodBarrio());
+        this.dirReclamo = dirReclamo + " - Barrio: " + barrioSeleccionado.getBarrioNombre();
+
     }
 
     public void puntoSelecionado(PointSelectEvent event) throws UnsupportedEncodingException, MalformedURLException {
@@ -209,10 +224,17 @@ public class MbSReclamos implements Serializable {
             marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
             marca.setDraggable(false);
             emptyModel.addOverlay(marca);
+            
+            direccionSelecionada = direccionesSB.consultarDrireccionPorLatitudLongitud(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
+            if(){
+                
+            }
+            
+            
             this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
             this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
             Geocoding objGeocod = new Geocoding();
-           
+
             if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
                 setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
             } else {
@@ -344,7 +366,7 @@ public class MbSReclamos implements Serializable {
     }
 
     public String enviarReclamoExterno() throws Exception {
-        
+
         if (marcaParaNuevoUsuario) {
             Converciones c = new Converciones();
             String contrasenaMD5 = c.getMD5(nuevoUsuario.getFkCodPersona().getCedulaPersona());

@@ -41,24 +41,6 @@
 
                                             </div>      
 
-                                            Falta agregar barrios
-                                            <div class="form-group">
-                                                <label>Tipo de reclamo</label>
-
-                                                <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodTipoReclamo.codTipoReclamo}" 
-                                                                 class="form-control">
-                                                    <f:selectItem itemLabel="Seleccione un tipo de reclamo" 
-                                                                  noSelectionOption="false"
-                                                                  itemDisabled="true"/>
-                                                    <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
-                                                                   var="tiposReclamos"
-                                                                   itemValue="#{tiposReclamos.codTipoReclamo}" 
-                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
-                                                    <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
-                                                </h:selectOneMenu>
-
-                                            </div> 
-
                                             <div class="form-group">
                                                 <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
                                                 <div class="gmap">
@@ -70,10 +52,38 @@
                                                             model="#{mbSReclamos.emptyModel}">
 
                                                         <p:ajax event="stateChange" listener="#{mbSReclamos.onStateChange}"/>
-                                                        <p:ajax event="pointSelect" listener="#{mbSReclamos.puntoSelecionado}" update="gmap" />
+                                                        <p:ajax event="pointSelect" listener="#{mbSReclamos.puntoSelecionado}" update="gmap direccion" />
                                                     </p:gmap>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label>Dirección(*).</label>
+                                                <h:inputText id="direccion"
+                                                             class="form-control" 
+                                                             label="Dirección" 
+                                                             value="#{mbSReclamos.dirReclamo}" 
+                                                             disabled="false"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Barrio</label>
+
+                                                <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodDireccion.fkCodBarrio.codBarrio}" 
+                                                                 class="form-control">
+                                                    <f:selectItem itemLabel="Seleccione un Barrio" 
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"/>
+                                                    <f:selectItems value="#{mbSReclamos.barrios}" 
+                                                                   var="barrios"
+                                                                   itemValue="#{barrios.codBarrio}" 
+                                                                   itemLabel="#{barrios.barrioNombre}"/>
+                                                    <p:ajax listener="#{mbSReclamos.seleccionarBarrio(event)}" update="direccion"/> 
+                                                </h:selectOneMenu>
+
+                                            </div>
+
+
                                             <div class="form-group">
                                                 <label>Describa su reclamo(*).</label>
                                                 <p:inputTextarea required="false" 

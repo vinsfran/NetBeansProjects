@@ -75,7 +75,7 @@ public class MbSUsuarios implements Serializable {
     }
 
     public String btnRegistrar() {
-        if (getCedula().equals("") || getNombre().equals("") || getApellido().equals("") || getCorreo().equals("") || contrasena1.equals("") || contrasena2.equals("")) {
+        if (getCedula().equals("") || getNombre().equals("") || getApellido().equals("") || getCorreo().equals("") || contrasena1.equals("") || contrasena2.equals("") || getDireccion().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/registro";
         } else {
