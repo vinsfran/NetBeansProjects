@@ -29,15 +29,13 @@ public class DireccionesSB {
         return mensajes;
     }
 
-    public String actualizarDireccion(Paises05Direcciones objeto) {
-        mensajes = "";
+    public Paises05Direcciones actualizarDireccion(Paises05Direcciones objeto) {
         try {
             em.merge(objeto);
-            mensajes = "OK";
+            return objeto;
         } catch (Exception ex) {
-            mensajes = ex.getMessage();
+            return null;
         }
-        return mensajes;
     }
 
     public String eliminarDireccion(Paises05Direcciones objeto) {
@@ -61,7 +59,6 @@ public class DireccionesSB {
     @SuppressWarnings("unchecked")
     public Paises05Direcciones consultarDrireccionPorLatitudLongitud(Double direccionLatitud, Double direccionLongitud) {
         StringBuilder jpql = new StringBuilder();
-
         jpql.append("SELECT e ");
         jpql.append("FROM Paises05Direcciones e ");
         jpql.append("WHERE e.direccionLatitud  = :direccionLatitud ");
@@ -74,7 +71,6 @@ public class DireccionesSB {
         }else{
             return (Paises05Direcciones) q.getResultList().get(0);
         }      
-        
     }
 
     @SuppressWarnings("unchecked")

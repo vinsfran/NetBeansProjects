@@ -38,6 +38,7 @@ public class MbSTiposReclamos implements Serializable {
     public String btnAgregar() {
         this.tipoReclamo = null;
         this.tipoReclamo = new TiposReclamos();
+        this.tipoReclamo.setTopTipoReclamo(0.0);
         this.tipoReclamo.setFkCodDependencia(new Dependencias());
         return "/admin_form_tipos_reclamos";
     }
@@ -58,10 +59,12 @@ public class MbSTiposReclamos implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_tipos_reclamos";
         } else {
+            String nombreMayuscula = tipoReclamo.getNombreTipoReclamo().toUpperCase();
+            tipoReclamo.setNombreTipoReclamo(nombreMayuscula);
             String mensaje = tiposReclamosSB.crearTiposReclamos(tipoReclamo);
             if (mensaje.equals("OK")) {
                 this.tipoReclamo = null;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de Reclamo creada.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo de Reclamo creado.", ""));
                 return "/admin_matenimiento_tipos_reclamos";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se creo el Tipo de Reclamo.", mensaje));
@@ -78,6 +81,8 @@ public class MbSTiposReclamos implements Serializable {
             Dependencias nuevaDependencia = new Dependencias();
             nuevaDependencia.setCodDependencia(tipoReclamo.getFkCodDependencia().getCodDependencia());
             tipoReclamo.setFkCodDependencia(nuevaDependencia);
+            String nombreMayuscula = tipoReclamo.getNombreTipoReclamo().toUpperCase();
+            tipoReclamo.setNombreTipoReclamo(nombreMayuscula);
             String mensaje = tiposReclamosSB.actualizarTiposReclamos(tipoReclamo);
             if (mensaje.equals("OK")) {
                 this.tipoReclamo = null;

@@ -23,6 +23,31 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <h:form>
+                                        <div class="form-group">
+                                            <label>Dirección(*).</label>
+                                            <h:inputText id="direccion"
+                                                         class="form-control" 
+                                                         label="Dirección" 
+                                                         value="#{mbSReclamos.reclamoSeleccionado.direccionReclamo}" 
+                                                         disabled="false"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Barrio</label>
+
+                                            <h:selectOneMenu value="#{mbSReclamos.reclamoSeleccionado.fkCodDireccion.fkCodBarrio.codBarrio}" 
+                                                             class="form-control">
+                                                <f:selectItem itemLabel="Seleccione un Barrio" 
+                                                              noSelectionOption="false"
+                                                              itemDisabled="true"/>
+                                                <f:selectItems value="#{mbSReclamos.barrios}" 
+                                                               var="barrios"
+                                                               itemValue="#{barrios.codBarrio}" 
+                                                               itemLabel="#{barrios.barrioNombre}"/>
+                                            </h:selectOneMenu>
+
+                                        </div>
+
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Descripción de tarea a realizar.<span style="color: red;">*</span></label>

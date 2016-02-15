@@ -35,7 +35,7 @@
                                                     <f:selectItems value="#{mbSReclamos.tiposDeReclamos}" 
                                                                    var="tiposReclamos"
                                                                    itemValue="#{tiposReclamos.codTipoReclamo}" 
-                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo}"/>
+                                                                   itemLabel="#{tiposReclamos.nombreTipoReclamo.toUpperCase()}"/>
                                                     <p:ajax listener="#{mbSReclamos.seleccionarTipoDeReclamo(event)}" update="gmap"/>
                                                 </h:selectOneMenu>
 
@@ -62,8 +62,7 @@
                                                 <h:inputText id="direccion"
                                                              class="form-control" 
                                                              label="Dirección" 
-                                                             value="#{mbSReclamos.dirReclamo}" 
-                                                             disabled="false"/>
+                                                             value="#{mbSReclamos.dirReclamo}"/>
                                             </div>
 
                                             <div class="form-group">

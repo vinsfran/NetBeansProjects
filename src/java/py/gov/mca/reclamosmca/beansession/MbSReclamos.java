@@ -171,10 +171,10 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
         this.nuevoReclamo.setLatitud(-25.3041049263554);
         this.nuevoReclamo.setLongitud(-57.5597266852856);
-        
+
         this.nuevoReclamo.setFkCodDireccion(new Paises05Direcciones());
         this.nuevoReclamo.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
-        
+
         this.tipoDeReclamosSeleccionado = null;
         this.setMostrarGraphicImage(false);
         this.setZoom(15);
@@ -208,8 +208,7 @@ public class MbSReclamos implements Serializable {
 
     public void seleccionarBarrio(AjaxBehaviorEvent event) {
         this.barrioSeleccionado = barriosSB.consultarBarrio(getNuevoReclamo().getFkCodDireccion().getFkCodBarrio().getCodBarrio());
-        this.dirReclamo = dirReclamo + " - Barrio: " + barrioSeleccionado.getBarrioNombre();
-
+        //this.dirReclamo = dirReclamo + " - Barrio: " + barrioSeleccionado.getBarrioNombre();
     }
 
     public void puntoSelecionado(PointSelectEvent event) throws UnsupportedEncodingException, MalformedURLException {
@@ -224,23 +223,23 @@ public class MbSReclamos implements Serializable {
             marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
             marca.setDraggable(false);
             emptyModel.addOverlay(marca);
-            
-            direccionSelecionada = direccionesSB.consultarDrireccionPorLatitudLongitud(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
-            if(){
-                
-            }
-            
-            
-            this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
-            this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
-            Geocoding objGeocod = new Geocoding();
 
-            if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
-                setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+            direccionSelecionada = direccionesSB.consultarDrireccionPorLatitudLongitud(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
+            if (direccionSelecionada == null) {
+                this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
+                this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
+                Geocoding objGeocod = new Geocoding();
+
+                if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
+                    setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+                } else {
+                    setDirReclamo("DIR_FALSE");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
+                }
             } else {
-                setDirReclamo("DIR_FALSE");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
+                setDirReclamo(direccionSelecionada.getDireccionNombre());
             }
+
         }
     }
 
@@ -259,28 +258,44 @@ public class MbSReclamos implements Serializable {
         } else if (dirReclamo.equals("DIR_FALSE")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
             return "admin_nuevo_reclamo";
+        } else if (this.barrioSeleccionado == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
+            return "admin_nuevo_reclamo";
         } else if (nuevoReclamo.getDescripcionReclamoContribuyente().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
             return "admin_nuevo_reclamo";
         } else {
-            nuevoReclamo.setFkCodUsuario(usu);
-            nuevoReclamo.getFkCodUsuario().setFkCodRol(usu.getFkCodRol());
-            nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
-            nuevoReclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(1);
-            nuevoReclamo.setFechaReclamo(new Date());
-            nuevoReclamo.setLatitud(latituteLongitude.getLat());
-            nuevoReclamo.setLongitud(latituteLongitude.getLng());
-            nuevoReclamo.setDireccionReclamo(dirReclamo);
-            nuevoReclamo.setFkCodTipoReclamo(tipoDeReclamosSeleccionado);
-            nuevoReclamo.setOrigenReclamo("appWeb");
-            if (reclamosSB.crearReclamos(nuevoReclamo).equals("OK")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Gracias!", "Su reclamo fue enviado."));
-                return "admin_mis_reclamos";
+            Paises05Direcciones dirAux = new Paises05Direcciones();
+            dirAux.setDireccionNombre(getDirReclamo());
+            dirAux.setDireccionLatitud(latituteLongitude.getLat());
+            dirAux.setDireccionLongitud(latituteLongitude.getLng());
+            dirAux.setFkCodBarrio(barrioSeleccionado);
+            if (direccionesSB.actualizarDireccion(dirAux) != null) {
+                nuevoReclamo.setFkCodUsuario(usu);
+                nuevoReclamo.getFkCodUsuario().setFkCodRol(usu.getFkCodRol());
+                nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
+                nuevoReclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(1);
+                nuevoReclamo.setFechaReclamo(new Date());
+                nuevoReclamo.setLatitud(latituteLongitude.getLat());
+                nuevoReclamo.setLongitud(latituteLongitude.getLng());
+                nuevoReclamo.setDireccionReclamo(getDirReclamo());
+                nuevoReclamo.setFkCodTipoReclamo(tipoDeReclamosSeleccionado);
+                nuevoReclamo.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(dirAux.getDireccionLatitud(), dirAux.getDireccionLongitud()));
+                nuevoReclamo.setOrigenReclamo("appWeb");
+                if (reclamosSB.crearReclamos(nuevoReclamo).equals("OK")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Gracias!", "Su reclamo fue enviado."));
+                    return "admin_mis_reclamos";
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!", "Ocurrio un problema al enviar su reclamo, intente de nuevo."));
+                    return "admin_nuevo_reclamo";
+                }
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!", "Ocurrio un problema al enviar su reclamo, intente de nuevo."));
                 return "admin_nuevo_reclamo";
             }
+
         }
+
     }
 
     public String prepararNuevoReclamoExterno() {
@@ -498,8 +513,10 @@ public class MbSReclamos implements Serializable {
             this.imagenCargada.setName(this.imagenParaGuardar.getNombreImagen());
             this.imagenCargada.setContentType(this.imagenParaGuardar.getTipoImagen());
             this.setMostrarGraphicImage(true);
+
         } catch (Exception ex) {
-            Logger.getLogger(MbSReclamos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MbSReclamos.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1076,7 +1093,6 @@ public class MbSReclamos implements Serializable {
     }
 
     public String recuperarReclamo(Integer codReclamo) {
-        System.out.println("MbSReclamos recuperarReclamo ENTRO " + codReclamo);
         reclamoSeleccionado = null;
         reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
         String pagina;
@@ -1093,29 +1109,44 @@ public class MbSReclamos implements Serializable {
     }
 
     public String actualizarReclamoPendiente() {
-        System.out.println("MbSReclamos actualizarReclamoPendiente ENTRO");
-        if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
+//FALTA ACTUALIZAR LAS DIRECCIONES CUANDO SE CAMBIA EL BARRIO
+
+sñldkjflsdajflk
+//        if (this.barrioSeleccionado == null) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
+//            return "/admin_procesar_reclamo_pendiente";
+//        } else 
+            if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo Descripción de tarea a realizar.", ""));
             return "/admin_procesar_reclamo_pendiente";
         } else {
-            //Se completa el reclamo
-            reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
-            reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
-            // reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
-            reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
-            reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
-            reclamoSeleccionado.setFechaAtencionReclamo(new Date());
-            reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
-            String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
-            if (mensaje.equals("OK")) {
-                System.out.println("ENTRO");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo procesado.", ""));
-                //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
-                return "/admin_gestion_reclamos_pendientes";
+            Paises05Direcciones dirAux = direccionesSB.consultarDrireccionPorLatitudLongitud(reclamoSeleccionado.getLatitud(), reclamoSeleccionado.getLongitud());
+            dirAux.setDireccionNombre(reclamoSeleccionado.getDireccionReclamo());
+            dirAux.setFkCodBarrio(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio());
+            if (direccionesSB.actualizarDireccion(dirAux) != null) {
+                //Se completa el reclamo
+                reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
+                reclamoSeleccionado.getFkCodEstadoReclamo().setCodEstadoReclamo(2);
+                // reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
+                reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
+                reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
+                reclamoSeleccionado.setFechaAtencionReclamo(new Date());
+                reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
+                String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
+                if (mensaje.equals("OK")) {
+                    System.out.println("ENTRO");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo procesado.", ""));
+                    //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
+                    return "/admin_gestion_reclamos_pendientes";
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no procesado.", ""));
+                    return "/admin_procesar_reclamo_pendiente";
+                }
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reclamo no procesado.", ""));
                 return "/admin_procesar_reclamo_pendiente";
             }
+
         }
     }
 

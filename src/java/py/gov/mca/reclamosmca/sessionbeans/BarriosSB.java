@@ -60,7 +60,16 @@ public class BarriosSB {
 
     @SuppressWarnings("unchecked")
     public List<Paises04Barrios> listarBarrios() {
-        Query q = em.createNamedQuery("Paises04Barrios.findAll");
+        //Query q = em.createNamedQuery("Paises04Barrios.findAll");
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM Paises04Barrios e ");
+        jpql.append("ORDER BY e.barrioNombre");
+        Query q = em.createQuery(jpql.toString());
+                
         return q.getResultList();
     }
+    
+    
+    
 }
