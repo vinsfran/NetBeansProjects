@@ -52,7 +52,7 @@
                                                             model="#{mbSReclamos.emptyModel}">
 
                                                         <p:ajax event="stateChange" listener="#{mbSReclamos.onStateChange}"/>
-                                                        <p:ajax event="pointSelect" listener="#{mbSReclamos.puntoSelecionado}" update="gmap direccion" />
+                                                        <p:ajax event="pointSelect" listener="#{mbSReclamos.puntoSelecionado}" update="gmap direccion barrios" />
                                                     </p:gmap>
                                                 </div>
                                             </div>
@@ -68,7 +68,8 @@
                                             <div class="form-group">
                                                 <label>Barrio</label>
 
-                                                <h:selectOneMenu value="#{mbSReclamos.nuevoReclamo.fkCodDireccion.fkCodBarrio.codBarrio}" 
+                                                <h:selectOneMenu id="barrios"
+                                                                 value="#{mbSReclamos.nuevoReclamo.fkCodDireccion.fkCodBarrio.codBarrio}" 
                                                                  class="form-control">
                                                     <f:selectItem itemLabel="Seleccione un Barrio" 
                                                                   noSelectionOption="false"

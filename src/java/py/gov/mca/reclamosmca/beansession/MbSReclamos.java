@@ -220,6 +220,7 @@ public class MbSReclamos implements Serializable {
             emptyModel = new DefaultMapModel();
             emptyModel.addOverlay(null);
             Marker marca = new Marker(getLatituteLongitude());
+            marca.ge
             marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
             marca.setDraggable(false);
             emptyModel.addOverlay(marca);
@@ -238,6 +239,7 @@ public class MbSReclamos implements Serializable {
                 }
             } else {
                 setDirReclamo(direccionSelecionada.getDireccionNombre());
+                nuevoReclamo.getFkCodDireccion().setFkCodBarrio(direccionSelecionada.getFkCodBarrio());
             }
 
         }
@@ -1111,7 +1113,7 @@ public class MbSReclamos implements Serializable {
     public String actualizarReclamoPendiente() {
 //FALTA ACTUALIZAR LAS DIRECCIONES CUANDO SE CAMBIA EL BARRIO
 
-sñldkjflsdajflk
+//sñldkjflsdajflk
 //        if (this.barrioSeleccionado == null) {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
 //            return "/admin_procesar_reclamo_pendiente";

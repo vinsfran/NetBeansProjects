@@ -55,9 +55,10 @@ public class DireccionesSB {
         q.setParameter("codDireccion", codDireccion);
         return (Paises05Direcciones) q.getResultList().get(0);
     }
-    
+
     @SuppressWarnings("unchecked")
     public Paises05Direcciones consultarDrireccionPorLatitudLongitud(Double direccionLatitud, Double direccionLongitud) {
+        System.out.println("ENTRO: " + direccionLatitud + ", " + direccionLongitud);
         StringBuilder jpql = new StringBuilder();
         jpql.append("SELECT e ");
         jpql.append("FROM Paises05Direcciones e ");
@@ -66,11 +67,13 @@ public class DireccionesSB {
         Query q = em.createQuery(jpql.toString());
         q.setParameter("direccionLatitud", direccionLatitud);
         q.setParameter("direccionLongitud", direccionLongitud);
-        if(q.getResultList().isEmpty()){
+        if (q.getResultList().isEmpty()) {
+            System.out.println("ENTRO: null");
             return null;
-        }else{
+        } else {
+            System.out.println("ENTRO: no null");
             return (Paises05Direcciones) q.getResultList().get(0);
-        }      
+        }
     }
 
     @SuppressWarnings("unchecked")
