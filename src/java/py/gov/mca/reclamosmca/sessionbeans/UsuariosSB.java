@@ -122,7 +122,7 @@ public class UsuariosSB {
             Personas persona = new Personas();
             persona = objeto.getFkCodPersona();
             persona.setFechaRegistroPersona(new Date());
-            em.persist(persona);
+            em.merge(persona);
             objeto.setFkCodPersona(persona);
             //  em.persist(objeto.getFkCodPersona());
             em.merge(objeto);

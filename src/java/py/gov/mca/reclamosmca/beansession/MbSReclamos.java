@@ -180,7 +180,38 @@ public class MbSReclamos implements Serializable {
         this.setZoom(15);
         this.imagenParaGuardar = null;
         this.imagenCargada = null;
+        this.dirReclamo = "";
         return "admin_nuevo_reclamo";
+    }
+
+    public String prepararNuevoReclamoExterno() {
+        this.activarCamposNuevoUsuario = false;
+        this.activarCampoCorreo = false;
+        this.activarCampoDireccion = false;
+        this.activarCamposCuenta = false;
+        this.activarCamposTelefono = false;
+        this.marcaParaNuevoUsuario = false;
+        this.mensajeCorreo = "";
+        this.setNuevoUsuario(new Usuarios());
+        this.getNuevoUsuario().setFkCodPersona(new Personas());
+        this.emptyModel = null;
+        this.emptyModel = new DefaultMapModel();
+        this.nuevoReclamo = null;
+        this.nuevoReclamo = new Reclamos();
+        this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
+        this.nuevoReclamo.setLatitud(-25.3041049263554);
+        this.nuevoReclamo.setLongitud(-57.5597266852856);
+        
+        this.nuevoReclamo.setFkCodDireccion(new Paises05Direcciones());
+        this.nuevoReclamo.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
+        
+        this.tipoDeReclamosSeleccionado = null;
+        this.setMostrarGraphicImage(false);
+        this.setZoom(15);
+        this.imagenParaGuardar = null;
+        this.imagenCargada = null;
+        this.dirReclamo = "";
+        return "admin_nuevo_reclamo_externo";
     }
 
     public String prepararReportePorEstadoRangoFecha() {
@@ -220,26 +251,33 @@ public class MbSReclamos implements Serializable {
             emptyModel = new DefaultMapModel();
             emptyModel.addOverlay(null);
             Marker marca = new Marker(getLatituteLongitude());
-            marca.ge
             marca.setTitle(getTipoDeReclamosSeleccionado().getNombreTipoReclamo());
-            marca.setDraggable(false);
+            marca.setDraggable(true);
             emptyModel.addOverlay(marca);
 
             direccionSelecionada = direccionesSB.consultarDrireccionPorLatitudLongitud(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
             if (direccionSelecionada == null) {
+
                 this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
                 this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
                 Geocoding objGeocod = new Geocoding();
 
                 if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
                     setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+                    direccionSelecionada = new Paises05Direcciones();
+                    direccionSelecionada.setDireccionLatitud(getLatituteLongitude().getLat());
+                    direccionSelecionada.setDireccionLongitud(getLatituteLongitude().getLng());
+                    direccionSelecionada.setDireccionNombre(getDirReclamo());
+                    direccionSelecionada.setFkCodBarrio(barrioSeleccionado);
                 } else {
                     setDirReclamo("DIR_FALSE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
                 }
+
             } else {
                 setDirReclamo(direccionSelecionada.getDireccionNombre());
-                nuevoReclamo.getFkCodDireccion().setFkCodBarrio(direccionSelecionada.getFkCodBarrio());
+                nuevoReclamo.setFkCodDireccion(direccionSelecionada);
+                this.barrioSeleccionado = direccionSelecionada.getFkCodBarrio();
             }
 
         }
@@ -260,19 +298,22 @@ public class MbSReclamos implements Serializable {
         } else if (dirReclamo.equals("DIR_FALSE")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
             return "admin_nuevo_reclamo";
+        } else if (dirReclamo.equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Escriba la dirección de su reclamo."));
+            return "admin_nuevo_reclamo";
         } else if (this.barrioSeleccionado == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
             return "admin_nuevo_reclamo";
-        } else if (nuevoReclamo.getDescripcionReclamoContribuyente().equals("")) {
+        } else if (nuevoReclamo.getDescripcionReclamoContribuyente()
+                .equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
             return "admin_nuevo_reclamo";
         } else {
-            Paises05Direcciones dirAux = new Paises05Direcciones();
-            dirAux.setDireccionNombre(getDirReclamo());
-            dirAux.setDireccionLatitud(latituteLongitude.getLat());
-            dirAux.setDireccionLongitud(latituteLongitude.getLng());
-            dirAux.setFkCodBarrio(barrioSeleccionado);
-            if (direccionesSB.actualizarDireccion(dirAux) != null) {
+            nuevoReclamo.getFkCodDireccion().setDireccionNombre(getDirReclamo());
+            nuevoReclamo.getFkCodDireccion().setDireccionLatitud(latituteLongitude.getLat());
+            nuevoReclamo.getFkCodDireccion().setDireccionLongitud(latituteLongitude.getLng());
+
+            if (direccionesSB.actualizarDireccion(nuevoReclamo.getFkCodDireccion()) != null) {
                 nuevoReclamo.setFkCodUsuario(usu);
                 nuevoReclamo.getFkCodUsuario().setFkCodRol(usu.getFkCodRol());
                 nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
@@ -282,7 +323,7 @@ public class MbSReclamos implements Serializable {
                 nuevoReclamo.setLongitud(latituteLongitude.getLng());
                 nuevoReclamo.setDireccionReclamo(getDirReclamo());
                 nuevoReclamo.setFkCodTipoReclamo(tipoDeReclamosSeleccionado);
-                nuevoReclamo.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(dirAux.getDireccionLatitud(), dirAux.getDireccionLongitud()));
+                nuevoReclamo.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(latituteLongitude.getLat(), latituteLongitude.getLng()));
                 nuevoReclamo.setOrigenReclamo("appWeb");
                 if (reclamosSB.crearReclamos(nuevoReclamo).equals("OK")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Gracias!", "Su reclamo fue enviado."));
@@ -300,29 +341,77 @@ public class MbSReclamos implements Serializable {
 
     }
 
-    public String prepararNuevoReclamoExterno() {
-        this.activarCamposNuevoUsuario = false;
-        this.activarCampoCorreo = false;
-        this.activarCampoDireccion = false;
-        this.activarCamposCuenta = false;
-        this.activarCamposTelefono = false;
-        this.marcaParaNuevoUsuario = false;
-        this.mensajeCorreo = "";
-        this.setNuevoUsuario(new Usuarios());
-        this.getNuevoUsuario().setFkCodPersona(new Personas());
-        this.emptyModel = null;
-        this.emptyModel = new DefaultMapModel();
-        this.nuevoReclamo = null;
-        this.nuevoReclamo = new Reclamos();
-        this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
-        this.nuevoReclamo.setLatitud(-25.3041049263554);
-        this.nuevoReclamo.setLongitud(-57.5597266852856);
-        this.tipoDeReclamosSeleccionado = null;
-        this.setMostrarGraphicImage(false);
-        this.setZoom(15);
-        this.imagenParaGuardar = null;
-        this.imagenCargada = null;
-        return "admin_nuevo_reclamo_externo";
+    public String enviarReclamoExterno() throws Exception {
+        if (marcaParaNuevoUsuario) {
+            Converciones c = new Converciones();
+            String contrasenaMD5 = c.getMD5(nuevoUsuario.getFkCodPersona().getCedulaPersona());
+            nuevoUsuario.setClaveUsuario(contrasenaMD5);
+            nuevoUsuario.getFkCodPersona().setOrigenRegistro("appWeb_" + recuperarUsuarioSession().getFkCodRol().getNombreRol());
+            nuevoUsuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+            nuevoUsuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
+            nuevoUsuario.setFkCodRol(new Roles());
+            nuevoUsuario.getFkCodRol().setCodRol(6);
+        }
+        String resultado = usuariosSB.crearUsuariosExterno(nuevoUsuario);
+        if (resultado.equals("OK")) {
+            Usuarios usu = usuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
+            if (this.imagenParaGuardar != null) {
+                this.nuevoReclamo.setFkImagen(new Imagenes());
+                this.nuevoReclamo.setFkImagen(this.imagenParaGuardar);
+            }
+            if (this.tipoDeReclamosSeleccionado == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (emptyModel.getMarkers().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione la ubicación de su reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (dirReclamo.equals("DIR_FALSE")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (dirReclamo.equals("")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Escriba la dirección de su reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (this.barrioSeleccionado == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
+                return "admin_nuevo_reclamo_externo";
+            } else if (nuevoReclamo.getDescripcionReclamoContribuyente().equals("")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
+                return "admin_nuevo_reclamo_externo";
+            } else {
+
+                nuevoReclamo.getFkCodDireccion().setDireccionNombre(getDirReclamo());
+                nuevoReclamo.getFkCodDireccion().setDireccionLatitud(latituteLongitude.getLat());
+                nuevoReclamo.getFkCodDireccion().setDireccionLongitud(latituteLongitude.getLng());
+                if (direccionesSB.actualizarDireccion(nuevoReclamo.getFkCodDireccion()) != null) {
+                    nuevoReclamo.setFkCodUsuario(usu);
+                    nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
+                    nuevoReclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(1);
+                    nuevoReclamo.setFechaReclamo(new Date());
+                    nuevoReclamo.setLatitud(latituteLongitude.getLat());
+                    nuevoReclamo.setLongitud(latituteLongitude.getLng());
+                    nuevoReclamo.setDireccionReclamo(dirReclamo);
+                    nuevoReclamo.setFkCodTipoReclamo(tipoDeReclamosSeleccionado);
+                    nuevoReclamo.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(latituteLongitude.getLat(), latituteLongitude.getLng()));
+                    nuevoReclamo.setOrigenReclamo("appWeb_" + recuperarUsuarioSession().getFkCodRol().getNombreRol());
+                    String mensajeReclamo = reclamosSB.crearReclamos(nuevoReclamo);
+                    if (mensajeReclamo.equals("OK")) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Gracias!", "Su reclamo fue enviado."));
+                        return "admin_mis_reclamos";
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurrio un problema al enviar su reclamo, intente de nuevo.", mensajeReclamo));
+                        return "admin_nuevo_reclamo_externo";
+                    }
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!", "Ocurrio un problema al enviar su reclamo, intente de nuevo."));
+                    return "admin_nuevo_reclamo_externo";
+                }
+
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro de Usuario, intente de nuevo", resultado));
+            return "/admin_nuevo_reclamo_externo";
+        }
+
     }
 
     public void buscarPorCedula() {
@@ -380,64 +469,6 @@ public class MbSReclamos implements Serializable {
         } else {
             this.mensajeCorreo = "";
         }
-    }
-
-    public String enviarReclamoExterno() throws Exception {
-
-        if (marcaParaNuevoUsuario) {
-            Converciones c = new Converciones();
-            String contrasenaMD5 = c.getMD5(nuevoUsuario.getFkCodPersona().getCedulaPersona());
-            nuevoUsuario.setClaveUsuario(contrasenaMD5);
-            nuevoUsuario.getFkCodPersona().setOrigenRegistro("appWeb_" + recuperarUsuarioSession().getFkCodRol().getNombreRol());
-            nuevoUsuario.setFkCodEstadoUsuario(new EstadosUsuarios());
-            nuevoUsuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
-            nuevoUsuario.setFkCodRol(new Roles());
-            nuevoUsuario.getFkCodRol().setCodRol(6);
-        }
-
-        String resultado = usuariosSB.crearUsuariosExterno(nuevoUsuario);
-        if (resultado.equals("OK")) {
-            Usuarios usu = usuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
-            if (this.imagenParaGuardar != null) {
-                this.nuevoReclamo.setFkImagen(new Imagenes());
-                this.nuevoReclamo.setFkImagen(this.imagenParaGuardar);
-            }
-            if (this.tipoDeReclamosSeleccionado == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un tipo de reclamo."));
-                return "admin_nuevo_reclamo_externo";
-            } else if (emptyModel.getMarkers().isEmpty()) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione la ubicación de su reclamo."));
-                return "admin_nuevo_reclamo_externo";
-            } else if (dirReclamo.equals("DIR_FALSE")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
-                return "admin_nuevo_reclamo_externo";
-            } else if (nuevoReclamo.getDescripcionReclamoContribuyente().equals("")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
-                return "admin_nuevo_reclamo_externo";
-            } else {
-                nuevoReclamo.setFkCodUsuario(usu);
-                nuevoReclamo.setFkCodEstadoReclamo(new EstadosReclamos());
-                nuevoReclamo.getFkCodEstadoReclamo().setCodEstadoReclamo(1);
-                nuevoReclamo.setFechaReclamo(new Date());
-                nuevoReclamo.setLatitud(latituteLongitude.getLat());
-                nuevoReclamo.setLongitud(latituteLongitude.getLng());
-                nuevoReclamo.setDireccionReclamo(dirReclamo);
-                nuevoReclamo.setFkCodTipoReclamo(tipoDeReclamosSeleccionado);
-                nuevoReclamo.setOrigenReclamo("appWeb_" + recuperarUsuarioSession().getFkCodRol().getNombreRol());
-                String mensajeReclamo = reclamosSB.crearReclamos(nuevoReclamo);
-                if (mensajeReclamo.equals("OK")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Gracias!", "Su reclamo fue enviado."));
-                    return "admin_mis_reclamos";
-                } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurrio un problema al enviar su reclamo, intente de nuevo.", mensajeReclamo));
-                    return "admin_nuevo_reclamo_externo";
-                }
-            }
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro de Usuario, intente de nuevo", resultado));
-            return "/admin_nuevo_reclamo_externo";
-        }
-
     }
 
     public String prepararCambiarTipoReclamo(Integer codReclamo) {
@@ -1118,7 +1149,7 @@ public class MbSReclamos implements Serializable {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
 //            return "/admin_procesar_reclamo_pendiente";
 //        } else 
-            if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
+        if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo Descripción de tarea a realizar.", ""));
             return "/admin_procesar_reclamo_pendiente";
         } else {
