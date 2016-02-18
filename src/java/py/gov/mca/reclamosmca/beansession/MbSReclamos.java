@@ -378,7 +378,6 @@ public class MbSReclamos implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Detalle el reclamo."));
                 return "admin_nuevo_reclamo_externo";
             } else {
-
                 nuevoReclamo.getFkCodDireccion().setDireccionNombre(getDirReclamo());
                 nuevoReclamo.getFkCodDireccion().setDireccionLatitud(latituteLongitude.getLat());
                 nuevoReclamo.getFkCodDireccion().setDireccionLongitud(latituteLongitude.getLng());
@@ -652,7 +651,6 @@ public class MbSReclamos implements Serializable {
     }
 
     public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
-        System.out.println("exportarPDF CodReclamo: " + codReclamo);
         Reclamos reclamoSeleccionadoPDF = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
         Map<String, Object> parametros = new HashMap<>();
@@ -993,20 +991,7 @@ public class MbSReclamos implements Serializable {
             }
         }
 
-        System.out.println("TAMA: " + listaDependenciasReporte.size());
-
-        for (int j = 0; listaDependenciasReporte.size() > j; j++) {
-            System.out.println("DEPE: " + listaDependenciasReporte.get(j).getNombreDependencia());
-
-            for (int h = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().size() > h; h++) {
-                System.out.println("-TIPO: " + listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getNombreTipoReclamo());
-
-                for (int m = 0; listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getReclamos().size() > m; m++) {
-                    System.out.println("--RECLA: " + listaDependenciasReporte.get(j).getTiposReclamosReporte().get(h).getReclamos().get(m).getCodReclamo());
-                }
-            }
-        }
-
+       
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
@@ -1101,7 +1086,6 @@ public class MbSReclamos implements Serializable {
     }
 
     public void verMapa(Reclamos reclamo) {
-        System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
         emptyModel = new DefaultMapModel();
         emptyModel.addOverlay(null);
         LatLng latiLongi = new LatLng(reclamo.getLatitud(), reclamo.getLongitud());
@@ -1114,9 +1098,7 @@ public class MbSReclamos implements Serializable {
 
     public void verImagen(Reclamos reclamo) {
         reclamoSeleccionado = reclamo;
-        //System.out.println("MbSReclamos verMapa entra " + reclamo.getLatitud() + " " + reclamo.getLongitud());
         //Se convierte la imagen obtenida para mostrar como previa
-
         this.imagenCargada = null;
         if (reclamoSeleccionado.getFkImagen() != null) {
             this.imagenCargada = new DefaultStreamedContent(new ByteArrayInputStream(reclamoSeleccionado.getFkImagen().getArchivoImagen()), reclamoSeleccionado.getFkImagen().getTipoImagen());
@@ -1129,6 +1111,7 @@ public class MbSReclamos implements Serializable {
         reclamoSeleccionado = null;
         reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
         String pagina;
+        verMapa(reclamoSeleccionado);
         //Si el estado del reclamo es PENDIENTE
         if (reclamoSeleccionado.getFkCodEstadoReclamo().getCodEstadoReclamo().equals(1)) {
             pagina = "/admin_procesar_reclamo_pendiente";
@@ -1142,20 +1125,14 @@ public class MbSReclamos implements Serializable {
     }
 
     public String actualizarReclamoPendiente() {
-//FALTA ACTUALIZAR LAS DIRECCIONES CUANDO SE CAMBIA EL BARRIO
-
-//sñldkjflsdajflk
-//        if (this.barrioSeleccionado == null) {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione un barrio."));
-//            return "/admin_procesar_reclamo_pendiente";
-//        } else 
         if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo Descripción de tarea a realizar.", ""));
             return "/admin_procesar_reclamo_pendiente";
         } else {
             Paises05Direcciones dirAux = direccionesSB.consultarDrireccionPorLatitudLongitud(reclamoSeleccionado.getLatitud(), reclamoSeleccionado.getLongitud());
             dirAux.setDireccionNombre(reclamoSeleccionado.getDireccionReclamo());
-            dirAux.setFkCodBarrio(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio());
+            dirAux.setFkCodBarrio(barriosSB.consultarBarrio(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().getCodBarrio()));
+            
             if (direccionesSB.actualizarDireccion(dirAux) != null) {
                 //Se completa el reclamo
                 reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
@@ -1167,7 +1144,6 @@ public class MbSReclamos implements Serializable {
                 reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
                 String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
                 if (mensaje.equals("OK")) {
-                    System.out.println("ENTRO");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo procesado.", ""));
                     //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
                     return "/admin_gestion_reclamos_pendientes";
@@ -1185,8 +1161,6 @@ public class MbSReclamos implements Serializable {
 
     //METODO PARA PROCESAR RECLAMOS ATENDIDOS
     public String actualizarReclamoAtendido() {
-        System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO");
-
         if (reclamoSeleccionado.getFkCodTipoFinalizacionReclamo().getCodTipoFinalizacionReclamo().equals(0)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un Motivo de finalización.", ""));
             return "/admin_procesar_reclamo_atendido";
@@ -1205,7 +1179,6 @@ public class MbSReclamos implements Serializable {
 
             String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
             if (mensaje.equals("OK")) {
-                System.out.println("MbSReclamos actualizarReclamoAtendido ENTRO EN OK ");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo finalizado.", ""));
                 //METODO PARA DESCARGAR PDF DESPUES DE ACTUALIZAR RECLAMO
                 return "/admin_gestion_reclamos_atendidos";

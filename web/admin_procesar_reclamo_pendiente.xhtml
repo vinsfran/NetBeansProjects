@@ -23,32 +23,45 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <h:form>
-                                        <div class="form-group">
-                                            <label>Dirección(*).</label>
-                                            <h:inputText id="direccion"
-                                                         class="form-control" 
-                                                         label="Dirección" 
-                                                         value="#{mbSReclamos.reclamoSeleccionado.direccionReclamo}" 
-                                                         disabled="false"/>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Barrio</label>
-
-                                            <h:selectOneMenu value="#{mbSReclamos.reclamoSeleccionado.fkCodDireccion.fkCodBarrio.codBarrio}" 
-                                                             class="form-control">
-                                                <f:selectItem itemLabel="Seleccione un Barrio" 
-                                                              noSelectionOption="false"
-                                                              itemDisabled="true"/>
-                                                <f:selectItems value="#{mbSReclamos.barrios}" 
-                                                               var="barrios"
-                                                               itemValue="#{barrios.codBarrio}" 
-                                                               itemLabel="#{barrios.barrioNombre}"/>
-                                            </h:selectOneMenu>
-
-                                        </div>
-
                                         <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Ubicación del reclamo:</label>
+
+                                                <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+                                                <p:gmap id="gmap"
+                                                        center="#{mbSReclamos.reclamoSeleccionado.latitud}, #{mbSReclamos.reclamoSeleccionado.longitud}" 
+                                                        zoom="20" type="HYBRID"  
+                                                        style="width:100%;height:400px;"
+                                                        model="#{mbSReclamos.emptyModel}">
+                                                </p:gmap>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Dirección.<span style="color: red;">*</span></label>
+                                                <h:inputText id="direccion"
+                                                             class="form-control" 
+                                                             label="Dirección" 
+                                                             value="#{mbSReclamos.reclamoSeleccionado.direccionReclamo}" 
+                                                             disabled="false"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Barrio.<span style="color: red;">*</span></label>
+
+                                                <h:selectOneMenu value="#{mbSReclamos.reclamoSeleccionado.fkCodDireccion.fkCodBarrio.codBarrio}" 
+                                                                 class="form-control">
+                                                    <f:selectItem itemLabel="Seleccione un Barrio" 
+                                                                  noSelectionOption="false"
+                                                                  itemDisabled="true"/>
+                                                    <f:selectItems value="#{mbSReclamos.barrios}" 
+                                                                   var="barrios"
+                                                                   itemValue="#{barrios.codBarrio}" 
+                                                                   itemLabel="#{barrios.barrioNombre}"/>
+                                                </h:selectOneMenu>
+
+                                            </div>
+
+
                                             <div class="form-group">
                                                 <label>Descripción de tarea a realizar.<span style="color: red;">*</span></label>
                                                 <p:inputTextarea required="false" 
