@@ -72,7 +72,6 @@ public class ReclamosSB {
 
             em.merge(tipoReclamo);
 
-            System.out.println("CODIGO DE ROL: " + objeto.getFkCodUsuario().getFkCodRol().getCodRol());
             if (objeto.getFkCodUsuario().getFkCodRol().getCodRol().equals(6)) {
                 String asunto = "RESPUESTA SOBRE RECLAMO " + objeto.getFkCodTipoReclamo().getNombreTipoReclamo();
                 String mensaje = "<html>"

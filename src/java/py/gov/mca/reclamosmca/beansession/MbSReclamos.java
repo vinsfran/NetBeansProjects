@@ -1110,6 +1110,10 @@ public class MbSReclamos implements Serializable {
     public String recuperarReclamo(Integer codReclamo) {
         reclamoSeleccionado = null;
         reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
+        if(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio() == null){
+            reclamoSeleccionado.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
+            reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().setCodBarrio(69);
+        }
         String pagina;
         verMapa(reclamoSeleccionado);
         //Si el estado del reclamo es PENDIENTE
@@ -1125,7 +1129,11 @@ public class MbSReclamos implements Serializable {
     }
 
     public String actualizarReclamoPendiente() {
-        if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
+        //VALIDAR DIR VACIO y BARRIO NULL
+        if(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().getCodBarrio().equals(69)){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar seleccionar un barrio.", ""));
+            return "/admin_procesar_reclamo_pendiente";
+        }else if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo Descripción de tarea a realizar.", ""));
             return "/admin_procesar_reclamo_pendiente";
         } else {

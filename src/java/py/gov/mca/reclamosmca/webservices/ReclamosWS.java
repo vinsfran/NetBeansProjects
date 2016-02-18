@@ -24,9 +24,12 @@ import org.primefaces.json.JSONObject;
 import org.primefaces.util.Base64;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
+import py.gov.mca.reclamosmca.entitys.Paises04Barrios;
+import py.gov.mca.reclamosmca.entitys.Paises05Direcciones;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
+import py.gov.mca.reclamosmca.sessionbeans.DireccionesSB;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
 import py.gov.mca.reclamosmca.sessionbeans.RolesSB;
 import py.gov.mca.reclamosmca.sessionbeans.TiposReclamosSB;
@@ -51,6 +54,11 @@ public class ReclamosWS {
 
     @EJB
     private RolesSB rolesSB;
+
+    @EJB
+    private DireccionesSB direccionesSB;
+
+    private Paises05Direcciones direccionSelecionada;
 
     @POST
     @Path("/crearReclamosWeb")
@@ -82,6 +90,19 @@ public class ReclamosWS {
         reclamos.setFechaReclamo(new Date());
         reclamos.setLatitud(jsonObjectReclamo.getDouble("latitud"));
         reclamos.setLongitud(jsonObjectReclamo.getDouble("longitud"));
+
+        direccionSelecionada = direccionesSB.consultarDrireccionPorLatitudLongitud(reclamos.getLatitud(), reclamos.getLongitud());
+        if (direccionSelecionada == null) {
+            direccionSelecionada = new Paises05Direcciones();
+            direccionSelecionada.setDireccionLatitud(reclamos.getLatitud());
+            direccionSelecionada.setDireccionLongitud(reclamos.getLongitud());
+            direccionSelecionada.setDireccionNombre(reclamos.getDireccionReclamo());
+            //direccionSelecionada.setFkCodBarrio(barrioSeleccionado);
+            //direccionSelecionada.setFkCodBarrio(new Paises04Barrios());
+            
+        } 
+        direccionesSB.actualizarDireccion(direccionSelecionada);
+        reclamos.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(reclamos.getLatitud(), reclamos.getLongitud()));
 
         reclamos.setFkCodEstadoReclamo(new EstadosReclamos());
         reclamos.getFkCodEstadoReclamo().setCodEstadoReclamo(1);
