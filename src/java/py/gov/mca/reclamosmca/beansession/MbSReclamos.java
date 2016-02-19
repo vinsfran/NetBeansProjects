@@ -201,10 +201,10 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
         this.nuevoReclamo.setLatitud(-25.3041049263554);
         this.nuevoReclamo.setLongitud(-57.5597266852856);
-        
+
         this.nuevoReclamo.setFkCodDireccion(new Paises05Direcciones());
         this.nuevoReclamo.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
-        
+
         this.tipoDeReclamosSeleccionado = null;
         this.setMostrarGraphicImage(false);
         this.setZoom(15);
@@ -991,7 +991,6 @@ public class MbSReclamos implements Serializable {
             }
         }
 
-       
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
@@ -1110,7 +1109,7 @@ public class MbSReclamos implements Serializable {
     public String recuperarReclamo(Integer codReclamo) {
         reclamoSeleccionado = null;
         reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
-        if(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio() == null){
+        if (reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio() == null) {
             reclamoSeleccionado.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
             reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().setCodBarrio(69);
         }
@@ -1130,17 +1129,22 @@ public class MbSReclamos implements Serializable {
 
     public String actualizarReclamoPendiente() {
         //VALIDAR DIR VACIO y BARRIO NULL
-        if(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().getCodBarrio().equals(69)){
+        if (reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().getCodBarrio().equals(69)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar seleccionar un barrio.", ""));
             return "/admin_procesar_reclamo_pendiente";
-        }else if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
+        } else if (reclamoSeleccionado.getDescripcionAtencionReclamo().equals("") || reclamoSeleccionado.getDescripcionAtencionReclamo().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar el campo Descripción de tarea a realizar.", ""));
             return "/admin_procesar_reclamo_pendiente";
         } else {
             Paises05Direcciones dirAux = direccionesSB.consultarDrireccionPorLatitudLongitud(reclamoSeleccionado.getLatitud(), reclamoSeleccionado.getLongitud());
+            if (dirAux == null) {
+                dirAux = new Paises05Direcciones();
+            }
+            dirAux.setDireccionLatitud(reclamoSeleccionado.getLatitud());
+            dirAux.setDireccionLongitud(reclamoSeleccionado.getLongitud());
             dirAux.setDireccionNombre(reclamoSeleccionado.getDireccionReclamo());
             dirAux.setFkCodBarrio(barriosSB.consultarBarrio(reclamoSeleccionado.getFkCodDireccion().getFkCodBarrio().getCodBarrio()));
-            
+
             if (direccionesSB.actualizarDireccion(dirAux) != null) {
                 //Se completa el reclamo
                 reclamoSeleccionado.setFkCodEstadoReclamo(new EstadosReclamos());
@@ -1148,6 +1152,7 @@ public class MbSReclamos implements Serializable {
                 // reclamoSeleccionado.getFkCodEstadoReclamo().setNombreEstadoReclamo("EN_PROCESO");
                 reclamoSeleccionado.setFkCodUsuarioAtencion(new Usuarios());
                 reclamoSeleccionado.setFkCodUsuarioAtencion(recuperarUsuarioSession());
+                reclamoSeleccionado.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(reclamoSeleccionado.getLatitud(), reclamoSeleccionado.getLongitud()));
                 reclamoSeleccionado.setFechaAtencionReclamo(new Date());
                 reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
                 String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
