@@ -81,6 +81,8 @@ public class MbSRoles implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_nuevo_rol";
         } else {
+            String nombreMayuscula = rol.getNombreRol().toUpperCase();
+            rol.setNombreRol(nombreMayuscula);
             String mensaje = rolesSB.crearRoles(this.rol);
             if (mensaje.equals("OK")) {
                 this.rol = null;
@@ -92,12 +94,14 @@ public class MbSRoles implements Serializable {
             }
         }
     }
-    
+
     public String btnActualizar() {
         if (this.rol.getNombreRol() == null || this.rol.getNombreRol().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_nuevo_rol";
         } else {
+            String nombreMayuscula = rol.getNombreRol().toUpperCase();
+            rol.setNombreRol(nombreMayuscula);
             String mensaje = rolesSB.actualizarRoles(this.rol);
             if (mensaje.equals("OK")) {
                 this.rol = null;
