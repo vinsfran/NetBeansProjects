@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>#{mbSAdminUsuarios.usuario.codUsuario > 0 ? 'Modificar' : 'Nuevo '} Usuario del Sistema</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span >Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form class="col-md-12"> 
+                                        <h4 class="col-lg-12" style="color: #0080FF">Datos del personales</h4> 
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputText class="form-control" 
+                                                         label="Documento de identidad" 
+                                                         value="#{mbSAdminUsuariosSistema.nuevaPersona.cedulaPersona}" 
+                                                         a:placeholder=" Documento de identidad"
+                                                         disabled="false">
+                                                <f:ajax listener="#{mbSAdminUsuariosSistema.buscarPorCedula()}" 
+                                                        render="nombres apellidos mensaje" />
+                                            </h:inputText>
+                                            <span class="input-group-addon">Documento de identidad</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputText id="nombres"
+                                                         class="form-control" 
+                                                         label="Nombres  " 
+                                                         value="#{mbSAdminUsuariosSistema.nuevaPersona.nombrePersona}" 
+                                                         a:placeholder=" Nombres"
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCamposNuevoUsuario}"/>
+                                            <span class="input-group-addon">Nombres</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputText id="apellidos"
+                                                         class="form-control" 
+                                                         label="Apellidos  " 
+                                                         value="#{mbSAdminUsuariosSistema.nuevaPersona.apellidoPersona}" 
+                                                         a:placeholder=" Apellidos"
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCamposNuevoUsuario}"/>
+                                            <span class="input-group-addon">Apellidos</span>
+                                        </div>
+                                        <h4 class="col-lg-12" style="color: #0080FF">Datos del usuario</h4> 
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputText class="form-control" 
+                                                         label="Login" 
+                                                         value="#{mbSAdminUsuarios.usuario.loginUsuario}" 
+                                                         a:placeholder=" Login"
+                                                         disabled="true"/>
+                                            <span class="input-group-addon">Login</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                           label="Clave" 
+                                                           value="#{mbSAdminUsuarios.usuario.claveUsuario}" 
+                                                           a:placeholder=" Clave"
+                                                           disabled="true"/>
+                                            <span class="input-group-addon">Clave</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputSecret class="form-control" 
+                                                           label="Repetir clave" 
+                                                           value="#{mbSAdminUsuarios.usuario.loginUsuario}" 
+                                                           a:placeholder=" Repetir clave"
+                                                           disabled="true"/>
+                                            <span class="input-group-addon">Repetir clave</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:selectOneMenu class="form-control"
+                                                             value="#{mbSAdminUsuariosSistema.nuevoUsuario.fkCodRol.codRol}">
+                                                <f:selectItem itemLabel=" Rol" 
+                                                              noSelectionOption="false"
+                                                              itemDisabled="true"/>
+                                                <f:selectItems value="#{mbSAdminUsuariosSistema.roles}" 
+                                                               var="roles"
+                                                               itemValue="#{roles.codRol}" 
+                                                               itemLabel="#{roles.nombreRol}"/>
+                                            </h:selectOneMenu>
+                                            <span class="input-group-addon">Rol de usuario</span>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandLink class="btn btn-default" action="#{mbSTiposReclamos.btnCancelar()}" immediate="true">
+                                                    Cancelar
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" action="#{mbSTiposReclamos.btnCrear()}" rendered="#{mbSTiposReclamos.tipoReclamo.codTipoReclamo > 0 ? false : true}">
+                                                    <i class="fa fa-check-square-o"></i> Crear
+                                                </h:commandLink>
+                                                <h:commandLink class="btn btn-primary" action="#{mbSTiposReclamos.btnActualizar()}" rendered="#{mbSTiposReclamos.tipoReclamo.codTipoReclamo > 0 ? true : false}">
+                                                    <i class="fa fa-check-square-o"></i> Actualizar
+                                                </h:commandLink>
+                                            </div>
+                                        </div>
+
+                                        <h:outputText id="mensaje" value="Persona ya existe" 
+                                                      rendered="#{mbSAdminUsuariosSistema.activarCamposNuevoUsuario}"/>
+
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

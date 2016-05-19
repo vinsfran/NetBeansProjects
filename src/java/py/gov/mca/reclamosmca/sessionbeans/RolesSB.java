@@ -52,7 +52,7 @@ public class RolesSB {
     }
 
     @SuppressWarnings("unchecked")
-    public Roles consultarRol(Integer codRol) {        
+    public Roles consultarRol(Integer codRol) {
         Query q = em.createNamedQuery("Roles.findByCodRol");
         q.setParameter("codRol", codRol);
         return (Roles) q.getResultList().get(0);
@@ -61,6 +61,16 @@ public class RolesSB {
     @SuppressWarnings("unchecked")
     public List<Roles> listarRoles() {
         Query q = em.createNamedQuery("Roles.findAll");
+        return q.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Roles> listarRolesUsuariosSistema() {
+
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e FROM Roles e WHERE e.codRol != 1 AND e.codRol != 6");
+        Query q = em.createQuery(jpql.toString());
+
         return q.getResultList();
     }
 }

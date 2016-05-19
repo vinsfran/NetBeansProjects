@@ -32,8 +32,6 @@ public class AdminUsuariosSB {
         return mensajes;
     }
 
-
-
     public String actualizarUsuarios(Usuarios objeto) {
         mensajes = "";
         try {
@@ -100,6 +98,14 @@ public class AdminUsuariosSB {
     @SuppressWarnings("unchecked")
     public List<Usuarios> listarUsuarios() {
         Query q = em.createNamedQuery("Usuarios.findAll");
+        return q.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Usuarios> listarUsuariosSistema() {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e FROM Usuarios e WHERE e.fkCodRol.codRol != 1 AND e.fkCodRol.codRol != 6");
+        Query q = em.createQuery(jpql.toString());
         return q.getResultList();
     }
 
