@@ -35,7 +35,7 @@ public class UsuariosSB {
         }
         return mensajes;
     }
-
+    
     public String crearUsuariosWeb(Usuarios objeto) {
         if (objeto.getFkCodPersona().getDireccionPersona().isEmpty()) {
             objeto.getFkCodPersona().setDireccionPersona("");

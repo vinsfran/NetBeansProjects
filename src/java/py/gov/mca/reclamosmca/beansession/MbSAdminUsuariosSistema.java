@@ -9,16 +9,21 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import py.gov.mca.reclamosmca.entitys.Dependencias;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
+import py.gov.mca.reclamosmca.entitys.Laborales;
 import py.gov.mca.reclamosmca.entitys.Personas;
 import py.gov.mca.reclamosmca.entitys.Roles;
+import py.gov.mca.reclamosmca.entitys.Sexos;
 import py.gov.mca.reclamosmca.entitys.Usuarios;
 import py.gov.mca.reclamosmca.sessionbeans.AdminUsuariosSB;
 import py.gov.mca.reclamosmca.sessionbeans.DependenciasSB;
 import py.gov.mca.reclamosmca.sessionbeans.EstadosUsuariosSB;
+import py.gov.mca.reclamosmca.sessionbeans.LaboralesSB;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.RolesSB;
+import py.gov.mca.reclamosmca.sessionbeans.SexosSB;
 import py.gov.mca.reclamosmca.utiles.Converciones;
 
 /**
@@ -39,6 +44,10 @@ public class MbSAdminUsuariosSistema implements Serializable {
     private RolesSB rolesSB;
 
     @EJB
+    private SexosSB sexosSB;
+    @EJB
+    private LaboralesSB laboralesSB;
+    @EJB
     private DependenciasSB dependenciasSB;
 
     @EJB
@@ -47,18 +56,24 @@ public class MbSAdminUsuariosSistema implements Serializable {
     private List<Usuarios> usuarios;
     private List<Personas> personas;
     private List<Roles> roles;
+    private List<Sexos> sexos;
+    private List<Laborales> laborales;
     private List<Dependencias> dependencias;
     private List<EstadosUsuarios> estadosUsuarios;
 
     private Usuarios nuevoUsuario;
     private Personas nuevaPersona;
 
-    private boolean activarCamposNuevoUsuario;
-    private boolean activarCampoCorreo;
-    private boolean activarCampoDireccion;
-    private boolean activarCamposCuenta;
-    private boolean activarCamposTelefono;
-    private boolean marcaParaNuevoUsuario;
+    private boolean activarCampoPersonaCedula;
+    private boolean activarCampoPersonaNombres;
+    private boolean activarCampoPersonaApellidos;
+    private boolean activarCampoPersonaTelefono;
+    private boolean activarCampoPersonaSexo;
+    private boolean activarCampoPersonaLaboral;
+    private boolean activarCampoPersonaDependencia;
+    private boolean activarCampoUsuarioLogin;
+    private boolean activarCampoUsuarioRoles;
+    private boolean marcaParaUsuarioExistente;
 
     public MbSAdminUsuariosSistema() {
 
@@ -67,14 +82,51 @@ public class MbSAdminUsuariosSistema implements Serializable {
     public String btnAgregar() {
         this.nuevoUsuario = null;
         this.nuevoUsuario = new Usuarios();
+        this.nuevoUsuario.setFkCodRol(new Roles());
         this.nuevaPersona = new Personas();
-        this.activarCamposNuevoUsuario = true;
+        this.nuevaPersona.setFkCodLaboral(new Laborales());
+        this.nuevaPersona.setFkCodSexo(new Sexos());
+        desActivarCamposFormularioPersonaCrear();
+        this.setActivarCampoPersonaCedula(true);
+        this.marcaParaUsuarioExistente = false;
         return "/admin_form_usuarios_sistema";
     }
 
     public String btnModificar(Usuarios usuario) {
         this.nuevoUsuario = usuario;
+        this.nuevaPersona = nuevoUsuario.getFkCodPersona();
         return "/admin_form_usuarios_sistema";
+    }
+
+    public String btnCrear() {
+        System.out.println("CREAR");
+        if (nuevaPersona.getNombrePersona() == null || nuevaPersona.getNombrePersona().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
+            return "/admin_form_usuarios_sistema";
+        } else {
+            nuevaPersona.setFechaRegistroPersona(new Date());
+            nuevaPersona.setOrigenRegistro("appWeb_" + recuperarUsuarioSession().getLoginUsuario());
+            nuevoUsuario.setFkCodPersona(nuevaPersona);
+            Converciones c = new Converciones();
+            String password = nuevoUsuario.getLoginUsuario() + "01";
+            nuevoUsuario.setClaveUsuario(c.getMD5(password));
+            nuevoUsuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+            nuevoUsuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
+            String mensaje = adminUsuariosSB.crearUsuariosSistema(nuevoUsuario);
+            if (mensaje.equals("OK")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado.", ""));
+                return "/admin_matenimiento_usuarios_sistema";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se creo el Usuario.", mensaje));
+                return "/admin_form_usuarios_sistema";
+            }
+        }
+    }
+
+    public Usuarios recuperarUsuarioSession() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        MbSUsuarios usuario = (MbSUsuarios) session.getAttribute("mbSUsuarios");
+        return usuario.getUsuario();
     }
 
     public String btnResetClave(Usuarios usuario) {
@@ -105,50 +157,94 @@ public class MbSAdminUsuariosSistema implements Serializable {
 
     public void buscarPorCedula() {
         Personas personaBuscada = personasSB.consultarPersonaCedula(nuevaPersona.getCedulaPersona());
+        this.setActivarCampoUsuarioLogin(false);
+        roles = rolesSB.listarRolesUsuariosSistema();
         if (personaBuscada != null) {
-            this.setActivarCamposNuevoUsuario(true);
             nuevaPersona = personaBuscada;
-            int banderaUsuarioBuscado = 0;
-            for (int i = 0; personaBuscada.getUsuariosList().size() > i; i++) {
-                if (personaBuscada.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
-                    banderaUsuarioBuscado = 1;
-                    nuevoUsuario = personaBuscada.getUsuariosList().get(i);
+            for (int i = 0; i < roles.size(); i++) {
+                for (int j = 0; j < nuevaPersona.getUsuariosList().size(); j++) {
+                    if (roles.get(i).equals(nuevaPersona.getUsuariosList().get(j).getFkCodRol())) {
+                        roles.remove(i);
+                    }
                 }
-            }
-            if (banderaUsuarioBuscado == 1) {
-                this.setActivarCampoCorreo(true);
-                this.setMarcaParaNuevoUsuario(false);
-            } else {
-                this.setActivarCampoCorreo(false);
-                this.setMarcaParaNuevoUsuario(true);
-            }
-            nuevoUsuario.setFkCodPersona(personaBuscada);
-            if (personaBuscada.getDireccionPersona() == null || personaBuscada.getDireccionPersona().isEmpty()) {
-                this.setActivarCampoDireccion(false);
-            } else {
-                this.setActivarCampoDireccion(true);
-            }
-            if (personaBuscada.getCtaCtePersona() == null || personaBuscada.getCtaCtePersona().isEmpty()) {
-                this.setActivarCamposCuenta(false);
-            } else {
-                this.setActivarCamposCuenta(true);
-            }
-            if (personaBuscada.getTelefonoPersona() == null || personaBuscada.getTelefonoPersona().isEmpty()) {
-                this.setActivarCamposTelefono(false);
-            } else {
-                this.setActivarCamposTelefono(true);
-            }
 
+            }
+            this.setActivarCampoPersonaCedula(true);
+            this.setActivarCampoPersonaNombres(true);
+            this.setActivarCampoPersonaApellidos(true);
+            this.setActivarCampoPersonaTelefono(true);
+            this.setActivarCampoPersonaSexo(true);
+            this.setActivarCampoPersonaLaboral(true);
+            this.setActivarCampoPersonaDependencia(true);
         } else {
-            this.setMarcaParaNuevoUsuario(true);
-            this.setActivarCamposNuevoUsuario(false);
-            this.setActivarCampoDireccion(false);
-            this.setActivarCamposCuenta(false);
-            this.setActivarCamposTelefono(false);
+            this.setActivarCampoPersonaCedula(false);
+            this.setActivarCampoPersonaNombres(false);
+            this.setActivarCampoPersonaApellidos(false);
+            this.setActivarCampoPersonaTelefono(false);
+            this.setActivarCampoPersonaSexo(false);
+            this.setActivarCampoPersonaLaboral(false);
+            this.setActivarCampoPersonaDependencia(false);
+            roles = rolesSB.listarRolesUsuariosSistema();
             nuevaPersona.setNombrePersona("");
             nuevaPersona.setApellidoPersona("");
-            nuevoUsuario.setFkCodPersona(nuevaPersona);
+            nuevaPersona.setTelefonoPersona("");
+            nuevaPersona.setFkCodSexo(new Sexos());
+            nuevaPersona.setFkCodLaboral(new Laborales());
+            nuevaPersona.setFkCodDependencia(new Dependencias());
         }
+    }
+
+    public void buscarPorLogin() {
+        Usuarios usuarioBuscado = adminUsuariosSB.consultarUsuarios(nuevoUsuario.getLoginUsuario());
+        this.setActivarCampoUsuarioLogin(false);
+        if (usuarioBuscado != null) {
+            this.setActivarCampoUsuarioRoles(true);
+            this.marcaParaUsuarioExistente = true;
+        } else {
+            this.setActivarCampoUsuarioRoles(false);
+            this.marcaParaUsuarioExistente = false;
+        }
+    }
+
+    private void activarCamposFormularioPersonaCrear() {
+        this.setActivarCampoPersonaCedula(false);
+        this.setActivarCampoPersonaNombres(false);
+        this.setActivarCampoPersonaApellidos(false);
+        this.setActivarCampoPersonaTelefono(false);
+        this.setActivarCampoPersonaSexo(false);
+        this.setActivarCampoPersonaLaboral(false);
+        this.setActivarCampoPersonaDependencia(false);
+        this.setActivarCampoUsuarioLogin(false);
+    }
+
+    private void desActivarCamposFormularioPersonaCrear() {
+        this.setActivarCampoPersonaCedula(true);
+        this.setActivarCampoPersonaNombres(true);
+        this.setActivarCampoPersonaApellidos(true);
+        this.setActivarCampoPersonaTelefono(true);
+        this.setActivarCampoPersonaSexo(true);
+        this.setActivarCampoPersonaLaboral(true);
+        this.setActivarCampoPersonaDependencia(true);
+        activarCamposFormularioUsuarioCrear(true);
+    }
+
+    private void activarCamposFormularioUsuarioCrear(boolean estado) {
+        this.setActivarCampoUsuarioLogin(estado);
+        this.setActivarCampoUsuarioRoles(estado);
+        this.marcaParaUsuarioExistente = estado;
+    }
+
+    private void activarCamposFormularioModificacion(boolean estado) {
+        this.setActivarCampoPersonaCedula(estado);
+        this.setActivarCampoPersonaNombres(estado);
+        this.setActivarCampoPersonaApellidos(estado);
+        this.setActivarCampoPersonaTelefono(estado);
+        this.setActivarCampoPersonaSexo(estado);
+        this.setActivarCampoPersonaLaboral(estado);
+        this.setActivarCampoPersonaDependencia(estado);
+        this.setActivarCampoUsuarioLogin(estado);
+        this.setActivarCampoUsuarioRoles(estado);
+        this.marcaParaUsuarioExistente = estado;
     }
 
     /**
@@ -198,7 +294,6 @@ public class MbSAdminUsuariosSistema implements Serializable {
      * @return the roles
      */
     public List<Roles> getRoles() {
-        roles = rolesSB.listarRolesUsuariosSistema();
         return roles;
     }
 
@@ -213,6 +308,7 @@ public class MbSAdminUsuariosSistema implements Serializable {
      * @return the dependencias
      */
     public List<Dependencias> getDependencias() {
+        dependencias = dependenciasSB.listarDependencias();
         return dependencias;
     }
 
@@ -238,87 +334,17 @@ public class MbSAdminUsuariosSistema implements Serializable {
     }
 
     /**
-     * @return the activarCamposNuevoUsuario
+     * @return the marcaParaUsuarioExistente
      */
-    public boolean isActivarCamposNuevoUsuario() {
-        return activarCamposNuevoUsuario;
+    public boolean isMarcaParaUsuarioExistente() {
+        return marcaParaUsuarioExistente;
     }
 
     /**
-     * @param activarCamposNuevoUsuario the activarCamposNuevoUsuario to set
+     * @param marcaParaUsuarioExistente the marcaParaUsuarioExistente to set
      */
-    public void setActivarCamposNuevoUsuario(boolean activarCamposNuevoUsuario) {
-        this.activarCamposNuevoUsuario = activarCamposNuevoUsuario;
-    }
-
-    /**
-     * @return the activarCampoCorreo
-     */
-    public boolean isActivarCampoCorreo() {
-        return activarCampoCorreo;
-    }
-
-    /**
-     * @param activarCampoCorreo the activarCampoCorreo to set
-     */
-    public void setActivarCampoCorreo(boolean activarCampoCorreo) {
-        this.activarCampoCorreo = activarCampoCorreo;
-    }
-
-    /**
-     * @return the activarCampoDireccion
-     */
-    public boolean isActivarCampoDireccion() {
-        return activarCampoDireccion;
-    }
-
-    /**
-     * @param activarCampoDireccion the activarCampoDireccion to set
-     */
-    public void setActivarCampoDireccion(boolean activarCampoDireccion) {
-        this.activarCampoDireccion = activarCampoDireccion;
-    }
-
-    /**
-     * @return the activarCamposCuenta
-     */
-    public boolean isActivarCamposCuenta() {
-        return activarCamposCuenta;
-    }
-
-    /**
-     * @param activarCamposCuenta the activarCamposCuenta to set
-     */
-    public void setActivarCamposCuenta(boolean activarCamposCuenta) {
-        this.activarCamposCuenta = activarCamposCuenta;
-    }
-
-    /**
-     * @return the activarCamposTelefono
-     */
-    public boolean isActivarCamposTelefono() {
-        return activarCamposTelefono;
-    }
-
-    /**
-     * @param activarCamposTelefono the activarCamposTelefono to set
-     */
-    public void setActivarCamposTelefono(boolean activarCamposTelefono) {
-        this.activarCamposTelefono = activarCamposTelefono;
-    }
-
-    /**
-     * @return the marcaParaNuevoUsuario
-     */
-    public boolean isMarcaParaNuevoUsuario() {
-        return marcaParaNuevoUsuario;
-    }
-
-    /**
-     * @param marcaParaNuevoUsuario the marcaParaNuevoUsuario to set
-     */
-    public void setMarcaParaNuevoUsuario(boolean marcaParaNuevoUsuario) {
-        this.marcaParaNuevoUsuario = marcaParaNuevoUsuario;
+    public void setMarcaParaUsuarioExistente(boolean marcaParaUsuarioExistente) {
+        this.marcaParaUsuarioExistente = marcaParaUsuarioExistente;
     }
 
     /**
@@ -333,6 +359,164 @@ public class MbSAdminUsuariosSistema implements Serializable {
      */
     public void setNuevaPersona(Personas nuevaPersona) {
         this.nuevaPersona = nuevaPersona;
+    }
+
+    /**
+     * @return the activarCampoPersonaCedula
+     */
+    public boolean isActivarCampoPersonaCedula() {
+        return activarCampoPersonaCedula;
+    }
+
+    /**
+     * @param activarCampoPersonaCedula the activarCampoPersonaCedula to set
+     */
+    public void setActivarCampoPersonaCedula(boolean activarCampoPersonaCedula) {
+        this.activarCampoPersonaCedula = activarCampoPersonaCedula;
+    }
+
+    /**
+     * @return the activarCampoPersonaNombres
+     */
+    public boolean isActivarCampoPersonaNombres() {
+        return activarCampoPersonaNombres;
+    }
+
+    /**
+     * @param activarCampoPersonaNombres the activarCampoPersonaNombres to set
+     */
+    public void setActivarCampoPersonaNombres(boolean activarCampoPersonaNombres) {
+        this.activarCampoPersonaNombres = activarCampoPersonaNombres;
+    }
+
+    /**
+     * @return the activarCampoPersonaApellidos
+     */
+    public boolean isActivarCampoPersonaApellidos() {
+        return activarCampoPersonaApellidos;
+    }
+
+    /**
+     * @param activarCampoPersonaApellidos the activarCampoPersonaApellidos to
+     * set
+     */
+    public void setActivarCampoPersonaApellidos(boolean activarCampoPersonaApellidos) {
+        this.activarCampoPersonaApellidos = activarCampoPersonaApellidos;
+    }
+
+    /**
+     * @return the activarCampoPersonaTelefono
+     */
+    public boolean isActivarCampoPersonaTelefono() {
+        return activarCampoPersonaTelefono;
+    }
+
+    /**
+     * @param activarCampoPersonaTelefono the activarCampoPersonaTelefono to set
+     */
+    public void setActivarCampoPersonaTelefono(boolean activarCampoPersonaTelefono) {
+        this.activarCampoPersonaTelefono = activarCampoPersonaTelefono;
+    }
+
+    /**
+     * @return the activarCampoPersonaDependencia
+     */
+    public boolean isActivarCampoPersonaDependencia() {
+        return activarCampoPersonaDependencia;
+    }
+
+    /**
+     * @param activarCampoPersonaDependencia the activarCampoPersonaDependencia
+     * to set
+     */
+    public void setActivarCampoPersonaDependencia(boolean activarCampoPersonaDependencia) {
+        this.activarCampoPersonaDependencia = activarCampoPersonaDependencia;
+    }
+
+    /**
+     * @return the activarCampoUsuarioLogin
+     */
+    public boolean isActivarCampoUsuarioLogin() {
+        return activarCampoUsuarioLogin;
+    }
+
+    /**
+     * @param activarCampoUsuarioLogin the activarCampoUsuarioLogin to set
+     */
+    public void setActivarCampoUsuarioLogin(boolean activarCampoUsuarioLogin) {
+        this.activarCampoUsuarioLogin = activarCampoUsuarioLogin;
+    }
+
+    /**
+     * @return the activarCampoUsuarioRoles
+     */
+    public boolean isActivarCampoUsuarioRoles() {
+        return activarCampoUsuarioRoles;
+    }
+
+    /**
+     * @param activarCampoUsuarioRoles the activarCampoUsuarioRoles to set
+     */
+    public void setActivarCampoUsuarioRoles(boolean activarCampoUsuarioRoles) {
+        this.activarCampoUsuarioRoles = activarCampoUsuarioRoles;
+    }
+
+    /**
+     * @return the activarCampoPersonaSexo
+     */
+    public boolean isActivarCampoPersonaSexo() {
+        return activarCampoPersonaSexo;
+    }
+
+    /**
+     * @param activarCampoPersonaSexo the activarCampoPersonaSexo to set
+     */
+    public void setActivarCampoPersonaSexo(boolean activarCampoPersonaSexo) {
+        this.activarCampoPersonaSexo = activarCampoPersonaSexo;
+    }
+
+    /**
+     * @return the activarCampoPersonaLaboral
+     */
+    public boolean isActivarCampoPersonaLaboral() {
+        return activarCampoPersonaLaboral;
+    }
+
+    /**
+     * @param activarCampoPersonaLaboral the activarCampoPersonaLaboral to set
+     */
+    public void setActivarCampoPersonaLaboral(boolean activarCampoPersonaLaboral) {
+        this.activarCampoPersonaLaboral = activarCampoPersonaLaboral;
+    }
+
+    /**
+     * @return the sexos
+     */
+    public List<Sexos> getSexos() {
+        sexos = sexosSB.listarSexos();
+        return sexos;
+    }
+
+    /**
+     * @param sexos the sexos to set
+     */
+    public void setSexos(List<Sexos> sexos) {
+        this.sexos = sexos;
+    }
+
+    /**
+     * @return the laborales
+     */
+    public List<Laborales> getLaborales() {
+        laborales = laboralesSB.listarLaborales();
+        return laborales;
+    }
+
+    /**
+     * @param laborales the laborales to set
+     */
+    public void setLaborales(List<Laborales> laborales) {
+        this.laborales = laborales;
     }
 
 }

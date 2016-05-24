@@ -32,6 +32,23 @@ public class AdminUsuariosSB {
         return mensajes;
     }
 
+    public String crearUsuariosSistema(Usuarios objeto) {
+        mensajes = "";
+        try {
+            Personas persona = new Personas();
+            persona = objeto.getFkCodPersona();
+            em.merge(persona);
+            objeto.setFkCodPersona(persona);
+            //  em.persist(objeto.getFkCodPersona());
+            em.merge(objeto);
+            em.flush();
+            mensajes = "OK";
+        } catch (Exception ex) {
+            mensajes = objeto.getLoginUsuario() + " no se pudo crear. (" + ex.getMessage() + ")";
+        }
+        return mensajes;
+    }
+
     public String actualizarUsuarios(Usuarios objeto) {
         mensajes = "";
         try {

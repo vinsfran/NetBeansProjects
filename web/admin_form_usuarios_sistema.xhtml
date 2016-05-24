@@ -10,7 +10,7 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>#{mbSAdminUsuarios.usuario.codUsuario > 0 ? 'Modificar' : 'Nuevo '} Usuario del Sistema</h2>
+                        <h2>#{mbSAdminUsuariosSistema.nuevoUsuario.codUsuario > 0 ? 'Modificar' : 'Nuevo '} Usuario del Sistema</h2>
                     </div>
                 </div>
                 <hr />
@@ -23,9 +23,8 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <h:form class="col-md-12"> 
+                                    <h:form id="formUsuario" class="col-md-12"> 
                                         <h4 class="col-lg-12" style="color: #0080FF">Datos del personales</h4> 
-
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
                                             <h:inputText class="form-control" 
@@ -34,7 +33,7 @@
                                                          a:placeholder=" Documento de identidad"
                                                          disabled="false">
                                                 <f:ajax listener="#{mbSAdminUsuariosSistema.buscarPorCedula()}" 
-                                                        render="nombres apellidos mensaje" />
+                                                        render="formUsuario" />
                                             </h:inputText>
                                             <span class="input-group-addon">Documento de identidad</span>
                                         </div>
@@ -45,7 +44,7 @@
                                                          label="Nombres  " 
                                                          value="#{mbSAdminUsuariosSistema.nuevaPersona.nombrePersona}" 
                                                          a:placeholder=" Nombres"
-                                                         disabled="#{mbSAdminUsuariosSistema.activarCamposNuevoUsuario}"/>
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaCedula }"/>
                                             <span class="input-group-addon">Nombres</span>
                                         </div>
                                         <div class="input-group">
@@ -55,41 +54,98 @@
                                                          label="Apellidos  " 
                                                          value="#{mbSAdminUsuariosSistema.nuevaPersona.apellidoPersona}" 
                                                          a:placeholder=" Apellidos"
-                                                         disabled="#{mbSAdminUsuariosSistema.activarCamposNuevoUsuario}"/>
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaNombres}"/>
                                             <span class="input-group-addon">Apellidos</span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:inputText id="telefono"
+                                                         class="form-control" 
+                                                         label="Telefono  " 
+                                                         value="#{mbSAdminUsuariosSistema.nuevaPersona.telefonoPersona}" 
+                                                         a:placeholder=" Telefono"
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaApellidos}"/>
+                                            <span class="input-group-addon">Telefono</span>
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:selectOneMenu id="sexo"
+                                                             class="form-control"
+                                                             value="#{mbSAdminUsuariosSistema.nuevaPersona.fkCodSexo.codSexo}"
+                                                             disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaSexo}">
+                                                <f:selectItem itemLabel=" Genero" 
+                                                              noSelectionOption="false"
+                                                              itemDisabled="true"/>
+                                                <f:selectItems value="#{mbSAdminUsuariosSistema.sexos}" 
+                                                               var="sexo"
+                                                               itemValue="#{sexo.codSexo}" 
+                                                               itemLabel="#{sexo.nombreSexo}"/>
+                                            </h:selectOneMenu>
+                                            <span class="input-group-addon">Genero</span>
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:selectOneMenu id="laboral"
+                                                             class="form-control"
+                                                             value="#{mbSAdminUsuariosSistema.nuevaPersona.fkCodLaboral.codLaboral}"
+                                                             disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaLaboral}">
+                                                <f:selectItem itemLabel=" Relación Laboral" 
+                                                              noSelectionOption="false"
+                                                              itemDisabled="true"/>
+                                                <f:selectItems value="#{mbSAdminUsuariosSistema.laborales}" 
+                                                               var="laboral"
+                                                               itemValue="#{laboral.codLaboral}" 
+                                                               itemLabel="#{laboral.nombreLaboral}"/>
+                                            </h:selectOneMenu>
+                                            <span class="input-group-addon">Relación Laboral</span>
+                                        </div>
+
+
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                                            <h:selectOneMenu id="dependencia"
+                                                             class="form-control"
+                                                             value="#{mbSAdminUsuariosSistema.nuevaPersona.fkCodDependencia.codDependencia}"
+                                                             disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaDependencia}">
+                                                <f:selectItem itemLabel=" Dependencia" 
+                                                              noSelectionOption="false"
+                                                              itemDisabled="true"/>
+                                                <f:selectItems value="#{mbSAdminUsuariosSistema.dependencias}" 
+                                                               var="dependencia"
+                                                               itemValue="#{dependencia.codDependencia}" 
+                                                               itemLabel="#{dependencia.nombreDependencia}"/>
+                                            </h:selectOneMenu>
+                                            <span class="input-group-addon">Dependencia de la Persona</span>
                                         </div>
                                         <h4 class="col-lg-12" style="color: #0080FF">Datos del usuario</h4> 
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                            <h:inputText class="form-control" 
+                                            <h:inputText id="login"
+                                                         class="form-control" 
                                                          label="Login" 
-                                                         value="#{mbSAdminUsuarios.usuario.loginUsuario}" 
+                                                         value="#{mbSAdminUsuariosSistema.nuevoUsuario.loginUsuario}" 
                                                          a:placeholder=" Login"
-                                                         disabled="true"/>
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoUsuarioLogin}">
+                                                <f:ajax listener="#{mbSAdminUsuariosSistema.buscarPorLogin()}" 
+                                                        render="roles mensaje formUsuario" />
+                                            </h:inputText>
                                             <span class="input-group-addon">Login</span>
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                            <h:inputSecret class="form-control" 
-                                                           label="Clave" 
-                                                           value="#{mbSAdminUsuarios.usuario.claveUsuario}" 
-                                                           a:placeholder=" Clave"
-                                                           disabled="true"/>
-                                            <span class="input-group-addon">Clave</span>
+                                            <h:outputText id="mensaje" 
+                                                          value="Usuario ya existe"
+                                                          style="color: #ff2121;"
+                                                          rendered="#{mbSAdminUsuariosSistema.marcaParaUsuarioExistente}"/>
                                         </div>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                            <h:inputSecret class="form-control" 
-                                                           label="Repetir clave" 
-                                                           value="#{mbSAdminUsuarios.usuario.loginUsuario}" 
-                                                           a:placeholder=" Repetir clave"
-                                                           disabled="true"/>
-                                            <span class="input-group-addon">Repetir clave</span>
-                                        </div>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                            <h:selectOneMenu class="form-control"
-                                                             value="#{mbSAdminUsuariosSistema.nuevoUsuario.fkCodRol.codRol}">
+                                            <h:selectOneMenu id="roles"
+                                                             class="form-control"
+                                                             value="#{mbSAdminUsuariosSistema.nuevoUsuario.fkCodRol.codRol}"
+                                                             disabled="#{mbSAdminUsuariosSistema.activarCampoUsuarioRoles}">
                                                 <f:selectItem itemLabel=" Rol" 
                                                               noSelectionOption="false"
                                                               itemDisabled="true"/>
@@ -100,24 +156,25 @@
                                             </h:selectOneMenu>
                                             <span class="input-group-addon">Rol de usuario</span>
                                         </div>
-
                                         <div class="col-md-12">
                                             <div class="modal-footer">
                                                 <h:commandLink class="btn btn-default" action="#{mbSTiposReclamos.btnCancelar()}" immediate="true">
                                                     Cancelar
                                                 </h:commandLink>
-                                                <h:commandLink class="btn btn-primary" action="#{mbSTiposReclamos.btnCrear()}" rendered="#{mbSTiposReclamos.tipoReclamo.codTipoReclamo > 0 ? false : true}">
+                                                <h:commandLink class="btn btn-primary" 
+                                                               action="#{mbSAdminUsuariosSistema.btnCrear()}" 
+                                                               rendered="#{mbSAdminUsuariosSistema.nuevoUsuario.codUsuario > 0 ? false : true}"
+                                                               disabled="#{mbSAdminUsuariosSistema.activarCampoUsuarioRoles}">
                                                     <i class="fa fa-check-square-o"></i> Crear
                                                 </h:commandLink>
-                                                <h:commandLink class="btn btn-primary" action="#{mbSTiposReclamos.btnActualizar()}" rendered="#{mbSTiposReclamos.tipoReclamo.codTipoReclamo > 0 ? true : false}">
+                                                <h:commandLink class="btn btn-primary" 
+                                                               action="#{mbSTiposReclamos.btnActualizar()}" 
+                                                               rendered="#{mbSAdminUsuariosSistema.nuevoUsuario.codUsuario > 0 ? true : false}"
+                                                               disabled="#{mbSAdminUsuariosSistema.activarCampoUsuarioRoles}">
                                                     <i class="fa fa-check-square-o"></i> Actualizar
                                                 </h:commandLink>
                                             </div>
                                         </div>
-
-                                        <h:outputText id="mensaje" value="Persona ya existe" 
-                                                      rendered="#{mbSAdminUsuariosSistema.activarCamposNuevoUsuario}"/>
-
                                     </h:form>
                                 </div>
                             </div>

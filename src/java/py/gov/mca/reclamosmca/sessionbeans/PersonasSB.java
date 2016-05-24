@@ -70,8 +70,6 @@ public class PersonasSB {
         }else{
             return (Personas) q.getResultList().get(0);
         }
-        
-        
     }
 
     @SuppressWarnings("unchecked")

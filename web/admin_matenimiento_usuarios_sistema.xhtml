@@ -32,8 +32,8 @@
                                                  class="table table-striped table-bordered table-hover table-condensed"
                                                  id="dataTables-example">
                                         <h:column>
-                                            <f:facet name="header">Codigo</f:facet>
-                                            <h:outputText value="#{usuarios.codUsuario}" />
+                                            <f:facet name="header">Cedula</f:facet>
+                                            <h:outputText value="#{usuarios.fkCodPersona.cedulaPersona}" />
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Nombre y Apellido</f:facet>
@@ -58,7 +58,9 @@
                                         <h:column>
                                             <f:facet name="header">Acciones</f:facet>
                                             <h:form>
-                                                <h:commandLink style="margin-right: 2px;" class="btn btn-primary btn-sm" action="#{mbSAdminUsuariosSistema.btnModificar(usuarios)}">
+                                                <h:commandLink style="margin-right: 2px;" 
+                                                               class="btn btn-primary btn-sm" 
+                                                               action="#{mbSAdminUsuariosSistema.btnModificar(usuarios)}">
                                                     <i class="fa fa-edit"></i> Modificar
                                                 </h:commandLink>
                                                 <h:commandLink style="margin-left: 2px;" class="btn btn-primary btn-sm" action="#{mbSAdminUsuariosSistema.btnResetClave(usuarios)}">
