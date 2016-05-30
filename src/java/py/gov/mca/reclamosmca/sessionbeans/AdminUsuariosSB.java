@@ -32,19 +32,18 @@ public class AdminUsuariosSB {
         return mensajes;
     }
 
-    public String crearUsuariosSistema(Usuarios objeto) {
+    public String crearUsuariosSistema(Usuarios usuarios, Personas personas, boolean crearPersona) {
         mensajes = "";
         try {
-            Personas persona = new Personas();
-            persona = objeto.getFkCodPersona();
-            em.merge(persona);
-            objeto.setFkCodPersona(persona);
-            //  em.persist(objeto.getFkCodPersona());
-            em.merge(objeto);
+            if (crearPersona) {
+                em.merge(personas);                
+            }
+            usuarios.setFkCodPersona(personas);
+            em.merge(usuarios);
             em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getLoginUsuario() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = usuarios.getLoginUsuario() + " no se pudo crear. (" + ex.getMessage() + ")";
         }
         return mensajes;
     }
@@ -52,11 +51,12 @@ public class AdminUsuariosSB {
     public String actualizarUsuarios(Usuarios objeto) {
         mensajes = "";
         try {
+            em.merge(objeto.getFkCodPersona());
             em.merge(objeto);
             em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = ex.getMessage();
+            mensajes = objeto.getLoginUsuario() + " no se pudo actualizar. (" + ex.getMessage() + ")";
         }
         return mensajes;
     }

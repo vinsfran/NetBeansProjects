@@ -202,63 +202,63 @@
                                 <a data-toggle="collapse" href="#collapse7"><i class="fa fa-desktop fa-2x"></i> Panel de control<span class="fa arrow"></span></a>
                                 <div id="collapse7" class="collapse">
                                     <ul class="nav nav-second-level">
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_personas')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_personas">
                                                     <i class="fa fa-users"></i> Personas
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_usuarios')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_usuarios">
                                                     <i class="fa fa-users"></i> Usuarios
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                         <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_usuarios_sistema')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_usuarios_sistema">
                                                     <i class="fa fa-users"></i> Usuarios del Sistema
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_dependencias')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_dependencias">
                                                     <i class="fa fa-university"></i> Dependencias
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_tipos_reclamos')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_tipos_reclamos">
                                                     <i class="fa fa-folder-o"></i> Tipos de reclamos
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_estados_reclamos')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_estados_reclamos">
                                                     <i class="fa fa-folder-o"></i> Estado de reclamos
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_elementos_web')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_elementos_web">
                                                     <i class="fa fa-folder-o"></i> Elementos web
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_roles')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_roles">
                                                     <i class="fa fa-folder-o"></i> Roles
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
-                                        <ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_reclamos')}">
                                             <li>
                                                 <h:commandLink action="admin_matenimiento_reclamos">
                                                     <i class="fa fa-folder-o"></i> Reclamos

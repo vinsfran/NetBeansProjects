@@ -19,7 +19,7 @@
                         <!-- Form Elements -->
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <span >Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
+                                <span>Tenga en cuenta que los campos con <i class="fa fa-asterisk"></i> son obligatorios</span>
                             </div>
                             <div class="panel-body">
                                 <div class="row">
@@ -31,7 +31,7 @@
                                                          label="Documento de identidad" 
                                                          value="#{mbSAdminUsuariosSistema.nuevaPersona.cedulaPersona}" 
                                                          a:placeholder=" Documento de identidad"
-                                                         disabled="false">
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaCedula}">
                                                 <f:ajax listener="#{mbSAdminUsuariosSistema.buscarPorCedula()}" 
                                                         render="formUsuario" />
                                             </h:inputText>
@@ -44,7 +44,7 @@
                                                          label="Nombres  " 
                                                          value="#{mbSAdminUsuariosSistema.nuevaPersona.nombrePersona}" 
                                                          a:placeholder=" Nombres"
-                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaCedula }"/>
+                                                         disabled="#{mbSAdminUsuariosSistema.activarCampoPersonaNombres}"/>
                                             <span class="input-group-addon">Nombres</span>
                                         </div>
                                         <div class="input-group">
@@ -168,7 +168,7 @@
                                                     <i class="fa fa-check-square-o"></i> Crear
                                                 </h:commandLink>
                                                 <h:commandLink class="btn btn-primary" 
-                                                               action="#{mbSTiposReclamos.btnActualizar()}" 
+                                                               action="#{mbSAdminUsuariosSistema.btnActualizar()}" 
                                                                rendered="#{mbSAdminUsuariosSistema.nuevoUsuario.codUsuario > 0 ? true : false}"
                                                                disabled="#{mbSAdminUsuariosSistema.activarCampoUsuarioRoles}">
                                                     <i class="fa fa-check-square-o"></i> Actualizar

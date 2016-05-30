@@ -74,6 +74,7 @@ public class MbSAdminUsuariosSistema implements Serializable {
     private boolean activarCampoUsuarioLogin;
     private boolean activarCampoUsuarioRoles;
     private boolean marcaParaUsuarioExistente;
+    private boolean crearPersona;
 
     public MbSAdminUsuariosSistema() {
 
@@ -87,7 +88,7 @@ public class MbSAdminUsuariosSistema implements Serializable {
         this.nuevaPersona.setFkCodLaboral(new Laborales());
         this.nuevaPersona.setFkCodSexo(new Sexos());
         desActivarCamposFormularioPersonaCrear();
-        this.setActivarCampoPersonaCedula(true);
+        this.setActivarCampoPersonaCedula(false);
         this.marcaParaUsuarioExistente = false;
         return "/admin_form_usuarios_sistema";
     }
@@ -95,24 +96,29 @@ public class MbSAdminUsuariosSistema implements Serializable {
     public String btnModificar(Usuarios usuario) {
         this.nuevoUsuario = usuario;
         this.nuevaPersona = nuevoUsuario.getFkCodPersona();
+        desActivarCamposFormularioPersonaCrear();
+        this.setActivarCampoPersonaCedula(true);
+        this.setActivarCampoPersonaNombres(false);
+        this.setActivarCampoPersonaApellidos(false);
+        this.setActivarCampoPersonaSexo(false);
+        this.setActivarCampoPersonaDependencia(false);
+        this.setActivarCampoPersonaLaboral(false);
+        this.setActivarCampoUsuarioRoles(false);
+        this.marcaParaUsuarioExistente = false;
         return "/admin_form_usuarios_sistema";
     }
 
     public String btnCrear() {
-        System.out.println("CREAR");
         if (nuevaPersona.getNombrePersona() == null || nuevaPersona.getNombrePersona().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/admin_form_usuarios_sistema";
         } else {
-            nuevaPersona.setFechaRegistroPersona(new Date());
-            nuevaPersona.setOrigenRegistro("appWeb_" + recuperarUsuarioSession().getLoginUsuario());
-            nuevoUsuario.setFkCodPersona(nuevaPersona);
             Converciones c = new Converciones();
             String password = nuevoUsuario.getLoginUsuario() + "01";
             nuevoUsuario.setClaveUsuario(c.getMD5(password));
             nuevoUsuario.setFkCodEstadoUsuario(new EstadosUsuarios());
             nuevoUsuario.getFkCodEstadoUsuario().setCodEstadoUsuario(1);
-            String mensaje = adminUsuariosSB.crearUsuariosSistema(nuevoUsuario);
+            String mensaje = adminUsuariosSB.crearUsuariosSistema(nuevoUsuario, nuevaPersona, isCrearPersona());
             if (mensaje.equals("OK")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado.", ""));
                 return "/admin_matenimiento_usuarios_sistema";
@@ -121,6 +127,46 @@ public class MbSAdminUsuariosSistema implements Serializable {
                 return "/admin_form_usuarios_sistema";
             }
         }
+    }
+
+    public String btnActualizar() {
+        if (nuevaPersona.getNombrePersona() == null || nuevaPersona.getNombrePersona().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
+            return "/admin_form_usuarios_sistema";
+        } else {
+            Sexos nuevaSexo = new Sexos();
+            nuevaSexo.setCodSexo(nuevaPersona.getFkCodSexo().getCodSexo());
+            nuevaPersona.setFkCodSexo(nuevaSexo);
+
+            Laborales nuevoLaborales = new Laborales();
+            nuevoLaborales.setCodLaboral(nuevaPersona.getFkCodLaboral().getCodLaboral());
+            nuevaPersona.setFkCodLaboral(nuevoLaborales);
+
+            Dependencias nuevaDependencia = new Dependencias();
+            nuevaDependencia.setCodDependencia(nuevaPersona.getFkCodDependencia().getCodDependencia());
+            nuevaPersona.setFkCodDependencia(nuevaDependencia);
+
+            nuevoUsuario.setFkCodPersona(nuevaPersona);
+            
+            Roles nuevoRoles = new Roles();
+            nuevoRoles.setCodRol(nuevoUsuario.getFkCodRol().getCodRol());
+            nuevoUsuario.setFkCodRol(nuevoRoles);            
+            
+            String mensaje = adminUsuariosSB.actualizarUsuarios(nuevoUsuario);
+            if (mensaje.equals("OK")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario actualizado.", ""));
+                return "/admin_matenimiento_usuarios_sistema";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se actualizo Usuario.", mensaje));
+                return "/admin_form_usuarios_sistema";
+            }
+        }
+    }
+
+    public String btnCancelar() {
+        nuevoUsuario = null;
+        nuevaPersona = null;
+        return "/admin_matenimiento_usuarios_sistema";
     }
 
     public Usuarios recuperarUsuarioSession() {
@@ -167,7 +213,6 @@ public class MbSAdminUsuariosSistema implements Serializable {
                         roles.remove(i);
                     }
                 }
-
             }
             this.setActivarCampoPersonaCedula(true);
             this.setActivarCampoPersonaNombres(true);
@@ -176,6 +221,7 @@ public class MbSAdminUsuariosSistema implements Serializable {
             this.setActivarCampoPersonaSexo(true);
             this.setActivarCampoPersonaLaboral(true);
             this.setActivarCampoPersonaDependencia(true);
+            this.setCrearPersona(false);
         } else {
             this.setActivarCampoPersonaCedula(false);
             this.setActivarCampoPersonaNombres(false);
@@ -184,10 +230,13 @@ public class MbSAdminUsuariosSistema implements Serializable {
             this.setActivarCampoPersonaSexo(false);
             this.setActivarCampoPersonaLaboral(false);
             this.setActivarCampoPersonaDependencia(false);
+            this.setCrearPersona(true);
             roles = rolesSB.listarRolesUsuariosSistema();
             nuevaPersona.setNombrePersona("");
             nuevaPersona.setApellidoPersona("");
             nuevaPersona.setTelefonoPersona("");
+            nuevaPersona.setFechaRegistroPersona(new Date());
+            nuevaPersona.setOrigenRegistro("appWeb_" + recuperarUsuarioSession().getLoginUsuario());
             nuevaPersona.setFkCodSexo(new Sexos());
             nuevaPersona.setFkCodLaboral(new Laborales());
             nuevaPersona.setFkCodDependencia(new Dependencias());
@@ -294,6 +343,7 @@ public class MbSAdminUsuariosSistema implements Serializable {
      * @return the roles
      */
     public List<Roles> getRoles() {
+        roles = rolesSB.listarRolesUsuariosSistema();
         return roles;
     }
 
@@ -517,6 +567,20 @@ public class MbSAdminUsuariosSistema implements Serializable {
      */
     public void setLaborales(List<Laborales> laborales) {
         this.laborales = laborales;
+    }
+
+    /**
+     * @return the crearPersona
+     */
+    public boolean isCrearPersona() {
+        return crearPersona;
+    }
+
+    /**
+     * @param crearPersona the crearPersona to set
+     */
+    public void setCrearPersona(boolean crearPersona) {
+        this.crearPersona = crearPersona;
     }
 
 }
