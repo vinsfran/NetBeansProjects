@@ -99,27 +99,25 @@ public class UsuariosWS {
                     //Verificamos si existe el correo
                     return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
                 }
-            } else {
-                if (personaExistente.getUsuariosList().isEmpty()) {
-                    if (usuarioExistente == null) {
-                        banderaRegistro = 1;
-                    } else {
-                        //Verificamos si existe el correo
-                        return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
-                    }
+            } else if (personaExistente.getUsuariosList().isEmpty()) {
+                if (usuarioExistente == null) {
+                    banderaRegistro = 1;
                 } else {
-                    int banderaUsuarioWeb = 0;
-                    for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
-                        if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
-                            banderaUsuarioWeb = 1;
-                        }
+                    //Verificamos si existe el correo
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                }
+            } else {
+                int banderaUsuarioWeb = 0;
+                for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
+                    if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
+                        banderaUsuarioWeb = 1;
                     }
-                    if (banderaUsuarioWeb == 1) {
-                        //Verificamos si existe el correo
-                        return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
-                    } else {
-                        banderaRegistro = 1;
-                    }
+                }
+                if (banderaUsuarioWeb == 1) {
+                    //Verificamos si existe el correo
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                } else {
+                    banderaRegistro = 1;
                 }
             }
 
@@ -174,6 +172,41 @@ public class UsuariosWS {
         } else {
             return "{\"status\":\"ERROR\", \"mensaje\":\"No existe usuario.\"}";
         }
+    }
+
+    @POST
+    @Path("/ingresoUsuario")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String ingresoUsuario(String json) throws JSONException, ParseException {
+        JSONObject jsonObject = new JSONObject(json);
+        String loginUsuario = jsonObject.getString("loginUsuario");
+        String claveUsuario = jsonObject.getString("claveUsuario");
+
+        String retorno = "{\"status\":\"ERROR\", \"dato\":\"No existe usuario.\"}";
+
+        Usuarios usuario = usuariosSB.consultarUsuarios(loginUsuario);
+
+        Converciones c = new Converciones();
+        String contrasenaMD5 = c.getMD5(claveUsuario);
+        Personas personaAux;
+        if (usuario != null) {
+            if (contrasenaMD5 != null) {
+                if (usuario.getClaveUsuario().equals(contrasenaMD5)) {
+
+                    personaAux = usuario.getFkCodPersona();
+
+                    retorno = "{\"status\":\"OK\", \"dato\":{\"cedula\":\"" + personaAux.getCedulaPersona() + "\","
+                            + "\"nombres\":\"" + personaAux.getNombrePersona() + "\","
+                            + "\"apellidos\":\"" + personaAux.getApellidoPersona() + "\","
+                            + "\"direccion\":\"" + personaAux.getDireccionPersona() + "\","
+                            + "\"cuentaCorriente\":\"" + personaAux.getCtaCtePersona() + "\","
+                            + "\"telefono\":\"" + personaAux.getTelefonoPersona() + "\"}}";
+                }
+            }
+        }
+        return retorno;
+
     }
 
     //Metodo para realizar el reseteo de la contraseña

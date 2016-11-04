@@ -78,91 +78,98 @@ public class MbSUsuarios implements Serializable {
         if (getCedula().equals("") || getNombre().equals("") || getApellido().equals("") || getCorreo().equals("") || contrasena1.equals("") || contrasena2.equals("") || getDireccion().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los campos con (*) no pueden estar vacio.", ""));
             return "/registro";
-        } else {
-            if (contrasena1.equals(contrasena2)) {
-                Converciones c = new Converciones();
-                String contrasenaMD5 = c.getMD5(contrasena1);
-                if (contrasenaMD5 == null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro, intente de nuevo", ""));
-                    return "/registro";
-                } else {
-                    int banderaRegistro = 0;
-                    //Consultar por cedula
-                    Personas personaExistente = personasSB.consultarPersonaCedula(getCedula());
-                    //Consultar por login
-                    Usuarios usuarioExistente = usuariosSB.consultarUsuarios(loginUsuario);
+        } else if (contrasena1.equals(contrasena2)) {
+            Converciones c = new Converciones();
+            String contrasenaMD5 = c.getMD5(contrasena1);
+            if (contrasenaMD5 == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro, intente de nuevo", ""));
+                return "/registro";
+            } else {
+                int banderaRegistro = 0;
+                //Consultar por cedula
+                Personas personaExistente = personasSB.consultarPersonaCedula(getCedula());
+                //Consultar por login
+                Usuarios usuarioExistente = usuariosSB.consultarUsuarios(loginUsuario);
 
-                    if (personaExistente == null) {
-                        if (usuarioExistente == null) {
-                            banderaRegistro = 1;
-                        } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo ya esta registrado.", ""));
-                            return "/registro";
-                        }
+                if (personaExistente == null) {
+                    if (usuarioExistente == null) {
+                        banderaRegistro = 1;
                     } else {
-                        if (personaExistente.getUsuariosList().isEmpty()) {
-                            if (usuarioExistente == null) {
-                                banderaRegistro = 1;
-                            } else {
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo ya esta registrado.", ""));
-                                return "/registro";
-                            }
-                        } else {
-                            int banderaUsuarioWeb = 0;
-                            for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
-                                if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
-                                    banderaUsuarioWeb = 1;
-                                }
-                            }
-                            if (banderaUsuarioWeb == 1) {
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo ya esta registrado.", ""));
-                                return "/registro";
-                            } else {
-                                banderaRegistro = 1;
-                            }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "Documento ya esta registrado.", "Si ya tiene un usuario: <a href='./login.xhtml' style='color: blue;'>Click aqui</a> \n"
+                                + "Olvido su contraseña: <a href='./recuperarContrasenia.xhtml' style='color: blue;'>Click aqui</a>"));
+                        return "/registro";
+                    }
+                } else if (personaExistente.getUsuariosList().isEmpty()) {
+                    if (usuarioExistente == null) {
+                        banderaRegistro = 1;
+                    } else {
+                        System.out.println("EXISTE USUARIO");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "Correo ya esta registrado.", "Si ya tiene un usuario: <a href='./login.xhtml' style='color: blue;'>Click aqui</a> \n"
+                                + "Olvido su contraseña: <a href='./recuperarContrasenia.xhtml' style='color: blue;'>Click aqui</a>"));
+                        return "/registro";
+                    }
+                } else {
+                    int banderaUsuarioWeb = 0;
+                    for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
+                        if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
+                            banderaUsuarioWeb = 1;
                         }
                     }
-
-                    if (banderaRegistro == 0) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cedula ya existe.", ""));
+                    if (banderaUsuarioWeb == 1) {
+                        System.out.println("EXISTE USUARIO2");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "Persona ya esta registrada.", "Si ya tiene un usuario: <a href='./login.xhtml' style='color: blue;'>Click aqui</a> \n"
+                                + "Olvido su contraseña: <a href='./recuperarContrasenia.xhtml' style='color: blue;'>Click aqui</a>"));
                         return "/registro";
                     } else {
-                        usuario = new Usuarios();
-                        usuario.setLoginUsuario(getCorreo());
-                        usuario.setClaveUsuario(contrasenaMD5);
-                        usuario.setFkCodPersona(new Personas());
-                        usuario.getFkCodPersona().setCedulaPersona(getCedula());
-                        usuario.getFkCodPersona().setNombrePersona(getNombre());
-                        usuario.getFkCodPersona().setApellidoPersona(getApellido());
-                        usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
-                        usuario.getFkCodPersona().setDireccionPersona(getDireccion());
-                        usuario.getFkCodPersona().setTelefonoPersona(getTelefono());
-                        usuario.getFkCodPersona().setCtaCtePersona(getCuentaCorriente());
-                        usuario.getFkCodPersona().setOrigenRegistro("appWeb");
-                        usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
-                        usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
-                        usuario.setFkCodRol(new Roles());
-                        usuario.getFkCodRol().setCodRol(6);
-                        String resultado = usuariosSB.crearUsuariosWeb(usuario);
-                        if (resultado.equals("OK")) {
-                            FacesMessage message = new FacesMessage();
-                            message.setSeverity(FacesMessage.SEVERITY_INFO);
-                            message.setSummary("Gracias por registrarte.");
-                            message.setDetail("Para activar tu cuenta te enviamos un correo electrónico a " + this.correo + "."
-                                    + "\n Tienes 48 hrs. para verificar tu correo, de lo contrario tus datos seran borrados de nuestro sistema.");
-                            FacesContext.getCurrentInstance().addMessage(null, message);
-                            return "/login";
-                        } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro en BD, intente de nuevo", resultado));
-                            return "/registro";
-                        }
+                        banderaRegistro = 1;
                     }
                 }
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Las contraseñas no son iguales.", ""));
-                return "/registro";
-            }
 
+                if (banderaRegistro == 0) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Documento ya esta registrado.", "Si ya tiene un usuario: <a href='./login.xhtml' style='color: blue;'>Click aqui</a> \n"
+                            + "Olvido su contraseña: <a href='./recuperarContrasenia.xhtml' style='color: blue;'>Click aqui</a>"));
+                    return "/registro";
+                } else {
+                    usuario = new Usuarios();
+                    usuario.setLoginUsuario(getCorreo());
+                    usuario.setClaveUsuario(contrasenaMD5);
+                    usuario.setFkCodPersona(new Personas());
+                    usuario.getFkCodPersona().setCedulaPersona(getCedula());
+                    usuario.getFkCodPersona().setNombrePersona(getNombre());
+                    usuario.getFkCodPersona().setApellidoPersona(getApellido());
+                    usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
+                    usuario.getFkCodPersona().setDireccionPersona(getDireccion());
+                    usuario.getFkCodPersona().setTelefonoPersona(getTelefono());
+                    usuario.getFkCodPersona().setCtaCtePersona(getCuentaCorriente());
+                    usuario.getFkCodPersona().setOrigenRegistro("appWeb");
+                    usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+                    usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
+                    usuario.setFkCodRol(new Roles());
+                    usuario.getFkCodRol().setCodRol(6);
+                    String resultado = usuariosSB.crearUsuariosWeb(usuario);
+                    if (resultado.equals("OK")) {
+                        FacesMessage message = new FacesMessage();
+                        message.setSeverity(FacesMessage.SEVERITY_INFO);
+                        message.setSummary("Gracias por registrarte.");
+                        message.setDetail("Para activar tu cuenta te enviamos un correo electrónico a " + this.correo + "."
+                                + "\n Tienes 48 hrs. para verificar tu correo, de lo contrario tus datos seran borrados de nuestro sistema.");
+                        FacesContext.getCurrentInstance().addMessage(null, message);
+                        return "/login";
+                    } else {
+                        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro en BD, intente de nuevo", resultado));
+                        System.out.println("Error MbSUsuarios.btnRegistrar(): " + resultado);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR de Registro, intente de nuevo", ""));
+                        return "/registro";
+                    }
+                }
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Las contraseñas no son iguales.", ""));
+            return "/registro";
         }
     }
 
@@ -296,48 +303,35 @@ public class MbSUsuarios implements Serializable {
             if (contrasenaMD5 == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
                 return "/admin_cambiar_contrasenia";
+            } else if (contrasenaMD5Nueva == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
+                return "/admin_cambiar_contrasenia";
             } else {
-                if (contrasenaMD5Nueva == null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
-                    return "/admin_cambiar_contrasenia";
-                } else {
-                    //Si estado es ACTIVO 
-                    if (usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(1)) {
-                        //Comprueba si contraseña actual en MD5 es igual a la contraseña de session
-                        if (contrasenaMD5.equals(usuario.getClaveUsuario())) {
-                            //Si cumple la condicion setea la contraseña de session por la contraseña nueva en md5
-                            System.out.println("MbSLogin ConAntes: " + usuario.getClaveUsuario());
-                            usuario.setClaveUsuario(contrasenaMD5Nueva);
-                            System.out.println("MbSLogin ConDespues: " + usuario.getClaveUsuario());
-                        } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contraseña Actual no es valida.", ""));
-                            return "/admin_cambiar_contrasenia";
-                        }
-                        //Si estado es RESETCLAVE
-                    } else if (usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(3)) {
-                        //Comprueba si contraseña actual sin MD5 es igual a la contraseña de session recortada en 6 digitos
-                        if (usuario.getClaveUsuario().substring(0, 6).equals(contrasenaActual)) {
-                            //Si cumple la condicion setea la contraseña de session por la contraseña nueva en md5 y se setea el estado a ACTIVO
-                            usuario.setClaveUsuario(contrasenaMD5Nueva);
-                            //Cambia a estado ACTIVO
-                            EstadosUsuarios estadoUsuario = new EstadosUsuarios();
-                            estadoUsuario.setCodEstadoUsuario(1);
-                            usuario.setFkCodEstadoUsuario(estadoUsuario);
-
-                        } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contraseña Actual no es valida.", ""));
-                            return "/admin_cambiar_contrasenia";
-                        }
-                        String mensaje = usuariosSB.actualizarUsuarios(usuario);
-                        if (mensaje.equals("OK")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contraseña cambiada.", ""));
-                            return "/admin_mis_reclamos";
-                        } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
-                            return "/admin_cambiar_contrasenia";
-                        }
+                //Si estado es ACTIVO 
+                if (usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(1)) {
+                    //Comprueba si contraseña actual en MD5 es igual a la contraseña de session
+                    if (contrasenaMD5.equals(usuario.getClaveUsuario())) {
+                        //Si cumple la condicion setea la contraseña de session por la contraseña nueva en md5
+                        System.out.println("MbSLogin ConAntes: " + usuario.getClaveUsuario());
+                        usuario.setClaveUsuario(contrasenaMD5Nueva);
+                        System.out.println("MbSLogin ConDespues: " + usuario.getClaveUsuario());
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contraseña Actual no es valida.", ""));
+                        return "/admin_cambiar_contrasenia";
+                    }
+                    //Si estado es RESETCLAVE
+                } else if (usuario.getFkCodEstadoUsuario().getCodEstadoUsuario().equals(3)) {
+                    //Comprueba si contraseña actual sin MD5 es igual a la contraseña de session recortada en 6 digitos
+                    if (usuario.getClaveUsuario().substring(0, 6).equals(contrasenaActual)) {
+                        //Si cumple la condicion setea la contraseña de session por la contraseña nueva en md5 y se setea el estado a ACTIVO
+                        usuario.setClaveUsuario(contrasenaMD5Nueva);
+                        //Cambia a estado ACTIVO
+                        EstadosUsuarios estadoUsuario = new EstadosUsuarios();
+                        estadoUsuario.setCodEstadoUsuario(1);
+                        usuario.setFkCodEstadoUsuario(estadoUsuario);
+
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contraseña Actual no es valida.", ""));
                         return "/admin_cambiar_contrasenia";
                     }
                     String mensaje = usuariosSB.actualizarUsuarios(usuario);
@@ -348,6 +342,17 @@ public class MbSUsuarios implements Serializable {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
                         return "/admin_cambiar_contrasenia";
                     }
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
+                    return "/admin_cambiar_contrasenia";
+                }
+                String mensaje = usuariosSB.actualizarUsuarios(usuario);
+                if (mensaje.equals("OK")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contraseña cambiada.", ""));
+                    return "/admin_mis_reclamos";
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo cambiar su contraseña, intentelo de nuevo.", ""));
+                    return "/admin_cambiar_contrasenia";
                 }
             }
         } else {
@@ -400,13 +405,14 @@ public class MbSUsuarios implements Serializable {
         String patron = "yyyyMMddHH";
         SimpleDateFormat formato = new SimpleDateFormat(patron);
         String md5 = usuario.getLoginUsuario() + formato.format(new Date()) + "mca";
-        System.out.println("md5 antes: " + md5);
+        //System.out.println("md5 antes: " + md5);
         Converciones c = new Converciones();
         md5 = c.getMD5(md5);
-        System.out.println("md5 despues: " + md5);
+        //System.out.println("md5 despues: " + md5);
         //this.linkExpediente = "http://126.10.10.33:8080/MCA_InicioExpedientes2/servlet/mcalogin?" + usuario.getLoginUsuario() + "," + direccion + "," + md5;
-        this.linkExpediente = "http://expediente.mca.gov.py/portal/mcalogin?" + usuario.getLoginUsuario() + "," + direccion + "," + md5;
-        System.out.println("LINK: " + linkExpediente);
+        //this.linkExpediente = "http://expediente.mca.gov.py/portal/mcalogin?" + usuario.getLoginUsuario() + "," + direccion + "," + md5;
+        this.linkExpediente = "http://expediente.asuncion.gov.py/portal/mcalogin?" + usuario.getLoginUsuario() + "," + direccion + "," + md5;
+        //System.out.println("LINK: " + linkExpediente);
         return "admin_expediente";
     }
 

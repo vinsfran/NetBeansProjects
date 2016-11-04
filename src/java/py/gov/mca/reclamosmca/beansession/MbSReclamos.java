@@ -649,8 +649,8 @@ public class MbSReclamos implements Serializable {
             setImagenSemaforo("rojo20.gif");
         }
     }
-
-    public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
+    
+        public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
         Reclamos reclamoSeleccionadoPDF = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
         Map<String, Object> parametros = new HashMap<>();
@@ -736,6 +736,24 @@ public class MbSReclamos implements Serializable {
         stream.close();
         FacesContext.getCurrentInstance().responseComplete();
 
+    }
+
+    public String verDetalleReclamo(Integer codReclamo, String modo) {
+        reclamoSeleccionado = reclamosSB.consultarReclamo(codReclamo);
+        String retorno;
+        switch (modo) {
+            case "PENDIENTE":
+                retorno = "admin_ver_detalle_reclamo_pendiente";
+                break;
+            case "ATENCION":
+                retorno = "admin_ver_detalle_reclamo_atendido";
+                break;
+            default:
+                retorno = "admin_ver_detalle_reclamo_finalizado";
+                break;
+        }
+        
+        return retorno;
     }
 
     public void exportarPDFporRangoFechaDependencia() throws JRException, IOException {
@@ -1216,6 +1234,21 @@ public class MbSReclamos implements Serializable {
         return dias;
     }
 
+    public String mostrarReclamosPendientes() {
+        reclamosPendientes = reclamosSB.listarPorDependenciaEstado2(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 1);
+        return "/admin_gestion_reclamos_pendientes";
+    }
+
+    public String mostrarReclamosAtendidos() {
+        reclamosAtendidos = reclamosSB.listarPorDependenciaEstado2(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 2);
+        return "/admin_gestion_reclamos_atendidos";
+    }
+
+    public String mostrarReclamosFinalizados() {
+        reclamosFinalizados = reclamosSB.listarPorDependenciaEstado2(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 3);
+        return "/admin_gestion_reclamos_finalizados";
+    }
+
     /**
      * @return the misReclamos
      */
@@ -1390,7 +1423,6 @@ public class MbSReclamos implements Serializable {
      * @return the reclamosPendientes
      */
     public List<Reclamos> getReclamosPendientes() {
-        reclamosPendientes = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 1);
         return reclamosPendientes;
     }
 
@@ -1405,7 +1437,6 @@ public class MbSReclamos implements Serializable {
      * @return the reclamosAtendidos
      */
     public List<Reclamos> getReclamosAtendidos() {
-        reclamosAtendidos = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 2);
         return reclamosAtendidos;
     }
 
@@ -1420,7 +1451,6 @@ public class MbSReclamos implements Serializable {
      * @return the reclamosFinalizados
      */
     public List<Reclamos> getReclamosFinalizados() {
-        reclamosFinalizados = reclamosSB.listarPorDependenciaEstado(recuperarUsuarioSession().getFkCodPersona().getFkCodDependencia().getCodDependencia(), 3);
         return reclamosFinalizados;
     }
 

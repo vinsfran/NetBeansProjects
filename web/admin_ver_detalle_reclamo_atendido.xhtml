@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                template="/templates/admin/main.xhtml">
+
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Reclamo atendido</h2>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Advanced Tables -->
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                                <h3 class="modal-title" id="myModalLabel"><h:outputText value="Datos del Reclamo (#{reclamos.fkCodUsuario.fkCodRol.codRol == 6? 'EXTERNO' : 'INTERNO'})"/>   </h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">
+                                                                    <h:outputText value="Datos Personales del Ciudadano"/>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="border-top: none;"><h:outputText value="Cedula:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.cedulaPersona}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border-top: none;"><h:outputText value="Nombre y apellido:"/></td>
+                                                                <td style="border-top: none;">#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.nombrePersona} #{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.apellidoPersona}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border-top: none;"><h:outputText value="Dirección:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.direccionPersona}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border-top: none;"><h:outputText value="Telefono:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.fkCodUsuario.fkCodPersona.telefonoPersona}"/></td>
+                                                            </tr>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2" style="border-top: none;"><h:outputText value="Datos del Reclamo"/></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tr >
+                                                                <td style="border-top: none;"><h:outputText value="Número de reclamo:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.codReclamo}"/></td>
+                                                            </tr>
+                                                            <tr >
+                                                                <td style="border-top: none;"><h:outputText value="Tipo de reclamo:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.fkCodTipoReclamo.nombreTipoReclamo}"/></td>
+                                                            </tr>
+                                                            <tr >
+                                                                <td style="border-top: none;"><h:outputText value="Fecha del reclamo:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.formatearFecha(mbSReclamos.reclamoSeleccionado.fechaReclamo)}"/></td>
+                                                            </tr>
+                                                            <tr >
+                                                                <td style="border-top: none;"><h:outputText value="Dirección del reclamo:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.direccionReclamo}"/></td>
+                                                            </tr>
+                                                            <tr >
+                                                                <td style="border-top: none;"><h:outputText value="Descripción del reclamo:"/></td>
+                                                                <td style="border-top: none;"><h:outputText value="#{mbSReclamos.reclamoSeleccionado.descripcionReclamoContribuyente}"/></td>
+                                                            </tr>
+
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2" style="border-top: none;">Detalle de atención</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tr>
+                                                                <td style="border-top: none;">Fecha de atención:</td>
+                                                                <td style="border-top: none;">#{mbSReclamos.formatearFecha(mbSReclamos.reclamoSeleccionado.fechaAtencionReclamo)}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border-top: none;">Atendido por:</td>
+                                                                <td style="border-top: none;">#{mbSReclamos.reclamoSeleccionado.fkCodUsuarioAtencion.fkCodPersona.nombrePersona} #{reclamos.fkCodUsuarioAtencion.fkCodPersona.apellidoPersona}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border-top: none;">Descripción de tarea a realizar:</td>
+                                                                <td style="border-top: none;">#{mbSReclamos.reclamoSeleccionado.descripcionAtencionReclamo}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <h:form>
+                                                    <h:commandLink class="btn btn-primary" 
+                                                                   actionListener="#{mbSReclamos.verImagen(mbSReclamos.reclamoSeleccionado)}" 
+                                                                   action="imagen" target="_blank">
+                                                        <i class="fa fa-file-image-o"></i> Ver imagen
+                                                    </h:commandLink>
+                                                    <h:commandLink class="btn btn-primary" 
+                                                                   actionListener="#{mbSReclamos.verMapa(mbSReclamos.reclamoSeleccionado)}" 
+                                                                   action="mapa" target="_blank">
+                                                        <i class="fa fa-map-marker"></i> Ver mapa
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

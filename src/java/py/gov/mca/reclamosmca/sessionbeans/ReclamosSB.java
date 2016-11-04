@@ -8,6 +8,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
@@ -42,7 +45,7 @@ public class ReclamosSB {
 
     public String crearReclamos(Reclamos objeto) {
         mensajes = "";
-    //    EntityTransaction tx = em.getTransaction();
+        //    EntityTransaction tx = em.getTransaction();
 
         //    tx.begin();
         try {
@@ -81,7 +84,7 @@ public class ReclamosSB {
                         + "     </head>"
                         + "     <body style='background-color: #ffffff'>"
                         + "       <div style='text-align: center;'>"
-                        + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
+                        + "            <img alt='logo' src=\"http://appserver.asuncion.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
                         + "       </div> "
                         + "       <div> "
                         + "             <p>"
@@ -172,7 +175,7 @@ public class ReclamosSB {
                         + "     </head>"
                         + "     <body style='background-color: #ffffff'>"
                         + "       <div style='text-align: center;'>"
-                        + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
+                        + "            <img alt='logo' src=\"http://appserver.asuncion.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
                         + "       </div> "
                         + "       <div> "
                         + "             <p>"
@@ -280,7 +283,7 @@ public class ReclamosSB {
                     mensajes = "OK";
                 } catch (Exception ex) {
                     mensajes = ex.getMessage();
-                }                
+                }
             } catch (Exception ex) {
                 mensajes = ex.getMessage();
             }
@@ -297,7 +300,7 @@ public class ReclamosSB {
                     + "     </head>"
                     + "     <body style='background-color: #ffffff'>"
                     + "       <div style='text-align: center;'>"
-                    + "            <img alt='logo' src=\"http://appserver.mca.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
+                    + "            <img alt='logo' src=\"http://appserver.asuncion.gov.py/reclamosmca/faces/resources/images/logo_3.jpg\"> "
                     + "       </div> "
                     + "       <div> "
                     + "         <p>"
@@ -353,6 +356,28 @@ public class ReclamosSB {
         return q.getResultList();
     }
 
+    public List<Reclamos> listarReclamos2() {
+        List<Reclamos> listaRetorno = new ArrayList<>();
+        StringBuilder jpql = new StringBuilder();
+
+        jpql.append("SELECT e.codReclamo, e.fkCodTipoReclamo.nombreTipoReclamo, e.fkCodTipoReclamo.fkCodDependencia.nombreDependencia, "
+                + "e.fkCodEstadoReclamo.nombreEstadoReclamo, e.fechaReclamo, e.direccionReclamo, e.fkCodTipoReclamo.diasMaximoFinalizados, "
+                + "e.descripcionReclamoContribuyente, e.fechaAtencionReclamo, e.fkCodUsuarioAtencion.fkCodPersona.nombrePersona, e.fkCodUsuarioAtencion.fkCodPersona.apellidoPersona, "
+                + "e.descripcionAtencionReclamo, e.fechaCulminacionReclamo, e.fkCodUsuarioCulminacion.fkCodPersona.nombrePersona, e.fkCodUsuarioCulminacion.fkCodPersona.apellidoPersona, "
+                + "e.descripcionCulminacionReclamo ");
+        jpql.append("FROM Reclamos e ");
+        Query q = em.createQuery(jpql.toString());
+
+        for (int i = 0; i < q.getResultList().size(); i++) {
+            Reclamos recla = (Reclamos) q.getResultList().get(i);
+            System.out.println("COD: " + q.getResultList().get(i).toString());
+
+        }
+
+        return q.getResultList();
+
+    }
+
     public List<Reclamos> listarPorUsuario(String loginUsuario) {
         StringBuilder jpql = new StringBuilder();
 
@@ -360,7 +385,6 @@ public class ReclamosSB {
         jpql.append("FROM Reclamos e ");
         jpql.append("WHERE e.fkCodUsuario.loginUsuario = :paramLoginUsuario");
 
-        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
         Query q = em.createQuery(jpql.toString());
         q.setParameter("paramLoginUsuario", loginUsuario);
         return q.getResultList();
@@ -413,7 +437,58 @@ public class ReclamosSB {
         Query q = em.createQuery(jpql.toString());
         q.setParameter("paramCodDependencia", codDependencia);
         q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
-        return q.getResultList();
+
+        List<Reclamos> reclaAux = q.getResultList();
+        if (reclaAux != null && !reclaAux.isEmpty()) {
+            List<Reclamos> reclaAux2 = new ArrayList<>();
+            for (int i = 0; i < reclaAux.size(); i++) {
+//                System.out.println("reclaAux.get(" + i + ") " + reclaAux.get(i).getCodReclamo());
+                reclaAux2.add(reclaAux.get(i));
+
+            }
+            System.out.println("listarPorDependenciaEstado " + reclaAux.size() + " Estado " + codEstadoReclamo);
+            reclaAux = reclaAux2;
+        }
+        return reclaAux;
+    }
+
+    public List<Reclamos> listarPorDependenciaEstado2(Integer codDependencia, Integer codEstadoReclamo) {
+        StringBuilder jpql = new StringBuilder();
+//        Reclamos e = new Reclamos();
+//        e.getCodReclamo();
+//        e.getFkCodTipoReclamo();
+//        e.getFechaReclamo();
+//        e.getFechaAtencionReclamo();
+//        jpql.append("SELECT e.cod_reclamo, e.fk_cod_tipo_reclamo, e.fecha_reclamo, e.fecha_atencion_reclamo, e.fk_cod_estado_reclamo ");
+//        jpql.append("FROM reclamos e ");
+        jpql.append("SELECT e ");
+        jpql.append("FROM Reclamos e ");
+        jpql.append("WHERE e.fkCodTipoReclamo.fkCodDependencia.codDependencia = :paramCodDependencia ");
+        jpql.append("AND e.fkCodEstadoReclamo.codEstadoReclamo = :paramCodEstadoReclamo ");
+
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString(), Reclamos.class);
+        q.setParameter("paramCodDependencia", codDependencia);
+        q.setParameter("paramCodEstadoReclamo", codEstadoReclamo);
+
+        List<Reclamos> reclaAux = q.getResultList();
+        if (reclaAux != null && !reclaAux.isEmpty()) {
+            List<Reclamos> reclaAux2 = new ArrayList<>();
+            for (int i = 0; i < reclaAux.size(); i++) {
+                Reclamos re = new Reclamos();
+                re.setCodReclamo(reclaAux.get(i).getCodReclamo());
+                re.setFkCodTipoReclamo(reclaAux.get(i).getFkCodTipoReclamo());
+                re.setFechaReclamo(reclaAux.get(i).getFechaReclamo());
+                re.setFechaAtencionReclamo(reclaAux.get(i).getFechaAtencionReclamo());
+                re.setFkCodEstadoReclamo(reclaAux.get(i).getFkCodEstadoReclamo());
+//                System.out.println("reclaAux.get(" + i + ") " + reclaAux.get(i).getCodReclamo());
+                reclaAux2.add(re);
+
+            }
+            //System.out.println("listarPorDependenciaEstado " + reclaAux.size() + " Estado " + codEstadoReclamo);
+            reclaAux = reclaAux2;
+        }
+        return reclaAux;
     }
 
     public List<Reclamos> listarPorDependenciaRangoDeFecha(Integer codDependencia, Date fechaInicio, Date fechaFin) {

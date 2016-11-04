@@ -31,11 +31,12 @@ public class UsuariosSB {
             em.persist(objeto);
             mensajes = objeto.getLoginUsuario() + " se creo con exito!";
         } catch (Exception ex) {
-            mensajes = objeto.getLoginUsuario() + " no se pudo crear. (" + ex.getMessage() + ")";
+            //mensajes = objeto.getLoginUsuario() + " no se pudo crear. (" + ex.getMessage() + ")";
+            mensajes = objeto.getLoginUsuario() + " no se pudo crear.";
         }
         return mensajes;
     }
-    
+
     public String crearUsuariosWeb(Usuarios objeto) {
         if (objeto.getFkCodPersona().getDireccionPersona().isEmpty()) {
             objeto.getFkCodPersona().setDireccionPersona("");
@@ -98,7 +99,8 @@ public class UsuariosSB {
             }
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = "Ocurrio una excepcion " + ex.getMessage();
+            //mensajes = "Ocurrio una excepcion " + ex.getMessage();
+            mensajes = "Ocurrio una excepcion.";
         }
         return mensajes;
     }
@@ -118,7 +120,7 @@ public class UsuariosSB {
         }
 
         mensajes = "";
-         try {
+        try {
             Personas persona = new Personas();
             persona = objeto.getFkCodPersona();
             persona.setFechaRegistroPersona(new Date());
@@ -129,7 +131,8 @@ public class UsuariosSB {
             em.flush();
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = "Ocurrio una excepcion " + ex.getMessage();
+            //mensajes = "Ocurrio una excepcion " + ex.getMessage();
+            mensajes = "Ocurrio una excepcion.";
         }
         return mensajes;
     }
@@ -180,7 +183,8 @@ public class UsuariosSB {
             }
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getLoginUsuario() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            //mensajes = objeto.getLoginUsuario() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = objeto.getLoginUsuario() + " no se pudo actualizar.";
         }
         return mensajes;
     }
@@ -235,7 +239,8 @@ public class UsuariosSB {
             }
             mensajes = "OK";
         } catch (Exception ex) {
-            mensajes = objeto.getLoginUsuario() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            //mensajes = objeto.getLoginUsuario() + " no se pudo actualizar. (" + ex.getMessage() + ")";
+            mensajes = objeto.getLoginUsuario() + " no se pudo actualizar.";
         }
         return mensajes;
     }
@@ -246,7 +251,8 @@ public class UsuariosSB {
             em.remove(objeto);
             mensajes = objeto.getLoginUsuario() + " se elimino con exito!";
         } catch (Exception ex) {
-            mensajes = objeto.getLoginUsuario() + " no se pudo eliminar. (" + ex.getMessage() + ")";
+            //mensajes = objeto.getLoginUsuario() + " no se pudo eliminar. (" + ex.getMessage() + ")";
+            mensajes = objeto.getLoginUsuario() + " no se pudo eliminar.";
         }
         return mensajes;
     }
@@ -291,7 +297,7 @@ public class UsuariosSB {
         }
 
     }
-    
+
     @SuppressWarnings("unchecked")
     public Personas consultarUsuariosPorCedulaPersona(String cedulaPersona) {
         StringBuilder jpql = new StringBuilder();
@@ -303,7 +309,7 @@ public class UsuariosSB {
         q.setParameter("paramCedulaPersona", cedulaPersona);
         if (q.getResultList().isEmpty()) {
             return null;
-        } else {            
+        } else {
             return (Personas) q.getResultList().get(0);
         }
 

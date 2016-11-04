@@ -89,9 +89,7 @@ public class RegistroUsuarioMB implements Serializable {
                     usuario.setFkCodRol(new Roles());
                     usuario.getFkCodRol().setCodRol(6);
                     String resultado = usuariosSB.crearUsuariosWeb(usuario);
-                    System.out.println("RESU " + resultado);
                     if (resultado.equals("OK")) {
-                        System.out.println("ENTRO" + nombre);
                         pagina = "mensajeRegistro" + redireccion;
                     } else {
                         message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -113,7 +111,6 @@ public class RegistroUsuarioMB implements Serializable {
     }
 
     public void limpiarCampos() {
-        System.out.println("LIMPIA!!!");
         this.nombre = "";
         this.apellido = "";
         this.correo = "";

@@ -90,21 +90,21 @@
                                     <ul class="nav nav-second-level">
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_gestion_reclamos_pendientes')}">
                                             <li>
-                                                <h:commandLink action="admin_gestion_reclamos_pendientes">
+                                                <h:commandLink action="#{mbSReclamos.mostrarReclamosPendientes()}">
                                                     <i class="fa fa-folder-o"></i> Pendientes
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_gestion_reclamos_atendidos')}">
                                             <li>
-                                                <h:commandLink action="admin_gestion_reclamos_atendidos">
+                                                <h:commandLink action="#{mbSReclamos.mostrarReclamosAtendidos()}">
                                                     <i class="fa fa-folder-o"></i> Atendidos
                                                 </h:commandLink>
                                             </li>
                                         </ui:fragment>
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_gestion_reclamos_finalizados')}">
                                             <li>
-                                                <h:commandLink action="admin_gestion_reclamos_finalizados">
+                                                <h:commandLink action="#{mbSReclamos.mostrarReclamosFinalizados()}">
                                                     <i class="fa fa-folder-o"></i> Finalizados
                                                 </h:commandLink>
                                             </li>
