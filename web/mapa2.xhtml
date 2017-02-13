@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/principal/main.xhtml">
+
+    <ui:define name="content">
+
+        <section id="contact-info">
+            <div class="gmap-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-5 text-center">
+                            <div class="gmap">
+                                <iframe frameborder="0" 
+                                        scrolling="no" 
+                                        marginheight="0" 
+                                        marginwidth="0" 
+                                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7214.145495005449!2d-57.56350152649442!3d-25.301759806117552!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0xa82f0205ff643470!2sMunicipalidad+de+la+Ciudad+de+Asunci%C3%B3n!5e0!3m2!1ses-419!2spy!4v1435122855062" >
+
+                                </iframe>
+                               
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7 map-content">
+                            <ul class="row">
+                                <li class="col-sm-6">
+                                    <address>
+                                        <h5>Municipalidad de Asunción</h5>
+                                        <p>Avda. Mcal. López 5556 <br/>
+                                            esq. Cap. Bueno</p>
+                                        <p>(595.021) 663 311/20<br/>
+                                            reclamosmca@mca.gov.py</p>
+                                    </address>
+                                </li>
+
+
+<!--                                <li class="col-sm-6">
+                                    <address>
+                                        <h5>Zone#2 Office</h5>
+                                        <p>1537 Flint Street <br/>
+                                            Tumon, MP 96911</p>
+                                        <p>Phone:670-898-2847 <br/>
+                                            Email Address:info@domain.com</p>
+                                    </address>
+
+                                    <address>
+                                        <h5>Zone#3 Office</h5>
+                                        <p>1537 Flint Street <br/>
+                                            Tumon, MP 96911</p>
+                                        <p>Phone:670-898-2847 <br/>
+                                            Email Address:info@domain.com</p>
+                                    </address>
+                                </li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>  <!--/gmap_area -->
+
+    </ui:define>
+</ui:composition>   

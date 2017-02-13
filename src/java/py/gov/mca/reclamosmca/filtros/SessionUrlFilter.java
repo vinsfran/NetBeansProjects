@@ -47,6 +47,8 @@ public class SessionUrlFilter implements Filter {
                 chain.doFilter(request, response);
             } else if (requestUrl.contains("contacto.xhtml")) {
                 chain.doFilter(request, response);
+            } else if (requestUrl.contains("mapa.xhtml")) {
+                chain.doFilter(request, response);
             } else {
                 res.sendRedirect(req.getContextPath() + "/faces/index.xhtml");
             }
