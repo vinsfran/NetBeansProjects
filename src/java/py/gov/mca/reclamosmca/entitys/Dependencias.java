@@ -31,12 +31,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "dependencias")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Dependencias.findAll", query = "SELECT d FROM Dependencias d"),
-    @NamedQuery(name = "Dependencias.findByCodDependencia", query = "SELECT d FROM Dependencias d WHERE d.codDependencia = :codDependencia"),
-    @NamedQuery(name = "Dependencias.findByNombreDependencia", query = "SELECT d FROM Dependencias d WHERE d.nombreDependencia = :nombreDependencia"),
-    @NamedQuery(name = "Dependencias.findByTelefonoDependencia", query = "SELECT d FROM Dependencias d WHERE d.telefonoDependencia = :telefonoDependencia"),
-    @NamedQuery(name = "Dependencias.findByInternoDependencia", query = "SELECT d FROM Dependencias d WHERE d.internoDependencia = :internoDependencia"),
-    @NamedQuery(name = "Dependencias.findByMailDependencia", query = "SELECT d FROM Dependencias d WHERE d.mailDependencia = :mailDependencia")})
+    @NamedQuery(name = "Dependencias.findAll", query = "SELECT d FROM Dependencias d")
+    , @NamedQuery(name = "Dependencias.findByCodDependencia", query = "SELECT d FROM Dependencias d WHERE d.codDependencia = :codDependencia")
+    , @NamedQuery(name = "Dependencias.findByNombreDependencia", query = "SELECT d FROM Dependencias d WHERE d.nombreDependencia = :nombreDependencia")
+    , @NamedQuery(name = "Dependencias.findByTelefonoDependencia", query = "SELECT d FROM Dependencias d WHERE d.telefonoDependencia = :telefonoDependencia")
+    , @NamedQuery(name = "Dependencias.findByInternoDependencia", query = "SELECT d FROM Dependencias d WHERE d.internoDependencia = :internoDependencia")
+    , @NamedQuery(name = "Dependencias.findByMailDependencia", query = "SELECT d FROM Dependencias d WHERE d.mailDependencia = :mailDependencia")})
 public class Dependencias implements Serializable {
 
     private static final long serialVersionUID = 1L;

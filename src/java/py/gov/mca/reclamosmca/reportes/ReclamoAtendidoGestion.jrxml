@@ -34,6 +34,7 @@
 	<parameter name="usuarioAtencion" class="java.lang.String"/>
 	<parameter name="descripcionAtencion" class="java.lang.String"/>
 	<parameter name="estadoReclamo" class="java.lang.String"/>
+	<parameter name="urlMapa" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -314,28 +315,13 @@
 				</textElement>
 				<text><![CDATA[Imagen del reclamo]]></text>
 			</staticText>
-			<componentElement>
-				<reportElement x="0" y="50" width="515" height="281" uuid="51fa8767-3b89-411e-812e-607377af641c"/>
-				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<mp:latitudeExpression><![CDATA[$P{latitud}.floatValue()]]></mp:latitudeExpression>
-					<mp:longitudeExpression><![CDATA[$P{longitud}.floatValue()]]></mp:longitudeExpression>
-					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
-					<mp:markerData>
-						<dataset/>
-						<mp:item>
-							<mp:itemProperty name="latitude">
-								<valueExpression><![CDATA[$P{latitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-							<mp:itemProperty name="longitude">
-								<valueExpression><![CDATA[$P{longitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-						</mp:item>
-					</mp:markerData>
-				</mp:map>
-			</componentElement>
 			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
 				<reportElement x="0" y="361" width="515" height="281" uuid="96b141a2-de0d-4b79-985f-4a35cf7a26de"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte []) $P{imagenReclamo})]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="0" y="45" width="515" height="281" uuid="a9502f3b-2860-4fd6-848e-dbbc352342e7"/>
+				<imageExpression><![CDATA[$P{urlMapa}]]></imageExpression>
 			</image>
 		</band>
 	</detail>

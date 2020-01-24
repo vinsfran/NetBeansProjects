@@ -36,19 +36,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "personas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p"),
-    @NamedQuery(name = "Personas.findByCodPersona", query = "SELECT p FROM Personas p WHERE p.codPersona = :codPersona"),
-    @NamedQuery(name = "Personas.findByCedulaPersona", query = "SELECT p FROM Personas p WHERE p.cedulaPersona = :cedulaPersona"),
-    @NamedQuery(name = "Personas.findByNombrePersona", query = "SELECT p FROM Personas p WHERE p.nombrePersona = :nombrePersona"),
-    @NamedQuery(name = "Personas.findByApellidoPersona", query = "SELECT p FROM Personas p WHERE p.apellidoPersona = :apellidoPersona"),
-    @NamedQuery(name = "Personas.findByFechaIngresoPersona", query = "SELECT p FROM Personas p WHERE p.fechaIngresoPersona = :fechaIngresoPersona"),
-    @NamedQuery(name = "Personas.findByFechaNacimientoPersona", query = "SELECT p FROM Personas p WHERE p.fechaNacimientoPersona = :fechaNacimientoPersona"),
-    @NamedQuery(name = "Personas.findByFechaRegistroPersona", query = "SELECT p FROM Personas p WHERE p.fechaRegistroPersona = :fechaRegistroPersona"),
-    @NamedQuery(name = "Personas.findByDireccionPersona", query = "SELECT p FROM Personas p WHERE p.direccionPersona = :direccionPersona"),
-    @NamedQuery(name = "Personas.findByTelefonoPersona", query = "SELECT p FROM Personas p WHERE p.telefonoPersona = :telefonoPersona"),
-    @NamedQuery(name = "Personas.findByCelularPersona", query = "SELECT p FROM Personas p WHERE p.celularPersona = :celularPersona"),
-    @NamedQuery(name = "Personas.findByCtaCtePersona", query = "SELECT p FROM Personas p WHERE p.ctaCtePersona = :ctaCtePersona"),
-    @NamedQuery(name = "Personas.findByOrigenRegistro", query = "SELECT p FROM Personas p WHERE p.origenRegistro = :origenRegistro")})
+    @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")
+    , @NamedQuery(name = "Personas.findByCodPersona", query = "SELECT p FROM Personas p WHERE p.codPersona = :codPersona")
+    , @NamedQuery(name = "Personas.findByCedulaPersona", query = "SELECT p FROM Personas p WHERE p.cedulaPersona = :cedulaPersona")
+    , @NamedQuery(name = "Personas.findByNombrePersona", query = "SELECT p FROM Personas p WHERE p.nombrePersona = :nombrePersona")
+    , @NamedQuery(name = "Personas.findByApellidoPersona", query = "SELECT p FROM Personas p WHERE p.apellidoPersona = :apellidoPersona")
+    , @NamedQuery(name = "Personas.findByFechaIngresoPersona", query = "SELECT p FROM Personas p WHERE p.fechaIngresoPersona = :fechaIngresoPersona")
+    , @NamedQuery(name = "Personas.findByFechaNacimientoPersona", query = "SELECT p FROM Personas p WHERE p.fechaNacimientoPersona = :fechaNacimientoPersona")
+    , @NamedQuery(name = "Personas.findByFechaRegistroPersona", query = "SELECT p FROM Personas p WHERE p.fechaRegistroPersona = :fechaRegistroPersona")
+    , @NamedQuery(name = "Personas.findByDireccionPersona", query = "SELECT p FROM Personas p WHERE p.direccionPersona = :direccionPersona")
+    , @NamedQuery(name = "Personas.findByTelefonoPersona", query = "SELECT p FROM Personas p WHERE p.telefonoPersona = :telefonoPersona")
+    , @NamedQuery(name = "Personas.findByCelularPersona", query = "SELECT p FROM Personas p WHERE p.celularPersona = :celularPersona")
+    , @NamedQuery(name = "Personas.findByCtaCtePersona", query = "SELECT p FROM Personas p WHERE p.ctaCtePersona = :ctaCtePersona")
+    , @NamedQuery(name = "Personas.findByOrigenRegistro", query = "SELECT p FROM Personas p WHERE p.origenRegistro = :origenRegistro")})
 public class Personas implements Serializable {
 
     private static final long serialVersionUID = 1L;

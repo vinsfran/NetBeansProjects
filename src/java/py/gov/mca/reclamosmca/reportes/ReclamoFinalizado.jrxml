@@ -33,6 +33,7 @@
 	<parameter name="fechaCulminacionReclamo" class="java.util.Date"/>
 	<parameter name="usuarioFin" class="java.lang.String"/>
 	<parameter name="descripcionCulminacionReclamo" class="java.lang.String"/>
+	<parameter name="urlMapa" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -261,25 +262,6 @@
 				</textElement>
 				<text><![CDATA[Director]]></text>
 			</staticText>
-			<componentElement>
-				<reportElement x="12" y="140" width="489" height="170" uuid="51fa8767-3b89-411e-812e-607377af641c"/>
-				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<mp:latitudeExpression><![CDATA[$P{latitud}.floatValue()]]></mp:latitudeExpression>
-					<mp:longitudeExpression><![CDATA[$P{longitud}.floatValue()]]></mp:longitudeExpression>
-					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
-					<mp:markerData>
-						<dataset/>
-						<mp:item>
-							<mp:itemProperty name="latitude">
-								<valueExpression><![CDATA[$P{latitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-							<mp:itemProperty name="longitude">
-								<valueExpression><![CDATA[$P{longitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-						</mp:item>
-					</mp:markerData>
-				</mp:map>
-			</componentElement>
 			<staticText>
 				<reportElement x="148" y="310" width="9" height="20" uuid="80920244-e298-49a4-8cc4-c9d37b570a54"/>
 				<text><![CDATA[:]]></text>
@@ -299,12 +281,6 @@
 				<reportElement x="12" y="409" width="503" height="42" uuid="2f37ec80-f4b8-4eac-b9fc-6c2147384a6f"/>
 				<textFieldExpression><![CDATA["Detalle de recepción: " + $P{descripcionAtencionReclamo}]]></textFieldExpression>
 			</textField>
-			<rectangle radius="4">
-				<reportElement positionType="Float" mode="Transparent" x="0" y="-90" width="515" height="673" uuid="24990d90-6ef7-4858-a318-9248e2f41773"/>
-				<graphicElement>
-					<pen lineWidth="1.0"/>
-				</graphicElement>
-			</rectangle>
 			<staticText>
 				<reportElement x="12" y="451" width="225" height="20" uuid="40635f58-6976-4266-bd76-7f4f0d7b0e05"/>
 				<textElement textAlignment="Center">
@@ -346,6 +322,10 @@
 				</textElement>
 				<text><![CDATA[Usuario de finalización]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="140" width="515" height="170" uuid="9730601a-e67d-4ff8-9ddb-2fb4fde56d76"/>
+				<imageExpression><![CDATA[$P{urlMapa}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

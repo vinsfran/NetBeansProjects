@@ -29,9 +29,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tipos_finalizacion_reclamos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposFinalizacionReclamos.findAll", query = "SELECT t FROM TiposFinalizacionReclamos t"),
-    @NamedQuery(name = "TiposFinalizacionReclamos.findByCodTipoFinalizacionReclamo", query = "SELECT t FROM TiposFinalizacionReclamos t WHERE t.codTipoFinalizacionReclamo = :codTipoFinalizacionReclamo"),
-    @NamedQuery(name = "TiposFinalizacionReclamos.findByNombreTipoFinalizacionReclamo", query = "SELECT t FROM TiposFinalizacionReclamos t WHERE t.nombreTipoFinalizacionReclamo = :nombreTipoFinalizacionReclamo")})
+    @NamedQuery(name = "TiposFinalizacionReclamos.findAll", query = "SELECT t FROM TiposFinalizacionReclamos t")
+    , @NamedQuery(name = "TiposFinalizacionReclamos.findByCodTipoFinalizacionReclamo", query = "SELECT t FROM TiposFinalizacionReclamos t WHERE t.codTipoFinalizacionReclamo = :codTipoFinalizacionReclamo")
+    , @NamedQuery(name = "TiposFinalizacionReclamos.findByNombreTipoFinalizacionReclamo", query = "SELECT t FROM TiposFinalizacionReclamos t WHERE t.nombreTipoFinalizacionReclamo = :nombreTipoFinalizacionReclamo")})
 public class TiposFinalizacionReclamos implements Serializable {
 
     private static final long serialVersionUID = 1L;

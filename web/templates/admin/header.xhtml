@@ -82,11 +82,37 @@
                                     </ul>
                                 </div>
                             </li>
-                        </ui:fragment>                        
+                        </ui:fragment>   
+                        
+                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_denuncias')}">
+                            <li>
+                                <a data-toggle="collapse" href="#collapse3"><i class="fa fa-comments fa-2x"></i> Denuncias<span class="fa arrow"></span></a>
+                                <div id="collapse3" class="collapse">
+                                    <ul class="nav nav-second-level">
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_mis_denuncias')}">
+                                            <li>
+                                                <h:commandLink action="denuncia_list">
+                                                    <i class="fa fa-briefcase"></i> Mis denuncias
+                                                </h:commandLink>
+                                            </li>
+                                        </ui:fragment>
+                                        <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_nueva_denuncia')}">
+                                            <li>
+                                                <h:commandLink action="#{mbSDenuncia.nuevaDenuncia()}">
+                                                    <i class="fa fa-edit"></i> Nueva denuncia
+                                                </h:commandLink>
+
+                                            </li>
+                                        </ui:fragment> 
+                                    </ul>
+                                </div>
+                            </li>
+                        </ui:fragment>
+                        
                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_gestion_reclamos')}">
                             <li>
-                                <a data-toggle="collapse" href="#collapse3"><i class="fa fa-inbox fa-2x"></i> Gestión de reclamos<span class="fa arrow"></span></a>
-                                <div id="collapse3" class="collapse">
+                                <a data-toggle="collapse" href="#collapse4"><i class="fa fa-inbox fa-2x"></i> Gestión de reclamos<span class="fa arrow"></span></a>
+                                <div id="collapse4" class="collapse">
                                     <ul class="nav nav-second-level">
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_gestion_reclamos_pendientes')}">
                                             <li>
@@ -115,8 +141,8 @@
                         </ui:fragment>                        
                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_atencion_reclamos')}">
                             <li>
-                                <a data-toggle="collapse" href="#collapse4"><i class="fa fa-folder fa-2x"></i> Atención de reclamos<span class="fa arrow"></span></a>
-                                <div id="collapse4" class="collapse">
+                                <a data-toggle="collapse" href="#collapse5"><i class="fa fa-folder fa-2x"></i> Atención de reclamos<span class="fa arrow"></span></a>
+                                <div id="collapse5" class="collapse">
                                     <ul class="nav nav-second-level">
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('lnk_nuevo_reclamo_externo')}">
                                             <li>
@@ -138,8 +164,8 @@
                         </ui:fragment>
                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_reportes')}">
                             <li>
-                                <a data-toggle="collapse" href="#collapse5"><i class="fa fa-list-alt fa-2x"></i> Reportes<span class="fa arrow"></span></a>
-                                <div id="collapse5" class="collapse">
+                                <a data-toggle="collapse" href="#collapse6"><i class="fa fa-list-alt fa-2x"></i> Reportes<span class="fa arrow"></span></a>
+                                <div id="collapse6" class="collapse">
                                     <ul class="nav nav-second-level">
                                         <li>
                                             <h:commandLink action="admin_form_reporte_rango_fecha_dependencia">
@@ -169,8 +195,8 @@
                         </ui:fragment>                        
                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_gestion_expediente')}">
                             <li>
-                                <a data-toggle="collapse" href="#collapse6"><i class="fa fa-list-alt fa-2x"></i> Gestión de expedientes<span class="fa arrow"></span></a>
-                                <div id="collapse6" class="collapse">
+                                <a data-toggle="collapse" href="#collapse7"><i class="fa fa-list-alt fa-2x"></i> Gestión de expedientes<span class="fa arrow"></span></a>
+                                <div id="collapse7" class="collapse">
                                     <ul class="nav nav-second-level">
                                         <li>
                                             <h:commandLink action="#{mbSUsuarios.generarLinkExpediente('GUIA')}">
@@ -199,8 +225,8 @@
                         </ui:fragment>
                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('menu_panel_de_control')}">
                             <li>
-                                <a data-toggle="collapse" href="#collapse7"><i class="fa fa-desktop fa-2x"></i> Panel de control<span class="fa arrow"></span></a>
-                                <div id="collapse7" class="collapse">
+                                <a data-toggle="collapse" href="#collapse8"><i class="fa fa-desktop fa-2x"></i> Panel de control<span class="fa arrow"></span></a>
+                                <div id="collapse8" class="collapse">
                                     <ul class="nav nav-second-level">
                                         <ui:fragment rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('link_admin_matenimiento_personas')}">
                                             <li>

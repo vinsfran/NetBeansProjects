@@ -25,9 +25,10 @@
                                     <h:form>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Ubicación del reclamo:</label>
+                                                <label>Ubicación del reclamo: </label>
 
-                                                <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+                                                <script src="#{mbSReclamos.configuraciones.par02}#{mbSReclamos.configuraciones.par04}#{mbSReclamos.configuraciones.par01}" type="text/javascript"></script>
+
                                                 <p:gmap id="gmap"
                                                         center="#{mbSReclamos.reclamoSeleccionado.latitud}, #{mbSReclamos.reclamoSeleccionado.longitud}" 
                                                         zoom="20" type="HYBRID"  

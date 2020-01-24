@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReclamoPendienteGestion" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="50" rightMargin="30" topMargin="30" bottomMargin="30" uuid="50a526a4-d643-4978-aced-b8ede2cb8357">
-	<property name="ireport.zoom" value="1.100000000000001"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="156"/>
 	<property name="ireport.background.image.properties" value="false,false,0.05,0,0,0,0,0,0"/>
 	<style name="style1">
 		<pen lineStyle="Double" lineColor="#040202"/>
@@ -31,6 +31,7 @@
 	<parameter name="descripcionReclamoContribuyente" class="java.lang.String"/>
 	<parameter name="imagenReclamo" class="java.lang.Object"/>
 	<parameter name="estadoReclamo" class="java.lang.String"/>
+	<parameter name="urlMapa" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -153,25 +154,6 @@
 				<reportElement x="0" y="275" width="515" height="65" uuid="8712c7b0-177a-4135-b5b5-966e6bcf5243"/>
 				<textFieldExpression><![CDATA[$P{descripcionReclamoContribuyente}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="0" y="395" width="252" height="170" uuid="51fa8767-3b89-411e-812e-607377af641c"/>
-				<mp:map xmlns:mp="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<mp:latitudeExpression><![CDATA[$P{latitud}.floatValue()]]></mp:latitudeExpression>
-					<mp:longitudeExpression><![CDATA[$P{longitud}.floatValue()]]></mp:longitudeExpression>
-					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
-					<mp:markerData>
-						<dataset/>
-						<mp:item>
-							<mp:itemProperty name="latitude">
-								<valueExpression><![CDATA[$P{latitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-							<mp:itemProperty name="longitude">
-								<valueExpression><![CDATA[$P{longitud}.floatValue()]]></valueExpression>
-							</mp:itemProperty>
-						</mp:item>
-					</mp:markerData>
-				</mp:map>
-			</componentElement>
 			<staticText>
 				<reportElement x="0" y="225" width="162" height="20" uuid="896f470d-213a-4790-9e4a-15b58438e5fc"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -249,6 +231,10 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{estadoReclamo}]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="0" y="395" width="252" height="170" uuid="90891ee6-bfed-4927-a71c-5bfb3ca49027"/>
+				<imageExpression><![CDATA[$P{urlMapa}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

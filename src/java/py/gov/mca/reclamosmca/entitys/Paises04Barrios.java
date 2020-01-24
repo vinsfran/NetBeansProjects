@@ -31,9 +31,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "paises_04_barrios")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Paises04Barrios.findAll", query = "SELECT p FROM Paises04Barrios p"),
-    @NamedQuery(name = "Paises04Barrios.findByCodBarrio", query = "SELECT p FROM Paises04Barrios p WHERE p.codBarrio = :codBarrio"),
-    @NamedQuery(name = "Paises04Barrios.findByBarrioNombre", query = "SELECT p FROM Paises04Barrios p WHERE p.barrioNombre = :barrioNombre")})
+    @NamedQuery(name = "Paises04Barrios.findAll", query = "SELECT p FROM Paises04Barrios p")
+    , @NamedQuery(name = "Paises04Barrios.findByCodBarrio", query = "SELECT p FROM Paises04Barrios p WHERE p.codBarrio = :codBarrio")
+    , @NamedQuery(name = "Paises04Barrios.findByBarrioNombre", query = "SELECT p FROM Paises04Barrios p WHERE p.barrioNombre = :barrioNombre")})
 public class Paises04Barrios implements Serializable {
 
     private static final long serialVersionUID = 1L;

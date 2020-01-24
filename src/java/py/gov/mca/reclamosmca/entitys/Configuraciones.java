@@ -25,49 +25,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "configuraciones")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Configuraciones.findAll", query = "SELECT c FROM Configuraciones c"),
-    @NamedQuery(name = "Configuraciones.findByCodConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.codConfiguracion = :codConfiguracion"),
-    @NamedQuery(name = "Configuraciones.findByDetalleDeConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.detalleDeConfiguracion = :detalleDeConfiguracion"),
-    @NamedQuery(name = "Configuraciones.findByPar01", query = "SELECT c FROM Configuraciones c WHERE c.par01 = :par01"),
-    @NamedQuery(name = "Configuraciones.findByPar02", query = "SELECT c FROM Configuraciones c WHERE c.par02 = :par02"),
-    @NamedQuery(name = "Configuraciones.findByPar03", query = "SELECT c FROM Configuraciones c WHERE c.par03 = :par03"),
-    @NamedQuery(name = "Configuraciones.findByPar04", query = "SELECT c FROM Configuraciones c WHERE c.par04 = :par04"),
-    @NamedQuery(name = "Configuraciones.findByPar05", query = "SELECT c FROM Configuraciones c WHERE c.par05 = :par05"),
-    @NamedQuery(name = "Configuraciones.findByPar06", query = "SELECT c FROM Configuraciones c WHERE c.par06 = :par06"),
-    @NamedQuery(name = "Configuraciones.findByPar07", query = "SELECT c FROM Configuraciones c WHERE c.par07 = :par07"),
-    @NamedQuery(name = "Configuraciones.findByPar08", query = "SELECT c FROM Configuraciones c WHERE c.par08 = :par08"),
-    @NamedQuery(name = "Configuraciones.findByPar09", query = "SELECT c FROM Configuraciones c WHERE c.par09 = :par09"),
-    @NamedQuery(name = "Configuraciones.findByPar10", query = "SELECT c FROM Configuraciones c WHERE c.par10 = :par10"),
-    @NamedQuery(name = "Configuraciones.findByPar11", query = "SELECT c FROM Configuraciones c WHERE c.par11 = :par11"),
-    @NamedQuery(name = "Configuraciones.findByPar12", query = "SELECT c FROM Configuraciones c WHERE c.par12 = :par12"),
-    @NamedQuery(name = "Configuraciones.findByPar13", query = "SELECT c FROM Configuraciones c WHERE c.par13 = :par13"),
-    @NamedQuery(name = "Configuraciones.findByPar14", query = "SELECT c FROM Configuraciones c WHERE c.par14 = :par14"),
-    @NamedQuery(name = "Configuraciones.findByPar15", query = "SELECT c FROM Configuraciones c WHERE c.par15 = :par15"),
-    @NamedQuery(name = "Configuraciones.findByPar16", query = "SELECT c FROM Configuraciones c WHERE c.par16 = :par16"),
-    @NamedQuery(name = "Configuraciones.findByPar17", query = "SELECT c FROM Configuraciones c WHERE c.par17 = :par17"),
-    @NamedQuery(name = "Configuraciones.findByPar18", query = "SELECT c FROM Configuraciones c WHERE c.par18 = :par18"),
-    @NamedQuery(name = "Configuraciones.findByPar19", query = "SELECT c FROM Configuraciones c WHERE c.par19 = :par19"),
-    @NamedQuery(name = "Configuraciones.findByPar20", query = "SELECT c FROM Configuraciones c WHERE c.par20 = :par20"),
-    @NamedQuery(name = "Configuraciones.findByPar21", query = "SELECT c FROM Configuraciones c WHERE c.par21 = :par21"),
-    @NamedQuery(name = "Configuraciones.findByPar22", query = "SELECT c FROM Configuraciones c WHERE c.par22 = :par22"),
-    @NamedQuery(name = "Configuraciones.findByPar23", query = "SELECT c FROM Configuraciones c WHERE c.par23 = :par23"),
-    @NamedQuery(name = "Configuraciones.findByPar24", query = "SELECT c FROM Configuraciones c WHERE c.par24 = :par24"),
-    @NamedQuery(name = "Configuraciones.findByPar25", query = "SELECT c FROM Configuraciones c WHERE c.par25 = :par25"),
-    @NamedQuery(name = "Configuraciones.findByPar26", query = "SELECT c FROM Configuraciones c WHERE c.par26 = :par26"),
-    @NamedQuery(name = "Configuraciones.findByPar27", query = "SELECT c FROM Configuraciones c WHERE c.par27 = :par27"),
-    @NamedQuery(name = "Configuraciones.findByPar28", query = "SELECT c FROM Configuraciones c WHERE c.par28 = :par28"),
-    @NamedQuery(name = "Configuraciones.findByPar29", query = "SELECT c FROM Configuraciones c WHERE c.par29 = :par29"),
-    @NamedQuery(name = "Configuraciones.findByPar30", query = "SELECT c FROM Configuraciones c WHERE c.par30 = :par30"),
-    @NamedQuery(name = "Configuraciones.findByPar31", query = "SELECT c FROM Configuraciones c WHERE c.par31 = :par31"),
-    @NamedQuery(name = "Configuraciones.findByPar32", query = "SELECT c FROM Configuraciones c WHERE c.par32 = :par32"),
-    @NamedQuery(name = "Configuraciones.findByPar33", query = "SELECT c FROM Configuraciones c WHERE c.par33 = :par33"),
-    @NamedQuery(name = "Configuraciones.findByPar34", query = "SELECT c FROM Configuraciones c WHERE c.par34 = :par34"),
-    @NamedQuery(name = "Configuraciones.findByPar35", query = "SELECT c FROM Configuraciones c WHERE c.par35 = :par35"),
-    @NamedQuery(name = "Configuraciones.findByPar36", query = "SELECT c FROM Configuraciones c WHERE c.par36 = :par36"),
-    @NamedQuery(name = "Configuraciones.findByPar37", query = "SELECT c FROM Configuraciones c WHERE c.par37 = :par37"),
-    @NamedQuery(name = "Configuraciones.findByPar38", query = "SELECT c FROM Configuraciones c WHERE c.par38 = :par38"),
-    @NamedQuery(name = "Configuraciones.findByPar39", query = "SELECT c FROM Configuraciones c WHERE c.par39 = :par39"),
-    @NamedQuery(name = "Configuraciones.findByPar40", query = "SELECT c FROM Configuraciones c WHERE c.par40 = :par40")})
+    @NamedQuery(name = "Configuraciones.findAll", query = "SELECT c FROM Configuraciones c")
+    , @NamedQuery(name = "Configuraciones.findByCodConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.codConfiguracion = :codConfiguracion")
+    , @NamedQuery(name = "Configuraciones.findByDetalleDeConfiguracion", query = "SELECT c FROM Configuraciones c WHERE c.detalleDeConfiguracion = :detalleDeConfiguracion")
+    , @NamedQuery(name = "Configuraciones.findByPar01", query = "SELECT c FROM Configuraciones c WHERE c.par01 = :par01")
+    , @NamedQuery(name = "Configuraciones.findByPar02", query = "SELECT c FROM Configuraciones c WHERE c.par02 = :par02")
+    , @NamedQuery(name = "Configuraciones.findByPar03", query = "SELECT c FROM Configuraciones c WHERE c.par03 = :par03")
+    , @NamedQuery(name = "Configuraciones.findByPar04", query = "SELECT c FROM Configuraciones c WHERE c.par04 = :par04")
+    , @NamedQuery(name = "Configuraciones.findByPar05", query = "SELECT c FROM Configuraciones c WHERE c.par05 = :par05")
+    , @NamedQuery(name = "Configuraciones.findByPar06", query = "SELECT c FROM Configuraciones c WHERE c.par06 = :par06")
+    , @NamedQuery(name = "Configuraciones.findByPar07", query = "SELECT c FROM Configuraciones c WHERE c.par07 = :par07")
+    , @NamedQuery(name = "Configuraciones.findByPar08", query = "SELECT c FROM Configuraciones c WHERE c.par08 = :par08")
+    , @NamedQuery(name = "Configuraciones.findByPar09", query = "SELECT c FROM Configuraciones c WHERE c.par09 = :par09")
+    , @NamedQuery(name = "Configuraciones.findByPar10", query = "SELECT c FROM Configuraciones c WHERE c.par10 = :par10")
+    , @NamedQuery(name = "Configuraciones.findByPar11", query = "SELECT c FROM Configuraciones c WHERE c.par11 = :par11")
+    , @NamedQuery(name = "Configuraciones.findByPar12", query = "SELECT c FROM Configuraciones c WHERE c.par12 = :par12")
+    , @NamedQuery(name = "Configuraciones.findByPar13", query = "SELECT c FROM Configuraciones c WHERE c.par13 = :par13")
+    , @NamedQuery(name = "Configuraciones.findByPar14", query = "SELECT c FROM Configuraciones c WHERE c.par14 = :par14")
+    , @NamedQuery(name = "Configuraciones.findByPar15", query = "SELECT c FROM Configuraciones c WHERE c.par15 = :par15")
+    , @NamedQuery(name = "Configuraciones.findByPar16", query = "SELECT c FROM Configuraciones c WHERE c.par16 = :par16")
+    , @NamedQuery(name = "Configuraciones.findByPar17", query = "SELECT c FROM Configuraciones c WHERE c.par17 = :par17")
+    , @NamedQuery(name = "Configuraciones.findByPar18", query = "SELECT c FROM Configuraciones c WHERE c.par18 = :par18")
+    , @NamedQuery(name = "Configuraciones.findByPar19", query = "SELECT c FROM Configuraciones c WHERE c.par19 = :par19")
+    , @NamedQuery(name = "Configuraciones.findByPar20", query = "SELECT c FROM Configuraciones c WHERE c.par20 = :par20")
+    , @NamedQuery(name = "Configuraciones.findByPar21", query = "SELECT c FROM Configuraciones c WHERE c.par21 = :par21")
+    , @NamedQuery(name = "Configuraciones.findByPar22", query = "SELECT c FROM Configuraciones c WHERE c.par22 = :par22")
+    , @NamedQuery(name = "Configuraciones.findByPar23", query = "SELECT c FROM Configuraciones c WHERE c.par23 = :par23")
+    , @NamedQuery(name = "Configuraciones.findByPar24", query = "SELECT c FROM Configuraciones c WHERE c.par24 = :par24")
+    , @NamedQuery(name = "Configuraciones.findByPar25", query = "SELECT c FROM Configuraciones c WHERE c.par25 = :par25")
+    , @NamedQuery(name = "Configuraciones.findByPar26", query = "SELECT c FROM Configuraciones c WHERE c.par26 = :par26")
+    , @NamedQuery(name = "Configuraciones.findByPar27", query = "SELECT c FROM Configuraciones c WHERE c.par27 = :par27")
+    , @NamedQuery(name = "Configuraciones.findByPar28", query = "SELECT c FROM Configuraciones c WHERE c.par28 = :par28")
+    , @NamedQuery(name = "Configuraciones.findByPar29", query = "SELECT c FROM Configuraciones c WHERE c.par29 = :par29")
+    , @NamedQuery(name = "Configuraciones.findByPar30", query = "SELECT c FROM Configuraciones c WHERE c.par30 = :par30")
+    , @NamedQuery(name = "Configuraciones.findByPar31", query = "SELECT c FROM Configuraciones c WHERE c.par31 = :par31")
+    , @NamedQuery(name = "Configuraciones.findByPar32", query = "SELECT c FROM Configuraciones c WHERE c.par32 = :par32")
+    , @NamedQuery(name = "Configuraciones.findByPar33", query = "SELECT c FROM Configuraciones c WHERE c.par33 = :par33")
+    , @NamedQuery(name = "Configuraciones.findByPar34", query = "SELECT c FROM Configuraciones c WHERE c.par34 = :par34")
+    , @NamedQuery(name = "Configuraciones.findByPar35", query = "SELECT c FROM Configuraciones c WHERE c.par35 = :par35")
+    , @NamedQuery(name = "Configuraciones.findByPar36", query = "SELECT c FROM Configuraciones c WHERE c.par36 = :par36")
+    , @NamedQuery(name = "Configuraciones.findByPar37", query = "SELECT c FROM Configuraciones c WHERE c.par37 = :par37")
+    , @NamedQuery(name = "Configuraciones.findByPar38", query = "SELECT c FROM Configuraciones c WHERE c.par38 = :par38")
+    , @NamedQuery(name = "Configuraciones.findByPar39", query = "SELECT c FROM Configuraciones c WHERE c.par39 = :par39")
+    , @NamedQuery(name = "Configuraciones.findByPar40", query = "SELECT c FROM Configuraciones c WHERE c.par40 = :par40")})
 public class Configuraciones implements Serializable {
 
     private static final long serialVersionUID = 1L;

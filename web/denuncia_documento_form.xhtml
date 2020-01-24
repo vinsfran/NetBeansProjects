@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/admin/main.xhtml">
+    <ui:define name="content">    
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Nuevo documento</h2>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Form Elements -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Formulario de documento
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h:form enctype="multipart/form-data">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Titulo(*).</label>
+                                                <h:inputText id="direccion"
+                                                             class="form-control" 
+                                                             label="Titulo" 
+                                                             value="#{mbSDenunciaDocumento.denunciaDocumento.titulo}"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <h:panelGroup id="panelGroup">
+                                                    <p:fileUpload fileUploadListener="#{mbSDenunciaDocumento.cargarDocumento}" 
+                                                                  mode="advanced" 
+                                                                  dragDropSupport="false"
+                                                                  multiple="false" 
+                                                                  auto="true"
+                                                                  update="panelGroup" 
+                                                                  label="Examinar"
+                                                                  style="float: left;"/>
+                                                    <h:outputLabel value="Imagen del reclamo"/>
+<!--                                                    <p:graphicImage id="imagen" 
+                                                                    class="img-responsive"                                                                     
+                                                                    cache="false"
+                                                                    value="#{mbSDenunciaDocumento.defaultStreamedContent}"/>-->
+                                                    
+                                                    <p:media value="#{mbSDenunciaDocumento.defaultStreamedContent}" 
+                                                             id="media"
+                                                             width="500px" 
+                                                             height="500px"
+                                                             player="pdf"/>
+                                                    <br/>
+                                                    <p:commandLink actionListener="#{mbSReclamos.cancelarImagenCargada()}" 
+                                                                   value="Eliminar imagen"  
+                                                                   update="panelGroup"
+                                                                   class="btn btn-danger btn-sm"/>
+                                                </h:panelGroup>
+                                                
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="modal-footer">
+                                                <h:commandButton class="btn btn-default" action="denuncia_list" value="Cancelar"/>
+                                                <p:commandButton 
+                                                    class="btn btn-primary" 
+                                                    action="#{mbSDenuncia.guardar()}" 
+                                                    value="Guardar" 
+                                                    ajax="false"/>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>   

@@ -31,11 +31,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "paises_05_direcciones")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Paises05Direcciones.findAll", query = "SELECT p FROM Paises05Direcciones p"),
-    @NamedQuery(name = "Paises05Direcciones.findByCodDireccion", query = "SELECT p FROM Paises05Direcciones p WHERE p.codDireccion = :codDireccion"),
-    @NamedQuery(name = "Paises05Direcciones.findByDireccionNombre", query = "SELECT p FROM Paises05Direcciones p WHERE p.direccionNombre = :direccionNombre"),
-    @NamedQuery(name = "Paises05Direcciones.findByDireccionLatitud", query = "SELECT p FROM Paises05Direcciones p WHERE p.direccionLatitud = :direccionLatitud"),
-    @NamedQuery(name = "Paises05Direcciones.findByDireccionLongitud", query = "SELECT p FROM Paises05Direcciones p WHERE p.direccionLongitud = :direccionLongitud")})
+    @NamedQuery(name = "Paises05Direcciones.findAll", query = "SELECT p FROM Paises05Direcciones p")
+    , @NamedQuery(name = "Paises05Direcciones.findByCodDireccion", query = "SELECT p FROM Paises05Direcciones p WHERE p.codDireccion = :codDireccion")
+    , @NamedQuery(name = "Paises05Direcciones.findByDireccionNombre", query = "SELECT p FROM Paises05Direcciones p WHERE p.direccionNombre = :direccionNombre")
+    , @NamedQuery(name = "Paises05Direcciones.findByDireccionLatitud", query = "SELECT p FROM Paises05Direcciones p WHERE p.direccionLatitud = :direccionLatitud")
+    , @NamedQuery(name = "Paises05Direcciones.findByDireccionLongitud", query = "SELECT p FROM Paises05Direcciones p WHERE p.direccionLongitud = :direccionLongitud")})
 public class Paises05Direcciones implements Serializable {
 
     private static final long serialVersionUID = 1L;

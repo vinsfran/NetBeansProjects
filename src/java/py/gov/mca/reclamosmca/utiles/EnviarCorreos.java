@@ -23,7 +23,7 @@ import py.gov.mca.reclamosmca.sessionbeans.ConfiguracionesSB;
 @Stateless
 @SessionScoped
 public class EnviarCorreos {
-    //Prueba
+
     private Configuraciones configuraciones;
 
     @EJB
@@ -34,21 +34,21 @@ public class EnviarCorreos {
     }
 
     public String enviarMail(String destino, String asunto, String htmlMensaje) {
-    //Envio de Correo desde appWeb: 
-    //par01=internet_address, no_responder@gmail.com
-    //par02=mail_debug, true
-    //par03=mail_smtp_auth, true
-    //par04=mail_smtp_host, smtp.gmail.com 
-    //par05=mail_smtp_port, 587
-    //par06=mail_smtp_ssl_trust, smtpserver
-    //par07=mail_smtp_starttls_enable, true
-    //par08=nombre_proveedor, GMAIL
-    //par09=password, dos123456_789
-    //par10=usuario, reclamosmca@gmail.com 
-        
+        //Envio de Correo desde appWeb: 
+        //par01=internet_address, no_responder@gmail.com
+        //par02=mail_debug, true
+        //par03=mail_smtp_auth, true
+        //par04=mail_smtp_host, smtp.gmail.com 
+        //par05=mail_smtp_port, 587
+        //par06=mail_smtp_ssl_trust, smtpserver
+        //par07=mail_smtp_starttls_enable, true
+        //par08=nombre_proveedor, GMAIL
+        //par09=password, dos123456_789
+        //par10=usuario, reclamosmca@gmail.com 
+
         setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(1));
         Properties props = new Properties();
-        
+
         props.setProperty("mail.debug", getConfiguraciones().getPar02());
         props.setProperty("mail.smtp.auth", getConfiguraciones().getPar03());
         props.setProperty("mail.smtp.host", getConfiguraciones().getPar04());
@@ -92,7 +92,5 @@ public class EnviarCorreos {
     public void setConfiguraciones(Configuraciones configuraciones) {
         this.configuraciones = configuraciones;
     }
-
-    
 
 }

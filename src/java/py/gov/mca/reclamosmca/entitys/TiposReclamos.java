@@ -33,12 +33,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "tipos_reclamos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposReclamos.findAll", query = "SELECT t FROM TiposReclamos t"),
-    @NamedQuery(name = "TiposReclamos.findByCodTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.codTipoReclamo = :codTipoReclamo"),
-    @NamedQuery(name = "TiposReclamos.findByNombreTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.nombreTipoReclamo = :nombreTipoReclamo"),
-    @NamedQuery(name = "TiposReclamos.findByDiasMaximoPendientes", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoPendientes = :diasMaximoPendientes"),
-    @NamedQuery(name = "TiposReclamos.findByDiasMaximoFinalizados", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoFinalizados = :diasMaximoFinalizados"),
-    @NamedQuery(name = "TiposReclamos.findByTopTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.topTipoReclamo = :topTipoReclamo")})
+    @NamedQuery(name = "TiposReclamos.findAll", query = "SELECT t FROM TiposReclamos t")
+    , @NamedQuery(name = "TiposReclamos.findByCodTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.codTipoReclamo = :codTipoReclamo")
+    , @NamedQuery(name = "TiposReclamos.findByNombreTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.nombreTipoReclamo = :nombreTipoReclamo")
+    , @NamedQuery(name = "TiposReclamos.findByDiasMaximoPendientes", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoPendientes = :diasMaximoPendientes")
+    , @NamedQuery(name = "TiposReclamos.findByDiasMaximoFinalizados", query = "SELECT t FROM TiposReclamos t WHERE t.diasMaximoFinalizados = :diasMaximoFinalizados")
+    , @NamedQuery(name = "TiposReclamos.findByTopTipoReclamo", query = "SELECT t FROM TiposReclamos t WHERE t.topTipoReclamo = :topTipoReclamo")})
 public class TiposReclamos implements Serializable {
 
     private static final long serialVersionUID = 1L;

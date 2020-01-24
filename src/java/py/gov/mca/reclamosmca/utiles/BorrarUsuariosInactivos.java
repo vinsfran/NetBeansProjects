@@ -99,7 +99,7 @@ public class BorrarUsuariosInactivos extends TimerTask implements ServletContext
             mensajeCorreo = mensajeCorreo + "<p>FIN REPORTE</p></div>"
                     + "     </body>"
                     + "</html>";
-            enviarCorreos.enviarMail("vinsfran@gmail.com", "Usuarios Inactivos Reporte", mensajeCorreo);
+            //enviarCorreos.enviarMail("vinsfran@gmail.com", "Usuarios Inactivos Reporte", mensajeCorreo);
         }
     }
 }

@@ -32,20 +32,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "reclamos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Reclamos.findAll", query = "SELECT r FROM Reclamos r"),
-    @NamedQuery(name = "Reclamos.findByCodReclamo", query = "SELECT r FROM Reclamos r WHERE r.codReclamo = :codReclamo"),
-    @NamedQuery(name = "Reclamos.findByDescripcionReclamoContribuyente", query = "SELECT r FROM Reclamos r WHERE r.descripcionReclamoContribuyente = :descripcionReclamoContribuyente"),
-    @NamedQuery(name = "Reclamos.findByDireccionReclamo", query = "SELECT r FROM Reclamos r WHERE r.direccionReclamo = :direccionReclamo"),
-    @NamedQuery(name = "Reclamos.findByOrigenReclamo", query = "SELECT r FROM Reclamos r WHERE r.origenReclamo = :origenReclamo"),
-    @NamedQuery(name = "Reclamos.findByFechaReclamo", query = "SELECT r FROM Reclamos r WHERE r.fechaReclamo = :fechaReclamo"),
-    @NamedQuery(name = "Reclamos.findByDescripcionAtencionReclamo", query = "SELECT r FROM Reclamos r WHERE r.descripcionAtencionReclamo = :descripcionAtencionReclamo"),
-    @NamedQuery(name = "Reclamos.findByFechaAtencionReclamo", query = "SELECT r FROM Reclamos r WHERE r.fechaAtencionReclamo = :fechaAtencionReclamo"),
-    @NamedQuery(name = "Reclamos.findByDescripcionCulminacionReclamo", query = "SELECT r FROM Reclamos r WHERE r.descripcionCulminacionReclamo = :descripcionCulminacionReclamo"),
-    @NamedQuery(name = "Reclamos.findByFechaCulminacionReclamo", query = "SELECT r FROM Reclamos r WHERE r.fechaCulminacionReclamo = :fechaCulminacionReclamo"),
-    @NamedQuery(name = "Reclamos.findByCantidadDiasProceso", query = "SELECT r FROM Reclamos r WHERE r.cantidadDiasProceso = :cantidadDiasProceso"),
-    @NamedQuery(name = "Reclamos.findByCtaCteContribuyente", query = "SELECT r FROM Reclamos r WHERE r.ctaCteContribuyente = :ctaCteContribuyente"),
-    @NamedQuery(name = "Reclamos.findByLatitud", query = "SELECT r FROM Reclamos r WHERE r.latitud = :latitud"),
-    @NamedQuery(name = "Reclamos.findByLongitud", query = "SELECT r FROM Reclamos r WHERE r.longitud = :longitud")})
+    @NamedQuery(name = "Reclamos.findAll", query = "SELECT r FROM Reclamos r")
+    , @NamedQuery(name = "Reclamos.findByCodReclamo", query = "SELECT r FROM Reclamos r WHERE r.codReclamo = :codReclamo")
+    , @NamedQuery(name = "Reclamos.findByDescripcionReclamoContribuyente", query = "SELECT r FROM Reclamos r WHERE r.descripcionReclamoContribuyente = :descripcionReclamoContribuyente")
+    , @NamedQuery(name = "Reclamos.findByDireccionReclamo", query = "SELECT r FROM Reclamos r WHERE r.direccionReclamo = :direccionReclamo")
+    , @NamedQuery(name = "Reclamos.findByOrigenReclamo", query = "SELECT r FROM Reclamos r WHERE r.origenReclamo = :origenReclamo")
+    , @NamedQuery(name = "Reclamos.findByFechaReclamo", query = "SELECT r FROM Reclamos r WHERE r.fechaReclamo = :fechaReclamo")
+    , @NamedQuery(name = "Reclamos.findByDescripcionAtencionReclamo", query = "SELECT r FROM Reclamos r WHERE r.descripcionAtencionReclamo = :descripcionAtencionReclamo")
+    , @NamedQuery(name = "Reclamos.findByFechaAtencionReclamo", query = "SELECT r FROM Reclamos r WHERE r.fechaAtencionReclamo = :fechaAtencionReclamo")
+    , @NamedQuery(name = "Reclamos.findByDescripcionCulminacionReclamo", query = "SELECT r FROM Reclamos r WHERE r.descripcionCulminacionReclamo = :descripcionCulminacionReclamo")
+    , @NamedQuery(name = "Reclamos.findByFechaCulminacionReclamo", query = "SELECT r FROM Reclamos r WHERE r.fechaCulminacionReclamo = :fechaCulminacionReclamo")
+    , @NamedQuery(name = "Reclamos.findByCantidadDiasProceso", query = "SELECT r FROM Reclamos r WHERE r.cantidadDiasProceso = :cantidadDiasProceso")
+    , @NamedQuery(name = "Reclamos.findByCtaCteContribuyente", query = "SELECT r FROM Reclamos r WHERE r.ctaCteContribuyente = :ctaCteContribuyente")
+    , @NamedQuery(name = "Reclamos.findByLatitud", query = "SELECT r FROM Reclamos r WHERE r.latitud = :latitud")
+    , @NamedQuery(name = "Reclamos.findByLongitud", query = "SELECT r FROM Reclamos r WHERE r.longitud = :longitud")})
 public class Reclamos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,69 +54,92 @@ public class Reclamos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_reclamo")
     private Integer codReclamo;
+
     @Size(max = 500)
     @Column(name = "descripcion_reclamo_contribuyente")
     private String descripcionReclamoContribuyente;
+
     @Size(max = 2147483647)
     @Column(name = "direccion_reclamo")
     private String direccionReclamo;
+
     @Size(max = 2147483647)
     @Column(name = "origen_reclamo")
     private String origenReclamo;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_reclamo")
     @Temporal(TemporalType.DATE)
     private Date fechaReclamo;
+
     @Size(max = 500)
     @Column(name = "descripcion_atencion_reclamo")
     private String descripcionAtencionReclamo;
     @Column(name = "fecha_atencion_reclamo")
     @Temporal(TemporalType.DATE)
     private Date fechaAtencionReclamo;
+
     @Size(max = 500)
     @Column(name = "descripcion_culminacion_reclamo")
     private String descripcionCulminacionReclamo;
     @Column(name = "fecha_culminacion_reclamo")
     @Temporal(TemporalType.DATE)
     private Date fechaCulminacionReclamo;
+
     @Column(name = "cantidad_dias_proceso")
     private Integer cantidadDiasProceso;
+
     @Size(max = 2147483647)
     @Column(name = "cta_cte_contribuyente")
     private String ctaCteContribuyente;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "latitud")
     private Double latitud;
+
     @Column(name = "longitud")
     private Double longitud;
+
     @JoinColumn(name = "fk_cod_estado_reclamo", referencedColumnName = "cod_estado_reclamo")
     @ManyToOne(optional = false)
     private EstadosReclamos fkCodEstadoReclamo;
+
     @JoinColumn(name = "fk_imagen", referencedColumnName = "cod_imagen")
     @ManyToOne
     private Imagenes fkImagen;
+
     @JoinColumn(name = "fk_cod_direccion", referencedColumnName = "cod_direccion")
     @ManyToOne
     private Paises05Direcciones fkCodDireccion;
+
     @JoinColumn(name = "fk_cod_tipo_finalizacion_reclamo", referencedColumnName = "cod_tipo_finalizacion_reclamo")
     @ManyToOne
     private TiposFinalizacionReclamos fkCodTipoFinalizacionReclamo;
+
     @JoinColumn(name = "fk_cod_tipo_reclamo", referencedColumnName = "cod_tipo_reclamo")
     @ManyToOne(optional = false)
     private TiposReclamos fkCodTipoReclamo;
-    @JoinColumn(name = "fk_cod_usuario_culminacion", referencedColumnName = "cod_usuario")
-    @ManyToOne
-    private Usuarios fkCodUsuarioCulminacion;
-    @JoinColumn(name = "fk_cod_usuario", referencedColumnName = "cod_usuario")
-    @ManyToOne
-    private Usuarios fkCodUsuario;
+
     @JoinColumn(name = "fk_cod_usuario_atencion", referencedColumnName = "cod_usuario")
     @ManyToOne
     private Usuarios fkCodUsuarioAtencion;
+
+    @JoinColumn(name = "fk_cod_usuario_culminacion", referencedColumnName = "cod_usuario")
+    @ManyToOne
+    private Usuarios fkCodUsuarioCulminacion;
+
     @JoinColumn(name = "fk_cod_usuario_derivacion", referencedColumnName = "cod_usuario")
     @ManyToOne
     private Usuarios fkCodUsuarioDerivacion;
+
+    @JoinColumn(name = "fk_cod_usuario", referencedColumnName = "cod_usuario")
+    @ManyToOne
+    private Usuarios fkCodUsuario;
+
+    @Size(max = 2147483647)
+    @Column(name = "email")
+    private String email;
 
     public Reclamos() {
     }
@@ -274,12 +297,28 @@ public class Reclamos implements Serializable {
         this.fkCodTipoReclamo = fkCodTipoReclamo;
     }
 
+    public Usuarios getFkCodUsuarioAtencion() {
+        return fkCodUsuarioAtencion;
+    }
+
+    public void setFkCodUsuarioAtencion(Usuarios fkCodUsuarioAtencion) {
+        this.fkCodUsuarioAtencion = fkCodUsuarioAtencion;
+    }
+
     public Usuarios getFkCodUsuarioCulminacion() {
         return fkCodUsuarioCulminacion;
     }
 
     public void setFkCodUsuarioCulminacion(Usuarios fkCodUsuarioCulminacion) {
         this.fkCodUsuarioCulminacion = fkCodUsuarioCulminacion;
+    }
+
+    public Usuarios getFkCodUsuarioDerivacion() {
+        return fkCodUsuarioDerivacion;
+    }
+
+    public void setFkCodUsuarioDerivacion(Usuarios fkCodUsuarioDerivacion) {
+        this.fkCodUsuarioDerivacion = fkCodUsuarioDerivacion;
     }
 
     public Usuarios getFkCodUsuario() {
@@ -290,20 +329,12 @@ public class Reclamos implements Serializable {
         this.fkCodUsuario = fkCodUsuario;
     }
 
-    public Usuarios getFkCodUsuarioAtencion() {
-        return fkCodUsuarioAtencion;
+    public String getEmail() {
+        return email;
     }
 
-    public void setFkCodUsuarioAtencion(Usuarios fkCodUsuarioAtencion) {
-        this.fkCodUsuarioAtencion = fkCodUsuarioAtencion;
-    }
-
-    public Usuarios getFkCodUsuarioDerivacion() {
-        return fkCodUsuarioDerivacion;
-    }
-
-    public void setFkCodUsuarioDerivacion(Usuarios fkCodUsuarioDerivacion) {
-        this.fkCodUsuarioDerivacion = fkCodUsuarioDerivacion;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -328,7 +359,7 @@ public class Reclamos implements Serializable {
 
     @Override
     public String toString() {
-        return "py.gov.mca.reclamosmca.entitys.Reclamos[ codReclamo=" + codReclamo + " ]";
+        return "Reclamos{" + "codReclamo=" + codReclamo + ", descripcionReclamoContribuyente=" + descripcionReclamoContribuyente + ", direccionReclamo=" + direccionReclamo + ", origenReclamo=" + origenReclamo + ", fechaReclamo=" + fechaReclamo + ", descripcionAtencionReclamo=" + descripcionAtencionReclamo + ", fechaAtencionReclamo=" + fechaAtencionReclamo + ", descripcionCulminacionReclamo=" + descripcionCulminacionReclamo + ", fechaCulminacionReclamo=" + fechaCulminacionReclamo + ", cantidadDiasProceso=" + cantidadDiasProceso + ", ctaCteContribuyente=" + ctaCteContribuyente + ", latitud=" + latitud + ", longitud=" + longitud + ", fkCodEstadoReclamo=" + fkCodEstadoReclamo + ", fkImagen=" + fkImagen + ", fkCodDireccion=" + fkCodDireccion + ", fkCodTipoFinalizacionReclamo=" + fkCodTipoFinalizacionReclamo + ", fkCodTipoReclamo=" + fkCodTipoReclamo + ", fkCodUsuarioAtencion=" + fkCodUsuarioAtencion + ", fkCodUsuarioCulminacion=" + fkCodUsuarioCulminacion + ", fkCodUsuarioDerivacion=" + fkCodUsuarioDerivacion + ", fkCodUsuario=" + fkCodUsuario + ", email=" + email + '}';
     }
-    
+
 }

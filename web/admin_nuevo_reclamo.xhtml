@@ -44,7 +44,11 @@
                                             <div class="form-group">
                                                 <label>Haga click sobre el mapa para marcar la ubicación del reclamo</label>
                                                 <div class="gmap">
-                                                    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+                                                    <!--<script src="https://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyBhG9M1SgwyvKnybdcJcds7MU8l4yNrujU" type="text/javascript"></script>-->
+
+                                                    <!--<script src="https://maps.google.com/maps/api/js?key=AIzaSyBhG9M1SgwyvKnybdcJcds7MU8l4yNrujU" type="text/javascript" async defer></script>-->
+
+                                                    <script src="#{mbSReclamos.configuraciones.par02}#{mbSReclamos.configuraciones.par04}#{mbSReclamos.configuraciones.par01}" type="text/javascript"></script>
                                                     <p:gmap id="gmap"
                                                             center="#{mbSReclamos.nuevoReclamo.latitud}, #{mbSReclamos.nuevoReclamo.longitud}" 
                                                             zoom="#{mbSReclamos.zoom}" type="HYBRID"  
@@ -82,7 +86,6 @@
                                                 </h:selectOneMenu>
 
                                             </div>
-
 
                                             <div class="form-group">
                                                 <label>Describa su reclamo(*).</label>

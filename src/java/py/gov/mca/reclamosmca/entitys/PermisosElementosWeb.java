@@ -29,11 +29,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "permisos_elementos_web")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PermisosElementosWeb.findAll", query = "SELECT p FROM PermisosElementosWeb p"),
-    @NamedQuery(name = "PermisosElementosWeb.findByCodPermisoElementoWeb", query = "SELECT p FROM PermisosElementosWeb p WHERE p.codPermisoElementoWeb = :codPermisoElementoWeb"),
-    @NamedQuery(name = "PermisosElementosWeb.findByValorVisible", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorVisible = :valorVisible"),
-    @NamedQuery(name = "PermisosElementosWeb.findByValorDesactivado", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorDesactivado = :valorDesactivado"),
-    @NamedQuery(name = "PermisosElementosWeb.findByDetalleDelPermiso", query = "SELECT p FROM PermisosElementosWeb p WHERE p.detalleDelPermiso = :detalleDelPermiso")})
+    @NamedQuery(name = "PermisosElementosWeb.findAll", query = "SELECT p FROM PermisosElementosWeb p")
+    , @NamedQuery(name = "PermisosElementosWeb.findByCodPermisoElementoWeb", query = "SELECT p FROM PermisosElementosWeb p WHERE p.codPermisoElementoWeb = :codPermisoElementoWeb")
+    , @NamedQuery(name = "PermisosElementosWeb.findByValorVisible", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorVisible = :valorVisible")
+    , @NamedQuery(name = "PermisosElementosWeb.findByValorDesactivado", query = "SELECT p FROM PermisosElementosWeb p WHERE p.valorDesactivado = :valorDesactivado")
+    , @NamedQuery(name = "PermisosElementosWeb.findByDetalleDelPermiso", query = "SELECT p FROM PermisosElementosWeb p WHERE p.detalleDelPermiso = :detalleDelPermiso")})
 public class PermisosElementosWeb implements Serializable {
 
     private static final long serialVersionUID = 1L;

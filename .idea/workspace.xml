@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5befd595-868a-4296-9c55-274e433af0d4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/beansession/MbSDenuncia.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/beansession/MbSDenunciaDetalle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/beansession/MbSDenunciaDocumento.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/sessionbeans/DenunciaDetalleSB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/sessionbeans/DenunciaDocumentoSB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/sessionbeans/DenunciaSB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/denuncia_detalle_form.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/denuncia_detalle_list.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/denuncia_documento_form.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/denuncia_documento_list.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/denuncia_form.xhtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/denuncia_list.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/ant-deploy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/ant-deploy.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/build-impl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/build-impl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/genfiles.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/genfiles.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/beansession/MbSReclamos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/beansession/MbSReclamos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/CambiosEstadosUsuarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/CambiosEstadosUsuarios.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Configuraciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Configuraciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Dependencias.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Dependencias.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/ElementosWeb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/ElementosWeb.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/EstadosReclamos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/EstadosReclamos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/EstadosUsuarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/EstadosUsuarios.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Expediente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Expediente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Imagenes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Imagenes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Laborales.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Laborales.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises01.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises01.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises02Departamentos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises02Departamentos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises03Ciudades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises03Ciudades.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises04Barrios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises04Barrios.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises05Direcciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Paises05Direcciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/PermisosElementosWeb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/PermisosElementosWeb.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Personas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Personas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Reclamos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Reclamos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Roles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Roles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Sexos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Sexos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/TiposFinalizacionReclamos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/TiposFinalizacionReclamos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/TiposReclamos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/TiposReclamos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Usuarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/entitys/Usuarios.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/RecepcionReclamo.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/RecepcionReclamo.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/RecepcionReclamo.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/RecepcionReclamo.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoCiudadano.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoGestion.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoGestion.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoGestion.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoAtendidoGestion.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizado.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizado.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizado.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizado.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoCiudadano.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoGestion.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoGestion.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoGestion.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoFinalizadoGestion.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteCiudadano.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteGestion.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteGestion.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteGestion.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPendienteGestion.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPorRangoDeFecha.jasper" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/ReclamoPorRangoDeFecha.jasper" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/mapas.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/reportes/mapas.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/sessionbeans/UsuariosSB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/sessionbeans/UsuariosSB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/utiles/BorrarUsuariosInactivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/utiles/BorrarUsuariosInactivos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/utiles/EnviarCorreos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/py/gov/mca/reclamosmca/utiles/EnviarCorreos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/admin_gestion_reclamos_pendientes.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/admin_gestion_reclamos_pendientes.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/admin_nuevo_reclamo.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/admin_nuevo_reclamo.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/admin_nuevo_reclamo_externo.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/admin_nuevo_reclamo_externo.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/admin_procesar_reclamo_pendiente.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/admin_procesar_reclamo_pendiente.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/index.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/mapa.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/mapa.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/templates/admin/header.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/web/templates/admin/header.xhtml" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1667157131">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1599" />
+    <option name="width" value="1602" />
+    <option name="height" value="901" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="reclamosmca" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reclamosmca" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reclamosmca" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reclamosmca" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5befd595-868a-4296-9c55-274e433af0d4" name="Default Changelist" comment="" />
+      <created>1542735322583</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1542735322583</updated>
+      <workItem from="1542735324169" duration="194000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="194000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1599" y="0" width="1602" height="901" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Learn" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967825" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Maven Projects" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+</project>

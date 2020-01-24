@@ -32,10 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "usuarios")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
-    @NamedQuery(name = "Usuarios.findByCodUsuario", query = "SELECT u FROM Usuarios u WHERE u.codUsuario = :codUsuario"),
-    @NamedQuery(name = "Usuarios.findByLoginUsuario", query = "SELECT u FROM Usuarios u WHERE u.loginUsuario = :loginUsuario"),
-    @NamedQuery(name = "Usuarios.findByClaveUsuario", query = "SELECT u FROM Usuarios u WHERE u.claveUsuario = :claveUsuario")})
+    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")
+    , @NamedQuery(name = "Usuarios.findByCodUsuario", query = "SELECT u FROM Usuarios u WHERE u.codUsuario = :codUsuario")
+    , @NamedQuery(name = "Usuarios.findByLoginUsuario", query = "SELECT u FROM Usuarios u WHERE u.loginUsuario = :loginUsuario")
+    , @NamedQuery(name = "Usuarios.findByClaveUsuario", query = "SELECT u FROM Usuarios u WHERE u.claveUsuario = :claveUsuario")})
 public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,23 +44,26 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_usuario")
     private Integer codUsuario;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "login_usuario")
     private String loginUsuario;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "clave_usuario")
     private String claveUsuario;
-    @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
-    private List<Reclamos> reclamosList;
-    @OneToMany(mappedBy = "fkCodUsuario")
-    private List<Reclamos> reclamosList1;
+    
     @OneToMany(mappedBy = "fkCodUsuarioAtencion")
-    private List<Reclamos> reclamosList2;
+    private List<Reclamos> reclamosList;
+    @OneToMany(mappedBy = "fkCodUsuarioCulminacion")
+    private List<Reclamos> reclamosList1;
     @OneToMany(mappedBy = "fkCodUsuarioDerivacion")
+    private List<Reclamos> reclamosList2;
+    @OneToMany(mappedBy = "fkCodUsuario")
     private List<Reclamos> reclamosList3;
     @JoinColumn(name = "fk_cod_estado_usuario", referencedColumnName = "cod_estado_usuario")
     @ManyToOne(optional = false)
@@ -68,6 +71,7 @@ public class Usuarios implements Serializable {
     @JoinColumn(name = "fk_cod_persona", referencedColumnName = "cod_persona")
     @ManyToOne(optional = false)
     private Personas fkCodPersona;
+    
     @JoinColumn(name = "fk_cod_rol", referencedColumnName = "cod_rol")
     @ManyToOne(optional = false)
     private Roles fkCodRol;

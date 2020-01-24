@@ -36,7 +36,7 @@
 					<mp:latitudeExpression><![CDATA[$F{latitud}.floatValue()]]></mp:latitudeExpression>
 					<mp:longitudeExpression><![CDATA[$F{longitud}.floatValue()]]></mp:longitudeExpression>
 					<mp:zoomExpression><![CDATA[15]]></mp:zoomExpression>
-					<mp:markerData>
+<!--					<mp:markerData>
 						<dataset/>
 						<mp:item>
 							<mp:itemProperty name="latitude">
@@ -46,7 +46,7 @@
 								<valueExpression><![CDATA[$F{longitud}.floatValue()]]></valueExpression>
 							</mp:itemProperty>
 						</mp:item>
-					</mp:markerData>
+					</mp:markerData>-->
 				</mp:map>
 			</componentElement>
 			<staticText>

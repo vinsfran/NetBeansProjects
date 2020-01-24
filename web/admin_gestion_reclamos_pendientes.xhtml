@@ -65,7 +65,9 @@
                                                                target="_blank">
                                                     <i class="fa fa-file-image-o"></i> Ver detalles
                                                 </h:commandLink>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary btn-sm" actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo, 'GESTION')}">
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" 
+                                                               class="btn btn-primary btn-sm" 
+                                                               actionListener="#{mbSReclamos.exportarPDF(reclamos.codReclamo, 'GESTION')}">
                                                     <i class="fa fa-file-pdf-o"></i> Descargar PDF
                                                 </h:commandLink>
                                                 <h:commandLink style="margin-left: 2px; margin-right: 2px;" 
@@ -74,7 +76,9 @@
                                                                rendered="#{mbSUsuarios.obtenerPermisoVisibleElemento('btn_derivar_reclamo')}">
                                                     <i class="fa fa-external-link"></i> Derivar
                                                 </h:commandLink>
-                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" class="btn btn-danger btn-sm" action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
+                                                <h:commandLink style="margin-left: 2px; margin-right: 2px;" 
+                                                               class="btn btn-danger btn-sm" 
+                                                               action="#{mbSReclamos.recuperarReclamo(reclamos.codReclamo)}">
                                                     <i class="fa fa-check-square-o"></i> Procesar
                                                 </h:commandLink>
                                             </h:form>

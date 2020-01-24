@@ -39,6 +39,102 @@ public class UsuariosWS {
     private PersonasSB personasSB;
 
     @POST
+    @Path("/registrar_usuario_portal")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String registrarUsuarioPortal(String json) throws JSONException, ParseException {
+        //System.out.println("JSON: " + json);
+        SimpleDateFormat diaMesAnio = new SimpleDateFormat("dd-MM-yyyy");
+
+        Usuarios usuario = new Usuarios();
+        usuario.setFkCodPersona(new Personas());
+        usuario.setFkCodEstadoUsuario(new EstadosUsuarios());
+        usuario.setFkCodRol(new Roles());
+
+        usuario.setLoginUsuario("");
+        usuario.setClaveUsuario("");
+        usuario.getFkCodPersona().setCedulaPersona("");
+        usuario.getFkCodPersona().setNombrePersona("");
+        usuario.getFkCodPersona().setApellidoPersona("");
+        usuario.getFkCodPersona().setDireccionPersona("");
+        usuario.getFkCodPersona().setCtaCtePersona("");
+        usuario.getFkCodPersona().setTelefonoPersona("");
+
+        JSONObject jsonObjectUsuario = new JSONObject(json);
+        JSONObject jsonObjectPersona = new JSONObject(jsonObjectUsuario.getString("fkCodPersona"));
+
+        usuario.setLoginUsuario(jsonObjectUsuario.getString("loginUsuario"));
+        usuario.setClaveUsuario(jsonObjectUsuario.getString("claveUsuario"));
+        usuario.getFkCodPersona().setCedulaPersona(jsonObjectPersona.getString("cedulaPersona"));
+        usuario.getFkCodPersona().setNombrePersona(jsonObjectPersona.getString("nombrePersona"));
+        usuario.getFkCodPersona().setApellidoPersona(jsonObjectPersona.getString("apellidoPersona"));
+        usuario.getFkCodPersona().setFechaRegistroPersona(new Date());
+        usuario.getFkCodPersona().setDireccionPersona(jsonObjectPersona.getString("direccionPersona"));
+        usuario.getFkCodPersona().setCtaCtePersona(jsonObjectPersona.getString("ctaCtePersona"));
+        usuario.getFkCodPersona().setTelefonoPersona(jsonObjectPersona.getString("telefonoPersona"));
+        usuario.getFkCodPersona().setOrigenRegistro("appAndroid");
+        usuario.getFkCodEstadoUsuario().setCodEstadoUsuario(2);
+        usuario.getFkCodRol().setCodRol(6);
+
+        Converciones c = new Converciones();
+        //Se transforma a md5 la clave del usuario
+        String contrasenaMD5 = c.getMD5(usuario.getClaveUsuario());
+        if (contrasenaMD5 == null) {
+            //Se controla si fue exitosa la conversion
+            return "{\"status\":\"ERROR\", \"mensaje\":\"No se pudo crear. (MD5)\"}";
+        } else {
+            // Se reeplaza la clave enviada por la clave en md5
+            usuario.setClaveUsuario(contrasenaMD5);
+
+            int banderaRegistro = 0;
+            //Consultar por cedula
+            Personas personaExistente = personasSB.consultarPersonaCedula(usuario.getFkCodPersona().getCedulaPersona());
+            //Consultar por login
+            Usuarios usuarioExistente = usuariosSB.consultarUsuarios(usuario.getLoginUsuario());
+
+            if (personaExistente == null) {
+                if (usuarioExistente == null) {
+                    banderaRegistro = 1;
+                } else {
+                    //Verificamos si existe el correo
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                }
+            } else if (personaExistente.getUsuariosList().isEmpty()) {
+                if (usuarioExistente == null) {
+                    banderaRegistro = 1;
+                } else {
+                    //Verificamos si existe el correo
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                }
+            } else {
+                int banderaUsuarioWeb = 0;
+                for (int i = 0; personaExistente.getUsuariosList().size() > i; i++) {
+                    if (personaExistente.getUsuariosList().get(i).getFkCodRol().getCodRol().equals(6)) {
+                        banderaUsuarioWeb = 1;
+                    }
+                }
+                if (banderaUsuarioWeb == 1) {
+                    //Verificamos si existe el correo
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"Correo ya esta registrado.\"}";
+                } else {
+                    banderaRegistro = 1;
+                }
+            }
+
+            if (banderaRegistro == 0) {
+                return "{\"status\":\"ERROR\", \"mensaje\":\"Cedula ya existe.\"}";
+            } else {
+                String resultado = usuariosSB.crearUsuariosWeb(usuario);
+                if (resultado.equals("OK")) {
+                    return "{\"status\":\"OK\", \"mensaje\":\"Cuenta registrada.\"}";
+                } else {
+                    return "{\"status\":\"ERROR\", \"mensaje\":\"" + resultado + "\"}";
+                }
+            }
+        }
+    }
+
+    @POST
     @Path("/registrarUsuariosWeb")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})

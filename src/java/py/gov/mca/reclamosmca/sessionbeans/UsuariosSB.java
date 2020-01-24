@@ -266,7 +266,6 @@ public class UsuariosSB {
         } else {
             return (Usuarios) q.getResultList().get(0);
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -294,6 +293,23 @@ public class UsuariosSB {
             return "false";
         } else {
             return "true";
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public Usuarios consultarUsuariosPorLogin(String login) {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM Usuarios e ");
+        jpql.append("WHERE e.loginUsuario = :paramLogin ");
+        //jpql.append("WHERE e.persona.nombre LIKE '%:paramNombre%'");
+        Query q = em.createQuery(jpql.toString());
+        q.setParameter("paramLogin", login);
+        if (q.getResultList().isEmpty()) {
+            return null;
+        } else {
+            return (Usuarios) q.getResultList().get(0);
         }
 
     }

@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "imagenes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Imagenes.findAll", query = "SELECT i FROM Imagenes i"),
-    @NamedQuery(name = "Imagenes.findByCodImagen", query = "SELECT i FROM Imagenes i WHERE i.codImagen = :codImagen"),
-    @NamedQuery(name = "Imagenes.findByNombreImagen", query = "SELECT i FROM Imagenes i WHERE i.nombreImagen = :nombreImagen"),
-    @NamedQuery(name = "Imagenes.findByTipoImagen", query = "SELECT i FROM Imagenes i WHERE i.tipoImagen = :tipoImagen")})
+    @NamedQuery(name = "Imagenes.findAll", query = "SELECT i FROM Imagenes i")
+    , @NamedQuery(name = "Imagenes.findByCodImagen", query = "SELECT i FROM Imagenes i WHERE i.codImagen = :codImagen")
+    , @NamedQuery(name = "Imagenes.findByNombreImagen", query = "SELECT i FROM Imagenes i WHERE i.nombreImagen = :nombreImagen")
+    , @NamedQuery(name = "Imagenes.findByTipoImagen", query = "SELECT i FROM Imagenes i WHERE i.tipoImagen = :tipoImagen")})
 public class Imagenes implements Serializable {
 
     private static final long serialVersionUID = 1L;

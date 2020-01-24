@@ -30,12 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cambios_estados_usuarios")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CambiosEstadosUsuarios.findAll", query = "SELECT c FROM CambiosEstadosUsuarios c"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByCodCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.codCambioEstadoUsuario = :codCambioEstadoUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByLoginUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.loginUsuario = :loginUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByNombreEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.nombreEstadoUsuario = :nombreEstadoUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByDetalleCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.detalleCambioEstadoUsuario = :detalleCambioEstadoUsuario"),
-    @NamedQuery(name = "CambiosEstadosUsuarios.findByFechaCambioEstado", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.fechaCambioEstado = :fechaCambioEstado")})
+    @NamedQuery(name = "CambiosEstadosUsuarios.findAll", query = "SELECT c FROM CambiosEstadosUsuarios c")
+    , @NamedQuery(name = "CambiosEstadosUsuarios.findByCodCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.codCambioEstadoUsuario = :codCambioEstadoUsuario")
+    , @NamedQuery(name = "CambiosEstadosUsuarios.findByLoginUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.loginUsuario = :loginUsuario")
+    , @NamedQuery(name = "CambiosEstadosUsuarios.findByNombreEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.nombreEstadoUsuario = :nombreEstadoUsuario")
+    , @NamedQuery(name = "CambiosEstadosUsuarios.findByDetalleCambioEstadoUsuario", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.detalleCambioEstadoUsuario = :detalleCambioEstadoUsuario")
+    , @NamedQuery(name = "CambiosEstadosUsuarios.findByFechaCambioEstado", query = "SELECT c FROM CambiosEstadosUsuarios c WHERE c.fechaCambioEstado = :fechaCambioEstado")})
 public class CambiosEstadosUsuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;

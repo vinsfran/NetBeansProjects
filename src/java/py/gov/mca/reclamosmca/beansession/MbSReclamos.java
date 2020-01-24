@@ -42,6 +42,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import maps.java.Geocoding;
+//import maps.java.MapsJava;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -60,6 +61,7 @@ import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
+import py.gov.mca.reclamosmca.entitys.Configuraciones;
 import py.gov.mca.reclamosmca.entitys.EstadosReclamos;
 import py.gov.mca.reclamosmca.entitys.EstadosUsuarios;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
@@ -75,6 +77,7 @@ import py.gov.mca.reclamosmca.reportes.DependenciasReporte;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosCantidad;
 import py.gov.mca.reclamosmca.reportes.TiposReclamosReporte;
 import py.gov.mca.reclamosmca.sessionbeans.BarriosSB;
+import py.gov.mca.reclamosmca.sessionbeans.ConfiguracionesSB;
 import py.gov.mca.reclamosmca.sessionbeans.DireccionesSB;
 import py.gov.mca.reclamosmca.sessionbeans.PersonasSB;
 import py.gov.mca.reclamosmca.sessionbeans.ReclamosSB;
@@ -93,6 +96,7 @@ public class MbSReclamos implements Serializable {
 
     @EJB
     private ReclamosSB reclamosSB;
+    
     @EJB
     private TiposReclamosSB tiposReclamosSB;
     @EJB
@@ -101,12 +105,14 @@ public class MbSReclamos implements Serializable {
     private BarriosSB barriosSB;
     @EJB
     private TiposFinalizacionReclamosSB tiposFinalizacionReclamosSB;
-
     @EJB
     private UsuariosSB usuariosSB;
-
     @EJB
     private PersonasSB personasSB;
+    @EJB
+    private ConfiguracionesSB configuracionesSB;
+
+    private Configuraciones configuraciones;
 
     private List<Reclamos> misReclamos;
     private List<Reclamos> reclamosPendientes;
@@ -155,12 +161,14 @@ public class MbSReclamos implements Serializable {
     private DefaultStreamedContent imagenCargada;
 
     public MbSReclamos() {
+        this.configuraciones = new Configuraciones();
 
     }
 
     @PostConstruct
     public void init() {
         emptyModel = new DefaultMapModel();
+        configuraciones = configuracionesSB.consultarPorCodConfiguracion(2);
     }
 
     public String prepararNuevoReclamo() {
@@ -171,16 +179,15 @@ public class MbSReclamos implements Serializable {
         this.nuevoReclamo.setFkCodTipoReclamo(new TiposReclamos());
         this.nuevoReclamo.setLatitud(-25.3041049263554);
         this.nuevoReclamo.setLongitud(-57.5597266852856);
-
         this.nuevoReclamo.setFkCodDireccion(new Paises05Direcciones());
         this.nuevoReclamo.getFkCodDireccion().setFkCodBarrio(new Paises04Barrios());
-
         this.tipoDeReclamosSeleccionado = null;
         this.setMostrarGraphicImage(false);
         this.setZoom(15);
         this.imagenParaGuardar = null;
         this.imagenCargada = null;
         this.dirReclamo = "";
+        this.configuraciones = configuracionesSB.consultarPorCodConfiguracion(2);
         return "admin_nuevo_reclamo";
     }
 
@@ -257,22 +264,53 @@ public class MbSReclamos implements Serializable {
 
             direccionSelecionada = direccionesSB.consultarDrireccionPorLatitudLongitud(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
             if (direccionSelecionada == null) {
-
                 this.nuevoReclamo.setLatitud(getLatituteLongitude().getLat());
                 this.nuevoReclamo.setLongitud(getLatituteLongitude().getLng());
-                Geocoding objGeocod = new Geocoding();
+                //Se inicializa con las configuraciones para el uso de mapas de Google
+                setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(2));
+//                String claveAPI = getConfiguraciones().getPar01();
+//                Geocoding.setKey(claveAPI);
+//                Geocoding.setSensor(false);
+//                Geocoding.setLanguage("es");
+//                Geocoding.setConnectTimeout(3600);
+//
+//                Geocoding objGeocod = new Geocoding();
+//
+//                int cantidadAddress = 0;
+//                int conta = 0;
+//                ArrayList<String> direcciones = new ArrayList<>();
+//                boolean salir = true;
+//                while (salir) {
+//                    direcciones = objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng());
+//                    cantidadAddress = direcciones.size();
+//                    conta++;
+//                    if (cantidadAddress > 0 || conta == 100) {
+//                        salir = false;
+//                    }
+//                }
 
-                if (objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0).toUpperCase().contains("ASUNCIÓN")) {
-                    setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
-                    direccionSelecionada = new Paises05Direcciones();
-                    direccionSelecionada.setDireccionLatitud(getLatituteLongitude().getLat());
-                    direccionSelecionada.setDireccionLongitud(getLatituteLongitude().getLng());
-                    direccionSelecionada.setDireccionNombre(getDirReclamo());
-                    direccionSelecionada.setFkCodBarrio(barrioSeleccionado);
-                } else {
-                    setDirReclamo("DIR_FALSE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
-                }
+//                if (cantidadAddress > 0) {
+//                    if (direcciones.get(0).toUpperCase().contains("ASUNCIÓN")) {
+//                        setDirReclamo(objGeocod.getAddress(getLatituteLongitude().getLat(), getLatituteLongitude().getLng()).get(0));
+//                        direccionSelecionada = new Paises05Direcciones();
+//                        direccionSelecionada.setDireccionLatitud(getLatituteLongitude().getLat());
+//                        direccionSelecionada.setDireccionLongitud(getLatituteLongitude().getLng());
+//                        direccionSelecionada.setDireccionNombre(getDirReclamo());
+//                        direccionSelecionada.setFkCodBarrio(barrioSeleccionado);
+//                    } else {
+//                        setDirReclamo("");
+//                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se encuentra en Asunción", "Seleccione una ubicación valida."));
+//                    }
+//                } else {
+//                    setDirReclamo("");
+//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se pudo encontrar la Dirección de su reclamo", "Vuelva a intentar."));
+//                }
+
+                direccionSelecionada = new Paises05Direcciones();
+                direccionSelecionada.setDireccionLatitud(getLatituteLongitude().getLat());
+                direccionSelecionada.setDireccionLongitud(getLatituteLongitude().getLng());
+                direccionSelecionada.setDireccionNombre(getDirReclamo());
+                direccionSelecionada.setFkCodBarrio(barrioSeleccionado);
 
             } else {
                 setDirReclamo(direccionSelecionada.getDireccionNombre());
@@ -295,7 +333,7 @@ public class MbSReclamos implements Serializable {
         } else if (emptyModel.getMarkers().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione la ubicación de su reclamo."));
             return "admin_nuevo_reclamo";
-        } else if (dirReclamo.equals("DIR_FALSE")) {
+        } else if (dirReclamo.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
             return "admin_nuevo_reclamo";
         } else if (dirReclamo.equals("")) {
@@ -365,7 +403,7 @@ public class MbSReclamos implements Serializable {
             } else if (emptyModel.getMarkers().isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione la ubicación de su reclamo."));
                 return "admin_nuevo_reclamo_externo";
-            } else if (dirReclamo.equals("DIR_FALSE")) {
+            } else if (dirReclamo.equals("")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Por favor!", "Seleccione una ubicación valida."));
                 return "admin_nuevo_reclamo_externo";
             } else if (dirReclamo.equals("")) {
@@ -649,8 +687,11 @@ public class MbSReclamos implements Serializable {
             setImagenSemaforo("rojo20.gif");
         }
     }
-    
-        public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
+
+    public void exportarPDF(Integer codReclamo, String modo) throws JRException, IOException, Exception {
+        //Se inicializa con las configuraciones para el uso de mapas de Google
+        setConfiguraciones(configuracionesSB.consultarPorCodConfiguracion(2));
+
         Reclamos reclamoSeleccionadoPDF = reclamosSB.consultarReclamo(codReclamo);
         JasperReport jasper;
         Map<String, Object> parametros = new HashMap<>();
@@ -676,6 +717,13 @@ public class MbSReclamos implements Serializable {
         parametros.put("direccionReclamo", reclamoSeleccionadoPDF.getDireccionReclamo());
         parametros.put("descripcionReclamoContribuyente", reclamoSeleccionadoPDF.getDescripcionReclamoContribuyente());
         parametros.put("estadoReclamo", reclamoSeleccionadoPDF.getFkCodEstadoReclamo().getNombreEstadoReclamo());
+
+        String latLon = reclamoSeleccionadoPDF.getLatitud() + "," + reclamoSeleccionadoPDF.getLongitud();
+        String urlMapa = getConfiguraciones().getPar02() + getConfiguraciones().getPar03() + getConfiguraciones().getPar01()
+                + "&center=" + latLon
+                + "&markers=" + latLon;
+
+        parametros.put("urlMapa", urlMapa);
 
         if (reclamoSeleccionadoPDF.getFkImagen() == null) {
             String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
@@ -752,7 +800,7 @@ public class MbSReclamos implements Serializable {
                 retorno = "admin_ver_detalle_reclamo_finalizado";
                 break;
         }
-        
+
         return retorno;
     }
 
@@ -1173,6 +1221,7 @@ public class MbSReclamos implements Serializable {
                 reclamoSeleccionado.setFkCodDireccion(direccionesSB.consultarDrireccionPorLatitudLongitud(reclamoSeleccionado.getLatitud(), reclamoSeleccionado.getLongitud()));
                 reclamoSeleccionado.setFechaAtencionReclamo(new Date());
                 reclamoSeleccionado.setFkCodTipoFinalizacionReclamo(null);
+                System.err.println(reclamoSeleccionado.toString());
                 String mensaje = reclamosSB.actualizarReclamos(reclamoSeleccionado);
                 if (mensaje.equals("OK")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reclamo procesado.", ""));
@@ -1687,6 +1736,20 @@ public class MbSReclamos implements Serializable {
      */
     public void setBarrios(List<Paises04Barrios> barrios) {
         this.barrios = barrios;
+    }
+
+    /**
+     * @return the configuraciones
+     */
+    public Configuraciones getConfiguraciones() {
+        return configuraciones;
+    }
+
+    /**
+     * @param configuraciones the configuraciones to set
+     */
+    public void setConfiguraciones(Configuraciones configuraciones) {
+        this.configuraciones = configuraciones;
     }
 
 }

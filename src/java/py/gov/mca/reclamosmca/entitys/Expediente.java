@@ -24,9 +24,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "expediente")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Expediente.findAll", query = "SELECT e FROM Expediente e"),
-    @NamedQuery(name = "Expediente.findByNroExpediente", query = "SELECT e FROM Expediente e WHERE e.nroExpediente = :nroExpediente"),
-    @NamedQuery(name = "Expediente.findByNroFactura", query = "SELECT e FROM Expediente e WHERE e.nroFactura = :nroFactura")})
+    @NamedQuery(name = "Expediente.findAll", query = "SELECT e FROM Expediente e")
+    , @NamedQuery(name = "Expediente.findByNroExpediente", query = "SELECT e FROM Expediente e WHERE e.nroExpediente = :nroExpediente")
+    , @NamedQuery(name = "Expediente.findByNroFactura", query = "SELECT e FROM Expediente e WHERE e.nroFactura = :nroFactura")})
 public class Expediente implements Serializable {
 
     private static final long serialVersionUID = 1L;
