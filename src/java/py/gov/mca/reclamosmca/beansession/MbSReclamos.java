@@ -697,7 +697,7 @@ public class MbSReclamos implements Serializable {
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
-        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu_logo_report.png");
 
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
@@ -825,7 +825,7 @@ public class MbSReclamos implements Serializable {
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
-        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu_logo_report.png");
 
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
@@ -880,7 +880,7 @@ public class MbSReclamos implements Serializable {
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
-        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu_logo_report.png");
 
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
@@ -970,7 +970,7 @@ public class MbSReclamos implements Serializable {
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
-        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu_logo_report.png");
 
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
@@ -1060,7 +1060,7 @@ public class MbSReclamos implements Serializable {
         Map<String, Object> parametros = new HashMap<>();
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String urlImagen = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/escudo.gif");
-        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu128.png");
+        String urlImagen2 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/asu_logo_report.png");
 
         parametros.put("urlImagen", urlImagen);
         parametros.put("urlImagen2", urlImagen2);
