@@ -17,9 +17,11 @@ import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import py.gov.mca.reclamosmca.entitys.Imagenes;
 import py.gov.mca.reclamosmca.entitys.Reclamos;
 import py.gov.mca.reclamosmca.entitys.TiposReclamos;
+import py.gov.mca.reclamosmca.model.ReclamoTodosModel;
 import py.gov.mca.reclamosmca.utiles.EnviarCorreos;
 
 /**
@@ -350,7 +352,9 @@ public class ReclamosSB {
 
     public List<Reclamos> listarReclamos() {
         Query q = em.createNamedQuery("Reclamos.findAll");
+
         return q.getResultList();
+
     }
 
     public List<Reclamos> listarReclamos2() {
@@ -366,10 +370,34 @@ public class ReclamosSB {
         Query q = em.createQuery(jpql.toString());
 
         for (int i = 0; i < q.getResultList().size(); i++) {
-            Reclamos recla = (Reclamos) q.getResultList().get(i);
+//            Reclamos recla = (Reclamos) q.getResultList().get(i);
             System.out.println("COD: " + q.getResultList().get(i).toString());
 
         }
+
+        return q.getResultList();
+
+    }
+
+    public List<Reclamos> listarReclamos3() {
+        List<Reclamos> listaRetorno = new ArrayList<>();
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT e ");
+        jpql.append("FROM Reclamos e ");
+//        jpql.append("WHERE e.fechaReclamo LIKE '%:paramFechaMenor%'");
+        jpql.append("WHERE e.fechaReclamo >= '2019-01-01' ");
+        jpql.append("AND e.fechaReclamo <= '2019-01-31'");
+        TypedQuery<Reclamos> q = em.createQuery(jpql.toString(), Reclamos.class);
+//        q.setParameter("paramFechaMenor", "2019-01-01");
+//        q.setParameter("paramFechaMayor", "2019-12-31");
+
+//        for (int i = 0; i < q.getResultList().size(); i++) {
+//            ReclamoTodosModel model = (ReclamoTodosModel) q.getResultList().get(i);
+//            Reclamos reclamo = new Reclamos();
+//            reclamo.setCodReclamo(model.getCodReclamo());
+//            System.out.println("COD: " + q.getResultList().get(i));
+//            listaRetorno.add(reclamo);
+//        }
 
         return q.getResultList();
 

@@ -97,7 +97,7 @@ public class ReclamosWS {
             direccionSelecionada.setDireccionLatitud(reclamos.getLatitud());
             direccionSelecionada.setDireccionLongitud(reclamos.getLongitud());
             direccionSelecionada.setDireccionNombre(reclamos.getDireccionReclamo());
-            //direccionSelecionada.setFkCodBarrio(barrioSeleccionado);
+            direccionSelecionada.setFkCodBarrio(reclamos.getFkCodDireccion().getFkCodBarrio());
             //direccionSelecionada.setFkCodBarrio(new Paises04Barrios());
             
         } 

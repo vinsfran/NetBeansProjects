@@ -1698,7 +1698,8 @@ public class MbSReclamos implements Serializable {
      * @return the reclamos
      */
     public List<Reclamos> getReclamos() {
-        reclamos = reclamosSB.listarReclamos();
+//        reclamos = reclamosSB.listarReclamos();
+        reclamos = reclamosSB.listarReclamos3();
         return reclamos;
     }
 
