@@ -96,7 +96,7 @@ public class MbSReclamos implements Serializable {
 
     @EJB
     private ReclamosSB reclamosSB;
-    
+
     @EJB
     private TiposReclamosSB tiposReclamosSB;
     @EJB
@@ -305,7 +305,6 @@ public class MbSReclamos implements Serializable {
 //                    setDirReclamo("");
 //                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No se pudo encontrar la Dirección de su reclamo", "Vuelva a intentar."));
 //                }
-
                 direccionSelecionada = new Paises05Direcciones();
                 direccionSelecionada.setDireccionLatitud(getLatituteLongitude().getLat());
                 direccionSelecionada.setDireccionLongitud(getLatituteLongitude().getLng());
@@ -725,13 +724,19 @@ public class MbSReclamos implements Serializable {
 
         parametros.put("urlMapa", urlMapa);
 
-        if (reclamoSeleccionadoPDF.getFkImagen() == null) {
+        if (reclamoSeleccionadoPDF.getFkImagen() == null
+                || reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen() == null
+                || reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen().equals("") 
+                || reclamoSeleccionadoPDF.getFkImagen().getNombreImagen() == null
+                || reclamoSeleccionadoPDF.getFkImagen().getNombreImagen().equals("")) {
             String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
             File imageFile = new File(urlImagen3);
             InputStream is = new FileInputStream(imageFile);
             parametros.put("imagenReclamo", ajustarImagen(is, 640, 480, "image/png"));
+            System.out.println(reclamoSeleccionadoPDF.getFkImagen().getCodImagen() + " SIN");
         } else {
             parametros.put("imagenReclamo", reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen());
+ System.out.println(reclamoSeleccionadoPDF.getFkImagen().getCodImagen() + " con");
         }
 
         //Se verifica estado del reclamo. codEstadoReclamo = 1 --> PENDIENTE
