@@ -726,17 +726,17 @@ public class MbSReclamos implements Serializable {
 
         if (reclamoSeleccionadoPDF.getFkImagen() == null
                 || reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen() == null
-                || reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen().equals("") 
+                || reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen().equals("")
                 || reclamoSeleccionadoPDF.getFkImagen().getNombreImagen() == null
                 || reclamoSeleccionadoPDF.getFkImagen().getNombreImagen().equals("")) {
             String urlImagen3 = ((ServletContext) ctx.getContext()).getRealPath("/resources/images/blanco.png");
             File imageFile = new File(urlImagen3);
             InputStream is = new FileInputStream(imageFile);
             parametros.put("imagenReclamo", ajustarImagen(is, 640, 480, "image/png"));
-            System.out.println(reclamoSeleccionadoPDF.getFkImagen().getCodImagen() + " SIN");
+            System.out.println("SIN IMAGEN");
         } else {
             parametros.put("imagenReclamo", reclamoSeleccionadoPDF.getFkImagen().getArchivoImagen());
- System.out.println(reclamoSeleccionadoPDF.getFkImagen().getCodImagen() + " con");
+            System.out.println("CON IMAGEN");
         }
 
         //Se verifica estado del reclamo. codEstadoReclamo = 1 --> PENDIENTE
